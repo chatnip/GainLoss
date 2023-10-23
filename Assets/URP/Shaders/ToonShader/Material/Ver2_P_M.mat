@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Printer2.1_M
+  m_Name: Ver2_P_M
   m_Shader: {fileID: -6465566751694194690, guid: 53d3d326ceff7b940a6236e66d350622, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -40,8 +40,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: a6ef4e2becf124749869cc8b79f7a958, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: db8b94a8516e76e429956bfeabf95489, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_03691d8713bc400c9931ef2aef6eb639_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: cb39e82fc505cc84a92e544804f414d7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadingGradient:
+        m_Texture: {fileID: 2800000, guid: 2ff4db851d6508b43b1199799e0da188, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_0c00cf62ab3747a6a25c8d1c13474c57_Out_0_Texture2D:
@@ -78,15 +86,19 @@ Material:
     - Vector1_B781CA44: 32
     - Vector1_CAB9C154: 0.61
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
+    - _PainterlyGuide: 1
+    - _PainterlySmoothness: 5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SHADOWS_SOFT: 1
+    - _Smoothness: 1
     m_Colors:
-    - Color_116725BF: {r: 1, g: 1, b: 1, a: 0}
-    - Color_6512CD7A: {r: 1, g: 1, b: 1, a: 0}
+    - Color_116725BF: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0}
+    - Color_6512CD7A: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 0}
     - Color_85BA657: {r: 1, g: 0.8165461, b: 0.6179246, a: 0}
-    - Color_F25F2FC1: {r: 1, g: 0.5154612, b: 0.5058824, a: 0}
+    - Color_F25F2FC1: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0}
     - _DiffOffset: {r: 1, g: 1, b: 0, a: 0}
     - _DiffTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _NormalColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0}
+    - _LightColor: {r: 1, g: 0.9905246, b: 0.759434, a: 0}
+    - _NormalColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
   m_BuildTextureStacks: []

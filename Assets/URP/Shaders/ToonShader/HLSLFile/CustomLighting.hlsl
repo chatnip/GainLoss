@@ -41,7 +41,20 @@ void MainLight_half(float3 WorldPos, out half3 Direction, out half3 Color, out h
     Direction = mainLight.direction;
     Color = mainLight.color;
     DistanceAtten = mainLight.distanceAttenuation;
-    ShadowAtten = mainLight.shadowAttenuation;
+
+#if !defined(_MAIN_LIGHT_SHADOWS) || defined(_RECEIVE_SHADOWS_OFF)
+    ShadowAtten = 1.0h;
+#endif
+
+#if SHADOWS_SCREEN
+    ShadowAtten = SampleScreenSpaceShadowmap(shadowCoord);
+#else
+    ShadowSamplingData shadowSamplingData = GetMainLightShadowSamplingData();
+    half shadowStrength = GetMainLightShadowStrength();
+    ShadowAtten = SampleShadowmap(shadowCoord, TEXTURE2D_ARGS(_MainLightShadowmapTexture,
+        sampler_MainLightShadowmapTexture),
+        shadowSamplingData, shadowStrength, false);
+#endif
 #endif
 }
 
