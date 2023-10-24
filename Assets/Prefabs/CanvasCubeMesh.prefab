@@ -129,6 +129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557cd014e9db3be4b9d119564437fa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshFilter: {fileID: 0}
+  baseMesh: {fileID: 0}
+  meshRenderer: {fileID: 0}
+  baseMaterial: {fileID: 0}
+  wordMaterial: {fileID: 0}
   rigid: {fileID: 6323665901378242470}
   maxZoomValue: 15
   minZoomValue: 1
@@ -183,6 +188,16 @@ MonoBehaviour:
       m_Action: Wheel
       m_Flags: 0
     m_Flags: 0
+  wordClick:
+    m_Name: Word Click
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f8926be9-d2ca-4ffb-8677-2f06ecfcdffe
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactObjectBase: {fileID: 0}
 --- !u!1 &278836524545833734
 GameObject:
   m_ObjectHideFlags: 0

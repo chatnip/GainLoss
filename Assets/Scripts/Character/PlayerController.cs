@@ -253,16 +253,22 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract()
     {
-        interactCanvas.SetActive(true);
+        if(!interactMode.Value)
+        {
+            interactCanvas.SetActive(true);
+            interactObject.Interact();
+        }     
         interactMode.Value = true;
-        interactObject.interact();
-        
+
     }
 
     private void OnInteractCancel()
     {
-        interactCanvas.SetActive(false);
-        interactMode.Value = false;
-        interactObject.interactCancel();
+        if (interactMode.Value)
+        {
+            interactCanvas.SetActive(false);
+            interactMode.Value = false;
+        }      
+        interactObject.InteractCancel();
     }
 }

@@ -22,13 +22,18 @@ public class InteractCore : MonoBehaviour, IInteract
         }
     }
 
-    public virtual void interact()
+    public virtual void Interact()
     {
         
     }
 
-    public virtual void interactCancel()
+    public virtual void InteractCancel()
     {
 
+    }
+
+    private void OnMouseDown()
+    {
+        
     }
 }

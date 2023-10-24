@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IInteract
 {
-    public void interact();
-    public void interactCancel();
+    public void Interact();
+    public void InteractCancel();
 }

@@ -5,35 +5,42 @@ using TMPro;
 
 public class InteractObject : InteractCore
 {
+    [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] InteractObjectBase interactObjectBase;
     [SerializeField] RectTransform interactCanvas;
     [SerializeField] TMP_Text interactText;
-    [SerializeField] GameObject canvasObject;
+    InteractedObject interactedObject;
 
-    public override void interact()
+    public override void Interact()
     {
-        base.interact();
+        base.Interact();
 
-        canvasObject.TryGetComponent(out RectTransform canvasObjectRect);       
-        canvasObject.transform.SetParent(interactCanvas);
-        canvasObjectRect.localPosition = new Vector3(0, 0, -1430);
-        canvasObjectRect.rotation = Quaternion.identity;
-        canvasObjectRect.localScale = Vector3.one;
-
-        canvasObject.TryGetComponent(out InteractedObject interacted);
-        interacted.enabled = true;
-        canvasObject.layer = 5;
-
-        interactText.text = interactObjectBase.InteractObjectInfo;
-
-        canvasObject.SetActive(true);
+        InteractSetting();
     }
 
-    public override void interactCancel()
+    private void InteractSetting()
     {
-        canvasObject.SetActive(false);
-        canvasObject.transform.SetParent(this.transform);
-        canvasObject.TryGetComponent(out InteractedObject interacted);
-        interacted.enabled = false;
+        interactedObject = ObjectPooling.InteractedObjectPool();
+        interactedObject.TryGetComponent(out RectTransform rect);
+        interactedObject.transform.SetParent(interactCanvas);
+        ObjectPosSetting(rect);
+        interactText.text = interactObjectBase.InteractObjectInfo;
+        interactedObject.interactObjectBase = this.interactObjectBase;
+        interactedObject.gameObject.SetActive(true);
+    }
+
+    private void ObjectPosSetting(RectTransform rect)
+    {
+        rect.localPosition = new Vector3(0, 0, -1430);
+        rect.rotation = Quaternion.identity;
+        int val = interactObjectBase.MinZoomValue;
+        rect.localScale = new Vector3(val, val, val);
+    }
+
+    public override void InteractCancel()
+    {
+        interactedObject.gameObject.SetActive(false);
+        interactedObject.transform.SetParent(ObjectPooling.transform);
+        ObjectPooling.ObjectPick(interactedObject);
     }
 }
