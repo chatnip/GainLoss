@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UniRx;
 
 public class InteractedObject : MonoBehaviour
 {
+    [Header("*Property")]
+    [SerializeField] WordManager WordManager;
+
     [Header("*Mesh")]
     [SerializeField] MeshFilter meshFilter;
     [SerializeField] Mesh baseMesh;
@@ -16,8 +20,6 @@ public class InteractedObject : MonoBehaviour
     [SerializeField] Material wordMaterial;
 
     [Header("*Base")] 
-    [SerializeField] Rigidbody rigid;
-    // [SerializeField] BoxCollider wordCollider;
 
     [SerializeField] private int maxZoomValue;
     [SerializeField] private int minZoomValue;
@@ -27,10 +29,14 @@ public class InteractedObject : MonoBehaviour
 
     [HideInInspector] public InteractObjectBase interactObjectBase;
 
+    // [SerializeField] bool isWordFind = false;
+
     private Vector2 cursorVector;
     private bool rotateAllowed;  
     private float rotateSpeed = 100f;
     private float zoomValue;
+
+
 
     private void OnEnable()
     {
@@ -53,10 +59,6 @@ public class InteractedObject : MonoBehaviour
         meshFilter.mesh = baseMesh;
         meshRenderer.materials = new Material[2] { baseMaterial, wordMaterial };
         meshCollider.sharedMesh = baseMesh;
-        // wordCollider.gameObject.transform.localPosition = interactObjectBase.WordColPos;
-        // wordCollider.gameObject.transform.rotation = Quaternion.identity;
-        // wordCollider.gameObject.transform.localScale = Vector3.one;
-        // wordCollider.size = interactObjectBase.WordColSize;
     }
 
     private void EnableObjectInput()
@@ -144,18 +146,24 @@ public class InteractedObject : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         int layerMask = 1 << LayerMask.NameToLayer("WordObject");
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask))
+        Debug.DrawRay(ray.origin, ray.direction * 20, Color.red);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100, layerMask))
         {
             
             hit.transform.TryGetComponent(out MeshRenderer rend);
-            Debug.Log(rend.materials[1].name); 
             Texture2D tex = rend.materials[1].GetTexture("_WordTexture") as Texture2D;       
             Vector2 pixelUV = hit.textureCoord;
-            if(tex.GetPixel((int)pixelUV.x, (int)pixelUV.y).a > 0)
+            pixelUV.x *= tex.width;
+            pixelUV.y *= tex.height;
+            Color color = tex.GetPixel((int)pixelUV.x, (int)pixelUV.y);
+            if (color.r > 0 || color.g > 0 || color.b > 0)
             {
                 Debug.Log("단어를 찾음");
-            }
+                Debug.Log("laycastname" + hit.transform.name);
+                string name = interactObjectBase.InteractObjectName;
+                // WordManager.wordList.Add(name);
+                WordManager.wordText.text = name;
+            }        
         }
 
         /*
