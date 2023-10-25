@@ -17,7 +17,7 @@ public class InteractedObject : MonoBehaviour
 
     [Header("*Base")] 
     [SerializeField] Rigidbody rigid;
-    [SerializeField] BoxCollider wordCollider;
+    // [SerializeField] BoxCollider wordCollider;
 
     [SerializeField] private int maxZoomValue;
     [SerializeField] private int minZoomValue;
@@ -53,10 +53,10 @@ public class InteractedObject : MonoBehaviour
         meshFilter.mesh = baseMesh;
         meshRenderer.materials = new Material[2] { baseMaterial, wordMaterial };
         meshCollider.sharedMesh = baseMesh;
-        wordCollider.gameObject.transform.localPosition = interactObjectBase.WordColPos;
-        wordCollider.gameObject.transform.rotation = Quaternion.identity;
-        wordCollider.gameObject.transform.localScale = Vector3.one;
-        wordCollider.size = interactObjectBase.WordColSize;
+        // wordCollider.gameObject.transform.localPosition = interactObjectBase.WordColPos;
+        // wordCollider.gameObject.transform.rotation = Quaternion.identity;
+        // wordCollider.gameObject.transform.localScale = Vector3.one;
+        // wordCollider.size = interactObjectBase.WordColSize;
     }
 
     private void EnableObjectInput()
@@ -143,11 +143,30 @@ public class InteractedObject : MonoBehaviour
     private void RaycastCursor()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int layerMask = 1 << LayerMask.NameToLayer("WordObject");
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask))
+        {
+            
+            hit.transform.TryGetComponent(out MeshRenderer rend);
+            Debug.Log(rend.materials[1].name); 
+            Texture2D tex = rend.materials[1].GetTexture("_WordTexture") as Texture2D;       
+            Vector2 pixelUV = hit.textureCoord;
+            if(tex.GetPixel((int)pixelUV.x, (int)pixelUV.y).a > 0)
+            {
+                Debug.Log("단어를 찾음");
+            }
+        }
+
+        /*
+        Ray ray = Camera.main.ScreenPointToRay(cursorVector);
 
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.blue);
         int layerMask = 1 << LayerMask.NameToLayer("WordObject");
         if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask))
         {
+            
+            
             Debug.Log("d" + hit.collider.gameObject.name);
 
             if (hit.collider != null)
@@ -164,9 +183,8 @@ public class InteractedObject : MonoBehaviour
                     Debug.Log("col" + hit.rigidbody.gameObject.name);
                 }
             }
+            
         }
-
-
+        */
     }
-
 }

@@ -157,17 +157,6 @@
                 },
                 {
                     "name": "",
-                    "id": "d1d171b6-19d8-47a6-ba3a-71b6a8e7b3c0",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "dc65b89f-9bd3-43fb-92af-d0d87ba5faa4",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
@@ -185,6 +174,17 @@
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a689f8e-3995-4026-ab03-6485b34bc79c",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

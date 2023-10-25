@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UniRx;
 
 public class PlayerInputController : Manager<PlayerInputController>
 {
@@ -25,8 +26,24 @@ public class PlayerInputController : Manager<PlayerInputController>
         base.Awake();
         TryGetComponent(out _input);
 
-        // player = GameManager.Instance.player.gameObject;
-        // player.TryGetComponent(out playerController);
+        _input.ObserveEveryValueChanged(x => x.currentControlScheme)
+            .Subscribe(OnControlSchemeChanged);
+    }
+
+    public void OnControlSchemeChanged(string _controlScheme)
+    {
+        Debug.Log($"OnControlSchemeChanged : {_controlScheme}");
+        /*
+        if(_controlScheme != "KeyboardMouse")
+        {
+            SetCursorState(false);
+        }
+        else
+        {
+            Debug.Log("커서안잠금");
+            SetCursorState(true);
+        }
+        */
     }
 
     private void OnEnable()
@@ -97,12 +114,13 @@ public class PlayerInputController : Manager<PlayerInputController>
     {
         SetCursorState(cursorLocked);
     }
+    */
 
     private void SetCursorState(bool newState)
     {
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
     }
-    */
+    
 
     private bool LookForGameObject(out RaycastHit hit)
     {

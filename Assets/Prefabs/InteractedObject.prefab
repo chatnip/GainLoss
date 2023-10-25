@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2058843107669589872}
-  - component: {fileID: 2552248236908628928}
   m_Layer: 6
   m_Name: GameObject
   m_TagString: ClickableInteract
@@ -36,27 +35,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!65 &2552248236908628928
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6194748607315498708}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9073451723881403618
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +171,7 @@ MonoBehaviour:
   baseMaterial: {fileID: 0}
   wordMaterial: {fileID: 0}
   rigid: {fileID: 3887077941098722046}
-  wordCollider: {fileID: 2552248236908628928}
+  wordCollider: {fileID: 0}
   maxZoomValue: 15
   minZoomValue: 1
   pressed:
@@ -265,6 +243,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 87c0a6c8-5126-4969-a88f-c32f5d6e9bdd
       m_Path: <Gamepad>/dpad/y
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wheel
+      m_Flags: 0
+    - m_Name: 
+      m_Id: fb2f141e-90ad-46f4-8430-77c65ea91080
+      m_Path: <Gamepad>/leftStick/y
       m_Interactions: 
       m_Processors: 
       m_Groups: 
