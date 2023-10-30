@@ -20,6 +20,7 @@ public class InteractObject : InteractCore
 
     private void InteractSetting()
     {
+        interactCanvas.gameObject.SetActive(true);
         interactedObject = ObjectPooling.InteractedObjectPool();
         interactedObject.TryGetComponent(out RectTransform rect);
         interactedObject.transform.SetParent(interactCanvas);
@@ -39,6 +40,7 @@ public class InteractObject : InteractCore
 
     public override void InteractCancel()
     {
+        interactCanvas.gameObject.SetActive(false);
         interactedObject.gameObject.SetActive(false);
         interactedObject.transform.SetParent(ObjectPooling.transform);
         ObjectPooling.ObjectPick(interactedObject);

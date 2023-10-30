@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform _mainCamera;
     [SerializeField] Animator _animator;
 
-    [SerializeField] GameObject interactCanvas;
+    // [SerializeField] GameObject interactCanvas;
     [SerializeField] private InputAction interactInput,cancelInput;
 
     private const float _threshold = 0.01f;
@@ -255,7 +255,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!interactMode.Value)
         {
-            interactCanvas.SetActive(true);
+            // interactCanvas.SetActive(true);
             interactObject.Interact();
         }     
         interactMode.Value = true;
@@ -266,7 +266,7 @@ public class PlayerController : MonoBehaviour
     {
         if (interactMode.Value)
         {
-            interactCanvas.SetActive(false);
+            // interactCanvas.SetActive(false);
             interactMode.Value = false;
         }      
         interactObject.InteractCancel();
