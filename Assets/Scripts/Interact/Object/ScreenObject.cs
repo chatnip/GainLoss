@@ -12,8 +12,9 @@ public class ScreenObject : InteractCore
     [SerializeField] GameObject mainVitureCamera2; // 플레이어 뷰 정해지면, 카메라 하나만 남겨두기
     [Tooltip("스크린 카메라")]
     [SerializeField] GameObject screenCamera;
+    [SerializeField] GameObject screenObject;
     [Space(10)]
-    [SerializeField] Image blackScreen;
+    [SerializeField] GameObject Computer2DCamera;
 
     public override void Interact()
     {
@@ -29,6 +30,7 @@ public class ScreenObject : InteractCore
 
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {
+        screenObject.SetActive(true);
         mainVitureCamera.SetActive(false);
         mainVitureCamera2.SetActive(false);
         screenCamera.SetActive(true);
@@ -50,6 +52,7 @@ public class ScreenObject : InteractCore
 
         mainVitureCamera.SetActive(true);
         screenCamera.SetActive(false);
+        screenObject.SetActive(false);
 
         yield break;
     }
@@ -57,11 +60,11 @@ public class ScreenObject : InteractCore
     private void ScreenOn()
     {
         // 나중에 애니메이션 추가!!!
-        blackScreen.gameObject.SetActive(false);
+        Computer2DCamera.SetActive(true);
     }
 
     private void ScreenOff()
     {
-        blackScreen.gameObject.SetActive(true);
+        Computer2DCamera.SetActive(false);
     }
 }
