@@ -11,7 +11,7 @@ public class VirtualScreen : GraphicRaycaster
     [Tooltip("2D 화면의 UI 캔버스")]
     [SerializeField] GraphicRaycaster screenCaster;
 
-    /*
+    
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
     {
         
@@ -23,8 +23,6 @@ public class VirtualScreen : GraphicRaycaster
             if (hit.collider.transform == transform)
             {
                 Vector3 virtualPos = new Vector3(hit.textureCoord.x, hit.textureCoord.y);
-                Debug.Log("텍스처 좌표" + hit.textureCoord.x + hit.textureCoord.y);
-                Debug.Log("히트포인트" + hit.point);
                 virtualPos.x *= screenCamera.targetTexture.width;
                 virtualPos.y *= screenCamera.targetTexture.height;
 
@@ -34,9 +32,9 @@ public class VirtualScreen : GraphicRaycaster
             }
         }
     }
-    */
-
     
+
+    /*
     // public Camera screenCamera;
 
     // Called by Unity when a Raycaster should raycast because it extends BaseRaycaster.
@@ -72,5 +70,6 @@ public class VirtualScreen : GraphicRaycaster
             resultAppendList.Add(result);
         }
     }
+    */
     
 }
