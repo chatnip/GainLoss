@@ -15,7 +15,7 @@ public class TaskBar : MonoBehaviour
             .OnClickAsObservable()
             .Subscribe(x =>
             {
-                ScreenObject.StartCoroutine(ScreenObject.ScreenZoomOut());
+                ScreenObject.InteractCancel();
             });
     }
 }

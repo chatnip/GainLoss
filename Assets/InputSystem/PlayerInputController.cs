@@ -18,8 +18,13 @@ public class PlayerInputController : Manager<PlayerInputController>
     public bool cursorInputForLook = true;
 
     [Header("Event Settings")]
-    public bool interactableMode;
-    
+    // public bool interactableMode;
+
+    [Tooltip("상호작용중인지 여부")]
+    public BoolReactiveProperty interactMode = new BoolReactiveProperty();
+
+    private IInteract interact;
+
 
     protected override void Awake()
     {
@@ -28,11 +33,24 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         _input.ObserveEveryValueChanged(x => x.currentControlScheme)
             .Subscribe(OnControlSchemeChanged);
+
+        interactMode
+            .Subscribe(x =>
+            {
+                if (x)
+                {
+                    DisablePlayerInput();
+                }
+                else
+                {
+                    EnablePlayerInput();
+                }
+            });
     }
 
     public void OnControlSchemeChanged(string _controlScheme)
     {
-        Debug.Log($"OnControlSchemeChanged : {_controlScheme}");
+        // Debug.Log($"OnControlSchemeChanged : {_controlScheme}");
         /*
         if(_controlScheme != "KeyboardMouse")
         {
@@ -61,6 +79,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["Move"].performed += OnMove;
         playerInput["Move"].canceled += OnMoveStop;
         playerInput["Look"].performed += OnLook;
+        playerInput["Interact"].started += OnInteract;
+        playerInput["InteractCancel"].started += OnInteractCancel;
     }
 
     public void DisablePlayerInput()
@@ -68,6 +88,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["Move"].performed -= OnMove;
         _input.actions["Move"].canceled -= OnMoveStop;
         _input.actions["Look"].performed -= OnLook;
+        _input.actions["Interact"].started -= OnInteract;
+        _input.actions["InteractCancel"].started -= OnInteractCancel;
     }
 
 
@@ -87,6 +109,34 @@ public class PlayerInputController : Manager<PlayerInputController>
         LookInput(obj.ReadValue<Vector2>());
     }
 
+    private void OnInteract(InputAction.CallbackContext obj)
+    {
+        if (interact != null)
+        {
+            interact.Interact();
+        }
+    }
+
+    private void OnInteractCancel(InputAction.CallbackContext obj)
+    {
+        interact.InteractCancel();
+    }
+
+    public void SetInteract(IInteract interact)
+    {
+        this.interact = interact;
+    }
+
+    public bool AlreadyHaveInteract(IInteract interact)
+    {
+        if (this.interact == interact)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /*
     private void OnClick(InputAction.CallbackContext obj)
     {
         if (interactableMode && LookForGameObject(out RaycastHit hit))
@@ -97,6 +147,7 @@ public class PlayerInputController : Manager<PlayerInputController>
             }
         }
     }
+    */
 
     #endregion
 

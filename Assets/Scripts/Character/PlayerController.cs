@@ -80,30 +80,32 @@ public class PlayerController : MonoBehaviour
     }
 
     // Event Mode
-    [Tooltip("상호작용 가능한지 여부")]
-    private BoolReactiveProperty interactableMode = new BoolReactiveProperty();
+    // [Tooltip("상호작용 가능한지 여부")]
+    // private BoolReactiveProperty interactableMode = new BoolReactiveProperty();
 
-    [Tooltip("상호작용중인지 여부")]
-    private BoolReactiveProperty interactMode = new BoolReactiveProperty();
+    // [Tooltip("상호작용중인지 여부")]
+    // private BoolReactiveProperty interactMode = new BoolReactiveProperty();
 
-    private IInteract interactObject;
+    // private IInteract interact;
     #endregion
 
     private void Awake()
     {
+        /*
         interactableMode
             .Subscribe(x =>
             {
                 if(x)
                 {
-                    EnableInteractInput();
+                    // EnableInteractInput();
                 }
                 else
                 {
-                    DisableInteractInput();
+                    // DisableInteractInput();
                 }
             });
-
+        
+        
         interactMode
             .Subscribe(x =>
             {
@@ -116,6 +118,7 @@ public class PlayerController : MonoBehaviour
                     _input.EnablePlayerInput();
                 }
             });
+        */
     }
 
     private void Start()
@@ -124,36 +127,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void EnableInteractInput()
-    {
-        interactInput.Enable();
-        cancelInput.Enable();
-        interactInput.started += _ => { OnInteract(); };
-        cancelInput.started += _ => { OnInteractCancel(); };
-    }
-
-    private void DisableInteractInput()
-    {
-        interactInput.Disable();
-        cancelInput.Disable();
-        interactInput.started -= _ => { OnInteract(); };
-        cancelInput.started -= _ => { OnInteractCancel(); };
-    }
-
     private void FixedUpdate()
     {
-        if(!interactMode.Value)
-        {
-            Move();
-        }
+        Move();
     }
 
     private void LateUpdate()
     {
-        if (!interactMode.Value)
-        {
-            CameraRotation();
-        }
+        CameraRotation();
     }
 
     private void AssignAnimationIDs()
@@ -169,6 +150,9 @@ public class PlayerController : MonoBehaviour
 
         // 입력이 없으면 목표 속도를 0으로 설정
         if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+
+        // 상호작용 중이면 목표 속도를 0으로 설정
+        if (_input.interactMode.Value == true) targetSpeed = 0.0f;
 
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;   
         float speedOffset = 0.1f;
@@ -212,6 +196,9 @@ public class PlayerController : MonoBehaviour
     }
     private void CameraRotation()
     {
+        // 상호작용 중이면 카메라를 잠금
+        LockCameraPosition = _input.interactMode.Value;
+
         // 입력이 있고 카메라 위치가 고정되지 않은 경우
         if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
@@ -236,30 +223,54 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("InteractableObject"))
+        other.TryGetComponent(out IInteract interactContianer);
+        if (interactContianer != null)
+        {
+            PlayerInputController.Instance.SetInteract(interactContianer);
+        }
+
+        /*
+        if (other.CompareTag("InteractableObject"))
         {
             interactableMode.Value = true;
-            other.TryGetComponent(out interactObject);
+            other.TryGetComponent(out interact);
             Debug.Log("닿음");
         }
+        */
     }
 
     private void OnTriggerExit(Collider other)
     {
+        other.TryGetComponent(out IInteract interactContianer);
+        if (PlayerInputController.Instance.AlreadyHaveInteract(interactContianer))
+        {
+            PlayerInputController.Instance.SetInteract(null);
+        }
+
+        /*
         interactableMode.Value = false;
-        interactObject = null;
+        interact = null;
         Debug.Log("떨어짐");
+        */
     }
 
+    /*
     private void OnInteract()
     {
+        if (interact != null)
+        {
+            interact.Interact();
+            Debug.Log("Interact");
+        }
+
+        
         if(!interactMode.Value)
         {
             // interactCanvas.SetActive(true);
-            interactObject.Interact();
+            interact.Interact();
         }     
         interactMode.Value = true;
-
+        
     }
 
     private void OnInteractCancel()
@@ -269,6 +280,7 @@ public class PlayerController : MonoBehaviour
             // interactCanvas.SetActive(false);
             interactMode.Value = false;
         }      
-        interactObject.InteractCancel();
+        interact.InteractCancel();
     }
+    */
 }

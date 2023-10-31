@@ -21,13 +21,19 @@ public class ScreenObject : InteractCore
         StartCoroutine(ScreenZoomIn());
     }
 
+    public override void InteractCancel()
+    {
+        base.InteractCancel();
+        StartCoroutine(ScreenZoomOut());
+    }
+
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {
         mainVitureCamera.SetActive(false);
         mainVitureCamera2.SetActive(false);
         screenCamera.SetActive(true);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
 
         ScreenOn();
 
@@ -35,13 +41,15 @@ public class ScreenObject : InteractCore
     }
     public IEnumerator ScreenZoomOut() // 본래 카메라로 변경
     {
-        Debug.Log("out");
+        // Debug.Log("out");
+        ScreenOff();
         mainVitureCamera.SetActive(true);
         screenCamera.SetActive(false);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
 
-        ScreenOff();
+        mainVitureCamera.SetActive(true);
+        screenCamera.SetActive(false);
 
         yield break;
     }
