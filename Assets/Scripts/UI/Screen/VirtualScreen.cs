@@ -11,6 +11,8 @@ public class VirtualScreen : GraphicRaycaster
     [Tooltip("2D 화면의 UI 캔버스")]
     [SerializeField] GraphicRaycaster screenCaster;
 
+    [HideInInspector] public Vector3 eventdataPos;
+
 
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
     {
@@ -26,8 +28,10 @@ public class VirtualScreen : GraphicRaycaster
                 virtualPos.y *= screenCamera.targetTexture.height;
 
                 eventData.position = virtualPos;
+                eventdataPos = virtualPos;
 
                 screenCaster.Raycast(eventData, resultAppendList);
+                
             }
         }
     }
