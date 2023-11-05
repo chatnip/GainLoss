@@ -10,7 +10,7 @@ public class WordSpawner : MonoBehaviour
     [SerializeField] WordManager WordManager;
     [SerializeField] bool isTODO;
     [SerializeField] RectTransform scrollViewContent;
-    List<Word> enableWordList = new List<Word>();
+    [HideInInspector] public List<Word> enableWordList = new List<Word>(); 
 
     private void OnEnable()
     {
@@ -29,6 +29,8 @@ public class WordSpawner : MonoBehaviour
             word.gameObject.SetActive(true);
         }
     }
+
+    
 
     public void PickWord()
     {   

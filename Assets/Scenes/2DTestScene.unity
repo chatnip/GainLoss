@@ -958,6 +958,7 @@ MonoBehaviour:
   WordManager: {fileID: 1775436664}
   isTODO: 1
   scrollViewContent: {fileID: 1322253632}
+  enableWordList: []
 --- !u!1 &74204846
 GameObject:
   m_ObjectHideFlags: 0
@@ -3674,7 +3675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &404626697
 Camera:
   m_ObjectHideFlags: 0
@@ -4231,7 +4232,7 @@ GameObject:
   - component: {fileID: 476333811}
   - component: {fileID: 476333810}
   m_Layer: 5
-  m_Name: ToDoBtn
+  m_Name: TodoBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9395,12 +9396,12 @@ GameObject:
   - component: {fileID: 1197405039}
   - component: {fileID: 1197405038}
   m_Layer: 5
-  m_Name: ToDoWindow
+  m_Name: TodoWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1197405037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16015,6 +16016,7 @@ MonoBehaviour:
   WordManager: {fileID: 1775436664}
   isTODO: 0
   scrollViewContent: {fileID: 752934235}
+  enableWordList: []
 --- !u!1 &2091703451
 GameObject:
   m_ObjectHideFlags: 0
