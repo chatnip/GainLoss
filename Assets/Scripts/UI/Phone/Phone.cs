@@ -7,8 +7,10 @@ using UniRx;
 public class Phone : MonoBehaviour
 {
     [SerializeField] Button lockScreen;
-    [SerializeField] Button todoBtn;
+    [SerializeField] Button calenderBtn;
     [SerializeField] GameObject calender;
+    [SerializeField] Button wordpadBtn;
+    [SerializeField] GameObject wordpad;
     [SerializeField] Button backBtn;
 
     private void Awake()
@@ -20,18 +22,27 @@ public class Phone : MonoBehaviour
                 lockScreen.gameObject.SetActive(false);
             });
 
-        todoBtn
+        calenderBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
                 calender.SetActive(true);
             });
 
+        wordpadBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                wordpad.SetActive(true);
+            });
+        
         backBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
                 calender.SetActive(false);
+                wordpad.SetActive(false);
             });
+        
     }
 }

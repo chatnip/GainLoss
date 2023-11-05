@@ -10,6 +10,7 @@ public class WordJson : MonoBehaviour
 {
     string path;
     public List<WordBase> myWords = new List<WordBase>();
+    [SerializeField] WordManager WordManager;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class WordJson : MonoBehaviour
         WordList wordList = new WordList();
         string loadJson = File.ReadAllText(path);
         wordList = JsonUtility.FromJson<WordList>(loadJson);
-        myWords = wordList.words;
+        WordManager.currentWordList = wordList.words;
 
     }
 

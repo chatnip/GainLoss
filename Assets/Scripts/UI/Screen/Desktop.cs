@@ -55,12 +55,17 @@ public class Desktop : MonoBehaviour
                 streamPopup.SetActive(false);
             });
 
-        /*
+        
         todoOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-
+                todoWindow.SetActive(true);
             });
-        */
+
+        todoExitBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                todoWindow.SetActive(false);
+            });
     }
 }

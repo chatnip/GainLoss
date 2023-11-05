@@ -162,7 +162,7 @@ public class InteractedObject : MonoBehaviour
                 Debug.Log("laycastname" + hit.transform.name);
                 string name = interactObjectBase.InteractObjectName;
                 // WordManager.wordList.Add(name);
-                WordManager.wordText.text = name;
+                // WordManager.wordText.text = name;
             }        
         }
 
