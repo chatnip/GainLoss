@@ -8,10 +8,10 @@ public class WordAction : MonoBehaviour
 {
     [SerializeField] public Button wordActionBtn;
     [SerializeField] TMP_Text wordActionText;
-    public WordBase wordBase;
+    public string wordActionName;
 
     private void OnEnable()
     {
-        wordActionText.text = wordBase.wordName;
+        wordActionText.text = wordActionName;
     }
 }

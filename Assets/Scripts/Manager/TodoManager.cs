@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
-public class TodoAction : MonoBehaviour
+public class TodoManager : MonoBehaviour
 {
+    [SerializeField] GameManager GameManager;
     [SerializeField] WordSpawner WordSpawner;
     List<Button> wordBtns = new List<Button>();
     WordBase currentWord = new WordBase();
+    WordData tempWordData;
 
     private void Start()
     {
@@ -43,6 +45,20 @@ public class TodoAction : MonoBehaviour
     }
 
     // 이 아래에다가 단어 선택시 행동 선택지 생성되는 함수 만들기
+    private void SpawnWordAction()
+    {
+        foreach (WordData data in GameManager.wordDatas)
+        {
+            if(currentWord.wordName == data.wordName)
+            {
+                tempWordData = data;
+            }
+        }
+        
+        foreach(WordActionData actionData in tempWordData.wordActionDatas)
+        {
 
+        }
+    }
 
 }

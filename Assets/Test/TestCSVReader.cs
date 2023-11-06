@@ -56,8 +56,6 @@ public class TestCSVReader : MonoBehaviour
     private void Start()
     {
         TestWord[] test = Parse("TestCVSFile");
-        Debug.Log("1번 이름 : " + test[0].wordName + "1번의 1번째 액션네임 : " + test[0].testWordActions[0].wordActionName);
-        Debug.Log("2번 이름 : " + test[1].wordName + "2번의 3번째 액션네임 : " + test[1].testWordActions[2].wordActionName);
     }
 }
 

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // 디버깅용 보여주기 나중에 hideInspactor
+    [SerializeField] public WordData[] wordDatas;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        wordDatas = WordCSVReader.Parse("TestCVSFile2");
     }
 }

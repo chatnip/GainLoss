@@ -26,43 +26,33 @@ public class WordJson : MonoBehaviour
 
     }
 
+    /*
     private void JsonSaveTest()
     {
         WordList wordList = new WordList();
 
         WordBase word1 = new WordBase
         {
-            wordName = "test1",
-            wordPlace = 1,
-            writeTroll = true,
-            sendMail = false,
-            sendPackage = false
+            wordName = "test1"
         };
         wordList.words.Add(word1);
 
         WordBase word2 = new WordBase
         {
-            wordName = "test2",
-            wordPlace = 1,
-            writeTroll = true,
-            sendMail = true,
-            sendPackage = false
+            wordName = "test2"
         };
         wordList.words.Add(word2);
 
         WordBase word3 = new WordBase
         {
-            wordName = "test3",
-            wordPlace = 1,
-            writeTroll = true,
-            sendMail = true,
-            sendPackage = true
+            wordName = "test3"
         };
         wordList.words.Add(word3);
 
         string json = JsonUtility.ToJson(wordList, true);
         File.WriteAllText(path, json);
     }
+    */
 }
 
 [Serializable]
@@ -76,10 +66,7 @@ public class WordList
 [Serializable]
 public class WordBase
 {
+    public int wordID;
     public string wordName;
-    public int wordPlace;
-    public bool writeTroll;
-    public bool sendMail;
-    public bool sendPackage;
 }
 
