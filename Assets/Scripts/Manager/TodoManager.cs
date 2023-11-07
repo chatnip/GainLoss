@@ -6,11 +6,20 @@ using UniRx;
 
 public class TodoManager : MonoBehaviour
 {
+    [Header("*Property")]
     [SerializeField] GameManager GameManager;
-    [SerializeField] WordSpawner WordSpawner;
-    List<Button> wordBtns = new List<Button>();
-    WordBase currentWord = new WordBase();
-    WordData tempWordData;
+    [SerializeField] WordBtnSpawner WordBtnSpawner;
+
+    // 행동 선택 버튼
+    List<Button> wordBtns = new();
+    List<Button> wordActionBtns = new();
+
+    // 선택한 단어의 이름
+    string currentWordName;
+
+    // 선택한 단어의 액션 목록
+    public List<WordActionData> currentWordActionData = new();
+
 
     private void Start()
     {
@@ -21,9 +30,10 @@ public class TodoManager : MonoBehaviour
                 .Select(buttonNum => wordBtn.transform.GetSiblingIndex())
                 .Subscribe(buttonNum =>
                 {
-                    if(WordSpawner.enableWordList.Count != 0)
+                    if(WordBtnSpawner.enableWordBtnList.Count != 0)
                     {
-                        currentWord = WordSpawner.enableWordList[buttonNum].wordBase;
+                        currentWordName = WordBtnSpawner.enableWordBtnList[buttonNum].wordBtnTextStr;
+                        currentWordActionData = FindWordActions(FindWord());
                     }
                 });
         }
@@ -38,27 +48,36 @@ public class TodoManager : MonoBehaviour
     {
         wordBtns.Clear();
 
-        for(int i = 0; i < WordSpawner.enableWordList.Count; i++)
+        for(int i = 0; i < WordBtnSpawner.enableWordBtnList.Count; i++)
         {
-            wordBtns.Add(WordSpawner.enableWordList[i].wordBtn);
+            wordBtns.Add(WordBtnSpawner.enableWordBtnList[i].button);
         }
     }
 
     // 이 아래에다가 단어 선택시 행동 선택지 생성되는 함수 만들기
-    private void SpawnWordAction()
+    private WordData FindWord()
     {
         foreach (WordData data in GameManager.wordDatas)
         {
-            if(currentWord.wordName == data.wordName)
+            if(currentWordName == data.wordName)
             {
-                tempWordData = data;
+                return data;
             }
         }
-        
-        foreach(WordActionData actionData in tempWordData.wordActionDatas)
-        {
+        return null;
+    }
 
+    private List<WordActionData> FindWordActions(WordData wordData)
+    {
+        List<WordActionData> datas = new();
+        foreach (WordActionData data in wordData.wordActionDatas)
+        {
+            if (data.wordActionBool == true)
+            {
+                datas.Add(data);
+            }
         }
+        return datas;
     }
 
 }

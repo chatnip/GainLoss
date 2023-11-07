@@ -6,8 +6,8 @@ public class ObjectPooling : MonoBehaviour
 {
     [SerializeField] List<InteractedObject> InteractedObjectPrefabs = new List<InteractedObject>();
     [SerializeField] Queue<InteractedObject> InteractedObjectesQueue = new Queue<InteractedObject>();
-    [SerializeField] List<Word> WordObjectPrefabs = new List<Word>();
-    [SerializeField] Queue<Word> WordObjectesQueue = new Queue<Word>();
+    [SerializeField] List<WordBtn> WordBtnObjectPrefabs = new List<WordBtn>();
+    [SerializeField] Queue<WordBtn> WordBtnObjectesQueue = new Queue<WordBtn>();
 
     private void Awake()
     {
@@ -21,10 +21,10 @@ public class ObjectPooling : MonoBehaviour
             InteractedObjectesQueue.Enqueue(InteractedObjectPrefabs[i]);
             InteractedObjectPrefabs[i].gameObject.SetActive(false);
         }
-        for (int i = 0; i < WordObjectPrefabs.Count; i++)
+        for (int i = 0; i < WordBtnObjectPrefabs.Count; i++)
         {
-            WordObjectesQueue.Enqueue(WordObjectPrefabs[i]);
-            WordObjectPrefabs[i].gameObject.SetActive(false);
+            WordBtnObjectesQueue.Enqueue(WordBtnObjectPrefabs[i]);
+            WordBtnObjectPrefabs[i].gameObject.SetActive(false);
         }
     }
 
@@ -39,14 +39,14 @@ public class ObjectPooling : MonoBehaviour
         interactedObject.gameObject.SetActive(false);
     }
 
-    public Word WordObjectPool()
+    public WordBtn WordBtnObjectPool()
     {
-        var wordObject = WordObjectesQueue.Dequeue();
-        return wordObject;
+        var wordBtnObject = WordBtnObjectesQueue.Dequeue();
+        return wordBtnObject;
     }
-    public void ObjectPick(Word wordObject)
+    public void ObjectPick(WordBtn wordBtnObject)
     {
-        WordObjectesQueue.Enqueue(wordObject);
-        wordObject.gameObject.SetActive(false);
+        WordBtnObjectesQueue.Enqueue(wordBtnObject);
+        wordBtnObject.gameObject.SetActive(false);
     }
 }
