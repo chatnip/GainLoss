@@ -6,6 +6,7 @@ using UniRx;
 
 public class TodoManager : MonoBehaviour
 {
+    /*
     [Header("*Property")]
     [SerializeField] GameManager GameManager;
     [SerializeField] WordBtnSpawner WordBtnSpawner;
@@ -79,5 +80,6 @@ public class TodoManager : MonoBehaviour
         }
         return datas;
     }
+    */
 
 }

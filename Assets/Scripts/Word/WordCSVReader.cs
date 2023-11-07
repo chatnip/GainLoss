@@ -28,11 +28,12 @@ public static class WordCSVReader
                 WordActionData action = new()
                 {
                     wordActionName = row[4],
-                    wordActionBool = bool.Parse(row[5]),
-                    stressGage = int.Parse(row[6]),
-                    angerGage = int.Parse(row[7]),
-                    riskGage = int.Parse(row[8]),
-                    streamEventID = int.Parse(row[9])
+                    actionSentence = row[5],
+                    wordActionBool = bool.Parse(row[6]),
+                    stressGage = int.Parse(row[7]),
+                    angerGage = int.Parse(row[8]),
+                    riskGage = int.Parse(row[9]),
+                    streamEventID = int.Parse(row[10])
                 };
 
                 wordActionList.Add(action);
@@ -69,6 +70,7 @@ public class WordData
 public class WordActionData
 {
     public string wordActionName;
+    public string actionSentence;
     public bool wordActionBool;
     public int stressGage;
     public int angerGage;

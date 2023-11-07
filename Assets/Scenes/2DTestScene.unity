@@ -844,7 +844,6 @@ GameObject:
   - component: {fileID: 72508852}
   - component: {fileID: 72508851}
   - component: {fileID: 72508850}
-  - component: {fileID: 72508853}
   m_Layer: 5
   m_Name: WordView
   m_TagString: Untagged
@@ -941,24 +940,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72508848}
   m_CullTransparentMesh: 1
---- !u!114 &72508853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72508848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a23a46f8189c04bb8dd0579c180791, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectPooling: {fileID: 268666656}
-  wordPool: {fileID: 596105523}
-  WordManager: {fileID: 1775436664}
-  isTODO: 1
-  scrollViewContent: {fileID: 1322253632}
-  enableWordList: []
 --- !u!1 &74204846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,7 +1667,7 @@ GameObject:
   - component: {fileID: 172782287}
   - component: {fileID: 172782286}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: ViewWordAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1758,8 +1739,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2283,7 +2264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractedObjectPrefabs: []
-  WordObjectPrefabs:
+  WordBtnObjectPrefabs:
   - {fileID: 99374340}
   - {fileID: 946973986}
   - {fileID: 1843381465}
@@ -3797,7 +3778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &404626697
 Camera:
   m_ObjectHideFlags: 0
@@ -5244,14 +5225,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6812,14 +6785,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7583,14 +7548,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9517,13 +9474,14 @@ GameObject:
   - component: {fileID: 1197405037}
   - component: {fileID: 1197405039}
   - component: {fileID: 1197405038}
+  - component: {fileID: 1197405040}
   m_Layer: 5
   m_Name: TodoWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1197405037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9587,6 +9545,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197405036}
   m_CullTransparentMesh: 1
+--- !u!114 &1197405040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197405036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a23a46f8189c04bb8dd0579c180791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectPooling: {fileID: 268666656}
+  WordManager: {fileID: 1775436664}
+  wordPool: {fileID: 596105523}
+  scrollViewContent: {fileID: 1322253632}
+  scrollViewContent_action: {fileID: 1869104371}
+  wordBtnType: 1
+  enableWordBtnList: []
+  enableWordActionBtnList: []
 --- !u!1 &1206525411
 GameObject:
   m_ObjectHideFlags: 0
@@ -10210,14 +10188,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10350,14 +10320,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10455,14 +10417,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13115,8 +13069,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e693d60efd231840af7acfb6752e755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManager: {fileID: 1799882741}
   ObjectPooling: {fileID: 268666656}
+  todoWordBtnSpawner: {fileID: 1197405040}
   currentWordList: []
+  viewWordAction: {fileID: 172782286}
+  wordBtns: []
+  wordActionBtns: []
+  button: {fileID: 303795727}
+  currentWordActionDataList: []
+  currentWordActionData:
+    wordActionName: 
+    actionSentence: 
+    wordActionBool: 0
+    stressGage: 0
+    angerGage: 0
+    riskGage: 0
+    streamEventID: 0
 --- !u!4 &1775436665
 Transform:
   m_ObjectHideFlags: 0
@@ -13156,14 +13125,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -13620,14 +13581,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 596105523}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -15104,14 +15057,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -15284,14 +15229,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -16314,11 +16251,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectPooling: {fileID: 268666656}
-  wordPool: {fileID: 596105523}
   WordManager: {fileID: 1775436664}
-  isTODO: 0
+  wordPool: {fileID: 596105523}
   scrollViewContent: {fileID: 752934235}
-  enableWordList: []
+  scrollViewContent_action: {fileID: 0}
+  wordBtnType: 0
+  enableWordBtnList: []
+  enableWordActionBtnList: []
 --- !u!1 &2091703451
 GameObject:
   m_ObjectHideFlags: 0
@@ -16548,14 +16487,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596105523}
     m_Modifications:
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: wordPool
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1573907315349105673, guid: 02155a48bf139794ab958ef47b155786, type: 3}
-      propertyPath: ObjectPooling
-      value: 
-      objectReference: {fileID: 268666656}
     - target: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

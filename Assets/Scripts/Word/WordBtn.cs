@@ -6,11 +6,12 @@ using TMPro;
 
 public class WordBtn : MonoBehaviour
 {
-    [Tooltip("컴퓨터 창에 사용하는 버튼일 경우 true / 핸드폰 단어장 버튼일 경우 false")]
-    public bool isTODO;
+
     [SerializeField] public Button button;
     [SerializeField] TMP_Text text;
     [SerializeField] RectTransform rect;
+
+    public bool isButton;
     public string wordBtnTextStr;
 
     private void OnEnable()
@@ -22,7 +23,7 @@ public class WordBtn : MonoBehaviour
     {
         rect.localPosition = Vector3.zero;
         rect.localScale = Vector3.one;
-        button.enabled = isTODO;
+        button.enabled = isButton;
         text.text = wordBtnTextStr;
     }
 }
