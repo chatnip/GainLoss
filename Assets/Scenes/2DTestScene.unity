@@ -1667,7 +1667,7 @@ GameObject:
   - component: {fileID: 172782287}
   - component: {fileID: 172782286}
   m_Layer: 5
-  m_Name: ViewWordAction
+  m_Name: InViewWordAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2646,7 +2646,7 @@ GameObject:
   - component: {fileID: 303795728}
   - component: {fileID: 303795727}
   m_Layer: 5
-  m_Name: Button
+  m_Name: DoNotingBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3778,7 +3778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &404626697
 Camera:
   m_ObjectHideFlags: 0
@@ -11450,7 +11450,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESET
+  m_text: "\uC544\uBB34\uAC83\uB3C4 \uD558\uC9C0 \uC54A\uB294\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
   m_sharedMaterial: {fileID: 4555158195946992440, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
@@ -12597,7 +12597,7 @@ GameObject:
   - component: {fileID: 1752316792}
   - component: {fileID: 1752316791}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: OutViewWordAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13072,20 +13072,11 @@ MonoBehaviour:
   GameManager: {fileID: 1799882741}
   ObjectPooling: {fileID: 268666656}
   todoWordBtnSpawner: {fileID: 1197405040}
+  inViewWordAction: {fileID: 172782286}
+  outViewWordAction: {fileID: 1752316791}
+  doNotingBtn: {fileID: 303795727}
   currentWordList: []
-  viewWordAction: {fileID: 172782286}
-  wordBtns: []
-  wordActionBtns: []
-  button: {fileID: 303795727}
   currentWordActionDataList: []
-  currentWordActionData:
-    wordActionName: 
-    actionSentence: 
-    wordActionBool: 0
-    stressGage: 0
-    angerGage: 0
-    riskGage: 0
-    streamEventID: 0
 --- !u!4 &1775436665
 Transform:
   m_ObjectHideFlags: 0
@@ -13457,6 +13448,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wordDatas: []
+  stressGage: 50
+  angerGage: 50
+  riskGage: 50
 --- !u!1 &1800983492
 GameObject:
   m_ObjectHideFlags: 0

@@ -68,5 +68,6 @@ public class WordBase
 {
     public int wordID;
     public string wordName;
+    public bool isUsed;
 }
 

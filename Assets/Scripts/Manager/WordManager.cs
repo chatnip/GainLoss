@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
+using NaughtyAttributes;
 
 public class WordManager : Manager<WordManager>
 {
@@ -12,22 +13,46 @@ public class WordManager : Manager<WordManager>
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] WordBtnSpawner todoWordBtnSpawner;
 
-    [Header("*Word")]
-    public List<WordBase> currentWordList = new List<WordBase>();
-    [SerializeField] TMP_Text viewWordAction;
+    [Header("*View")]
+    [SerializeField] TMP_Text inViewWordAction;
+    [SerializeField] TMP_Text outViewWordAction;
+    [SerializeField] Button doNotingBtn;
+    StringReactiveProperty currentWordActiionText = new StringReactiveProperty();
+
 
     // 행동 선택 버튼
-    public List<Button> wordBtns = new();
-    public List<Button> wordActionBtns = new();
+    List<Button> wordBtns = new();
+    List<Button> wordActionBtns = new();
 
-    public Button button;
+    // 선택한 단어 및 단어의 액션 목록
+    [HideInInspector] public List<WordBase> currentWordList = new List<WordBase>();
+    [HideInInspector] public List<WordActionData> currentWordActionDataList = new();
 
-    // 선택한 단어의 이름
+    // 선택한 단어 및 단어의 액션
     string currentWordName;
+    WordActionData currentWordActionData;
 
-    // 선택한 단어의 액션 목록
-    public List<WordActionData> currentWordActionDataList = new();
-    public WordActionData currentWordActionData;
+    private void Start()
+    {
+        currentWordActiionText
+            .Subscribe(x =>
+            {
+                inViewWordAction.text = x;
+                outViewWordAction.text = x;
+            });
+
+        doNotingBtn
+            .OnClickAsObservable()
+            .Subscribe(x =>
+            {
+                currentWordName = null;
+                currentWordActionData = null;
+                inViewWordAction.text = "아무것도 하지 않는다";
+                outViewWordAction.text = "아무것도 하지 않는다";
+            });
+    }
+
+    // 나중에 하루가 재시작되면 아직 정해지지 않았다... 뜨게 하기
 
     public void WordBtnListSet()
     {
@@ -38,10 +63,8 @@ public class WordManager : Manager<WordManager>
                 .Select(buttonNum => wordBtn.transform.GetSiblingIndex())
                 .Subscribe(buttonNum =>
                 {
-                    Debug.Log("Click!");
                     if (todoWordBtnSpawner.enableWordBtnList.Count != 0)
                     {
-                        Debug.Log("Click!!");
                         currentWordName = todoWordBtnSpawner.enableWordBtnList[buttonNum].wordBtnTextStr;
                         currentWordActionDataList = FindWordActions(FindWord());
                         todoWordBtnSpawner.SpawnWordActionBtn();
@@ -63,12 +86,14 @@ public class WordManager : Manager<WordManager>
                     if (todoWordBtnSpawner.enableWordActionBtnList.Count != 0)
                     {
                         currentWordActionData = currentWordActionDataList[buttonNum];
-                        viewWordAction.text = currentWordActionData.actionSentence;
+                        currentWordActiionText.Value = currentWordActionData.actionSentence;
+                        Debug.Log("상승하는 스트레스 게이지 값 : " + currentWordActionData.stressGage);
+                        Debug.Log("상승하는 분노 게이지 값 : " + currentWordActionData.angerGage);
+                        Debug.Log("상승하는 스트레스 게이지 값 : " + currentWordActionData.riskGage);
                     }
                 });
         }
     }
-
 
     public void GetWordButtonList()
     {
@@ -94,7 +119,6 @@ public class WordManager : Manager<WordManager>
         WordActionBtnListSet();
     }
 
-    // 이 아래에다가 단어 선택시 행동 선택지 생성되는 함수 만들기
     private WordData FindWord()
     {
         foreach (WordData data in GameManager.wordDatas)
