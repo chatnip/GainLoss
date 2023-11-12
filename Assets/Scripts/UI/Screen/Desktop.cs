@@ -17,7 +17,7 @@ public class Desktop : MonoBehaviour
     [SerializeField] GameObject fancafeWindow;
 
     [Header("*Stream")]
-    [SerializeField] Button streamOpenBtn;
+    [SerializeField] public Button streamOpenBtn;
     [SerializeField] Button streamPopupExitBtn;
     [SerializeField] Button streamConfirmBtn;
     [SerializeField] GameObject streamPopup;

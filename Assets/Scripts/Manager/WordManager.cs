@@ -11,13 +11,15 @@ public class WordManager : Manager<WordManager>
     [Header("*Property")]
     [SerializeField] GameManager GameManager;
     [SerializeField] ObjectPooling ObjectPooling;
-    [SerializeField] WordBtnSpawner todoWordBtnSpawner;
 
+    [Space(10)]
+    [SerializeField] WordBtnSpawner todoWordBtnSpawner;
+     
     [Header("*View")]
     [SerializeField] TMP_Text inViewWordAction;
     [SerializeField] TMP_Text outViewWordAction;
     [SerializeField] Button doNotingBtn;
-    StringReactiveProperty currentWordActiionText = new StringReactiveProperty();
+    StringReactiveProperty currentWordActiionStr = new();
 
 
     // 행동 선택 버튼
@@ -25,16 +27,16 @@ public class WordManager : Manager<WordManager>
     List<Button> wordActionBtns = new();
 
     // 선택한 단어 및 단어의 액션 목록
-    [HideInInspector] public List<WordBase> currentWordList = new List<WordBase>();
+    [HideInInspector] public List<WordBase> currentWordList = new();
     [HideInInspector] public List<WordActionData> currentWordActionDataList = new();
 
     // 선택한 단어 및 단어의 액션
     string currentWordName;
-    WordActionData currentWordActionData;
+    WordActionData currentWordActionData = new();
 
     private void Start()
     {
-        currentWordActiionText
+        currentWordActiionStr
             .Subscribe(x =>
             {
                 inViewWordAction.text = x;
@@ -47,6 +49,7 @@ public class WordManager : Manager<WordManager>
             {
                 currentWordName = null;
                 currentWordActionData = null;
+                todoWordBtnSpawner.PickWordAction();
                 inViewWordAction.text = "아무것도 하지 않는다";
                 outViewWordAction.text = "아무것도 하지 않는다";
             });
@@ -86,10 +89,7 @@ public class WordManager : Manager<WordManager>
                     if (todoWordBtnSpawner.enableWordActionBtnList.Count != 0)
                     {
                         currentWordActionData = currentWordActionDataList[buttonNum];
-                        currentWordActiionText.Value = currentWordActionData.actionSentence;
-                        Debug.Log("상승하는 스트레스 게이지 값 : " + currentWordActionData.stressGage);
-                        Debug.Log("상승하는 분노 게이지 값 : " + currentWordActionData.angerGage);
-                        Debug.Log("상승하는 스트레스 게이지 값 : " + currentWordActionData.riskGage);
+                        currentWordActiionStr.Value = currentWordActionData.actionSentence;
                     }
                 });
         }
