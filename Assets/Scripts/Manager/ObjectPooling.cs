@@ -8,6 +8,7 @@ public class ObjectPooling : MonoBehaviour
     [SerializeField] Queue<InteractedObject> InteractedObjectesQueue = new Queue<InteractedObject>();
     [SerializeField] List<WordBtn> WordBtnObjectPrefabs = new List<WordBtn>();
     [SerializeField] Queue<WordBtn> WordBtnObjectesQueue = new Queue<WordBtn>();
+    [SerializeField] RectTransform wordPool;
 
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class ObjectPooling : MonoBehaviour
     public void ObjectPick(WordBtn wordBtnObject)
     {
         WordBtnObjectesQueue.Enqueue(wordBtnObject);
+        wordBtnObject.transform.SetParent(wordPool);
         wordBtnObject.gameObject.SetActive(false);
     }
 }

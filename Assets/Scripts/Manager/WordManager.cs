@@ -13,7 +13,7 @@ public class WordManager : Manager<WordManager>
     [SerializeField] ObjectPooling ObjectPooling;
 
     [Space(10)]
-    [SerializeField] WordBtnSpawner todoWordBtnSpawner;
+    [SerializeField] TodoSpawner todoWordBtnSpawner;
      
     [Header("*View")]
     [SerializeField] TMP_Text inViewWordAction;
@@ -22,16 +22,16 @@ public class WordManager : Manager<WordManager>
     StringReactiveProperty currentWordActiionStr = new();
 
 
-    // 행동 선택 버튼
-    List<Button> wordBtns = new();
-    List<Button> wordActionBtns = new();
+    // 켜진 단어 및 단어의 액션 버튼 목록
+    public List<WordBtn> enableWordBtnList = new List<WordBtn>();
+    public List<WordBtn> enableWordActionBtnList = new List<WordBtn>();
 
     // 선택한 단어 및 단어의 액션 목록
     [HideInInspector] public List<WordBase> currentWordList = new();
     [HideInInspector] public List<WordActionData> currentWordActionDataList = new();
 
     // 선택한 단어 및 단어의 액션
-    string currentWordName;
+    public string currentWordName;
     WordActionData currentWordActionData = new();
 
     private void Start()
@@ -59,19 +59,19 @@ public class WordManager : Manager<WordManager>
 
     public void WordBtnListSet()
     {
-        foreach (Button wordBtn in wordBtns)
+        foreach (WordBtn wordBtn in enableWordBtnList)
         {
-            wordBtn
+            wordBtn.button
                 .OnClickAsObservable()
                 .Select(buttonNum => wordBtn.transform.GetSiblingIndex())
                 .Subscribe(buttonNum =>
                 {
-                    if (todoWordBtnSpawner.enableWordBtnList.Count != 0)
+                    if (enableWordBtnList.Count != 0)
                     {
-                        currentWordName = todoWordBtnSpawner.enableWordBtnList[buttonNum].wordBtnTextStr;
+                        currentWordName = enableWordBtnList[buttonNum].wordBtnTextStr;
                         currentWordActionDataList = FindWordActions(FindWord());
                         todoWordBtnSpawner.SpawnWordActionBtn();
-                        GetActionButtonList();
+                        WordActionBtnListSet();
                     }
                 });
         }
@@ -79,44 +79,20 @@ public class WordManager : Manager<WordManager>
 
     public void WordActionBtnListSet()
     {
-        foreach (Button wordActionBtn in wordActionBtns)
+        foreach (WordBtn wordActionBtn in enableWordActionBtnList)
         {
-            wordActionBtn
+            wordActionBtn.button
                 .OnClickAsObservable()
                 .Select(buttonNum => wordActionBtn.transform.GetSiblingIndex())
                 .Subscribe(buttonNum =>
                 {
-                    if (todoWordBtnSpawner.enableWordActionBtnList.Count != 0)
+                    if (enableWordActionBtnList.Count != 0)
                     {
                         currentWordActionData = currentWordActionDataList[buttonNum];
                         currentWordActiionStr.Value = currentWordActionData.actionSentence;
                     }
                 });
         }
-    }
-
-    public void GetWordButtonList()
-    {
-        wordBtns.Clear();
-
-        for (int i = 0; i < todoWordBtnSpawner.enableWordBtnList.Count; i++)
-        {
-            wordBtns.Add(todoWordBtnSpawner.enableWordBtnList[i].button);
-        }
-
-        WordBtnListSet();
-    }
-
-    public void GetActionButtonList()
-    {
-        wordActionBtns.Clear();
-
-        for (int i = 0; i < todoWordBtnSpawner.enableWordActionBtnList.Count; i++)
-        {
-            wordActionBtns.Add(todoWordBtnSpawner.enableWordActionBtnList[i].button);
-        }
-
-        WordActionBtnListSet();
     }
 
     private WordData FindWord()

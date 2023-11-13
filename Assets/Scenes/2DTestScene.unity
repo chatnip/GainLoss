@@ -2276,6 +2276,7 @@ MonoBehaviour:
   - {fileID: 1226775085}
   - {fileID: 2072816205}
   - {fileID: 1903847799}
+  wordPool: {fileID: 596105523}
 --- !u!4 &268666657
 Transform:
   m_ObjectHideFlags: 0
@@ -9554,17 +9555,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1197405036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a23a46f8189c04bb8dd0579c180791, type: 3}
+  m_Script: {fileID: 11500000, guid: 6843d666cd31d5c46976469a97fc1bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectPooling: {fileID: 268666656}
   WordManager: {fileID: 1775436664}
-  wordPool: {fileID: 596105523}
-  scrollViewContent: {fileID: 1322253632}
-  scrollViewContent_action: {fileID: 1869104371}
-  wordBtnType: 1
-  enableWordBtnList: []
-  enableWordActionBtnList: []
+  wordParentObject: {fileID: 1322253632}
+  wordActionParentObject: {fileID: 1869104371}
 --- !u!1 &1206525411
 GameObject:
   m_ObjectHideFlags: 0
@@ -13075,6 +13072,8 @@ MonoBehaviour:
   inViewWordAction: {fileID: 172782286}
   outViewWordAction: {fileID: 1752316791}
   doNotingBtn: {fileID: 303795727}
+  enableWordBtnList: []
+  enableWordActionBtnList: []
   currentWordList: []
   currentWordActionDataList: []
 --- !u!4 &1775436665
@@ -16241,17 +16240,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2073955926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a23a46f8189c04bb8dd0579c180791, type: 3}
+  m_Script: {fileID: 11500000, guid: b0449a6b7b83d7345bc6da45837b8a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectPooling: {fileID: 268666656}
-  WordManager: {fileID: 1775436664}
-  wordPool: {fileID: 596105523}
-  scrollViewContent: {fileID: 752934235}
-  scrollViewContent_action: {fileID: 0}
-  wordBtnType: 0
-  enableWordBtnList: []
-  enableWordActionBtnList: []
+  ObjectPooling: {fileID: 0}
+  WordManager: {fileID: 0}
+  wordParentObject: {fileID: 0}
 --- !u!1 &2091703451
 GameObject:
   m_ObjectHideFlags: 0
