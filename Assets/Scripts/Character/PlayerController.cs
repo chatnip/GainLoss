@@ -78,47 +78,10 @@ public class PlayerController : MonoBehaviour
             return _input._input.currentControlScheme == "KeyboardMouse";
         }
     }
-
-    // Event Mode
-    // [Tooltip("상호작용 가능한지 여부")]
-    // private BoolReactiveProperty interactableMode = new BoolReactiveProperty();
-
-    // [Tooltip("상호작용중인지 여부")]
-    // private BoolReactiveProperty interactMode = new BoolReactiveProperty();
-
-    // private IInteract interact;
     #endregion
 
     private void Awake()
     {
-        /*
-        interactableMode
-            .Subscribe(x =>
-            {
-                if(x)
-                {
-                    // EnableInteractInput();
-                }
-                else
-                {
-                    // DisableInteractInput();
-                }
-            });
-        
-        
-        interactMode
-            .Subscribe(x =>
-            {
-                if (x)
-                {
-                    _input.DisablePlayerInput();
-                }
-                else
-                {
-                    _input.EnablePlayerInput();
-                }
-            });
-        */
     }
 
     private void Start()
@@ -228,15 +191,6 @@ public class PlayerController : MonoBehaviour
         {
             PlayerInputController.Instance.SetInteract(interactContianer);
         }
-
-        /*
-        if (other.CompareTag("InteractableObject"))
-        {
-            interactableMode.Value = true;
-            other.TryGetComponent(out interact);
-            Debug.Log("닿음");
-        }
-        */
     }
 
     private void OnTriggerExit(Collider other)
@@ -246,41 +200,5 @@ public class PlayerController : MonoBehaviour
         {
             PlayerInputController.Instance.SetInteract(null);
         }
-
-        /*
-        interactableMode.Value = false;
-        interact = null;
-        Debug.Log("떨어짐");
-        */
     }
-
-    /*
-    private void OnInteract()
-    {
-        if (interact != null)
-        {
-            interact.Interact();
-            Debug.Log("Interact");
-        }
-
-        
-        if(!interactMode.Value)
-        {
-            // interactCanvas.SetActive(true);
-            interact.Interact();
-        }     
-        interactMode.Value = true;
-        
-    }
-
-    private void OnInteractCancel()
-    {
-        if (interactMode.Value)
-        {
-            // interactCanvas.SetActive(false);
-            interactMode.Value = false;
-        }      
-        interact.InteractCancel();
-    }
-    */
 }
