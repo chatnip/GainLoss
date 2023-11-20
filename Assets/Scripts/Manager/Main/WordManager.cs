@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using NaughtyAttributes;
 
+
 public class WordManager : Manager<WordManager>
 {
     [Header("*Property")]
-    [SerializeField] DataManager DataManager;
     [SerializeField] GameManager GameManager;
     [SerializeField] ObjectPooling ObjectPooling;
 
@@ -20,7 +21,7 @@ public class WordManager : Manager<WordManager>
     [Header("*View")]
     [SerializeField] TMP_Text inViewWordAction;
     [SerializeField] TMP_Text outViewWordAction;
-    [SerializeField] Button doNotingBtn;
+    [SerializeField] Button resetBtn;
     StringReactiveProperty currentWordActiionStr = new();
 
     [Header("*Test")]
@@ -38,129 +39,116 @@ public class WordManager : Manager<WordManager>
     [SerializeField] public List<Word> currentWordActionList = new();
 
     // 선택한 단어 및 단어의 액션
-    [HideInInspector] public string currentWordName;
-    // WordAction currentWordActionData = new();
+    [HideInInspector] public Word currentWord;
+    [HideInInspector] public Word currentWordAction;
+    [HideInInspector] public string currentStreamEventID;
 
     private void Start()
     {
+        TodoReset();
         InitWord();
 
         currentWordActiionStr
             .Subscribe(x =>
             {
-                if(x == null)
-                {
-                    inViewWordAction.text = "아직 정해지지 않았다...";
-                    outViewWordAction.text = "아직 정해지지 않았다...";
-                }
-                else
-                {
-                    inViewWordAction.text = x;
-                    outViewWordAction.text = x;
-                }
+                inViewWordAction.text = x;
+                outViewWordAction.text = x;
             });
 
-        doNotingBtn
+        resetBtn
             .OnClickAsObservable()
             .Subscribe(x =>
             {
-                currentWordName = null;
-                // currentWordActionData = null;
-                todoWordBtnSpawner.PickWordAction();
-                inViewWordAction.text = "아무것도 하지 않는다";
-                outViewWordAction.text = "아무것도 하지 않는다";
+                TodoReset();
             });
+    }
+
+    private void TodoReset()
+    {
+        todoWordBtnSpawner.PickWordAction();
+        currentWord = null;
+        currentWordAction = null;
+        currentStreamEventID = null;
+        currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
 
     #region ButtonListSeting
     public void WordBtnListSet()
     {
-        foreach (WordBtn wordBtn in enableWordBtnList) // 버튼 순회
+        foreach (WordBtn wordBtn in enableWordBtnList)
         {
             wordBtn.button
                 .OnClickAsObservable()
-                .Select(id => wordBtn.word.ID)
-                .Subscribe(id =>
+                .Select(word => wordBtn.word)
+                .Subscribe(word =>
                 {
-                    foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
-                    {
-                        if (data.Key.Contains(id)) // 만약 단어 ID가 들어간 스트림 이벤트를 찾으면
-                        {
-                            //string key = data.Key.ToString()
-                            //currentWordActionIDList.Add()
-                            // 스트림 이벤트 리스트로 모으기
-                            //Word word = new(data.Key, (string)DataManager.WordActionDatas[0][id]);
-                        }
-                    }
-                    // currentWordName = enableWordBtnList[buttonNum].wordBtnName;
-                    // currentWordActionDataList = FindWordActions(FindWord());
-                    // todoWordBtnSpawner.SpawnWordActionBtn();
-                    // WordActionBtnListSet();
+                    currentWord = word;
+                    InitWordActionID(currentWord.ID);
+                    todoWordBtnSpawner.SpawnWordActionBtn();
                 });
         }
     }
 
-    /*
     public void WordActionBtnListSet()
     {
         foreach (WordBtn wordActionBtn in enableWordActionBtnList)
         {
             wordActionBtn.button
                 .OnClickAsObservable()
-                .Select(buttonNum => wordActionBtn.transform.GetSiblingIndex())
-                .Subscribe(buttonNum =>
+                .Select(word => wordActionBtn.word)
+                .Subscribe(word =>
                 {
-                    if (enableWordActionBtnList.Count != 0)
-                    {
-                        currentWordActionData = currentWordActionDataList[buttonNum];
-                        //currentWordActiionStr.Value = currentWordActionData.actionSentence;
-                    }
+                    currentWordAction = word;
+                    currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    string text = string.Format("{0}에 대한 {1}을(를) 한다.", currentWord.Name, currentWordAction.Name);
+                    currentWordActiionStr.Value = text;
                 });
         }
     }
-    */
     #endregion
 
-    #region FindData
-
-    private Word FindWord()
-    {
-        foreach (Word data in GameManager.wordDatas)
-        {
-            if (currentWordName == data.Name)
-            {
-                return data;
-            }
-        }
-        return null;
-    }
-
-
-
-    /*
-    private List<WordActionData> FindWordActions(WordData wordData)
-    {
-        List<WordActionData> datas = new();
-        foreach (WordActionData data in wordData.wordActionDatas)
-        {
-            if (data.wordActionBool == true)
-            {
-                datas.Add(data);
-            }
-        }
-        return datas;
-    }
-    */
-    #endregion
-
+    #region Init
+    // JsonLoadTest() == InitWordID()
     public void InitWord()
     {
-        foreach(string id in currentWordIDList)
+        currentWordList.Clear(); // 초기화
+        foreach (string id in currentWordIDList) // ID 순회
         {
             Word word = new(id, (string)DataManager.WordDatas[0][id]);
             currentWordList.Add(word);
         }
+
     }
+
+    private void InitWordActionID(string id)
+    {
+        currentWordActionIDList.Clear(); // 초기화
+        foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
+        {
+            if (data.Key.Contains(id))
+            {
+                string key = Regex.Replace(data.Key.ToString(), id, "");
+                currentWordActionIDList.Add(key);
+            }
+        }
+        InitWordAction();
+    }
+
+    private void InitWordAction()
+    {
+        currentWordActionList.Clear(); // 초기화
+        foreach (string id in currentWordActionIDList) // ID 순회
+        {
+            Word word = new(id, (string)DataManager.WordActionDatas[0][id]);
+            currentWordActionList.Add(word);
+        }
+    }
+
+    private void InitStreamEventID()
+    {
+
+    }
+    #endregion
 }
 
 

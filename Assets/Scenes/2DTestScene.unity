@@ -869,8 +869,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 380, y: -80}
-  m_SizeDelta: {x: 600, y: 800}
+  m_AnchoredPosition: {x: 320, y: -80}
+  m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &72508850
 MonoBehaviour:
@@ -1540,8 +1540,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -320, y: -20}
-  m_SizeDelta: {x: 440, y: 50}
+  m_AnchoredPosition: {x: -420, y: -50}
+  m_SizeDelta: {x: 480, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &172782286
 MonoBehaviour:
@@ -2502,7 +2502,7 @@ GameObject:
   - component: {fileID: 303795728}
   - component: {fileID: 303795727}
   m_Layer: 5
-  m_Name: DoNotingBtn
+  m_Name: ResetBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2525,8 +2525,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -320, y: -200}
-  m_SizeDelta: {x: 350, y: 100}
+  m_AnchoredPosition: {x: -420, y: -200}
+  m_SizeDelta: {x: 240, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &303795727
 MonoBehaviour:
@@ -3582,7 +3582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &404626697
 Camera:
   m_ObjectHideFlags: 0
@@ -4613,7 +4613,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -320, y: 50}
+  m_AnchoredPosition: {x: -420, y: 50}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &579732982
@@ -10295,8 +10295,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 1019, y: -80}
-  m_SizeDelta: {x: 600, y: 800}
+  m_AnchoredPosition: {x: 880, y: -80}
+  m_SizeDelta: {x: 500, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1420330317
 MonoBehaviour:
@@ -10981,7 +10981,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC544\uBB34\uAC83\uB3C4 \uD558\uC9C0 \uC54A\uB294\uB2E4"
+  m_text: Reset
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
   m_sharedMaterial: {fileID: 4555158195946992440, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
@@ -12403,13 +12403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e693d60efd231840af7acfb6752e755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DataManager: {fileID: 1873689250}
   GameManager: {fileID: 1799882741}
   ObjectPooling: {fileID: 268666656}
   todoWordBtnSpawner: {fileID: 1197405040}
   inViewWordAction: {fileID: 172782286}
   outViewWordAction: {fileID: 1752316791}
-  doNotingBtn: {fileID: 303795727}
+  resetBtn: {fileID: 303795727}
   WordJson: {fileID: 654348490}
   enableWordBtnList: []
   enableWordActionBtnList: []
@@ -12417,7 +12416,13 @@ MonoBehaviour:
   currentWordList: []
   currentWordActionIDList: []
   currentWordActionList: []
-  currentWordName: 
+  currentWord:
+    ID: 
+    Name: 
+  currentWordAction:
+    ID: 
+    Name: 
+  currentStreamEventID: 
 --- !u!4 &1775436665
 Transform:
   m_ObjectHideFlags: 0

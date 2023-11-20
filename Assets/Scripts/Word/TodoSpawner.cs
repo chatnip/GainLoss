@@ -10,28 +10,27 @@ public class TodoSpawner : WordBtnSpawner
     {
         for (int i = 0; i < WordManager.currentWordList.Count; i++)
         {
-            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i]);
-            wordBtn.transform.SetParent(wordParentObject);
-            WordManager.enableWordBtnList.Add(wordBtn);
-            WordManager.WordBtnListSet();
-            wordBtn.gameObject.SetActive(true);
+            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i]); // 생성
+            wordBtn.transform.SetParent(wordParentObject); // 부모 설정
+            WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
+            WordManager.WordBtnListSet(); // 데이터 삽입
+            wordBtn.gameObject.SetActive(true); // 활성화
         }
     }
 
-    /*
     public void SpawnWordActionBtn()
     {
-        PickWordAction();
+        PickWordAction(); // 버튼 초기화
 
-        for (int i = 0; i < WordManager.currentWordActionDataList.Count; i++)
+        for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
-            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordActionDataList[i].wordActionName);
-            wordBtn.transform.SetParent(wordActionParentObject);
-            WordManager.enableWordActionBtnList.Add(wordBtn);
-            wordBtn.gameObject.SetActive(true);
+            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordActionList[i]); // 생성
+            wordBtn.transform.SetParent(wordActionParentObject); // 부모 설정
+            WordManager.enableWordActionBtnList.Add(wordBtn); // 활성화 리스트에 삽입
+            WordManager.WordActionBtnListSet(); // 데이터 삽입
+            wordBtn.gameObject.SetActive(true); // 활성화
         }
     }
-    */
 
     protected override WordBtn CreateWordBtn(Word word)
     {
