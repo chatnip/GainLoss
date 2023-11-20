@@ -15,6 +15,7 @@ public class WordJson : MonoBehaviour
     private void Start()
     {
         path = Path.Combine(Application.dataPath, "wordDatabase.json");
+        // JsonSaveTest();
         JsonLoadTest();
     }
     private void JsonLoadTest()
@@ -22,43 +23,27 @@ public class WordJson : MonoBehaviour
         WordList wordList = new WordList();
         string loadJson = File.ReadAllText(path);
         wordList = JsonUtility.FromJson<WordList>(loadJson);
-        WordManager.currentWordList = wordList.words;
+        WordManager.currentWordList = wordList.wordIDs;
 
     }
 
-    /*
     private void JsonSaveTest()
     {
         WordList wordList = new WordList();
 
-        WordBase word1 = new WordBase
-        {
-            wordName = "test1"
-        };
-        wordList.words.Add(word1);
-
-        WordBase word2 = new WordBase
-        {
-            wordName = "test2"
-        };
-        wordList.words.Add(word2);
-
-        WordBase word3 = new WordBase
-        {
-            wordName = "test3"
-        };
-        wordList.words.Add(word3);
+        wordList.wordIDs.Add("W01");
+        wordList.wordIDs.Add("W02");
+        wordList.wordIDs.Add("W03");
 
         string json = JsonUtility.ToJson(wordList, true);
         File.WriteAllText(path, json);
     }
-    */
 }
 
 [Serializable]
 public class WordList
 {
-    public List<WordBase> words = new List<WordBase>();
+    public List<string> wordIDs = new List<string>();
 }
 
 

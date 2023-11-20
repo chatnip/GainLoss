@@ -9,6 +9,7 @@ using NaughtyAttributes;
 public class WordManager : Manager<WordManager>
 {
     [Header("*Property")]
+    [SerializeField] DataManager DataManager;
     [SerializeField] GameManager GameManager;
     [SerializeField] ObjectPooling ObjectPooling;
 
@@ -27,7 +28,7 @@ public class WordManager : Manager<WordManager>
     [HideInInspector] public List<WordBtn> enableWordActionBtnList = new();
 
     // 선택한 단어 및 단어의 액션 목록
-    [HideInInspector] public List<WordBase> currentWordList = new();
+    [HideInInspector] public List<string> currentWordList = new();
     [HideInInspector] public List<WordActionData> currentWordActionDataList = new();
 
     // 선택한 단어 및 단어의 액션
@@ -76,7 +77,7 @@ public class WordManager : Manager<WordManager>
                     if (enableWordBtnList.Count != 0)
                     {
                         currentWordName = enableWordBtnList[buttonNum].wordBtnTextStr;
-                        currentWordActionDataList = FindWordActions(FindWord());
+                        // currentWordActionDataList = FindWordActions(FindWord());
                         todoWordBtnSpawner.SpawnWordActionBtn();
                         WordActionBtnListSet();
                     }
@@ -105,9 +106,9 @@ public class WordManager : Manager<WordManager>
 
     #region FindData
 
-    private WordData FindWord()
+    private Word FindWord()
     {
-        foreach (WordData data in GameManager.wordDatas)
+        foreach (Word data in GameManager.wordDatas)
         {
             if (currentWordName == data.wordName)
             {
@@ -117,6 +118,9 @@ public class WordManager : Manager<WordManager>
         return null;
     }
 
+
+
+    /*
     private List<WordActionData> FindWordActions(WordData wordData)
     {
         List<WordActionData> datas = new();
@@ -129,5 +133,33 @@ public class WordManager : Manager<WordManager>
         }
         return datas;
     }
+    */
     #endregion
+
+    public void SetupWord() // 단어 세팅부분 제작하기
+    {
+
+        Word word = new Word();
+        // DataManager.WordDatas
+    }
+}
+
+
+[System.Serializable]
+public class Word
+{
+    public string wordID;
+    public string wordName;
+}
+
+[System.Serializable]
+public class WordActionData
+{
+    public string wordActionName;
+    public string actionSentence;
+    public bool wordActionBool;
+    public int stressGage;
+    public int angerGage;
+    public int riskGage;
+    public int streamEventID;
 }

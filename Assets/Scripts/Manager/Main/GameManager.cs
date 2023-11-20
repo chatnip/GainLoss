@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // 디버깅용 보여주기 나중에 hideInspactor
     [Header("*Word")]
-    [SerializeField] public WordData[] wordDatas;
+    [SerializeField] public Word[] wordDatas;
 
     [Header("*Gage")]
     [ProgressBar("StressGage", 100, EColor.Red)]

@@ -10,7 +10,7 @@ public class TodoSpawner : WordBtnSpawner
     {
         for (int i = 0; i < WordManager.currentWordList.Count; i++)
         {
-            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i].wordName);
+            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i]);
             wordBtn.transform.SetParent(wordParentObject);
             WordManager.enableWordBtnList.Add(wordBtn);
             WordManager.WordBtnListSet();

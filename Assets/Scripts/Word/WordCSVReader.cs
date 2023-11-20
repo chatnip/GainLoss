@@ -4,9 +4,9 @@ using UnityEngine;
 
 public static class WordCSVReader
 {
-    public static WordData[] Parse(string _CSVFileName)
+    public static Word[] Parse(string _CSVFileName)
     {
-        List<WordData> testWordList = new();
+        List<Word> testWordList = new();
         TextAsset csvData = Resources.Load<TextAsset>(_CSVFileName);
 
         string[] data = csvData.text.Split(new char[] { '\n' });
@@ -15,11 +15,11 @@ public static class WordCSVReader
         {
             string[] row = data[i].Split(new char[] { ',' });
 
-            WordData wordData = new();
+            Word wordData = new();
 
             wordData.wordName = row[1];
-            wordData.wordPlace = row[2];
-            wordData.wordActionEvent = row[3];
+            //wordData.wordPlace = row[2];
+            //wordData.wordActionEvent = row[3];
 
             List<WordActionData> wordActionList = new();
 
@@ -50,30 +50,9 @@ public static class WordCSVReader
             }
             while (row[0].ToString() == "");
 
-            wordData.wordActionDatas = wordActionList;
+            //wordData.wordActionDatas = wordActionList;
             testWordList.Add(wordData);
         }
         return testWordList.ToArray();
     }
-}
-
-[System.Serializable]
-public class WordData
-{
-    public string wordName;
-    public string wordPlace;
-    public string wordActionEvent;
-    public List<WordActionData> wordActionDatas = new();
-}
-
-[System.Serializable]
-public class WordActionData
-{
-    public string wordActionName;
-    public string actionSentence;
-    public bool wordActionBool;
-    public int stressGage;
-    public int angerGage;
-    public int riskGage;
-    public int streamEventID;
 }
