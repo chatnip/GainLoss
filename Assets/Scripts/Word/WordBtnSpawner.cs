@@ -21,7 +21,7 @@ public abstract class WordBtnSpawner : MonoBehaviour
     {
     }
 
-    protected virtual WordBtn CreateWordBtn(string btnText)
+    protected virtual WordBtn CreateWordBtn(Word word)
     {
         return null;
     }

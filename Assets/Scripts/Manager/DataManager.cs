@@ -18,8 +18,10 @@ public class DataManager : Manager<DataManager>
     public static List<Dictionary<string, object>> WordDatas = new();
     public static List<Dictionary<string, object>> WordActionDatas = new();
     public static List<Dictionary<string, object>> BehaviorActionDatas = new();
-    void Start()
+
+    protected override void Awake()
     {
+        base.Awake();
         InitData();
         // Debug.Log(WordDatas[0]["W01"]);
     }
@@ -29,7 +31,7 @@ public class DataManager : Manager<DataManager>
         ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
         // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
-        // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID
+        // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage
         WordDatas = CSVReader.Read(this.WordsFile);
         // [0]:WordName | [1]:WordNameKor
         WordActionDatas = CSVReader.Read(this.WordActionsFile);

@@ -9,45 +9,43 @@ using UnityEngine;
 public class WordJson : MonoBehaviour
 {
     string path;
-    public List<WordBase> myWords = new List<WordBase>();
+    // public List<WordBase> myWords = new List<WordBase>();
     [SerializeField] WordManager WordManager;
 
-    private void Start()
+    private void Awake()
     {
         path = Path.Combine(Application.dataPath, "wordDatabase.json");
         // JsonSaveTest();
         JsonLoadTest();
     }
-    private void JsonLoadTest()
+    public void JsonLoadTest()
     {
-        WordList wordList = new WordList();
         string loadJson = File.ReadAllText(path);
-        wordList = JsonUtility.FromJson<WordList>(loadJson);
-        WordManager.currentWordList = wordList.wordIDs;
-
+        WordIDs wordIDs = JsonUtility.FromJson<WordIDs>(loadJson);
+        WordManager.currentWordIDList = wordIDs.wordIDList;
     }
 
     private void JsonSaveTest()
     {
-        WordList wordList = new WordList();
+        WordIDs wordIDs = new WordIDs();
 
-        wordList.wordIDs.Add("W01");
-        wordList.wordIDs.Add("W02");
-        wordList.wordIDs.Add("W03");
+        wordIDs.wordIDList.Add("W01");
+        wordIDs.wordIDList.Add("W02");
+        wordIDs.wordIDList.Add("W03");
 
-        string json = JsonUtility.ToJson(wordList, true);
+        string json = JsonUtility.ToJson(wordIDs, true);
         File.WriteAllText(path, json);
     }
 }
 
 [Serializable]
-public class WordList
+public class WordIDs
 {
-    public List<string> wordIDs = new List<string>();
+    public List<string> wordIDList = new();
 }
 
 
-
+/*
 [Serializable]
 public class WordBase
 {
@@ -56,3 +54,4 @@ public class WordBase
     public bool isUsed;
 }
 
+*/

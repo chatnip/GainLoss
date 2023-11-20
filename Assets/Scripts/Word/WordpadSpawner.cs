@@ -6,7 +6,7 @@ public class WordpadSpawner : WordBtnSpawner
 {
     public override void SpawnWordBtn()
     {
-        for (int i = 0; i < WordManager.currentWordList.Count; i++)
+        for (int i = 0; i < WordManager.currentWordIDList.Count; i++)
         {
             WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i]);
             wordBtn.transform.SetParent(wordParentObject);
@@ -15,11 +15,11 @@ public class WordpadSpawner : WordBtnSpawner
         }
     }
 
-    protected override WordBtn CreateWordBtn(string btnText)
+    protected override WordBtn CreateWordBtn(Word word)
     {
         WordBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         wordBtn.isButton = false;
-        wordBtn.wordBtnTextStr = btnText;       
+        wordBtn.word = word;       
         return wordBtn;
     }
 }

@@ -6,13 +6,16 @@ using TMPro;
 
 public class WordBtn : MonoBehaviour
 {
+    [Header("*Data")]
+    [SerializeField] public Word word;
 
+    [Header("*Button")]
     [SerializeField] public Button button;
     [SerializeField] TMP_Text text;
     [SerializeField] RectTransform rect;
-
-    public bool isButton;
-    public string wordBtnTextStr;
+    
+    [HideInInspector] public bool isButton;
+    
 
     private void OnEnable()
     {
@@ -24,6 +27,6 @@ public class WordBtn : MonoBehaviour
         rect.localPosition = Vector3.zero;
         rect.localScale = Vector3.one;
         button.enabled = isButton;
-        text.text = wordBtnTextStr;
+        text.text = word.Name;
     }
 }

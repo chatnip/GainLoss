@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,21 +23,28 @@ public class WordManager : Manager<WordManager>
     [SerializeField] Button doNotingBtn;
     StringReactiveProperty currentWordActiionStr = new();
 
+    [Header("*Test")]
+    [SerializeField] WordJson WordJson;
+
 
     // 켜진 단어 및 단어의 액션 버튼 목록
     [HideInInspector] public List<WordBtn> enableWordBtnList = new();
     [HideInInspector] public List<WordBtn> enableWordActionBtnList = new();
 
     // 선택한 단어 및 단어의 액션 목록
-    [HideInInspector] public List<string> currentWordList = new();
-    [HideInInspector] public List<WordActionData> currentWordActionDataList = new();
+    [SerializeField] public List<string> currentWordIDList = new();
+    [SerializeField] public List<Word> currentWordList = new();
+    [SerializeField] public List<string> currentWordActionIDList = new();
+    [SerializeField] public List<Word> currentWordActionList = new();
 
     // 선택한 단어 및 단어의 액션
     [HideInInspector] public string currentWordName;
-    WordActionData currentWordActionData = new();
+    // WordAction currentWordActionData = new();
 
     private void Start()
     {
+        InitWord();
+
         currentWordActiionStr
             .Subscribe(x =>
             {
@@ -57,7 +65,7 @@ public class WordManager : Manager<WordManager>
             .Subscribe(x =>
             {
                 currentWordName = null;
-                currentWordActionData = null;
+                // currentWordActionData = null;
                 todoWordBtnSpawner.PickWordAction();
                 inViewWordAction.text = "아무것도 하지 않는다";
                 outViewWordAction.text = "아무것도 하지 않는다";
@@ -67,24 +75,32 @@ public class WordManager : Manager<WordManager>
     #region ButtonListSeting
     public void WordBtnListSet()
     {
-        foreach (WordBtn wordBtn in enableWordBtnList)
+        foreach (WordBtn wordBtn in enableWordBtnList) // 버튼 순회
         {
             wordBtn.button
                 .OnClickAsObservable()
-                .Select(buttonNum => wordBtn.transform.GetSiblingIndex())
-                .Subscribe(buttonNum =>
+                .Select(id => wordBtn.word.ID)
+                .Subscribe(id =>
                 {
-                    if (enableWordBtnList.Count != 0)
+                    foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
                     {
-                        currentWordName = enableWordBtnList[buttonNum].wordBtnTextStr;
-                        // currentWordActionDataList = FindWordActions(FindWord());
-                        todoWordBtnSpawner.SpawnWordActionBtn();
-                        WordActionBtnListSet();
+                        if (data.Key.Contains(id)) // 만약 단어 ID가 들어간 스트림 이벤트를 찾으면
+                        {
+                            //string key = data.Key.ToString()
+                            //currentWordActionIDList.Add()
+                            // 스트림 이벤트 리스트로 모으기
+                            //Word word = new(data.Key, (string)DataManager.WordActionDatas[0][id]);
+                        }
                     }
+                    // currentWordName = enableWordBtnList[buttonNum].wordBtnName;
+                    // currentWordActionDataList = FindWordActions(FindWord());
+                    // todoWordBtnSpawner.SpawnWordActionBtn();
+                    // WordActionBtnListSet();
                 });
         }
     }
 
+    /*
     public void WordActionBtnListSet()
     {
         foreach (WordBtn wordActionBtn in enableWordActionBtnList)
@@ -97,11 +113,12 @@ public class WordManager : Manager<WordManager>
                     if (enableWordActionBtnList.Count != 0)
                     {
                         currentWordActionData = currentWordActionDataList[buttonNum];
-                        currentWordActiionStr.Value = currentWordActionData.actionSentence;
+                        //currentWordActiionStr.Value = currentWordActionData.actionSentence;
                     }
                 });
         }
     }
+    */
     #endregion
 
     #region FindData
@@ -110,7 +127,7 @@ public class WordManager : Manager<WordManager>
     {
         foreach (Word data in GameManager.wordDatas)
         {
-            if (currentWordName == data.wordName)
+            if (currentWordName == data.Name)
             {
                 return data;
             }
@@ -136,11 +153,13 @@ public class WordManager : Manager<WordManager>
     */
     #endregion
 
-    public void SetupWord() // 단어 세팅부분 제작하기
+    public void InitWord()
     {
-
-        Word word = new Word();
-        // DataManager.WordDatas
+        foreach(string id in currentWordIDList)
+        {
+            Word word = new(id, (string)DataManager.WordDatas[0][id]);
+            currentWordList.Add(word);
+        }
     }
 }
 
@@ -148,18 +167,12 @@ public class WordManager : Manager<WordManager>
 [System.Serializable]
 public class Word
 {
-    public string wordID;
-    public string wordName;
-}
+    public string ID;
+    public string Name;
 
-[System.Serializable]
-public class WordActionData
-{
-    public string wordActionName;
-    public string actionSentence;
-    public bool wordActionBool;
-    public int stressGage;
-    public int angerGage;
-    public int riskGage;
-    public int streamEventID;
+    public Word(string id, string name)
+    {
+        ID = id;
+        Name = name;
+    }
 }

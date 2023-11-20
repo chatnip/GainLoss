@@ -19,6 +19,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        wordDatas = WordCSVReader.Parse("TestCVSFile2");
+        // wordDatas = WordCSVReader.Parse("TestCVSFile2");
     }
 }

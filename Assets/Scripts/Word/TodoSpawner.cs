@@ -18,6 +18,7 @@ public class TodoSpawner : WordBtnSpawner
         }
     }
 
+    /*
     public void SpawnWordActionBtn()
     {
         PickWordAction();
@@ -30,12 +31,13 @@ public class TodoSpawner : WordBtnSpawner
             wordBtn.gameObject.SetActive(true);
         }
     }
+    */
 
-    protected override WordBtn CreateWordBtn(string btnText)
+    protected override WordBtn CreateWordBtn(Word word)
     {
         WordBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         wordBtn.isButton = true;
-        wordBtn.wordBtnTextStr = btnText;
+        wordBtn.word = word;
         return wordBtn;
     }
 
