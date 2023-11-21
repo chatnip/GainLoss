@@ -6,7 +6,7 @@ using UniRx;
 
 public class TaskBar : MonoBehaviour
 {
-    [SerializeField] ScreenObject ScreenObject;
+    // [SerializeField] ScreenObject ScreenObject;
     [SerializeField] Button windowButton;
 
     private void Awake()
@@ -15,7 +15,7 @@ public class TaskBar : MonoBehaviour
             .OnClickAsObservable()
             .Subscribe(x =>
             {
-                ScreenObject.InteractCancel();
+                // ScreenObject.InteractCancel();
             });
     }
 }

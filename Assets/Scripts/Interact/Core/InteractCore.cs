@@ -1,38 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class InteractCore : MonoBehaviour, IInteract
+public class InteractCore : MonoBehaviour, IInteract, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    [SerializeField] GameObject interactUI;
-
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] Outline Outline;
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (other.CompareTag("Player"))
-        {
-            interactUI.SetActive(true);
-        }
+        Debug.Log("click!");
     }
 
-    private void OnTriggerExit(Collider other)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (other.CompareTag("Player"))
-        {
-            interactUI.SetActive(false);
-        }
+        Outline.enabled = true;
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        Outline.enabled = false;
     }
 
     public virtual void Interact()
-    {
-        
-    }
-
-    public virtual void InteractCancel()
-    {
-
-    }
-
-    private void OnMouseDown()
     {
         
     }
