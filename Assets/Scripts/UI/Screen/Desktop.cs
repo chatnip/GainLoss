@@ -6,6 +6,8 @@ using UniRx;
 
 public class Desktop : MonoBehaviour
 {
+    [SerializeField] StreamManager StreamManager;
+
     [Header("*SNS")]
     [SerializeField] Button snsOpenBtn;
     [SerializeField] Button snsExitBtn;
@@ -21,6 +23,7 @@ public class Desktop : MonoBehaviour
     [SerializeField] Button streamPopupExitBtn;
     [SerializeField] Button streamConfirmBtn;
     [SerializeField] GameObject streamPopup;
+    [SerializeField] GameObject streamWindow;
 
     [Header("*Todo")]
     [SerializeField] Button todoOpenBtn;
@@ -53,6 +56,13 @@ public class Desktop : MonoBehaviour
             .Subscribe(btn =>
             {
                 streamPopup.SetActive(false);
+            });
+        streamConfirmBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                streamWindow.SetActive(true);
+                streamPopup.SetActive(false);
+                StreamManager.StartDialog(StreamManager.currentStreamEventID);
             });
 
         

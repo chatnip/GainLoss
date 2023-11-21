@@ -8,6 +8,7 @@ public class DataManager : Manager<DataManager>
     [Header("*All_CSV_File")]
     [SerializeField] TextAsset ActionEventsFile;
     [SerializeField] TextAsset StreamEventsFile;
+    [SerializeField] TextAsset DialogsFile;
     [SerializeField] TextAsset WordsFile;
     [SerializeField] TextAsset WordActionsFile;
     [SerializeField] TextAsset BehaviorActionsFile;
@@ -15,6 +16,7 @@ public class DataManager : Manager<DataManager>
     [Header("*AllData")]
     public static List<Dictionary<string, object>> ActionEventDatas = new();
     public static List<Dictionary<string, object>> StreamEventDatas = new();
+    public static List<Dictionary<string, object>> DialogDatas = new();
     public static List<Dictionary<string, object>> WordDatas = new();
     public static List<Dictionary<string, object>> WordActionDatas = new();
     public static List<Dictionary<string, object>> BehaviorActionDatas = new();
@@ -31,7 +33,9 @@ public class DataManager : Manager<DataManager>
         ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
         // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
-        // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage
+        // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage | [4]:StreamTitle | [5]:StreamTitleKor
+        DialogDatas = CSVReader.Read(this.DialogsFile);
+        // [0]:AnimationID | [1]:Dialog | [2]:DialogKor
         WordDatas = CSVReader.Read(this.WordsFile);
         // [0]:WordName | [1]:WordNameKor
         WordActionDatas = CSVReader.Read(this.WordActionsFile);

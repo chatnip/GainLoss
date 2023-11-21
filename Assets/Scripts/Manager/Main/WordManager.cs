@@ -13,6 +13,7 @@ public class WordManager : Manager<WordManager>
 {
     [Header("*Property")]
     [SerializeField] GameManager GameManager;
+    [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
 
     [Space(10)]
@@ -33,15 +34,15 @@ public class WordManager : Manager<WordManager>
     [HideInInspector] public List<WordBtn> enableWordActionBtnList = new();
 
     // 선택한 단어 및 단어의 액션 목록
-    [SerializeField] public List<string> currentWordIDList = new();
-    [SerializeField] public List<Word> currentWordList = new();
-    [SerializeField] public List<string> currentWordActionIDList = new();
-    [SerializeField] public List<Word> currentWordActionList = new();
-
+    [HideInInspector] public List<string> currentWordIDList = new();
+    [HideInInspector] public List<Word> currentWordList = new();
+    [HideInInspector] private List<string> currentWordActionIDList = new();
+    [HideInInspector] public List<Word> currentWordActionList = new();
+    
     // 선택한 단어 및 단어의 액션
-    [HideInInspector] public Word currentWord;
-    [HideInInspector] public Word currentWordAction;
-    [HideInInspector] public string currentStreamEventID;
+    private Word currentWord;
+    private Word currentWordAction;
+    
 
     private void Start()
     {
@@ -68,7 +69,6 @@ public class WordManager : Manager<WordManager>
         todoWordBtnSpawner.PickWordAction();
         currentWord = null;
         currentWordAction = null;
-        currentStreamEventID = null;
         currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
 
@@ -98,10 +98,10 @@ public class WordManager : Manager<WordManager>
                 .Select(word => wordActionBtn.word)
                 .Subscribe(word =>
                 {
-                    currentWordAction = word;
-                    currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    currentWordAction = word;                   
                     string text = string.Format("{0}에 대한 {1}을(를) 한다.", currentWord.Name, currentWordAction.Name);
                     currentWordActiionStr.Value = text;
+                    StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
                 });
         }
     }
@@ -117,7 +117,6 @@ public class WordManager : Manager<WordManager>
             Word word = new(id, (string)DataManager.WordDatas[0][id]);
             currentWordList.Add(word);
         }
-
     }
 
     private void InitWordActionID(string id)
@@ -142,11 +141,6 @@ public class WordManager : Manager<WordManager>
             Word word = new(id, (string)DataManager.WordActionDatas[0][id]);
             currentWordActionList.Add(word);
         }
-    }
-
-    private void InitStreamEventID()
-    {
-
     }
     #endregion
 }

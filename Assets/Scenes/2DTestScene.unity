@@ -1429,6 +1429,8 @@ Transform:
   - {fileID: 1775436665}
   - {fileID: 1799882740}
   - {fileID: 1873689249}
+  - {fileID: 746527782}
+  - {fileID: 365968365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &171461928
@@ -2160,7 +2162,7 @@ GameObject:
   - component: {fileID: 276275331}
   - component: {fileID: 276275330}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: StreamTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3304,6 +3306,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &365968364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 365968365}
+  - component: {fileID: 365968366}
+  m_Layer: 0
+  m_Name: DialogManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &365968365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365968364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 134049329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &365968366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365968364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ededc6fb7e48104e9b4202e15a3f89d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  streamTitleText: {fileID: 276275330}
+  streamScriptText: {fileID: 1913725447}
+  dialogNextBtn: {fileID: 1206525415}
+  click:
+    m_Name: Click
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: db67d9af-b4b5-4056-a7c7-a10b2942f822
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 84548b44-aa2e-42fe-9788-bb7e0e6053af
+      m_Path: <Mouse>/leftButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Click
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &366846135
 GameObject:
   m_ObjectHideFlags: 0
@@ -5038,7 +5104,7 @@ GameObject:
   - component: {fileID: 654348489}
   - component: {fileID: 654348490}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TestJson
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5482,6 +5548,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732603295}
   m_CullTransparentMesh: 1
+--- !u!1 &746527781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 746527782}
+  - component: {fileID: 746527783}
+  m_Layer: 0
+  m_Name: StreamManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &746527782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746527781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 134049329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &746527783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746527781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c95d100bf1513344484035d068c30564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogManager: {fileID: 365968366}
+  currentStreamEventID: 
 --- !u!1 &752934234
 GameObject:
   m_ObjectHideFlags: 0
@@ -9081,6 +9193,7 @@ GameObject:
   - component: {fileID: 1206525412}
   - component: {fileID: 1206525414}
   - component: {fileID: 1206525413}
+  - component: {fileID: 1206525415}
   m_Layer: 5
   m_Name: SubtitleBar
   m_TagString: Untagged
@@ -9147,6 +9260,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206525411}
   m_CullTransparentMesh: 1
+--- !u!114 &1206525415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206525411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1206525413}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1213657104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 456291408262837360, guid: 7f2af4119adea0a4c82a11381d5a3cac, type: 3}
@@ -10760,6 +10917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6ddd3f08ac86440a39f32814b2a9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StreamManager: {fileID: 746527783}
   snsOpenBtn: {fileID: 0}
   snsExitBtn: {fileID: 0}
   snsWindow: {fileID: 0}
@@ -10770,6 +10928,7 @@ MonoBehaviour:
   streamPopupExitBtn: {fileID: 185111667}
   streamConfirmBtn: {fileID: 1939465293}
   streamPopup: {fileID: 1323220205}
+  streamWindow: {fileID: 2105822542}
   todoOpenBtn: {fileID: 476333810}
   todoExitBtn: {fileID: 1907322955}
   todoWindow: {fileID: 1197405036}
@@ -12404,6 +12563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameManager: {fileID: 1799882741}
+  StreamManager: {fileID: 746527783}
   ObjectPooling: {fileID: 268666656}
   todoWordBtnSpawner: {fileID: 1197405040}
   inViewWordAction: {fileID: 172782286}
@@ -12414,15 +12574,7 @@ MonoBehaviour:
   enableWordActionBtnList: []
   currentWordIDList: []
   currentWordList: []
-  currentWordActionIDList: []
   currentWordActionList: []
-  currentWord:
-    ID: 
-    Name: 
-  currentWordAction:
-    ID: 
-    Name: 
-  currentStreamEventID: 
 --- !u!4 &1775436665
 Transform:
   m_ObjectHideFlags: 0
@@ -12770,7 +12922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1799882740
 Transform:
   m_ObjectHideFlags: 0
@@ -13308,6 +13460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionEventsFile: {fileID: 4900000, guid: 3c3a756c9a65ee24bb5d77f30a9f57c0, type: 3}
   StreamEventsFile: {fileID: 4900000, guid: 3aff7f126868b68409ca0a311a73d487, type: 3}
+  DialogsFile: {fileID: 4900000, guid: 452fe494f873390499298259120f91fc, type: 3}
   WordsFile: {fileID: 4900000, guid: fdb9859200f548948b9160328053f47b, type: 3}
   WordActionsFile: {fileID: 4900000, guid: c4286a241198d6b458f989decbd2c394, type: 3}
   BehaviorActionsFile: {fileID: 4900000, guid: fb7474e77828ab84984b9e3c6022a542, type: 3}
@@ -13802,7 +13955,7 @@ GameObject:
   - component: {fileID: 1913725448}
   - component: {fileID: 1913725447}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: StreamScript
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15153,7 +15306,7 @@ GameObject:
   - component: {fileID: 2052671586}
   - component: {fileID: 2052671585}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: StreamerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15927,7 +16080,7 @@ GameObject:
   - component: {fileID: 2105822545}
   - component: {fileID: 2105822544}
   m_Layer: 5
-  m_Name: LiveWindow
+  m_Name: StreamWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
