@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] List<WordBtn> WordBtnObjectPrefabs = new List<WordBtn>();
-    [SerializeField] Queue<WordBtn> WordBtnObjectesQueue = new Queue<WordBtn>();
+    [SerializeField] List<IDBtn> WordBtnObjectPrefabs = new List<IDBtn>();
+    [SerializeField] Queue<IDBtn> WordBtnObjectesQueue = new Queue<IDBtn>();
     [SerializeField] RectTransform wordPool;
 
     private void Awake()
@@ -22,12 +22,12 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public WordBtn WordBtnObjectPool()
+    public IDBtn WordBtnObjectPool()
     {
         var wordBtnObject = WordBtnObjectesQueue.Dequeue();
         return wordBtnObject;
     }
-    public void ObjectPick(WordBtn wordBtnObject)
+    public void ObjectPick(IDBtn wordBtnObject)
     {
         WordBtnObjectesQueue.Enqueue(wordBtnObject);
         wordBtnObject.transform.SetParent(wordPool);

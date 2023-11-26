@@ -12,7 +12,6 @@ using NaughtyAttributes;
 public class WordManager : Manager<WordManager>
 {
     [Header("*Property")]
-    [SerializeField] GameManager GameManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
 
@@ -30,18 +29,18 @@ public class WordManager : Manager<WordManager>
 
 
     // 켜진 단어 및 단어의 액션 버튼 목록
-    [HideInInspector] public List<WordBtn> enableWordBtnList = new();
-    [HideInInspector] public List<WordBtn> enableWordActionBtnList = new();
+    [HideInInspector] public List<IDBtn> enableWordBtnList = new();
+    [HideInInspector] public List<IDBtn> enableWordActionBtnList = new();
 
     // 선택한 단어 및 단어의 액션 목록
     [HideInInspector] public List<string> currentWordIDList = new();
-    [HideInInspector] public List<Word> currentWordList = new();
+    [HideInInspector] public List<ButtonValue> currentWordList = new();
     [HideInInspector] private List<string> currentWordActionIDList = new();
-    [HideInInspector] public List<Word> currentWordActionList = new();
+    [HideInInspector] public List<ButtonValue> currentWordActionList = new();
     
     // 선택한 단어 및 단어의 액션
-    private Word currentWord;
-    private Word currentWordAction;
+    private ButtonValue currentWord;
+    private ButtonValue currentWordAction;
     
 
     private void Start()
@@ -75,7 +74,7 @@ public class WordManager : Manager<WordManager>
     #region ButtonListSeting
     public void WordBtnListSet()
     {
-        foreach (WordBtn wordBtn in enableWordBtnList)
+        foreach (IDBtn wordBtn in enableWordBtnList)
         {
             wordBtn.button
                 .OnClickAsObservable()
@@ -91,7 +90,7 @@ public class WordManager : Manager<WordManager>
 
     public void WordActionBtnListSet()
     {
-        foreach (WordBtn wordActionBtn in enableWordActionBtnList)
+        foreach (IDBtn wordActionBtn in enableWordActionBtnList)
         {
             wordActionBtn.button
                 .OnClickAsObservable()
@@ -114,7 +113,7 @@ public class WordManager : Manager<WordManager>
         currentWordList.Clear(); // 초기화
         foreach (string id in currentWordIDList) // ID 순회
         {
-            Word word = new(id, (string)DataManager.WordDatas[0][id]);
+            ButtonValue word = new(id, (string)DataManager.WordDatas[0][id]);
             currentWordList.Add(word);
         }
     }
@@ -138,7 +137,7 @@ public class WordManager : Manager<WordManager>
         currentWordActionList.Clear(); // 초기화
         foreach (string id in currentWordActionIDList) // ID 순회
         {
-            Word word = new(id, (string)DataManager.WordActionDatas[0][id]);
+            ButtonValue word = new(id, (string)DataManager.WordActionDatas[0][id]);
             currentWordActionList.Add(word);
         }
     }
@@ -147,12 +146,12 @@ public class WordManager : Manager<WordManager>
 
 
 [System.Serializable]
-public class Word
+public class ButtonValue
 {
     public string ID;
     public string Name;
 
-    public Word(string id, string name)
+    public ButtonValue(string id, string name)
     {
         ID = id;
         Name = name;

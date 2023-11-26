@@ -2,15 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TodoSpawner : WordBtnSpawner
+public class TodoSpawner : IDBtnSpawner
 {
     [SerializeField] RectTransform wordActionParentObject;
 
-    public override void SpawnWordBtn()
+    protected override IDBtn CreateIDBtn(ButtonValue word)
+    {
+        IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
+        wordBtn.isButton = true;
+        wordBtn.word = word;
+        return wordBtn;
+    }
+
+    protected override void SpawnIDBtn()
+    {
+        SpawnWordBtn();
+    }
+
+    private void SpawnWordBtn()
     {
         for (int i = 0; i < WordManager.currentWordList.Count; i++)
         {
-            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordList[i]); // 생성
+            IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]); // 생성
             wordBtn.transform.SetParent(wordParentObject); // 부모 설정
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             WordManager.WordBtnListSet(); // 데이터 삽입
@@ -24,23 +37,31 @@ public class TodoSpawner : WordBtnSpawner
 
         for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
-            WordBtn wordBtn = CreateWordBtn(WordManager.currentWordActionList[i]); // 생성
+            IDBtn wordBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
             wordBtn.transform.SetParent(wordActionParentObject); // 부모 설정
             WordManager.enableWordActionBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             WordManager.WordActionBtnListSet(); // 데이터 삽입
             wordBtn.gameObject.SetActive(true); // 활성화
         }
     }
-
-    protected override WordBtn CreateWordBtn(Word word)
+    protected override void PickIDBtn()
     {
-        WordBtn wordBtn = ObjectPooling.WordBtnObjectPool();
-        wordBtn.isButton = true;
-        wordBtn.word = word;
-        return wordBtn;
+        PickWordBtn();
     }
 
-    public override void PickWordAction()
+    public void PickWordBtn()
+    {
+        if (WordManager.enableWordBtnList.Count != 0)
+        {
+            for (int i = WordManager.enableWordBtnList.Count - 1; i >= 0; i--)
+            {
+                ObjectPooling.ObjectPick(WordManager.enableWordBtnList[i]);
+            }
+            WordManager.enableWordBtnList.Clear();
+        }
+    }
+
+    public void PickWordAction()
     {
         if (WordManager.enableWordActionBtnList.Count != 0)
         {
@@ -50,5 +71,11 @@ public class TodoSpawner : WordBtnSpawner
             }
             WordManager.enableWordActionBtnList.Clear();
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        PickWordAction();
     }
 }

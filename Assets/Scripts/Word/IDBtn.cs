@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WordBtn : MonoBehaviour
+public class IDBtn : MonoBehaviour
 {
     [Header("*Data")]
-    [SerializeField] public Word word;
+    [SerializeField] public ButtonValue word;
 
     [Header("*Button")]
     [SerializeField] public Button button;
@@ -19,10 +19,10 @@ public class WordBtn : MonoBehaviour
 
     private void OnEnable()
     {
-        WordBtnSetup();
+        IDBtnSetup();
     }
 
-    void WordBtnSetup()
+    void IDBtnSetup()
     {
         rect.localPosition = Vector3.zero;
         rect.localScale = Vector3.one;
