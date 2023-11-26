@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class WordpadSpawner : IDBtnSpawner
 {
+    [SerializeField] WordManager WordManager;
+
+    [Header("*WordParentObj")]
+    [SerializeField] RectTransform wordParentObject;
+
     protected override void SpawnIDBtn()
     {
         for (int i = 0; i < WordManager.currentWordIDList.Count; i++)
         {
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]);
             wordBtn.transform.SetParent(wordParentObject);
+            wordBtn.buttonType = ButtonType.SortType;
             WordManager.enableWordBtnList.Add(wordBtn);
             wordBtn.gameObject.SetActive(true);
         }
@@ -36,7 +42,7 @@ public class WordpadSpawner : IDBtnSpawner
     {
         IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         wordBtn.isButton = false;
-        wordBtn.word = word;       
+        wordBtn.buttonValue = word;       
         return wordBtn;
     }
 }

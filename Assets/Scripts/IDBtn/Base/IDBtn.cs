@@ -7,19 +7,24 @@ using TMPro;
 public class IDBtn : MonoBehaviour
 {
     [Header("*Data")]
-    [SerializeField] public ButtonValue word;
+    [SerializeField] public ButtonValue buttonValue;
 
     [Header("*Button")]
     [SerializeField] public Button button;
     [SerializeField] TMP_Text text;
     [SerializeField] RectTransform rect;
-    
+    [SerializeField] public ButtonType buttonType;
+
     [HideInInspector] public bool isButton;
+
     
 
     private void OnEnable()
     {
-        IDBtnSetup();
+        if(buttonType == ButtonType.SortType)
+        {
+            IDBtnSetup();
+        }
     }
 
     void IDBtnSetup()
@@ -27,6 +32,13 @@ public class IDBtn : MonoBehaviour
         rect.localPosition = Vector3.zero;
         rect.localScale = Vector3.one;
         button.enabled = isButton;
-        text.text = word.Name;
+        text.text = buttonValue.Name;
     }
+}
+
+[System.Serializable]
+public enum ButtonType
+{
+    SortType,
+    UnSortType
 }

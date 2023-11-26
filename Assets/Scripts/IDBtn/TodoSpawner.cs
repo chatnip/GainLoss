@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class TodoSpawner : IDBtnSpawner
 {
+    [SerializeField] WordManager WordManager;
+
+    [Header("*WordParentObj")]
+    [SerializeField] RectTransform wordParentObject;
     [SerializeField] RectTransform wordActionParentObject;
 
     protected override IDBtn CreateIDBtn(ButtonValue word)
     {
         IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         wordBtn.isButton = true;
-        wordBtn.word = word;
+        wordBtn.buttonValue = word;
         return wordBtn;
     }
 
@@ -25,6 +29,7 @@ public class TodoSpawner : IDBtnSpawner
         {
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]); // 생성
             wordBtn.transform.SetParent(wordParentObject); // 부모 설정
+            wordBtn.buttonType = ButtonType.SortType; // 정렬
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             WordManager.WordBtnListSet(); // 데이터 삽입
             wordBtn.gameObject.SetActive(true); // 활성화
@@ -37,11 +42,12 @@ public class TodoSpawner : IDBtnSpawner
 
         for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
-            IDBtn wordBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
-            wordBtn.transform.SetParent(wordActionParentObject); // 부모 설정
-            WordManager.enableWordActionBtnList.Add(wordBtn); // 활성화 리스트에 삽입
+            IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
+            actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
+            actionBtn.buttonType = ButtonType.SortType; // 정렬
+            WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
             WordManager.WordActionBtnListSet(); // 데이터 삽입
-            wordBtn.gameObject.SetActive(true); // 활성화
+            actionBtn.gameObject.SetActive(true); // 활성화
         }
     }
     protected override void PickIDBtn()

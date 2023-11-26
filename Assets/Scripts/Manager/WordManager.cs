@@ -6,8 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
-using NaughtyAttributes;
-
 
 public class WordManager : Manager<WordManager>
 {
@@ -78,7 +76,7 @@ public class WordManager : Manager<WordManager>
         {
             wordBtn.button
                 .OnClickAsObservable()
-                .Select(word => wordBtn.word)
+                .Select(word => wordBtn.buttonValue)
                 .Subscribe(word =>
                 {
                     currentWord = word;
@@ -94,10 +92,10 @@ public class WordManager : Manager<WordManager>
         {
             wordActionBtn.button
                 .OnClickAsObservable()
-                .Select(word => wordActionBtn.word)
-                .Subscribe(word =>
+                .Select(action => wordActionBtn.buttonValue)
+                .Subscribe(action =>
                 {
-                    currentWordAction = word;                   
+                    currentWordAction = action;                   
                     string text = string.Format("{0}에 대한 {1}을(를) 한다.", currentWord.Name, currentWordAction.Name);
                     currentWordActiionStr.Value = text;
                     StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
@@ -108,6 +106,7 @@ public class WordManager : Manager<WordManager>
 
     #region Init
     // JsonLoadTest() == InitWordID()
+    // 나중에 하루 지날때마다 실행되도록 해야함
     public void InitWord()
     {
         currentWordList.Clear(); // 초기화

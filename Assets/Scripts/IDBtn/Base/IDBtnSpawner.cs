@@ -7,10 +7,6 @@ public abstract class IDBtnSpawner : MonoBehaviour
 {
     [Header("*Property")]
     [SerializeField] protected ObjectPooling ObjectPooling;
-    [SerializeField] protected WordManager WordManager;
-
-    [Header("*WordParentObj")]
-    [SerializeField] protected RectTransform wordParentObject;
  
     private void OnEnable()
     {

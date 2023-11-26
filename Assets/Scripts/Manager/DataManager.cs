@@ -12,6 +12,7 @@ public class DataManager : Manager<DataManager>
     [SerializeField] TextAsset WordsFile;
     [SerializeField] TextAsset WordActionsFile;
     [SerializeField] TextAsset BehaviorActionsFile;
+    [SerializeField] TextAsset PlaceFile;
 
     [Header("*AllData")]
     public static List<Dictionary<string, object>> ActionEventDatas = new();
@@ -20,6 +21,7 @@ public class DataManager : Manager<DataManager>
     public static List<Dictionary<string, object>> WordDatas = new();
     public static List<Dictionary<string, object>> WordActionDatas = new();
     public static List<Dictionary<string, object>> BehaviorActionDatas = new();
+    public static List<Dictionary<string, object>> PlaceDatas = new();
 
     protected override void Awake()
     {
@@ -42,5 +44,7 @@ public class DataManager : Manager<DataManager>
         // [0]:WordActionName | [1]:WordActionNameKor
         BehaviorActionDatas = CSVReader.Read(this.BehaviorActionsFile);
         // [0]:BehaviorActionName | [1]:BehaviorActionNameKor
+        PlaceDatas = CSVReader.Read(this.PlaceFile);
+        // [0]:PlaceName | [1]:PlaceNameKor
     }
 }
