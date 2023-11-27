@@ -8,6 +8,8 @@ public class IDBtn : MonoBehaviour
 {
     [Header("*Data")]
     [SerializeField] public ButtonValue buttonValue;
+    [SerializeField] Sprite basicImage;
+    [SerializeField] Sprite folderImage;
 
     [Header("*Button")]
     [SerializeField] public Button button;
@@ -21,11 +23,33 @@ public class IDBtn : MonoBehaviour
 
     private void OnEnable()
     {
-        if(buttonType == ButtonType.SortType)
+        switch (buttonType)
         {
-            IDBtnSetup();
+            case ButtonType.WordType:
+                IDBtnSetup();
+                WordTypeAdd();
+                break;
+            case ButtonType.WordPadType:
+                IDBtnSetup();
+                break;
+            case ButtonType.WordActionType:
+                IDBtnSetup();
+                break;
+            case ButtonType.PlaceType:
+                break;
+            case ButtonType.BehaviorActionType:
+                IDBtnSetup();
+                break;
         }
     }
+
+    void WordTypeAdd()
+    {
+        text.text += ".ail";
+        text.rectTransform.localPosition = new Vector3(0, -10, 0);
+        button.image.sprite = folderImage;
+    }
+
 
     void IDBtnSetup()
     {
@@ -33,12 +57,17 @@ public class IDBtn : MonoBehaviour
         rect.localScale = Vector3.one;
         button.enabled = isButton;
         text.text = buttonValue.Name;
+        text.rectTransform.localPosition = Vector3.zero;
+        button.image.sprite = basicImage;
     }
 }
 
 [System.Serializable]
 public enum ButtonType
 {
-    SortType,
-    UnSortType
+    WordType,
+    WordPadType,
+    WordActionType,
+    PlaceType,
+    BehaviorActionType
 }

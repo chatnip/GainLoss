@@ -15,7 +15,7 @@ public class WordpadSpawner : IDBtnSpawner
         {
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]);
             wordBtn.transform.SetParent(wordParentObject);
-            wordBtn.buttonType = ButtonType.SortType;
+            wordBtn.buttonType = ButtonType.WordPadType;
             WordManager.enableWordBtnList.Add(wordBtn);
             wordBtn.gameObject.SetActive(true);
         }

@@ -29,7 +29,7 @@ public class TodoSpawner : IDBtnSpawner
         {
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]); // 생성
             wordBtn.transform.SetParent(wordParentObject); // 부모 설정
-            wordBtn.buttonType = ButtonType.SortType; // 정렬
+            wordBtn.buttonType = ButtonType.WordType; // 정렬
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             WordManager.WordBtnListSet(); // 데이터 삽입
             wordBtn.gameObject.SetActive(true); // 활성화
@@ -44,7 +44,7 @@ public class TodoSpawner : IDBtnSpawner
         {
             IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
             actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
-            actionBtn.buttonType = ButtonType.SortType; // 정렬
+            actionBtn.buttonType = ButtonType.WordActionType; // 정렬
             WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
             WordManager.WordActionBtnListSet(); // 데이터 삽입
             actionBtn.gameObject.SetActive(true); // 활성화

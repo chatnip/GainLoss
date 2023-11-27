@@ -20,7 +20,7 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(false);
         screenViewCamera.SetActive(true);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         ScreenOn();
 
@@ -33,7 +33,7 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);

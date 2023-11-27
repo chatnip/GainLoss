@@ -17,6 +17,7 @@ public class PlaceSpawner : IDBtnSpawner
 
     public void SpawnBehaviorActionBtn()
     {
+        //여기 작업해야함
         /*
         for (int i = 0; i < PlaceManager.currentPlaceList.Count; i++)
         {
