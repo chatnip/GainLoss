@@ -33,7 +33,7 @@ public class DataManager : Manager<DataManager>
     public void InitData()
     {
         ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
-        // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID
+        // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID | [3]:GetPlaceID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
         // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage | [4]:StreamTitle | [5]:StreamTitleKor
         DialogDatas = CSVReader.Read(this.DialogsFile);

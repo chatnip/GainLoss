@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlaceSpawner : IDBtnSpawner
 {
     [SerializeField] PlaceManager PlaceManager;
-    [SerializeField] RectTransform placeParentObject;
+    [SerializeField] RectTransform behaviorActionParentObject;
 
     protected override IDBtn CreateIDBtn(ButtonValue word)
     {
@@ -17,20 +17,19 @@ public class PlaceSpawner : IDBtnSpawner
 
     public void SpawnBehaviorActionBtn()
     {
-        //여기 작업해야함
-        /*
-        for (int i = 0; i < PlaceManager.currentPlaceList.Count; i++)
+        PickBehaviorActionBtn(); // 버튼 초기화
+        Debug.Log("spawn");
+        for (int i = 0; i < PlaceManager.currentBehaviorActionList.Count; i++)
         {
-            IDBtn placeBtn = CreateIDBtn(PlaceManager.currentPlaceList[i]); // 생성
-            placeBtn.transform.SetParent(placeParentObject); // 부모 설정
-            placeBtn.buttonType = ButtonType.UnSortType; // 정렬
-            PlaceManager.enablePlaceBtnList.Add(placeBtn); // 활성화 리스트에 삽입
-            PlaceManager.PlaceBtnListSet(); // 데이터 삽입
-            placeBtn.gameObject.SetActive(true); // 활성화
+            Debug.Log("spawning");
+            IDBtn behaviorActionBtn = CreateIDBtn(PlaceManager.currentBehaviorActionList[i]); // 생성
+            behaviorActionBtn.transform.SetParent(behaviorActionParentObject); // 부모 설정
+            behaviorActionBtn.buttonType = ButtonType.BehaviorActionType; // 정렬
+            PlaceManager.enableBehaviorActionBtnList.Add(behaviorActionBtn); // 활성화 리스트에 삽입
+            PlaceManager.BehaviorActionBtnListSet(); // 데이터 삽입
+            behaviorActionBtn.gameObject.SetActive(true); // 활성화
         }
-        */
     }
-
 
     protected override void PickIDBtn()
     {
@@ -49,9 +48,23 @@ public class PlaceSpawner : IDBtnSpawner
         }
     }
 
+    public void PickBehaviorActionBtn()
+    {
+        if (PlaceManager.enableBehaviorActionBtnList.Count != 0)
+        {
+            for (int i = PlaceManager.enableBehaviorActionBtnList.Count - 1; i >= 0; i--)
+            {
+                ObjectPooling.ObjectPick(PlaceManager.enableBehaviorActionBtnList[i]);
+            }
+            PlaceManager.enableBehaviorActionBtnList.Clear();
+        }
+    }
+
+
+
     protected override void OnDisable()
     {
         base.OnDisable();
-        // PickBehaviorAction();
+        PickBehaviorActionBtn();
     }
 }

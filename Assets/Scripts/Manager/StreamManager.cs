@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UniRx;
 
-public class StreamManager : MonoBehaviour
+public class StreamManager : Manager<StreamManager>
 {
     [SerializeField] DialogManager DialogManager;
     [HideInInspector] public string currentStreamEventID;

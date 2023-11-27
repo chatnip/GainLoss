@@ -38,7 +38,7 @@ public class TodoSpawner : IDBtnSpawner
 
     public void SpawnWordActionBtn()
     {
-        PickWordAction(); // 버튼 초기화
+        PickWordActionBtn(); // 버튼 초기화
 
         for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
@@ -67,7 +67,7 @@ public class TodoSpawner : IDBtnSpawner
         }
     }
 
-    public void PickWordAction()
+    public void PickWordActionBtn()
     {
         if (WordManager.enableWordActionBtnList.Count != 0)
         {
@@ -82,6 +82,6 @@ public class TodoSpawner : IDBtnSpawner
     protected override void OnDisable()
     {
         base.OnDisable();
-        PickWordAction();
+        PickWordActionBtn();
     }
 }

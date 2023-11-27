@@ -7,7 +7,7 @@ using DG.Tweening;
 using UniRx;
 using TMPro;
 
-public class DialogManager : MonoBehaviour
+public class DialogManager : Manager<DialogManager>
 {
     [Header("*Dialog")]
     [SerializeField] public TMP_Text streamTitleText;
