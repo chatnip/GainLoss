@@ -24,7 +24,6 @@ public class PlaceManager : MonoBehaviour
 
     // 선택한 장소 및 장소의 액션 목록
     [SerializeField] public List<string> currentPlaceIDList = new();
-    [SerializeField] public List<ButtonValue> currentPlaceList = new();
     [HideInInspector] private List<string> currentBehaviorActionIDList = new();
     [HideInInspector] public List<ButtonValue> currentBehaviorActionList = new();
 
@@ -49,7 +48,7 @@ public class PlaceManager : MonoBehaviour
                 {
                     currentPlace = place;
                     InitBehaviorActionID(currentPlace.ID);
-                    // placeBtnSpawner.SpawnWordActionBtn();
+                    placeBtnSpawner.SpawnBehaviorActionBtn();
                 });
         }
     }
@@ -74,23 +73,17 @@ public class PlaceManager : MonoBehaviour
     #region Init
     public void InitPlace()
     {
-        foreach(IDBtn btn in placeBtnList)
+        foreach(IDBtn btn in placeBtnList) // 초기화
         {
-            // 20231127 여기 쓰고있었음
-            /*
-            if(currentPlaceIDList.Find(btn.buttonValue.ID))
-            btn.buttonValue.ID
-            DataManager.PlaceDatas[1][btn.buttonValue.ID]
-            */
+            btn.button.interactable = false;
         }
-
-        currentPlaceList.Clear(); // 초기화
         foreach (string id in currentPlaceIDList) // ID 순회
         {
-            ButtonValue place = new(id, (string)DataManager.PlaceDatas[1][id]);
-            currentPlaceList.Add(place);
+            IDBtn btn = placeBtnList.Find(x => x.buttonValue.ID == id);
+            btn.button.interactable = true;
         }
     }
+
     private void InitBehaviorActionID(string id)
     {
         currentBehaviorActionIDList.Clear(); // 초기화

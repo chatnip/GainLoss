@@ -8,8 +8,8 @@ public class PhoneSoftware : MonoBehaviour
 {
     [Header("*Software")]
     [SerializeField] Button lockScreen;
-    [SerializeField] Button calenderBtn;
-    [SerializeField] GameObject calender;
+    [SerializeField] Button mapBtn;
+    [SerializeField] GameObject map;
     [SerializeField] Button wordpadBtn;
     [SerializeField] GameObject wordpad;
     [SerializeField] Button backBtn;
@@ -23,11 +23,11 @@ public class PhoneSoftware : MonoBehaviour
                 lockScreen.gameObject.SetActive(false);
             });
 
-        calenderBtn
+        mapBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                calender.SetActive(true);
+                map.SetActive(true);
             });
 
         wordpadBtn
@@ -41,7 +41,7 @@ public class PhoneSoftware : MonoBehaviour
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                calender.SetActive(false);
+                map.SetActive(false);
                 wordpad.SetActive(false);
             });       
     }

@@ -15,13 +15,9 @@ public class PlaceSpawner : IDBtnSpawner
         return wordBtn;
     }
 
-    protected override void SpawnIDBtn()
+    public void SpawnBehaviorActionBtn()
     {
-        SpawnPlaceBtn();
-    }
-
-    private void SpawnPlaceBtn()
-    {
+        /*
         for (int i = 0; i < PlaceManager.currentPlaceList.Count; i++)
         {
             IDBtn placeBtn = CreateIDBtn(PlaceManager.currentPlaceList[i]); // 생성
@@ -31,6 +27,7 @@ public class PlaceSpawner : IDBtnSpawner
             PlaceManager.PlaceBtnListSet(); // 데이터 삽입
             placeBtn.gameObject.SetActive(true); // 활성화
         }
+        */
     }
 
 
