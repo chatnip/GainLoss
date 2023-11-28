@@ -17,8 +17,7 @@ public class WordManager : Manager<WordManager>
     [SerializeField] TodoSpawner todoWordBtnSpawner;
      
     [Header("*View")]
-    [SerializeField] TMP_Text inViewWordAction;
-    [SerializeField] TMP_Text outViewWordAction;
+    [SerializeField] TMP_Text viewWordAction;
     [SerializeField] Button resetBtn;
     StringReactiveProperty currentWordActiionStr = new();
 
@@ -49,8 +48,7 @@ public class WordManager : Manager<WordManager>
         currentWordActiionStr
             .Subscribe(x =>
             {
-                inViewWordAction.text = x;
-                outViewWordAction.text = x;
+                viewWordAction.text = x;
             });
 
         resetBtn

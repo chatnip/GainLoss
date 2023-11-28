@@ -9,19 +9,34 @@ public class PhoneHardware : MonoBehaviour
     [SerializeField] GameObject phone2DCamera;
     [SerializeField] GameObject phoneViewCamera;
     [SerializeField] GameObject quarterViewCamera;
+    [SerializeField] GameObject lockScreen;
 
+    public void PhoneOn()
+    {
+        this.gameObject.SetActive(true);
+        phone2DCamera.SetActive(true);
+        phoneScreen.SetActive(true);
+        phoneViewCamera.SetActive(true);
+        lockScreen.SetActive(true);
+        quarterViewCamera.SetActive(false);
+    }
+
+    public void PhoneOff()
+    {
+        phone2DCamera.SetActive(false);
+        phoneScreen.SetActive(false);
+        phoneViewCamera.SetActive(false);
+        quarterViewCamera.SetActive(true);
+        this.gameObject.SetActive(false);
+    }
 
     private void OnEnable()
     {
-        phone2DCamera.SetActive(true);
-        phoneViewCamera.SetActive(true);
-        quarterViewCamera.SetActive(false);
+        PhoneOn();
     }
 
     private void OnDisable()
     {
-        phone2DCamera.SetActive(false);
-        phoneViewCamera.SetActive(false);
-        quarterViewCamera.SetActive(true);
+        PhoneOff();
     }
 }

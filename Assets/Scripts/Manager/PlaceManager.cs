@@ -11,14 +11,18 @@ public class PlaceManager : Manager<PlaceManager>
 {
     [Header("*Property")]
     [SerializeField] ObjectPooling ObjectPooling;
+    [SerializeField] PhoneHardware PhoneHardware;
+    [SerializeField] PhoneSoftware PhoneSoftware;
 
     [Space(10)]
     [SerializeField] PlaceSpawner placeBtnSpawner;
 
     [Header("*Place")]
+    [SerializeField] Button homeBtn;
     [SerializeField] List<IDBtn> placeBtnList = new();
     [SerializeField] GameObject behaviorPopup;
     [SerializeField] Button background;
+    
 
     // 켜진 장소 및 장소의 액션 버튼 목록
     [HideInInspector] public List<IDBtn> enablePlaceBtnList = new();
@@ -37,6 +41,16 @@ public class PlaceManager : Manager<PlaceManager>
     protected override void Awake()
     {
         base.Awake();
+
+        homeBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                // 맵 버튼 비활성화
+                PhoneSoftware.mapBtn.interactable = false;
+                // 핸드폰 끄기
+                PhoneHardware.PhoneOff();
+            });
+
 
         background.OnClickAsObservable()
             .Subscribe(btn =>

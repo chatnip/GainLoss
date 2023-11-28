@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using TMPro;
 
 public class Desktop : MonoBehaviour
 {
@@ -20,15 +21,20 @@ public class Desktop : MonoBehaviour
 
     [Header("*Stream")]
     [SerializeField] public Button streamOpenBtn;
-    [SerializeField] Button streamPopupExitBtn;
-    [SerializeField] Button streamConfirmBtn;
-    [SerializeField] GameObject streamPopup;
     [SerializeField] GameObject streamWindow;
+    [SerializeField] Button streamStartBtn;
 
     [Header("*Todo")]
-    [SerializeField] Button todoOpenBtn;
     [SerializeField] Button todoExitBtn;
     [SerializeField] GameObject todoWindow;
+
+    [Header("*ConfirmPopup")]
+    [SerializeField] DesktopSoftwere desktopSoftwere;
+    [SerializeField] Button popupExitBtn;
+    [SerializeField] Button confirmBtn;
+    [SerializeField] TMP_Text confirmText;
+    [SerializeField] GameObject confirmPopup;
+
 
     private void Awake()
     {
@@ -36,40 +42,37 @@ public class Desktop : MonoBehaviour
         snsOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-
+                desktopSoftwere = DesktopSoftwere.SNS;
+                ConfirmPopupSetting();
             });
 
         fancafeOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-
+                desktopSoftwere = DesktopSoftwere.FanCafe;
+                ConfirmPopupSetting();
             });
         */
 
         streamOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                streamPopup.SetActive(true);
+                desktopSoftwere = DesktopSoftwere.Stream;
+                ConfirmPopupSetting();
             });
 
-        streamPopupExitBtn.OnClickAsObservable()
+        streamStartBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                streamPopup.SetActive(false);
-            });
-        streamConfirmBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
+                todoWindow.SetActive(false);
                 streamWindow.SetActive(true);
-                streamPopup.SetActive(false);
                 StreamManager.StartDialog(StreamManager.currentStreamEventID);
             });
 
-        
-        todoOpenBtn.OnClickAsObservable()
+        popupExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                todoWindow.SetActive(true);
+                confirmPopup.SetActive(false);
             });
 
         todoExitBtn.OnClickAsObservable()
@@ -78,4 +81,59 @@ public class Desktop : MonoBehaviour
                 todoWindow.SetActive(false);
             });
     }
+
+    private void ConfirmPopupSetting()
+    {
+        switch(desktopSoftwere)
+        {
+            case DesktopSoftwere.SNS:
+                SNSConfirm();
+                break;
+            case DesktopSoftwere.FanCafe:
+                FanCafeConfirm();
+                break;
+            case DesktopSoftwere.Stream:
+                StreamConfirm();
+                break;
+        }    
+    }
+
+    private void SNSConfirm()
+    {
+        confirmPopup.SetActive(false);
+        confirmBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                confirmPopup.SetActive(false);
+            });
+    }
+
+    private void FanCafeConfirm()
+    {
+        confirmPopup.SetActive(false);
+        confirmBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                confirmPopup.SetActive(false);
+            });
+    }
+
+    private void StreamConfirm()
+    {     
+        confirmPopup.SetActive(true);
+        confirmBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                confirmPopup.SetActive(false);
+                todoWindow.SetActive(true);
+            });
+    }
+}
+
+
+public enum DesktopSoftwere
+{ 
+    SNS,
+    FanCafe,
+    Stream
 }

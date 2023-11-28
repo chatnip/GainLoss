@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
-    [SerializeField] GameObject phone;
+    [SerializeField] PhoneHardware PhoneHardware;
 
     private void Start()
     {
@@ -13,6 +13,6 @@ public class GameSystem : MonoBehaviour
 
     private void GameStart()
     {
-        phone.SetActive(true);
+        PhoneHardware.PhoneOn();
     }
 }

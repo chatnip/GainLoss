@@ -17,7 +17,7 @@ public class StreamManager : Manager<StreamManager>
     public ScenarioBase InitStreamEventID(string id)
     {
         // 방송 제목 삽입
-        DialogManager.streamTitleText.text = (string)DataManager.StreamEventDatas[5][id];
+        // DialogManager.streamTitleText.text = (string)DataManager.StreamEventDatas[5][id];
 
         List<Fragment> fragments = new();
         foreach (var data in DataManager.DialogDatas[0]) // 다이얼로그 순회

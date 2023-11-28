@@ -8,7 +8,7 @@ public class PhoneSoftware : MonoBehaviour
 {
     [Header("*Software")]
     [SerializeField] Button lockScreen;
-    [SerializeField] Button mapBtn;
+    [SerializeField] public Button mapBtn;
     [SerializeField] GameObject map;
     [SerializeField] Button wordpadBtn;
     [SerializeField] GameObject wordpad;
