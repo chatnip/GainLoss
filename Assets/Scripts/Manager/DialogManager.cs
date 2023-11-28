@@ -94,6 +94,11 @@ public class DialogManager : Manager<DialogManager>
             });
             continue;
         }
+
+        // 행동 있는지 확인
+        // 행동 있으면 검은화면 껐다 켜지고 행동지문 출력
+        // 행동 없으면 검은화면 껐다 켜지고 결과값 보여주기
+
         // dialog.SetActive(false);
         // GameSystem.StartGame();
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작

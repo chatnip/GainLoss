@@ -18,10 +18,8 @@ public class PlaceSpawner : IDBtnSpawner
     public void SpawnBehaviorActionBtn()
     {
         PickBehaviorActionBtn(); // 버튼 초기화
-        Debug.Log("spawn");
         for (int i = 0; i < PlaceManager.currentBehaviorActionList.Count; i++)
         {
-            Debug.Log("spawning");
             IDBtn behaviorActionBtn = CreateIDBtn(PlaceManager.currentBehaviorActionList[i]); // 생성
             behaviorActionBtn.transform.SetParent(behaviorActionParentObject); // 부모 설정
             behaviorActionBtn.buttonType = ButtonType.BehaviorActionType; // 정렬

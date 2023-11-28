@@ -14,12 +14,36 @@ public class StreamManager : Manager<StreamManager>
         DialogManager.ScenarioBase.Value = InitStreamEventID(id);
     }
 
-    public ScenarioBase InitStreamEventID(string id)
+    public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
-        // 방송 제목 삽입
-        // DialogManager.streamTitleText.text = (string)DataManager.StreamEventDatas[5][id];
-
         List<Fragment> fragments = new();
+        List<KeyValuePair<string, object>> basicDatas = new();
+
+        foreach (var data in DataManager.BasicDialogDatas[0]) // 베이직 다이얼로그 순회
+        {
+            if (data.Key.Contains(id.Substring(4, 4)))
+            {
+                basicDatas.Add(data);
+            }
+        }
+
+        // 방송 제목 삽입
+        int rand = Random.Range(1, 4);
+        string addID = "T0" + rand.ToString();
+        DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
+
+        foreach (var data in basicDatas) // 베이직 T 데이터 순회
+        {
+            if (data.Key.Contains(addID))
+            {
+                string key = data.Key; // 동일한 WA키가 담긴 모든 값 가져오기
+                string animeId = (string)DataManager.BasicDialogDatas[0][key];
+                string script = (string)DataManager.BasicDialogDatas[2][key]; // 언어 교체 추가해야함
+                Fragment fragment = new(animeId, script);
+                fragments.Add(fragment);
+            }
+        }
+
         foreach (var data in DataManager.DialogDatas[0]) // 다이얼로그 순회
         {         
             if (data.Key.Contains(id))

@@ -11,6 +11,7 @@ public class PlaceManager : Manager<PlaceManager>
 {
     [Header("*Property")]
     [SerializeField] ObjectPooling ObjectPooling;
+    [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
 
@@ -20,8 +21,16 @@ public class PlaceManager : Manager<PlaceManager>
     [Header("*Place")]
     [SerializeField] Button homeBtn;
     [SerializeField] List<IDBtn> placeBtnList = new();
+
+    [Header("*Behavior")]
     [SerializeField] GameObject behaviorPopup;
-    [SerializeField] Button background;
+    [SerializeField] Button behaviorBackground;
+    [SerializeField] TMP_Text behaviorHeaderText;
+
+    [Header("*BehaviorConfirm")]
+    [SerializeField] GameObject behaviorConfirmPopup;
+    [SerializeField] Button behaviorConfirmButton;
+    [SerializeField] Button behaviorCancelButton;
     
 
     // 켜진 장소 및 장소의 액션 버튼 목록
@@ -52,10 +61,22 @@ public class PlaceManager : Manager<PlaceManager>
             });
 
 
-        background.OnClickAsObservable()
+        behaviorBackground.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 behaviorPopup.SetActive(false);
+            });
+
+        behaviorCancelButton.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                behaviorConfirmPopup.SetActive(false);
+            });
+
+        behaviorConfirmButton.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ActionEventManager.currentActionEventID = currentPlace.ID + currentBehaviorAction.ID;
             });
     }
 
@@ -76,6 +97,8 @@ public class PlaceManager : Manager<PlaceManager>
                 .Subscribe(place =>
                 {
                     currentPlace = place;
+                    string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
+                    behaviorHeaderText.text = text;
                     behaviorPopup.SetActive(true);
                     InitBehaviorActionID(currentPlace.ID);
                     placeBtnSpawner.SpawnBehaviorActionBtn();
@@ -93,8 +116,7 @@ public class PlaceManager : Manager<PlaceManager>
                 .Subscribe(action =>
                 {
                     currentBehaviorAction = action;
-                    // 행동 매니저 만들기
-                    // StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    behaviorConfirmPopup.SetActive(true);
                 });
         }
     }
@@ -126,7 +148,6 @@ public class PlaceManager : Manager<PlaceManager>
             if (data.Key.Contains(id))
             {
                 string key = data.Key.ToString().Substring(3, 4);
-                Debug.Log(key);
                 currentBehaviorActionIDList.Add(key);
             }
         }
