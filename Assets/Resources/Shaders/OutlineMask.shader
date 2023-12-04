@@ -15,7 +15,6 @@ Shader "Custom/Outline Mask" {
     Tags {
       "Queue" = "Transparent+100"
       "RenderType" = "Transparent"
-      "RenderPipeline" = "UniversalRenderPipeline"
     }
 
     Pass {

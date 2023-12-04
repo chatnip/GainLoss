@@ -18,7 +18,6 @@ Shader "Custom/Outline Fill" {
     Tags {
       "Queue" = "Transparent+110"
       "RenderType" = "Transparent"
-      "RenderPipeline" = "UniversalRenderPipeline"
       "DisableBatching" = "True"
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class InteractCore : MonoBehaviour, IInteract, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    [SerializeField] Outline Outline;
+    [SerializeField] OutlineObject Outline;
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("click!");
