@@ -21,6 +21,19 @@ public class PlayerController : MonoBehaviour
     [Tooltip("캐릭터의 좌표계")]
     [SerializeField] protected Vector3 direction;
 
+    [Header("Player Grounded")]
+    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
+    public bool Grounded = true;
+
+    [Tooltip("Useful for rough ground")]
+    public float GroundedOffset = -0.14f;
+
+    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
+    public float GroundedRadius = 0.28f;
+
+    [Tooltip("What layers the character uses as ground")]
+    public LayerMask GroundLayers;
+
     /*
     [Header("Cinemachine")]
     [Tooltip("카메라가 따라갈 시네머신 가상 카메라에 설정된 추적 대상")]
@@ -94,6 +107,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GroundedCheck();
         Move();
     }
 
@@ -109,6 +123,23 @@ public class PlayerController : MonoBehaviour
         _animIDSpeed = Animator.StringToHash("Speed");
         _animIDFreeFall = Animator.StringToHash("FreeFall");
         _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+    }
+
+    private void GroundedCheck()
+    {
+        // set sphere position, with offset
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+            transform.position.z);
+        Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+            QueryTriggerInteraction.Ignore);
+
+        // update animator if using character
+        /*
+        if (_hasAnimator)
+        {
+            _animator.SetBool(_animIDGrounded, Grounded);
+        }
+        */
     }
 
     public virtual void Move()
