@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UniRx;
+using System;
 
 public class StreamManager : Manager<StreamManager>
 {
+    [SerializeField] GameManager GameManager;
     [SerializeField] DialogManager DialogManager;
+    
     [HideInInspector] public string currentStreamEventID;
 
     public void StartDialog(string id)
@@ -27,11 +30,29 @@ public class StreamManager : Manager<StreamManager>
                 basicDatas.Add(data);
             }
         }
-
+        
         // 방송 제목 삽입
         int rand = UnityEngine.Random.Range(1, 4);
         string addID = "T0" + rand.ToString();
         DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
+
+        // 수치 변화
+        // 본래 값 Set
+        StreamEvent streamEvent = new StreamEvent();
+        streamEvent.used = Convert.ToBoolean(DataManager.StreamEventDatas[0][id]);
+        streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]);
+        streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]);
+        streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]);
+        DialogManager.streamEvent = streamEvent;
+
+        // 변화 값 Apply
+        float decMultiple = 1.0f;
+        if (streamEvent.used) { decMultiple = 0.5f; }
+        GameManager.stressGage += (int)(streamEvent.stressValue * decMultiple);
+        GameManager.angerGage += (int)(streamEvent.angerValue * decMultiple);
+        GameManager.riskGage += (int)(streamEvent.riskValue * decMultiple);
+
+        
 
         foreach (var data in basicDatas) // 베이직 T 데이터 순회
         {
@@ -42,6 +63,7 @@ public class StreamManager : Manager<StreamManager>
                 string script = (string)DataManager.BasicDialogDatas[2][key]; // 언어 교체 추가해야함
                 Fragment fragment = new(animeId, script);
                 fragments.Add(fragment);
+
             }
         }
 
@@ -67,9 +89,9 @@ public class StreamManager : Manager<StreamManager>
 [System.Serializable]
 public class StreamEvent
 {
-    [SerializeField] bool used;
-    [SerializeField] int stressValue;
-    [SerializeField] int angerValue;
-    [SerializeField] int riskValue;
+    [HideInInspector] public bool used;
+    [HideInInspector] public int stressValue;
+    [HideInInspector] public int angerValue;
+    [HideInInspector] public int riskValue;
 }
 
