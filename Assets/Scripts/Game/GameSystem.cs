@@ -11,7 +11,7 @@ public class GameSystem : MonoBehaviour
         GameStart();
     }
 
-    private void GameStart()
+    public void GameStart()
     {
         PhoneHardware.PhoneOn();
     }

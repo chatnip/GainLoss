@@ -21,12 +21,21 @@ public class DialogManager : Manager<DialogManager>
 
     [Header("*Result")]
     [SerializeField] GameObject ResultWindow;
+    [SerializeField] Color BaseColor;
+
     [SerializeField] Slider StressSlider;
     [SerializeField] TMP_Text StressText;
+    [SerializeField] Color StressBarColor;
+    
     [SerializeField] Slider AngerSlider;
     [SerializeField] TMP_Text AngerText;
+    [SerializeField] Color AngerBarColor;
+
     [SerializeField] Slider RiskSlider;
     [SerializeField] TMP_Text RiskText;
+    [SerializeField] Color RiskBarColor;
+
+    [SerializeField] Button NextDayBtn;
     [HideInInspector] public StreamEvent streamEvent = new StreamEvent();
     
 
@@ -117,30 +126,49 @@ public class DialogManager : Manager<DialogManager>
         // dialog.SetActive(false);
         // GameSystem.StartGame();
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작
-        float showGageTime = 0.75f;
-        ResultWindow.SetActive(true);
-        EffectGage(StressSlider, gameManager.stressGage, showGageTime);
+
+        #region Result Window
+
+        float showGageTime = 0.8f; //Dotween 시간값
+
+        ResultWindow.SetActive(true); //결과창
+
+        // 게이지 차례로 출력
+        EffectGage(StressSlider, gameManager.stressGage, showGageTime, StressBarColor);
         yield return new WaitForSeconds(showGageTime);
-        EffectGage(AngerSlider, gameManager.angerGage, showGageTime);
+        EffectGage(AngerSlider, gameManager.angerGage, showGageTime, AngerBarColor);
         yield return new WaitForSeconds(showGageTime);
-        EffectGage(RiskSlider, gameManager.riskGage, showGageTime);
+        EffectGage(RiskSlider, gameManager.riskGage, showGageTime, RiskBarColor);
         yield return new WaitForSeconds(showGageTime);
-        IncOpacity(StressText, gameManager.stressGage, streamEvent.stressValue, showGageTime);
-        IncOpacity(AngerText, gameManager.angerGage, streamEvent.angerValue, showGageTime);
-        IncOpacity(RiskText, gameManager.riskGage, streamEvent.riskValue, showGageTime);
+        
+        // 수치(text) 출력
+        IncOpacityText(StressText, gameManager.stressGage, streamEvent.stressValue, showGageTime);
+        IncOpacityText(AngerText, gameManager.angerGage, streamEvent.angerValue, showGageTime);
+        IncOpacityText(RiskText, gameManager.riskGage, streamEvent.riskValue, showGageTime);
+        yield return new WaitForSeconds(showGageTime);
+
+        // 다음날로 가는 버튼 출력
+        NextDayBtn.gameObject.SetActive(true);
+        NextDayBtn.image.DOFade(1, showGageTime).SetEase(Ease.OutSine);
+
+        #endregion
     }
-    public void EffectGage(Slider slider, int appliedGage, float time)
+
+    void EffectGage(Slider slider, int appliedGage, float time, Color color)
     {
         var sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time))
-                    .SetEase(Ease.OutSine);
+        sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time)).SetEase(Ease.OutSine);
+        Image img = slider.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+        var sequence2 = DOTween.Sequence();
+        img.color = BaseColor;
+        Color LastColor = Color.Lerp(BaseColor, color, appliedGage * 0.01f);
+        sequence2.Append(img.DOColor(LastColor, time)).SetEase(Ease.OutSine);
     }
-    public void IncOpacity(TMP_Text text, int appliedGage, int incGage, float time)
+    void IncOpacityText(TMP_Text text, int appliedGage, int incGage, float time)
     {
         string gageAmount = appliedGage + " ( +" + incGage + " )";
         text.text = gageAmount;
-        var sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => text.color, x => text.color = x, new Color(0, 0, 0, 1), time))
-                    .SetEase(Ease.OutSine);
+        text.DOFade(1, time).SetEase(Ease.OutSine);
     }
+    
 }

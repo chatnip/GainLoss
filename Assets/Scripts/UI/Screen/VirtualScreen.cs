@@ -21,6 +21,7 @@ public class VirtualScreen : GraphicRaycaster
         if (Physics.Raycast(ray, out hit))
         {
             Debug.DrawRay(ray.origin, ray.direction * 20, Color.red);
+            
             if (hit.collider.transform == transform)
             {
                 Vector3 virtualPos = new Vector3(hit.textureCoord.x, hit.textureCoord.y);

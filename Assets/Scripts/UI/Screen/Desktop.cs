@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
+using DG.Tweening;
 
 public class Desktop : MonoBehaviour
 {
+    [Header("*Manager")]
     [SerializeField] StreamManager StreamManager;
+    [SerializeField] ActionEventManager ActionEventManager;
+    [SerializeField] GameSystem GameSystem;
+    [SerializeField] ComputerInteract ComputerInteract;
 
     [Header("*SNS")]
     [SerializeField] Button snsOpenBtn;
@@ -22,7 +27,9 @@ public class Desktop : MonoBehaviour
     [Header("*Stream")]
     [SerializeField] public Button streamOpenBtn;
     [SerializeField] GameObject streamWindow;
+    [SerializeField] GameObject resultWindow;
     [SerializeField] Button streamStartBtn;
+    [SerializeField] Button streamEndBtn;
 
     [Header("*Todo")]
     [SerializeField] Button todoExitBtn;
@@ -67,6 +74,13 @@ public class Desktop : MonoBehaviour
                 todoWindow.SetActive(false);
                 streamWindow.SetActive(true);
                 StreamManager.StartDialog(StreamManager.currentStreamEventID);
+            });
+
+        streamEndBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ActionEventManager.TurnOnLoading();
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
             });
 
         popupExitBtn.OnClickAsObservable()
@@ -128,6 +142,7 @@ public class Desktop : MonoBehaviour
                 todoWindow.SetActive(true);
             });
     }
+
 }
 
 

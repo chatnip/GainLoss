@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [ProgressBar("RiskGage", 100, EColor.Blue)]
     public int riskGage = 50;
 
+    [Header("*Day")]
+    public int CurrentDay = 1;
+
     private void Start()
     {
         // wordDatas = WordCSVReader.Parse("TestCVSFile2");

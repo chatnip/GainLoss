@@ -7,18 +7,22 @@ public class PhoneHardware : MonoBehaviour
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
     [SerializeField] GameObject phone2DCamera;
+    [SerializeField] PhoneSoftware phoneSoftware;
     [SerializeField] GameObject phoneViewCamera;
     [SerializeField] GameObject quarterViewCamera;
     [SerializeField] GameObject lockScreen;
 
+
     public void PhoneOn()
     {
         this.gameObject.SetActive(true);
+
         phone2DCamera.SetActive(true);
         phoneScreen.SetActive(true);
         phoneViewCamera.SetActive(true);
-        lockScreen.SetActive(true);
         quarterViewCamera.SetActive(false);
+
+        phoneSoftware.ResetUI();
     }
 
     public void PhoneOff()
@@ -27,6 +31,7 @@ public class PhoneHardware : MonoBehaviour
         phoneScreen.SetActive(false);
         phoneViewCamera.SetActive(false);
         quarterViewCamera.SetActive(true);
+
         this.gameObject.SetActive(false);
     }
 
