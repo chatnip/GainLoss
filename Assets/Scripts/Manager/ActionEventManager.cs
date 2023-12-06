@@ -1,38 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UniRx;
 
 public class ActionEventManager : Manager<ActionEventManager>
 {
+    [SerializeField] GameSystem GameSystem;
     [HideInInspector] public string currentActionEventID;
-    [SerializeField] List<Place> placeList = new();
-    [SerializeField] CanvasGroup loading;
+    [SerializeField] List<PlaceDataBase> placeList = new();
 
-    private Place currentPlace;
+    [SerializeField] Transform placeParent;
+    [SerializeField] GameObject currentPlace;
+    [SerializeField] GameObject home;
 
-    public void PlaceSetting()
+
+    [SerializeField] private ReactiveProperty<PlaceDataBase> placeData = new ReactiveProperty<PlaceDataBase>();
+
+
+    protected override void Awake()
     {
-        TurnOnLoading();
+        base.Awake();
 
-        foreach (var place in placeList) // 베이직 다이얼로그 순회
-        {
-            if (place.placeID.Contains(currentActionEventID))
+        placeData
+            .Where(data => data != null)
+            .Subscribe(data =>
             {
-                
-            }
-        }
+                StartCoroutine(ParsePlace(data));
+            });
     }
 
-    private void TurnOnLoading()
+    public IEnumerator PlaceSetting()
     {
-        Sequence loadingSequence = DOTween.Sequence();
-        loadingSequence.OnStart(() =>
-        {
-            loading.DOFade(1f, 1f);
-        })
-        .SetDelay(5f)
-        .Append(loading.DOFade(0f, 1f));
+        GameSystem.TurnOnLoading();
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(ChangePlacePerData(FindPlace()));
+    }
+
+    private PlaceDataBase FindPlace() // 장소를 리소스에서 찾기
+    {
+        var allPlace = ResourceData<PlaceDataBase>.GetDatas("Place/PlaceData");
+        return Array.Find(allPlace, x => x.placeID == currentActionEventID.Substring(0, 3));
+    }
+
+    private IEnumerator ParsePlace(PlaceDataBase data) // 장소 세팅하기
+    {
+        yield return new WaitForEndOfFrame();
+        home.gameObject.SetActive(false);
+        yield return new WaitForEndOfFrame();
+        currentPlace = Instantiate(data.place, placeParent);
+        GameSystem.playerPos.position = data.spawnPos;
+    }
+
+    public IEnumerator ChangePlacePerData(PlaceDataBase placeData) // UniRX 데이터에 찾은 장소 넣기
+    {
+        this.placeData.Value = null;
+        yield return new WaitForEndOfFrame();
+        this.placeData.Value = placeData;
     }
 }

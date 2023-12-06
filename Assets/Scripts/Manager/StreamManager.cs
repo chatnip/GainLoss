@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class StreamManager : Manager<StreamManager>
         }
 
         // 规价 力格 火涝
-        int rand = Random.Range(1, 4);
+        int rand = UnityEngine.Random.Range(1, 4);
         string addID = "T0" + rand.ToString();
         DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
 
@@ -56,6 +57,9 @@ public class StreamManager : Manager<StreamManager>
             }
         }
         ScenarioBase scenario = new(fragments);
+
+        Debug.Log(Convert.ToBoolean(DataManager.StreamEventDatas[0][id]));
+
         return scenario;
     }
 }

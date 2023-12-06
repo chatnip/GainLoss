@@ -29,6 +29,7 @@ public class PlaceManager : Manager<PlaceManager>
 
     [Header("*BehaviorConfirm")]
     [SerializeField] GameObject behaviorConfirmPopup;
+    [SerializeField] TMP_Text behaviorConfirmText;
     [SerializeField] Button behaviorConfirmButton;
     [SerializeField] Button behaviorCancelButton;
     
@@ -77,6 +78,8 @@ public class PlaceManager : Manager<PlaceManager>
             .Subscribe(btn =>
             {
                 ActionEventManager.currentActionEventID = currentPlace.ID + currentBehaviorAction.ID;
+                ActionEventManager.StartCoroutine(ActionEventManager.PlaceSetting());
+                PhoneHardware.PhoneOff();
             });
     }
 
@@ -116,6 +119,8 @@ public class PlaceManager : Manager<PlaceManager>
                 .Subscribe(action =>
                 {
                     currentBehaviorAction = action;
+                    string text = string.Format("<#D40047><b>{0}</b></color> ¿¡¼­ <#D40047><b>{1}</b></color>", currentPlace.Name, currentBehaviorAction.Name);
+                    behaviorConfirmText.text = text;
                     behaviorConfirmPopup.SetActive(true);
                 });
         }
