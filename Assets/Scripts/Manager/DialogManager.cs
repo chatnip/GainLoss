@@ -6,15 +6,29 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using UniRx;
 using TMPro;
+using Unity.VisualScripting;
 
 public class DialogManager : Manager<DialogManager>
 {
+    [SerializeField] GameManager gameManager;
+
     [Header("*Dialog")]
     [SerializeField] public TMP_Text streamTitleText;
     [SerializeField] TMP_Text streamScriptText;
     [SerializeField] Button dialogNextBtn;
     [SerializeField] InputAction click;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
+
+    [Header("*Result")]
+    [SerializeField] GameObject ResultWindow;
+    [SerializeField] Slider StressSlider;
+    [SerializeField] TMP_Text StressText;
+    [SerializeField] Slider AngerSlider;
+    [SerializeField] TMP_Text AngerText;
+    [SerializeField] Slider RiskSlider;
+    [SerializeField] TMP_Text RiskText;
+    [HideInInspector] public StreamEvent streamEvent = new StreamEvent();
+    
 
     private void OnEnable()
     {
@@ -34,6 +48,7 @@ public class DialogManager : Manager<DialogManager>
             {
                 StartCoroutine(DialogTexting(texting));
             });
+            
 
         /*
         ScenarioBase
@@ -102,5 +117,30 @@ public class DialogManager : Manager<DialogManager>
         // dialog.SetActive(false);
         // GameSystem.StartGame();
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작
+        float showGageTime = 0.75f;
+        ResultWindow.SetActive(true);
+        EffectGage(StressSlider, gameManager.stressGage, showGageTime);
+        yield return new WaitForSeconds(showGageTime);
+        EffectGage(AngerSlider, gameManager.angerGage, showGageTime);
+        yield return new WaitForSeconds(showGageTime);
+        EffectGage(RiskSlider, gameManager.riskGage, showGageTime);
+        yield return new WaitForSeconds(showGageTime);
+        IncOpacity(StressText, gameManager.stressGage, streamEvent.stressValue, showGageTime);
+        IncOpacity(AngerText, gameManager.angerGage, streamEvent.angerValue, showGageTime);
+        IncOpacity(RiskText, gameManager.riskGage, streamEvent.riskValue, showGageTime);
+    }
+    public void EffectGage(Slider slider, int appliedGage, float time)
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time))
+                    .SetEase(Ease.OutSine);
+    }
+    public void IncOpacity(TMP_Text text, int appliedGage, int incGage, float time)
+    {
+        string gageAmount = appliedGage + " ( +" + incGage + " )";
+        text.text = gageAmount;
+        var sequence = DOTween.Sequence();
+        sequence.Append(DOTween.To(() => text.color, x => text.color = x, new Color(0, 0, 0, 1), time))
+                    .SetEase(Ease.OutSine);
     }
 }
