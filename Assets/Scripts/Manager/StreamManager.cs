@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UniRx;
-using System;
 
 public class StreamManager : Manager<StreamManager>
 {

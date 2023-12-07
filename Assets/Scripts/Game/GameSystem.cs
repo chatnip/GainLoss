@@ -18,6 +18,8 @@ public class GameSystem : MonoBehaviour
 
     public void GameStart()
     {
+        playerPos.position = new Vector3(0, 0.2f, 0);
+        playerPos.rotation = Quaternion.identity;
         PhoneHardware.PhoneOn();
     }
 

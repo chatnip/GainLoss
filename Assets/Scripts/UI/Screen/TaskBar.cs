@@ -16,7 +16,7 @@ public class TaskBar : MonoBehaviour
         windowButton.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut(false));
             });
     }
     public void SetCurrentDay(float Day)

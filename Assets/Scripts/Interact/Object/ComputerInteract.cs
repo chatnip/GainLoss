@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ComputerInteract : InteractObject
 {
+    [SerializeField] GameSystem GameSystem;
     [Header("*Camera")]
     [Tooltip("메인 가상 카메라")]
     [SerializeField] GameObject quarterViewCamera;
@@ -27,7 +28,7 @@ public class ComputerInteract : InteractObject
         yield break;
     }
 
-    public IEnumerator ScreenZoomOut() // 본래 카메라로 변경
+    public IEnumerator ScreenZoomOut(bool isNext) // 본래 카메라로 변경
     {
         ScreenOff();
         quarterViewCamera.SetActive(true);
@@ -38,6 +39,11 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);
         screenObject.SetActive(false);
+
+        if(isNext)
+        {
+            GameSystem.GameStart();
+        }
 
         yield break;
     }

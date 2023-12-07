@@ -10,7 +10,8 @@ using Unity.VisualScripting;
 
 public class DialogManager : Manager<DialogManager>
 {
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GameManager GameManager;
+    [SerializeField] GameSystem GameSystem;
 
     [Header("*Dialog")]
     [SerializeField] public TMP_Text streamTitleText;
@@ -20,22 +21,22 @@ public class DialogManager : Manager<DialogManager>
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
 
     [Header("*Result")]
-    [SerializeField] GameObject ResultWindow;
-    [SerializeField] Color BaseColor;
+    [SerializeField] GameObject resultWindow;
+    [SerializeField] Color baseColor;
 
-    [SerializeField] Slider StressSlider;
-    [SerializeField] TMP_Text StressText;
-    [SerializeField] Color StressBarColor;
+    [SerializeField] Slider stressSlider;
+    [SerializeField] TMP_Text stressText;
+    [SerializeField] Color stressBarColor;
     
-    [SerializeField] Slider AngerSlider;
-    [SerializeField] TMP_Text AngerText;
-    [SerializeField] Color AngerBarColor;
+    [SerializeField] Slider angerSlider;
+    [SerializeField] TMP_Text angerText;
+    [SerializeField] Color angerBarColor;
 
-    [SerializeField] Slider RiskSlider;
-    [SerializeField] TMP_Text RiskText;
-    [SerializeField] Color RiskBarColor;
+    [SerializeField] Slider riskSlider;
+    [SerializeField] TMP_Text riskText;
+    [SerializeField] Color riskBarColor;
 
-    [SerializeField] Button NextDayBtn;
+    [SerializeField] Button nextDayBtn;
     [HideInInspector] public StreamEvent streamEvent = new StreamEvent();
     
 
@@ -127,31 +128,34 @@ public class DialogManager : Manager<DialogManager>
         // GameSystem.StartGame();
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작
 
-        #region Result Window
+        StartCoroutine(ResultWindowOn());
+    }
 
+    IEnumerator ResultWindowOn()
+    {
         float showGageTime = 0.8f; //Dotween 시간값
 
-        ResultWindow.SetActive(true); //결과창
+        resultWindow.SetActive(true); //결과창
 
         // 게이지 차례로 출력
-        EffectGage(StressSlider, gameManager.stressGage, showGageTime, StressBarColor);
+        EffectGage(stressSlider, GameManager.stressGage, showGageTime, stressBarColor);
         yield return new WaitForSeconds(showGageTime);
-        EffectGage(AngerSlider, gameManager.angerGage, showGageTime, AngerBarColor);
+        EffectGage(angerSlider, GameManager.angerGage, showGageTime, angerBarColor);
         yield return new WaitForSeconds(showGageTime);
-        EffectGage(RiskSlider, gameManager.riskGage, showGageTime, RiskBarColor);
+        EffectGage(riskSlider, GameManager.riskGage, showGageTime, riskBarColor);
         yield return new WaitForSeconds(showGageTime);
-        
+
         // 수치(text) 출력
-        IncOpacityText(StressText, gameManager.stressGage, streamEvent.stressValue, showGageTime);
-        IncOpacityText(AngerText, gameManager.angerGage, streamEvent.angerValue, showGageTime);
-        IncOpacityText(RiskText, gameManager.riskGage, streamEvent.riskValue, showGageTime);
+        IncOpacityText(stressText, GameManager.stressGage, streamEvent.stressValue, showGageTime);
+        IncOpacityText(angerText, GameManager.angerGage, streamEvent.angerValue, showGageTime);
+        IncOpacityText(riskText, GameManager.riskGage, streamEvent.riskValue, showGageTime);
         yield return new WaitForSeconds(showGageTime);
 
         // 다음날로 가는 버튼 출력
-        NextDayBtn.gameObject.SetActive(true);
-        NextDayBtn.image.DOFade(1, showGageTime).SetEase(Ease.OutSine);
+        nextDayBtn.gameObject.SetActive(true);
+        nextDayBtn.image.DOFade(1, showGageTime).SetEase(Ease.OutSine);
+        yield return new WaitForSeconds(showGageTime);
 
-        #endregion
     }
 
     void EffectGage(Slider slider, int appliedGage, float time, Color color)
@@ -160,8 +164,8 @@ public class DialogManager : Manager<DialogManager>
         sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time)).SetEase(Ease.OutSine);
         Image img = slider.transform.GetChild(1).GetChild(0).GetComponent<Image>();
         var sequence2 = DOTween.Sequence();
-        img.color = BaseColor;
-        Color LastColor = Color.Lerp(BaseColor, color, appliedGage * 0.01f);
+        img.color = baseColor;
+        Color LastColor = Color.Lerp(baseColor, color, appliedGage * 0.01f);
         sequence2.Append(img.DOColor(LastColor, time)).SetEase(Ease.OutSine);
     }
     void IncOpacityText(TMP_Text text, int appliedGage, int incGage, float time)

@@ -13,11 +13,12 @@ public class VirtualScreen : GraphicRaycaster
 
     [HideInInspector] public Vector3 eventdataPos;
 
+    Ray ray;
+    RaycastHit hit;
 
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
     {
-        Ray ray = eventCamera.ScreenPointToRay(eventData.position);
-        RaycastHit hit;
+        ray = eventCamera.ScreenPointToRay(eventData.position);
         if (Physics.Raycast(ray, out hit))
         {
             Debug.DrawRay(ray.origin, ray.direction * 20, Color.red);
@@ -30,9 +31,8 @@ public class VirtualScreen : GraphicRaycaster
 
                 eventData.position = virtualPos;
                 eventdataPos = virtualPos;
-
                 screenCaster.Raycast(eventData, resultAppendList);
-                
+
             }
         }
     }

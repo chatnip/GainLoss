@@ -10,7 +10,6 @@ public class Desktop : MonoBehaviour
 {
     [Header("*Manager")]
     [SerializeField] StreamManager StreamManager;
-    [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract ComputerInteract;
 
@@ -29,7 +28,7 @@ public class Desktop : MonoBehaviour
     [SerializeField] GameObject streamWindow;
     [SerializeField] GameObject resultWindow;
     [SerializeField] Button streamStartBtn;
-    [SerializeField] Button streamEndBtn;
+    [SerializeField] Button nextDayBtn;
 
     [Header("*Todo")]
     [SerializeField] Button todoExitBtn;
@@ -76,11 +75,10 @@ public class Desktop : MonoBehaviour
                 StreamManager.StartDialog(StreamManager.currentStreamEventID);
             });
 
-        streamEndBtn.OnClickAsObservable()
+        nextDayBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ActionEventManager.TurnOnLoading();
-                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+                StartCoroutine(NextDayLoad());
             });
 
         popupExitBtn.OnClickAsObservable()
@@ -94,6 +92,14 @@ public class Desktop : MonoBehaviour
             {
                 todoWindow.SetActive(false);
             });
+    }
+
+    private IEnumerator NextDayLoad()
+    {
+        GameSystem.TurnOnLoading();
+        yield return new WaitForEndOfFrame();
+        ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut(true));
+        yield break;
     }
 
     private void ConfirmPopupSetting()
