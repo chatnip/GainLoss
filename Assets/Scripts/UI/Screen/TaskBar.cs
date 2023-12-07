@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using TMPro;
 
 public class TaskBar : MonoBehaviour
 {
-    // [SerializeField] ScreenObject ScreenObject;
+    [SerializeField] ComputerInteract ComputerInteract;
     [SerializeField] Button windowButton;
+    [SerializeField] TMP_Text CurrentDay;
 
     private void Awake()
-    {
-        windowButton
-            .OnClickAsObservable()
-            .Subscribe(x =>
+    {   
+        windowButton.OnClickAsObservable()
+            .Subscribe(btn =>
             {
-                // ScreenObject.InteractCancel();
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
             });
+    }
+    public void SetCurrentDay(float Day)
+    {
+        CurrentDay.text = "DAY " + Day;
     }
 }

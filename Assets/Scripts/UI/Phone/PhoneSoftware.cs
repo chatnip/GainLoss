@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using TMPro;
 
 public class PhoneSoftware : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PhoneSoftware : MonoBehaviour
     [SerializeField] Button wordpadBtn;
     [SerializeField] GameObject wordpad;
     [SerializeField] Button backBtn;
+
+    [Header("*Day")]
+    [SerializeField] TMP_Text MapBtnDay;
 
     private void Awake()
     {
@@ -45,9 +49,17 @@ public class PhoneSoftware : MonoBehaviour
                 wordpad.SetActive(false);
             });       
     }
+    public void ResetUI()
+    {
+        lockScreen.gameObject.SetActive(true);
+        mapBtn.interactable = true;
+        map.SetActive(false);
+        wordpadBtn.interactable = true;
+        wordpad.SetActive(false);
+    }
 
     private void OnEnable()
     {
-        lockScreen.gameObject.SetActive(true);
+        ResetUI();
     }
 }
