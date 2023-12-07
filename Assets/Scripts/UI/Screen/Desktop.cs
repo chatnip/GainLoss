@@ -9,9 +9,14 @@ using DG.Tweening;
 public class Desktop : MonoBehaviour
 {
     [Header("*Manager")]
-    [SerializeField] StreamManager StreamManager;
-    [SerializeField] GameSystem GameSystem;
-    [SerializeField] ComputerInteract ComputerInteract;
+    [SerializeField] WordManager wordManager;
+    [SerializeField] ActionEventManager actionEventManager;
+    [SerializeField] StreamManager streamManager;
+    [SerializeField] GameSystem gameSystem;
+    [SerializeField] ComputerInteract computerInteract;
+
+    [Header("*Public")]
+    [SerializeField] Image BlackScreen;
 
     [Header("*SNS")]
     [SerializeField] Button snsOpenBtn;
@@ -28,7 +33,7 @@ public class Desktop : MonoBehaviour
     [SerializeField] GameObject streamWindow;
     [SerializeField] GameObject resultWindow;
     [SerializeField] Button streamStartBtn;
-    [SerializeField] Button nextDayBtn;
+    [SerializeField] Button streamEndBtn;
 
     [Header("*Todo")]
     [SerializeField] Button todoExitBtn;
@@ -41,6 +46,12 @@ public class Desktop : MonoBehaviour
     [SerializeField] TMP_Text confirmText;
     [SerializeField] GameObject confirmPopup;
 
+    [Header("*WindowFrame")]
+    [SerializeField] float AppearTime = 0.3f;
+    [SerializeField] float AppearStartSize = 0.8f;
+
+    [SerializeField] float DisappearTime = 0.075f;
+    [SerializeField] float DisappearLastSize = 0.92f;
 
     private void Awake()
     {
@@ -70,36 +81,40 @@ public class Desktop : MonoBehaviour
         streamStartBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                todoWindow.SetActive(false);
-                streamWindow.SetActive(true);
-                StreamManager.StartDialog(StreamManager.currentStreamEventID);
+                List<Button> btns = new List<Button>() { todoExitBtn, streamStartBtn };
+                DisappearEffectful(todoWindow.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
+                //todoWindow.SetActive(false);
+
+                List<Button> btns2 = new List<Button> { };
+                AppearEffectful(streamWindow.GetComponent<RectTransform>(), btns2, AppearTime, AppearStartSize);
+                //streamWindow.SetActive(true);
+
+                streamManager.StartDialog(streamManager.currentStreamEventID);
             });
 
-        nextDayBtn.OnClickAsObservable()
+        streamEndBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                StartCoroutine(NextDayLoad());
+                TurnOff();
+                actionEventManager.TurnOnLoading();
+                computerInteract.StartCoroutine(computerInteract.ScreenZoomOut(false));
             });
 
         popupExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                confirmPopup.SetActive(false);
+                //confirmPopup.SetActive(false);
+                List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
+                DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
             });
 
         todoExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                todoWindow.SetActive(false);
+                //todoWindow.SetActive(false); 
+                List<Button> btns = new List<Button>() { todoExitBtn, streamStartBtn };
+                DisappearEffectful(todoWindow.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
             });
-    }
-
-    private IEnumerator NextDayLoad()
-    {
-        GameSystem.TurnOnLoading();
-        yield return new WaitForEndOfFrame();
-        ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut(true));
-        yield break;
     }
 
     private void ConfirmPopupSetting()
@@ -140,12 +155,80 @@ public class Desktop : MonoBehaviour
 
     private void StreamConfirm()
     {     
-        confirmPopup.SetActive(true);
+        //confirmPopup.SetActive(true);
         confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                wordManager.InitWord();
+                wordManager.WordBtnListSet();
+                wordManager.WordActionBtnListSet();
+                wordManager.TodoReset();
+                
+
                 confirmPopup.SetActive(false);
-                todoWindow.SetActive(true);
+                //todoWindow.SetActive(true);
+                List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
+                AppearEffectful(todoWindow.GetComponent<RectTransform>(), btns, AppearTime, AppearStartSize);
+            });
+        List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
+        AppearEffectful(confirmPopup.GetComponent<RectTransform>(), btns, AppearTime, AppearStartSize);
+    }
+
+    private void TurnOff()
+    {
+        BlackScreen.color = Color.black;
+        BlackScreen.gameObject.SetActive(true);
+
+        BlackScreen.DOFade(1, 1)
+            .OnComplete(() =>
+            {
+                BlackScreen.gameObject.SetActive(true);
+            });
+    }
+    private void TurnOn()
+    {
+        //snsWindow.SetActive(false);
+        //fancafeWindow.SetActive(false);
+        resultWindow.SetActive(false);
+        streamWindow.SetActive(false);
+        todoWindow.SetActive(false);
+        BlackScreen.DOFade(0, 1)
+            .SetEase(Ease.InSine)
+            .OnComplete(() =>
+            {
+                BlackScreen.gameObject.SetActive(false);
+            });
+    }
+    private void OnEnable()
+    {
+        TurnOn();
+    }
+
+
+    public static void AppearEffectful(RectTransform RT, List<Button> btns, float time, float size)
+    {
+        foreach (Button btn in btns) { btn.interactable = false; }
+
+        RT.transform.localScale = Vector3.one * size;
+
+        RT.gameObject.SetActive(true);
+        RT.transform.DOScale(Vector3.one, time)
+            .OnComplete(() =>
+            {
+                foreach (Button btn in btns) { btn.interactable = true; }
+            });
+    }
+    public static void DisappearEffectful(RectTransform RT, List<Button> btns, float time, float size)
+    {
+        foreach (Button btn in btns) { btn.interactable = false; }
+
+        RT.transform.localScale = Vector3.one;
+
+        RT.transform.DOScale(Vector3.one * size, time)
+            .OnComplete(() =>
+            {
+                foreach (Button btn in btns) { btn.interactable = true; }
+                RT.gameObject.SetActive(false);
             });
     }
 

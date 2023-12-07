@@ -13,7 +13,7 @@ public class ComputerInteract : InteractObject
     [SerializeField] GameObject screenViewCamera;
     [SerializeField] GameObject screenObject;
     [Space(10)]
-    [SerializeField] GameObject Computer2DCamera;
+    [SerializeField] public GameObject Computer2DCamera;
 
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {
@@ -21,7 +21,7 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(false);
         screenViewCamera.SetActive(true);
 
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
         ScreenOn();
 
@@ -34,10 +34,10 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
-        quarterViewCamera.SetActive(true);
-        screenViewCamera.SetActive(false);
+        //quarterViewCamera.SetActive(true);
+        //screenViewCamera.SetActive(false);
         screenObject.SetActive(false);
 
         if(isNext)

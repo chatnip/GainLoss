@@ -59,7 +59,7 @@ public class WordManager : Manager<WordManager>
             });
     }
 
-    private void TodoReset()
+    public void TodoReset()
     {
         todoWordBtnSpawner.PickWordActionBtn();
         currentWord = null;
@@ -93,10 +93,16 @@ public class WordManager : Manager<WordManager>
                 .Select(action => wordActionBtn.buttonValue)
                 .Subscribe(action =>
                 {
-                    currentWordAction = action;                   
-                    string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
-                    currentWordActiionStr.Value = text;
-                    StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    if( currentWord != null)
+                    {
+                        currentWordAction = action;
+                        string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
+                        currentWordActiionStr.Value = text;
+                        StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    }
+                    
+
+
                 });
         }
     }

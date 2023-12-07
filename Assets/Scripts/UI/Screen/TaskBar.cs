@@ -4,23 +4,36 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
+using UnityEditor.ShaderKeywordFilter;
+using UnityEditor.Experimental.GraphView;
+using DG.Tweening;
 
 public class TaskBar : MonoBehaviour
 {
+    [SerializeField] GameManager gameManager;
     [SerializeField] ComputerInteract ComputerInteract;
     [SerializeField] Button windowButton;
-    [SerializeField] TMP_Text CurrentDay;
+    [SerializeField] TMP_Text CurrentDayText;
+    [SerializeField] Image BlackScreen;
 
     private void Awake()
     {   
         windowButton.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                BlackScreen.color = Color.black;
+                BlackScreen.gameObject.SetActive(true);
+
+                BlackScreen.DOFade(1, 1)
+                    .OnComplete(() =>
+                    {
+                        BlackScreen.gameObject.SetActive(true);
+                    });
                 ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut(false));
             });
     }
-    public void SetCurrentDay(float Day)
+    private void OnEnable()
     {
-        CurrentDay.text = "DAY " + Day;
+        CurrentDayText.text = "DAY " + gameManager.CurrentDay;
     }
 }

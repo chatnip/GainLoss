@@ -50,6 +50,7 @@ public class TodoSpawner : IDBtnSpawner
             actionBtn.gameObject.SetActive(true); // È°¼ºÈ­
         }
     }
+
     protected override void PickIDBtn()
     {
         PickWordBtn();

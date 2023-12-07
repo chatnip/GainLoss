@@ -39,19 +39,31 @@ public class StreamManager : Manager<StreamManager>
         // 본래 값 Set
         StreamEvent streamEvent = new StreamEvent();
         streamEvent.used = Convert.ToBoolean(DataManager.StreamEventDatas[0][id]);
-        streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]);
-        streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]);
-        streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]);
+        
+        // 변화 값 Apply
+        if (streamEvent.used) 
+        {
+            streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]) / 2;
+            streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]) / 2;
+            streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]) / 2;
+        }
+        else
+        {
+            streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]);
+            streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]);
+            streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]);
+        }
+
+        GameManager.stressGage += (int)(streamEvent.stressValue);
+        GameManager.angerGage += (int)(streamEvent.angerValue);
+        GameManager.riskGage += (int)(streamEvent.riskValue);
+
         DialogManager.streamEvent = streamEvent;
 
-        // 변화 값 Apply
-        float decMultiple = 1.0f;
-        if (streamEvent.used) { decMultiple = 0.5f; }
-        GameManager.stressGage += (int)(streamEvent.stressValue * decMultiple);
-        GameManager.angerGage += (int)(streamEvent.angerValue * decMultiple);
-        GameManager.riskGage += (int)(streamEvent.riskValue * decMultiple);
-
-        
+        if (Convert.ToBoolean(DataManager.StreamEventDatas[0][id]) == false)
+        {
+            DataManager.StreamEventDatas[0][id] = true.ToString();
+        }
 
         foreach (var data in basicDatas) // 베이직 T 데이터 순회
         {

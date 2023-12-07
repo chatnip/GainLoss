@@ -7,6 +7,9 @@ using TMPro;
 
 public class PhoneSoftware : MonoBehaviour
 {
+    [Header("*Manager")]
+    [SerializeField] GameManager gameManager;
+
     [Header("*Software")]
     [SerializeField] Button lockScreen;
     [SerializeField] public Button mapBtn;
@@ -51,11 +54,22 @@ public class PhoneSoftware : MonoBehaviour
     }
     public void ResetUI()
     {
+        #region WindowUI
+
         lockScreen.gameObject.SetActive(true);
         mapBtn.interactable = true;
         map.SetActive(false);
         wordpadBtn.interactable = true;
         wordpad.SetActive(false);
+
+        #endregion
+
+        #region Day
+
+        MapBtnDay.text = gameManager.CurrentDay + " Day";
+
+        #endregion
+
     }
 
     private void OnEnable()

@@ -7,11 +7,11 @@ public class GameManager : MonoBehaviour
 {
     [Header("*Gage")]
     [ProgressBar("StressGage", 100, EColor.Red)]
-    public int stressGage = 50;
+    public int stressGage = 0;
     [ProgressBar("AngerGage", 100, EColor.Green)]
-    public int angerGage = 50;
+    public int angerGage = 0;
     [ProgressBar("RiskGage", 100, EColor.Blue)]
-    public int riskGage = 50;
+    public int riskGage = 0;
 
     [Header("*Day")]
     public int CurrentDay = 1;
