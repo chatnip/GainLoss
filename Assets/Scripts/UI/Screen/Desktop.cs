@@ -159,10 +159,11 @@ public class Desktop : MonoBehaviour
         confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                wordManager.InitWord();
-                wordManager.WordBtnListSet();
-                wordManager.WordActionBtnListSet();
                 wordManager.TodoReset();
+                wordManager.InitWord();
+                // wordManager.WordBtnListSet();
+                // wordManager.WordActionBtnListSet();
+                
                 
 
                 confirmPopup.SetActive(false);

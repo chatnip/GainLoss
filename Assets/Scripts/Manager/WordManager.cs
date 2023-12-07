@@ -26,8 +26,8 @@ public class WordManager : Manager<WordManager>
 
 
     // 켜진 단어 및 단어의 액션 버튼 목록
-    [HideInInspector] public List<IDBtn> enableWordBtnList = new();
-    [HideInInspector] public List<IDBtn> enableWordActionBtnList = new();
+    [SerializeField] public List<IDBtn> enableWordBtnList = new();
+    [SerializeField] public List<IDBtn> enableWordActionBtnList = new();
 
     // 선택한 단어 및 단어의 액션 목록
     [HideInInspector] public List<string> currentWordIDList = new();
@@ -38,7 +38,7 @@ public class WordManager : Manager<WordManager>
     // 선택한 단어 및 단어의 액션
     private ButtonValue currentWord;
     private ButtonValue currentWordAction;
-    
+
 
     private void Start()
     {
@@ -64,20 +64,28 @@ public class WordManager : Manager<WordManager>
         todoWordBtnSpawner.PickWordActionBtn();
         currentWord = null;
         currentWordAction = null;
+        // currentWordIDList.Clear();  // 목록을 지우도록 수정
+        currentWordList.Clear();
+        currentWordActionIDList.Clear();
+        currentWordActionList.Clear();
         currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
 
     #region ButtonListSeting
     public void WordBtnListSet()
     {
+        Debug.Log(enableWordBtnList.Count);
         foreach (IDBtn wordBtn in enableWordBtnList)
         {
+            Debug.Log(wordBtn.buttonValue.Name);
             wordBtn.button
                 .OnClickAsObservable()
                 .Select(word => wordBtn.buttonValue)
+                .RepeatUntilDisable(wordBtn)
                 .Subscribe(word =>
                 {
                     currentWord = word;
+                    Debug.Log("currentWord : " + currentWord.Name);
                     InitWordActionID(currentWord.ID);
                     todoWordBtnSpawner.SpawnWordActionBtn();
                 });
@@ -86,23 +94,21 @@ public class WordManager : Manager<WordManager>
 
     public void WordActionBtnListSet()
     {
+        Debug.Log(enableWordActionBtnList.Count);
         foreach (IDBtn wordActionBtn in enableWordActionBtnList)
         {
+            Debug.Log(wordActionBtn.buttonValue.Name);
             wordActionBtn.button
                 .OnClickAsObservable()
                 .Select(action => wordActionBtn.buttonValue)
+                .RepeatUntilDisable(wordActionBtn)
                 .Subscribe(action =>
                 {
-                    if( currentWord != null)
-                    {
-                        currentWordAction = action;
-                        string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
-                        currentWordActiionStr.Value = text;
-                        StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
-                    }
-                    
-
-
+                    currentWordAction = action;
+                    Debug.Log("currentWordAction : " + currentWordAction.Name);
+                    string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
+                    currentWordActiionStr.Value = text;
+                    StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
                 });
         }
     }
