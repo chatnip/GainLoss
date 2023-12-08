@@ -9,10 +9,10 @@ using DG.Tweening;
 public class Desktop : MonoBehaviour
 {
     [Header("*Manager")]
-    [SerializeField] WordManager wordManager;
-    [SerializeField] ActionEventManager actionEventManager;
-    [SerializeField] StreamManager streamManager;
-    [SerializeField] GameSystem gameSystem;
+    [SerializeField] WordManager WordManager;
+    [SerializeField] ActionEventManager ActionEventManager;
+    [SerializeField] StreamManager StreamManager;
+    [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract computerInteract;
 
     [Header("*Public")]
@@ -47,11 +47,11 @@ public class Desktop : MonoBehaviour
     [SerializeField] GameObject confirmPopup;
 
     [Header("*WindowFrame")]
-    [SerializeField] float AppearTime = 0.3f;
-    [SerializeField] float AppearStartSize = 0.8f;
+    [SerializeField] float AppearTime;
+    [SerializeField] float AppearStartSize;
 
-    [SerializeField] float DisappearTime = 0.075f;
-    [SerializeField] float DisappearLastSize = 0.92f;
+    [SerializeField] float DisappearTime;
+    [SerializeField] float DisappearLastSize;
 
     private void Awake()
     {
@@ -81,22 +81,20 @@ public class Desktop : MonoBehaviour
         streamStartBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                List<Button> btns = new List<Button>() { todoExitBtn, streamStartBtn };
-                DisappearEffectful(todoWindow.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
+                EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
                 //todoWindow.SetActive(false);
 
-                List<Button> btns2 = new List<Button> { };
-                AppearEffectful(streamWindow.GetComponent<RectTransform>(), btns2, AppearTime, AppearStartSize);
+                EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
                 //streamWindow.SetActive(true);
 
-                streamManager.StartDialog(streamManager.currentStreamEventID);
+                StreamManager.StartDialog(StreamManager.currentStreamEventID);
             });
 
         streamEndBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 TurnOff();
-                actionEventManager.TurnOnLoading();
+                ActionEventManager.TurnOnLoading();
                 computerInteract.StartCoroutine(computerInteract.ScreenZoomOut(false));
             });
 
@@ -104,16 +102,14 @@ public class Desktop : MonoBehaviour
             .Subscribe(btn =>
             {
                 //confirmPopup.SetActive(false);
-                List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
-                DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
+                EffectfulWindow.DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
             });
 
         todoExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                //todoWindow.SetActive(false); 
-                List<Button> btns = new List<Button>() { todoExitBtn, streamStartBtn };
-                DisappearEffectful(todoWindow.GetComponent<RectTransform>(), btns, DisappearTime, DisappearLastSize);
+                //todoWindow.SetActive(false);
+                EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
             });
     }
 
@@ -159,8 +155,8 @@ public class Desktop : MonoBehaviour
         confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                wordManager.TodoReset();
-                wordManager.InitWord();
+                WordManager.TodoReset();
+                WordManager.InitWord();
                 // wordManager.WordBtnListSet();
                 // wordManager.WordActionBtnListSet();
                 
@@ -168,11 +164,10 @@ public class Desktop : MonoBehaviour
 
                 confirmPopup.SetActive(false);
                 //todoWindow.SetActive(true);
-                List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
-                AppearEffectful(todoWindow.GetComponent<RectTransform>(), btns, AppearTime, AppearStartSize);
+                EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
             });
-        List<Button> btns = new List<Button>() { confirmBtn, popupExitBtn };
-        AppearEffectful(confirmPopup.GetComponent<RectTransform>(), btns, AppearTime, AppearStartSize);
+
+        EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
     }
 
     private void TurnOff()
@@ -206,7 +201,7 @@ public class Desktop : MonoBehaviour
     }
 
 
-    public static void AppearEffectful(RectTransform RT, List<Button> btns, float time, float size)
+    /*public static void AppearEffectful(RectTransform RT, List<Button> btns, float time, float size)
     {
         foreach (Button btn in btns) { btn.interactable = false; }
 
@@ -231,7 +226,7 @@ public class Desktop : MonoBehaviour
                 foreach (Button btn in btns) { btn.interactable = true; }
                 RT.gameObject.SetActive(false);
             });
-    }
+    }*/
 
 }
 

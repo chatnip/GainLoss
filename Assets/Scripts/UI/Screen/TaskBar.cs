@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
-using UnityEditor.ShaderKeywordFilter;
-using UnityEditor.Experimental.GraphView;
 using DG.Tweening;
 
 public class TaskBar : MonoBehaviour
