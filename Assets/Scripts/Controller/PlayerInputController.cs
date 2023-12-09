@@ -6,8 +6,12 @@ using UniRx;
 
 public class PlayerInputController : Manager<PlayerInputController>
 {
+    [Header("Popup")]
+    [SerializeField] Pause pause;
+    
     [Header("Input Setting")]
     [SerializeField] public PlayerInput _input;
+    [SerializeField] InputAction settingOn;
 
     [Header("Character Input Values")]
     public Vector2 move;
@@ -69,10 +73,12 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void OnEnable()
     {
         EnablePlayerInput();
+        settingOn.Enable();
     }
     private void OnDisable()
     {
         DisablePlayerInput();
+        settingOn.Disable();
     }
 
     public void EnablePlayerInput()
@@ -81,6 +87,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["Move"].performed += OnMove;
         playerInput["Move"].canceled += OnMoveStop;
         playerInput["Look"].performed += OnLook;
+        playerInput["Pause"].started += OnPause;
         // playerInput["Interact"].started += OnInteract;
         // playerInput["InteractCancel"].started += OnInteractCancel;
     }
@@ -90,6 +97,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["Move"].performed -= OnMove;
         _input.actions["Move"].canceled -= OnMoveStop;
         _input.actions["Look"].performed -= OnLook;
+        _input.actions["Pause"].started -= OnPause;
         // _input.actions["Interact"].started -= OnInteract;
         // _input.actions["InteractCancel"].started -= OnInteractCancel;
     }
@@ -163,6 +171,18 @@ public class PlayerInputController : Manager<PlayerInputController>
     public void LookInput(Vector2 newLookDirection)
     {
         look = newLookDirection;
+    }
+
+    private void OnPause(InputAction.CallbackContext obj)
+    {
+        if (pause.gameObject.activeSelf)
+        {
+            pause.closePausePopup();
+        }
+        else
+        {
+            pause.gameObject.SetActive(true);
+        }
     }
     /*
     private void OnApplicationFocus(bool hasFocus)
