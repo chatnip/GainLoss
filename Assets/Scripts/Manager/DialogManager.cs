@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using UniRx;
 using TMPro;
-using Unity.VisualScripting;
+using Spine.Unity;
 
 public class DialogManager : Manager<DialogManager>
 {
@@ -19,6 +19,9 @@ public class DialogManager : Manager<DialogManager>
     [SerializeField] Button dialogNextBtn;
     [SerializeField] InputAction click;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
+
+    [Header("*Animation")]
+    [SerializeField] SkeletonGraphic skeletonGraphic;
 
     [Header("*Result")]
     [SerializeField] float showTime = 0.8f; //Dotween ½Ã°£°ª
@@ -71,25 +74,56 @@ public class DialogManager : Manager<DialogManager>
         */
     }
 
-    private void AnimationSetup()
+    private void AnimationSetup(SpineAniState state)
     {
         // ¾Ö´Ï¸ÞÀÌ¼Ç Ãâ·Â
+        switch (state)
+        {
+            case SpineAniState.A01: // ÀÎ»çÇÏ°í Idle
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "¾È³ç", loop: false);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "ible", loop: true);
+                break;
+            case SpineAniState.A02: // Idle
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "ible", loop: true);
+                break;
+            case SpineAniState.A03: // ±ôÂïÇÑ Ç¥Á¤
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "><", loop: true);
+                break;
+            case SpineAniState.A04: // ¿ô´Â Ç¥Á¤
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "¿ôÀ½!", loop: true);
+                break;
+            case SpineAniState.A05: // È­³­ Ç¥Á¤
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "À½!", loop: false);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "À½! ible", loop: true);
+                break;
+            case SpineAniState.A06: // È­³­ Ç¥Á¤ Idle
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "À½! ible", loop: true);
+                break;
+            case SpineAniState.A07: // Äà¼ö¿°
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "Äà¼ö¿°", loop: false);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "Äà¼ö¿° ible", loop: true);
+                break;
+            case SpineAniState.A08: // Äà¼ö¿° Idle
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "Äà¼ö¿° ible", loop: true);
+                break;
+        }
     }
 
     public IEnumerator DialogTexting(ScenarioBase scenarioBase)
     {
-        Debug.Log("Texting");
         streamScriptText.text = null;
-        // AnimationSetup(); //scenarioBase.Fragments[0]
 
         for (int i = 0; i < scenarioBase.Fragments.Count; i++)
         {
             int temp = i;
             var sequence = DOTween.Sequence();
             streamScriptText.text = null;
-            // AnimationSetup(); //scenarioBase.fragments[temp]
+
+            skeletonGraphic.AnimationState.SetEmptyAnimations(0);
+            AnimationSetup((SpineAniState)System.Enum.Parse(typeof(SpineAniState), scenarioBase.Fragments[temp].animationID));
+
             Fragment newFragment = scenarioBase.Fragments[temp];
-            sequence.Append(streamScriptText.DOText(newFragment.Script, newFragment.Script.Length / 5)
+            sequence.Append(streamScriptText.DOText(newFragment.Script, newFragment.Script.Length / 10)
                     .SetEase(Ease.Linear)
                     .OnUpdate(() =>
                     {
@@ -181,6 +215,18 @@ public class DialogManager : Manager<DialogManager>
         string gageAmount = appliedGage + " ( +" + incGage + " )";
         text.text = gageAmount;
         text.DOFade(1, time).SetEase(Ease.OutSine);
+    }
+
+    public enum SpineAniState
+    {
+        A01,
+        A02,
+        A03,
+        A04,
+        A05,
+        A06,
+        A07,
+        A08
     }
     
 }

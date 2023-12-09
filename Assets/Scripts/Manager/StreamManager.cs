@@ -31,8 +31,9 @@ public class StreamManager : Manager<StreamManager>
         }
         
         // 방송 제목 삽입
-        int rand = UnityEngine.Random.Range(1, 4);
+        int rand = UnityEngine.Random.Range(1, 3);
         string addID = "T0" + rand.ToString();
+        Debug.Log(addID);
         DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
 
         // 수치 변화

@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
+using UniRx;
 
 public class GameSystem : MonoBehaviour
 {
     [SerializeField] PhoneHardware PhoneHardware;
-    [SerializeField] CanvasGroup loading;
+
+    [Header("*UI")]
+    [SerializeField] public CanvasGroup loading;
+    [SerializeField] public GameObject objPanel;
+    [SerializeField] public TMP_Text objText;
+    [SerializeField] public Button objPanelExitBtn;
 
     [Header("*Player")]
     public Transform playerPos;
@@ -14,6 +22,13 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         GameStart();
+
+        objPanelExitBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ObjectDescriptionOff();
+            });
     }
 
     public void GameStart()
@@ -34,5 +49,17 @@ public class GameSystem : MonoBehaviour
         .SetDelay(1f)
         .Append(loading.DOFade(0f, 1f))
         .OnComplete(() => loading.gameObject.SetActive(false));
+    }
+
+    public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
+    {
+        objText.DOText(text, text.Length / 10).SetEase(Ease.Linear);
+        objPanel.SetActive(true);
+    }
+
+    public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
+    {
+        objPanel.SetActive(false);
+        objText.text = null;
     }
 }
