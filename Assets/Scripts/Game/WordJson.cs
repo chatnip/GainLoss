@@ -14,14 +14,14 @@ public class WordJson : MonoBehaviour
 
     private void Awake()
     {
-        path = Path.Combine(Application.dataPath, "wordDatabase.json");
+        path = "Json/wordDatabase";
         // JsonSaveTest();
         JsonLoadTest();
     }
     public void JsonLoadTest()
     {
-        string loadJson = File.ReadAllText(path);
-        WordIDs wordIDs = JsonUtility.FromJson<WordIDs>(loadJson);
+        var jsonTextFile = Resources.Load<TextAsset>(path);
+        WordIDs wordIDs = JsonUtility.FromJson<WordIDs>(jsonTextFile.ToString());
         WordManager.currentWordIDList = wordIDs.wordIDList;
     }
 
