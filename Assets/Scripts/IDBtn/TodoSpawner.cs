@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class TodoSpawner : IDBtnSpawner
         IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         wordBtn.isButton = true;
         wordBtn.buttonValue = word;
+        //wordBtn.Rate = ;
         return wordBtn;
     }
 
@@ -31,6 +33,7 @@ public class TodoSpawner : IDBtnSpawner
         {
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]); // 생성
             wordBtn.transform.SetParent(wordParentObject); // 부모 설정
+            wordBtn.AddVisiableWordRate((string)DataManager.WordDatas[1][WordManager.currentWordList[i].ID]); // 등급 표시
             wordBtn.buttonType = ButtonType.WordType; // 정렬
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             // WordManager.WordBtnListSet(); // 데이터 삽입
@@ -48,6 +51,7 @@ public class TodoSpawner : IDBtnSpawner
         {
             IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
             actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
+            actionBtn.AddVisiableWordRate((string)DataManager.WordActionDatas[1][WordManager.currentWordActionList[i].ID]); // 등급 표시
             actionBtn.buttonType = ButtonType.WordActionType; // 정렬
             WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
             // WordManager.WordActionBtnListSet(); // 데이터 삽입

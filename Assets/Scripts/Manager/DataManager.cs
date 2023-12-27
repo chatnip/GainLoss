@@ -31,7 +31,6 @@ public class DataManager : Manager<DataManager>
     {
         base.Awake();
         InitData();
-        // Debug.Log(WordDatas[0]["W01"]);
     }
 
     public void InitData()
@@ -48,8 +47,10 @@ public class DataManager : Manager<DataManager>
         // [0]:AnimationID | [1]:Dialog | [2]:DialogKor
         WordDatas = CSVReader.Read(this.WordsFile);
         // [0]:WordName | [1]:WordNameKor
+        // => [0]:WordName | [1]:WordRate | [2]:Stress | [3]:Anger | [4]:Risk | [5]:WordNameKor
         WordActionDatas = CSVReader.Read(this.WordActionsFile);
         // [0]:WordActionName | [1]:WordActionNameKor
+        // => [0]:WordActionName | [1]:WordActionRate | [2]:OverloadingGage | [3]:WordActionNameKor
         BehaviorActionDatas = CSVReader.Read(this.BehaviorActionsFile);
         // [0]:BehaviorActionName | [1]:BehaviorActionNameKor
         PlaceDatas = CSVReader.Read(this.PlaceFile);

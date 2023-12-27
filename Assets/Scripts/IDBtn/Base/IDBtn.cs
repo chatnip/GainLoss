@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.ShaderKeywordFilter;
 
 public class IDBtn : MonoBehaviour
 {
     [Header("*Data")]
     [SerializeField] public ButtonValue buttonValue;
+    [SerializeField] public string Rate;
     [SerializeField] Sprite basicImage;
     [SerializeField] Sprite folderImage;
 
     [Header("*Button")]
     [SerializeField] public Button button;
     [SerializeField] TMP_Text text;
+    [SerializeField] TMP_Text rate_text;
     [SerializeField] RectTransform rect;
     [SerializeField] public ButtonType buttonType;
+
+    [Header("*RateColor")]
+    [SerializeField] Color clr_Positive;
+    [SerializeField] Color clr_Normal;
+    [SerializeField] Color clr_Malicious;
+
 
     [HideInInspector] public bool isButton;
 
@@ -48,6 +57,14 @@ public class IDBtn : MonoBehaviour
         text.text += ".ail";
         text.rectTransform.localPosition = new Vector3(0, -10, 0);
         button.image.sprite = folderImage;
+    }
+
+    public void AddVisiableWordRate(string Rate)
+    {
+        rate_text.text = Rate;
+        if (Rate == "Positive") { rate_text.color = clr_Positive; }
+        else if (Rate == "Normal") { rate_text.color = clr_Normal; }
+        else if (Rate == "Malicious") { rate_text.color = clr_Malicious; }
     }
 
 

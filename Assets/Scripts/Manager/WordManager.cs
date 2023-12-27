@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -122,7 +121,7 @@ public class WordManager : Manager<WordManager>
         currentWordList.Clear(); // 초기화
         foreach (string id in currentWordIDList) // ID 순회
         {
-            ButtonValue word = new(id, (string)DataManager.WordDatas[1][id]);
+            ButtonValue word = new(id, (string)DataManager.WordDatas[5][id]);
             currentWordList.Add(word);
         }
     }
@@ -130,12 +129,25 @@ public class WordManager : Manager<WordManager>
     private void InitWordActionID(string id)
     {
         currentWordActionIDList.Clear(); // 초기화
-        foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
+        /*foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
         {
             if (data.Key.Contains(id))
             {
                 string key = data.Key.ToString().Substring(4, 4);
                 currentWordActionIDList.Add(key);
+            }
+        }*/
+        foreach (var data in DataManager.WordActionDatas[3])
+        {
+            if (data.Key != "WordActionID")
+            {
+                string key = data.Key;
+                string wordRate = (string)DataManager.WordDatas[1][currentWord.ID];
+                string wordActionRate = (string)DataManager.WordActionDatas[1][key];
+                if (!(wordRate == "Positive" && wordActionRate == "Malicious"))
+                {
+                    currentWordActionIDList.Add(key);
+                }
             }
         }
         InitWordAction();
@@ -146,7 +158,7 @@ public class WordManager : Manager<WordManager>
         currentWordActionList.Clear(); // 초기화
         foreach (string id in currentWordActionIDList) // ID 순회
         {
-            ButtonValue word = new(id, (string)DataManager.WordActionDatas[1][id]);
+            ButtonValue word = new(id, (string)DataManager.WordActionDatas[3][id]);
             currentWordActionList.Add(word);
         }
     }
