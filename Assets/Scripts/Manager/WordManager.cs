@@ -11,6 +11,7 @@ public class WordManager : Manager<WordManager>
     [Header("*Property")]
     [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
+    [SerializeField] DialogManager DialogManager;
 
     [Space(10)]
     [SerializeField] TodoSpawner todoWordBtnSpawner;
@@ -18,7 +19,10 @@ public class WordManager : Manager<WordManager>
     [Header("*View")]
     [SerializeField] TMP_Text viewWordAction;
     [SerializeField] Button resetBtn;
+    [SerializeField] TMP_Text ResultPreview_NumberOfUsed;
+    [SerializeField] TMP_Text ResultPreview_Gage;
     StringReactiveProperty currentWordActiionStr = new();
+    [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
     [Header("*Test")]
     [SerializeField] WordJson WordJson;
@@ -33,10 +37,13 @@ public class WordManager : Manager<WordManager>
     [HideInInspector] public List<ButtonValue> currentWordList = new();
     [HideInInspector] private List<string> currentWordActionIDList = new();
     [HideInInspector] public List<ButtonValue> currentWordActionList = new();
-    
+
     // 선택한 단어 및 단어의 액션
-    private ButtonValue currentWord;
+    [HideInInspector] public ButtonValue currentWord;
     private ButtonValue currentWordAction;
+
+
+    
 
 
     private void Start()
@@ -70,7 +77,7 @@ public class WordManager : Manager<WordManager>
         currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
 
-    #region ButtonListSeting
+    #region ButtonListSetting
     public void WordBtnListSet()
     {
         Debug.Log(enableWordBtnList.Count);
@@ -108,9 +115,112 @@ public class WordManager : Manager<WordManager>
                     string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
                     currentWordActiionStr.Value = text;
                     StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
+                    
+                    currentStreamEvent = SetStreamEvent(
+                        currentWord.ID, 
+                        currentWordAction.ID, 
+                        Convert.ToBoolean(DataManager.StreamEventDatas[0][StreamManager.currentStreamEventID]),
+                        Convert.ToInt32(DataManager.StreamEventDatas[1][StreamManager.currentStreamEventID]));
+
+                    SetResultPreview(
+                        currentStreamEvent,
+                        Convert.ToBoolean(DataManager.StreamEventDatas[0][StreamManager.currentStreamEventID]),
+                        Convert.ToInt32(DataManager.StreamEventDatas[1][StreamManager.currentStreamEventID]));
+
                 });
         }
     }
+    private StreamEvent SetStreamEvent(string wordID, string wordActionID, bool isCreated, int NumberOfUsed)
+    {
+        StreamEvent streamEvent = new StreamEvent();
+        string wordRate = DataManager.WordDatas[1][wordID].ToString();
+        string wordActionRate = DataManager.WordActionDatas[1][wordActionID].ToString();
+
+        streamEvent.stressValue = SetGage((int)DataManager.WordDatas[2][wordID],isCreated, NumberOfUsed, wordRate, wordActionRate);
+        streamEvent.angerValue = SetGage((int)DataManager.WordDatas[3][wordID],isCreated, NumberOfUsed, wordRate, wordActionRate);
+        streamEvent.riskValue = SetGage((int)DataManager.WordDatas[4][wordID],isCreated, NumberOfUsed, wordRate, wordActionRate);
+        streamEvent.OverloadValue = SetOverloadGage((int)DataManager.WordActionDatas[2][wordActionID], isCreated, NumberOfUsed);
+        Debug.Log(streamEvent.stressValue + " / " +
+            streamEvent.angerValue + " / " +
+            streamEvent.riskValue + " / " +
+            streamEvent.OverloadValue);
+        return streamEvent;
+    }
+
+    private int SetGage(int gage, bool isCreated, int NumberOfUsed, string wordRate, string wordActionRate) // 수치 조절 함수
+    {
+        int finalGage = gage;
+
+        if (wordRate == "Normal")
+        {
+            if (wordActionRate == "Normal") 
+            { 
+                //finalGage += 0;
+                if (isCreated) { finalGage -= 2; }
+            }
+            else if (wordActionRate == "Malicious") 
+            {
+                finalGage += 2;
+                if (isCreated) { finalGage -= 1; }
+            }
+            
+        }
+        else if (wordRate == "Malicious")
+        {
+            if (wordActionRate == "Normal") 
+            { 
+                finalGage += 2;
+                if (isCreated) { finalGage -= 1; }
+            }
+            else if (wordActionRate == "Malicious") 
+            { 
+                finalGage += 4;
+                //if (isCreated) { finalGage -= 0; }
+            }
+        }
+
+        return finalGage;
+    }
+    private int SetOverloadGage(int gage, bool isCreated, int NumberOfUsed) // (과부하) 수치 조절 함수
+    {
+        int finalGage = gage;
+        if(isCreated)
+        {
+            finalGage = 0;
+        }
+
+        return finalGage;
+    }
+    private void SetResultPreview(StreamEvent streamEvent, bool isCreated, int NumberOfUsed)
+    {
+        string[] info = new string[2];
+        if(isCreated)
+        {
+            info[0] = String.Format("Used [ {0} / 3 ]", NumberOfUsed);
+            info[1] = String.Format(
+                "Overload [ + {0} ]\n" + 
+                "Stress [ + {1} ]\n" + 
+                "Anger [ + {2} ]\n" + 
+                "Risk [ + {3} ]", 
+                streamEvent.OverloadValue,
+                streamEvent.stressValue,
+                streamEvent.angerValue,
+                streamEvent.riskValue);
+        }
+        else
+        {
+            info[0] = "First time trying it";
+            info[1] = String.Format(
+                "Overload [ + {0} ]\n" + 
+                "Stress [ + ??? ]\n" + 
+                "Anger [ + ??? ]\n" + 
+                "Risk [ + ??? ]",
+                streamEvent.OverloadValue);
+        }
+        ResultPreview_NumberOfUsed.text = info[0];
+        ResultPreview_Gage.text = info[1];
+    }
+
     #endregion
 
     #region Init

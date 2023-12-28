@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public int angerGage = 0;
     [ProgressBar("RiskGage", 100, EColor.Blue)]
     public int riskGage = 0;
+    [ProgressBar("OverloadGage", 100, EColor.Gray)]
+    public int OverloadGage = 0;
 
     [Header("*Day")]
     public int CurrentDay = 1;

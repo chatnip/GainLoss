@@ -11,6 +11,7 @@ public class StreamManager : Manager<StreamManager>
     [SerializeField] DialogManager DialogManager;
     
     [HideInInspector] public string currentStreamEventID;
+    [HideInInspector] public StreamEvent currentStreamEvent;
 
     public void StartDialog(string id)
     {
@@ -36,35 +37,21 @@ public class StreamManager : Manager<StreamManager>
         Debug.Log(addID);
         DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
 
-        // 수치 변화
-        // 본래 값 Set
-        StreamEvent streamEvent = new StreamEvent();
-        streamEvent.used = Convert.ToBoolean(DataManager.StreamEventDatas[0][id]);
+        // 실제 게이지/CSV 값 영향
+        DialogManager.currentStreamEvent = this.currentStreamEvent;
+
+        GameManager.stressGage += currentStreamEvent.stressValue;
+        GameManager.angerGage += currentStreamEvent.angerValue;
+        GameManager.riskGage += currentStreamEvent.riskValue;
+        GameManager.OverloadGage += currentStreamEvent.OverloadValue;
+
+        //CSV Value++
+        if (!Convert.ToBoolean(DataManager.StreamEventDatas[0][currentStreamEventID]))
+        {
+            //CSV IsCreate 변경
+        }
         
-        // 변화 값 Apply
-        if (streamEvent.used) 
-        {
-            streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]) / 2;
-            streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]) / 2;
-            streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]) / 2;
-        }
-        else
-        {
-            streamEvent.stressValue = Convert.ToInt32(DataManager.StreamEventDatas[1][id]);
-            streamEvent.angerValue = Convert.ToInt32(DataManager.StreamEventDatas[2][id]);
-            streamEvent.riskValue = Convert.ToInt32(DataManager.StreamEventDatas[3][id]);
-        }
 
-        GameManager.stressGage += (int)(streamEvent.stressValue);
-        GameManager.angerGage += (int)(streamEvent.angerValue);
-        GameManager.riskGage += (int)(streamEvent.riskValue);
-
-        DialogManager.streamEvent = streamEvent;
-
-        if (Convert.ToBoolean(DataManager.StreamEventDatas[0][id]) == false)
-        {
-            DataManager.StreamEventDatas[0][id] = true.ToString();
-        }
 
         foreach (var data in basicDatas) // 베이직 T 데이터 순회
         {
@@ -101,9 +88,10 @@ public class StreamManager : Manager<StreamManager>
 [System.Serializable]
 public class StreamEvent
 {
-    [HideInInspector] public bool used;
+    [HideInInspector] public int numberOfUses;
     [HideInInspector] public int stressValue;
     [HideInInspector] public int angerValue;
     [HideInInspector] public int riskValue;
+    [HideInInspector] public int OverloadValue;
 }
 

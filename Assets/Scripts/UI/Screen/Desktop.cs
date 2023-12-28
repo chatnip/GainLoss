@@ -87,6 +87,7 @@ public class Desktop : MonoBehaviour
                 EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
                 //streamWindow.SetActive(true);
 
+                StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
                 StreamManager.StartDialog(StreamManager.currentStreamEventID);
             });
 

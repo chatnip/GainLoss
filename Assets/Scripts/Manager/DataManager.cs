@@ -39,6 +39,7 @@ public class DataManager : Manager<DataManager>
         // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID | [3]:GetPlaceID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
         // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage | [4]:StreamTitle | [5]:StreamTitleKor
+        // => [0]:IsCreate | [1]:Value
         TitleDatas = CSVReader.Read(this.TitlesFile);
         // [0]:TitleName | [1]:TitleNameKor
         BasicDialogDatas = CSVReader.Read(this.BasicDialogsFile); // WA**T**D**

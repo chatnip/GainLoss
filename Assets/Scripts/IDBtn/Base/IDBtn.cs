@@ -25,6 +25,10 @@ public class IDBtn : MonoBehaviour
     [SerializeField] Color clr_Normal;
     [SerializeField] Color clr_Malicious;
 
+    [Header("*Canno Label")]
+    [SerializeField] GameObject CannotUseLabal;
+    [SerializeField] TMP_Text reason;
+
 
     [HideInInspector] public bool isButton;
 
@@ -65,6 +69,21 @@ public class IDBtn : MonoBehaviour
         if (Rate == "Positive") { rate_text.color = clr_Positive; }
         else if (Rate == "Normal") { rate_text.color = clr_Normal; }
         else if (Rate == "Malicious") { rate_text.color = clr_Malicious; }
+    }
+    public void CannotUse(bool can, string Reason)
+    {
+        if(can)
+        {
+            button.interactable = true;
+            CannotUseLabal.SetActive(false);
+        }
+        else
+        {
+            reason.text = Reason;
+            button.interactable = false;
+            CannotUseLabal.SetActive(true);
+        }
+        
     }
 
 

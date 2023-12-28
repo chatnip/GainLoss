@@ -26,12 +26,15 @@ public class DialogManager : Manager<DialogManager>
     [Header("*Result")]
     [SerializeField] float showTime = 0.8f; //Dotween 시간값
     [SerializeField] GameObject resultWindow;
+    [SerializeField] GameObject resultWindowGage;
+    [SerializeField] GameObject resultWindowOverloadGage;
     [SerializeField] Color baseColor;
 
+    [Header("*Gage")]
     [SerializeField] Slider stressSlider;
     [SerializeField] TMP_Text stressText;
     [SerializeField] Color stressBarColor;
-    
+
     [SerializeField] Slider angerSlider;
     [SerializeField] TMP_Text angerText;
     [SerializeField] Color angerBarColor;
@@ -40,9 +43,17 @@ public class DialogManager : Manager<DialogManager>
     [SerializeField] TMP_Text riskText;
     [SerializeField] Color riskBarColor;
 
+
+    [Header("*Overload")]
+    [SerializeField] Slider overloadSilder;
+    [SerializeField] TMP_Text overloadText;
+    [SerializeField] Color overloadBarColor;
+
+    [Header("*Other")]
     [SerializeField] Button nextDayBtn;
-    [HideInInspector] public StreamEvent streamEvent = new StreamEvent();
-    
+
+    [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
+
 
     private void OnEnable()
     {
@@ -62,7 +73,7 @@ public class DialogManager : Manager<DialogManager>
             {
                 StartCoroutine(DialogTexting(texting));
             });
-            
+
 
         /*
         ScenarioBase
@@ -127,7 +138,7 @@ public class DialogManager : Manager<DialogManager>
                     .SetEase(Ease.Linear)
                     .OnUpdate(() =>
                     {
-                        if(click.triggered)
+                        if (click.triggered)
                         {
                             sequence.Complete();
                         }
@@ -170,35 +181,46 @@ public class DialogManager : Manager<DialogManager>
     {
         ClearGageAndText();
 
-        resultWindow.SetActive(true); //결과창
+        CanvasGroup CG = resultWindow.GetComponent<CanvasGroup>();
+        CG.alpha = 0.0f;
+        CG.DOFade(1, showTime);
+        yield return new WaitForSeconds(showTime);
 
-        // 게이지 차례로 출력
+        // 게이지 출력
         EffectGage(stressSlider, GameManager.stressGage, showTime, stressBarColor);
-        yield return new WaitForSeconds(showTime);
         EffectGage(angerSlider, GameManager.angerGage, showTime, angerBarColor);
-        yield return new WaitForSeconds(showTime);
         EffectGage(riskSlider, GameManager.riskGage, showTime, riskBarColor);
         yield return new WaitForSeconds(showTime);
 
         // 수치(text) 출력
-        IncOpacityText(stressText, GameManager.stressGage, streamEvent.stressValue, showTime);
-        IncOpacityText(angerText, GameManager.angerGage, streamEvent.angerValue, showTime);
-        IncOpacityText(riskText, GameManager.riskGage, streamEvent.riskValue, showTime);
+        IncOpacityText(stressText, GameManager.stressGage, currentStreamEvent.stressValue, showTime);
+        IncOpacityText(angerText, GameManager.angerGage, currentStreamEvent.angerValue, showTime);
+        IncOpacityText(riskText, GameManager.riskGage, currentStreamEvent.riskValue, showTime);
+        yield return new WaitForSeconds(showTime);
+
+        // 과부하 출력
+        resultWindowOverloadGage.transform.DOLocalMoveY(-375f, showTime);
+        resultWindowGage.transform.DOLocalMoveY(60f, showTime);
+        yield return new WaitForSeconds(showTime);
+
+        EffectGage(overloadSilder, GameManager.OverloadGage, showTime, overloadBarColor);
+        yield return new WaitForSeconds(showTime);
+        IncOpacityText(overloadText, GameManager.OverloadGage, currentStreamEvent.OverloadValue, showTime);
         yield return new WaitForSeconds(showTime);
 
         // 다음날로 가는 버튼 출력
         nextDayBtn.gameObject.SetActive(true);
         nextDayBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
-
     }
     void ClearGageAndText()
     {
-        stressSlider.value = 0.0f;
-        angerSlider.value = 0.0f;
-        riskSlider.value = 0.0f;
-        stressText.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-        angerText.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-        riskText.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        stressText.alpha = 0;
+        angerText.alpha = 0;
+        riskText.alpha = 0;
+        overloadText.alpha = 0;
+        resultWindowGage.GetComponent<RectTransform>().localPosition = Vector3.zero; 
+        resultWindowOverloadGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
+        resultWindow.SetActive(true); //결과창
     }
     void EffectGage(Slider slider, int appliedGage, float time, Color color)
     {
@@ -228,5 +250,5 @@ public class DialogManager : Manager<DialogManager>
         A07,
         A08
     }
-    
+
 }
