@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
+/*#if UNITY_EDITOR
+using UnityEditor;
+#endif*/
 
 public class DataManager : Manager<DataManager>
 {
@@ -15,6 +17,8 @@ public class DataManager : Manager<DataManager>
     [SerializeField] TextAsset WordActionsFile;
     [SerializeField] TextAsset BehaviorActionsFile;
     [SerializeField] TextAsset PlaceFile;
+
+    public static string StreamEventsFileName;
 
     [Header("*AllData")]
     public static List<Dictionary<string, object>> ActionEventDatas = new();
@@ -31,30 +35,44 @@ public class DataManager : Manager<DataManager>
     {
         base.Awake();
         InitData();
+        StreamEventsFileName = StreamEventsFile.name;
     }
 
     public void InitData()
     {
-        ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
+        ActionEventDatas = CSVReader.Read(this.ActionEventsFile.text);
         // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID | [3]:GetPlaceID
-        StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
+        StreamEventDatas = CSVReader.Read(this.StreamEventsFile.text);
         // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage | [4]:StreamTitle | [5]:StreamTitleKor
         // => [0]:IsCreate | [1]:Value
-        TitleDatas = CSVReader.Read(this.TitlesFile);
+        TitleDatas = CSVReader.Read(this.TitlesFile.text);
         // [0]:TitleName | [1]:TitleNameKor
-        BasicDialogDatas = CSVReader.Read(this.BasicDialogsFile); // WA**T**D**
+        BasicDialogDatas = CSVReader.Read(this.BasicDialogsFile.text); // WA**T**D**
         // [0]:AnimationID | [1]:Dialog | [2]:DialogKor
-        DialogDatas = CSVReader.Read(this.DialogsFile);
+        DialogDatas = CSVReader.Read(this.DialogsFile.text);
         // [0]:AnimationID | [1]:Dialog | [2]:DialogKor
-        WordDatas = CSVReader.Read(this.WordsFile);
+        WordDatas = CSVReader.Read(this.WordsFile.text);
         // [0]:WordName | [1]:WordNameKor
         // => [0]:WordName | [1]:WordRate | [2]:Stress | [3]:Anger | [4]:Risk | [5]:WordNameKor
-        WordActionDatas = CSVReader.Read(this.WordActionsFile);
+        WordActionDatas = CSVReader.Read(this.WordActionsFile.text);
         // [0]:WordActionName | [1]:WordActionNameKor
         // => [0]:WordActionName | [1]:WordActionRate | [2]:OverloadingGage | [3]:WordActionNameKor
-        BehaviorActionDatas = CSVReader.Read(this.BehaviorActionsFile);
+        BehaviorActionDatas = CSVReader.Read(this.BehaviorActionsFile.text);
         // [0]:BehaviorActionName | [1]:BehaviorActionNameKor
-        PlaceDatas = CSVReader.Read(this.PlaceFile);
+        PlaceDatas = CSVReader.Read(this.PlaceFile.text);
         // [0]:PlaceName | [1]:PlaceNameKor
+    }
+
+    public void SetStreamEventDatas_reload(string s)
+    {
+        StreamEventDatas = CSVReader.Read(s);
+        /*#if UNITY_EDITOR
+        AssetDatabase.IsValidFolder($"Assets/Resources/Sheet/{DataManager.StreamEventsFileName}.csv");
+        AssetDatabase.Refresh();
+        #endif*/
+        /*string path = string.Format($"Assets/SaveCSV/{StreamEventsFileName}.csv");
+        TextAsset TA = File.ReadAllText(path, typeof(TextAsset));
+        Debug.Log(TA.text);
+        StreamEventDatas = CSVReader.Read(TA);*/
     }
 }

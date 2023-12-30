@@ -35,7 +35,9 @@ public class TodoSpawner : IDBtnSpawner
             IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]); // 생성
             wordBtn.transform.SetParent(wordParentObject); // 부모 설정
             wordBtn.AddVisiableWordRate((string)DataManager.WordDatas[1][WordManager.currentWordList[i].ID]); // 등급 표시
-            bool checkCanUseMalicious = CheckCanUseMalicious((string)DataManager.WordDatas[1][WordManager.currentWordList[i].ID]);
+            bool checkCanUseMalicious = CheckCanUseMalicious(
+                (string)DataManager.WordDatas[1][WordManager.currentWordList[i].ID],
+                WordManager.currentWordIDList[i]); // Malicious계급 ail파일을 사용했는지 판단
             if (!checkCanUseMalicious)
             { wordBtn.CannotUse(false, "Use up to the maximum(1)"); }
             else
@@ -48,18 +50,29 @@ public class TodoSpawner : IDBtnSpawner
         WordManager.WordBtnListSet(); // 데이터 삽입
     }
 
-    private bool CheckCanUseMalicious(string rate)
+    
+    private bool CheckCanUseMalicious(string rate, string wordID)
     {
-        if(rate == "Malicious")
+        if (rate == "Malicious")
         {
-            //판별
+            List<string> streamEventIDs = new List<string>();
+            for (int i = 0; i < (DataManager.WordActionDatas[0].Count - 1); i++)
+            {
+                if (i.ToString().Length == 1) { streamEventIDs.Add(wordID + "WA0" + (i + 1)); }
+                else if (i.ToString().Length == 2) { streamEventIDs.Add(wordID + "WA" + (i + 1)); }
+            }
+
+            foreach (string s in streamEventIDs)
+            {
+                if (Convert.ToBoolean(DataManager.StreamEventDatas[0][s]))
+                { return false; }
+            }
             return true;
         }
         else
-        {
-            return true;
-        }
+        { return true; }
     }
+
 
     public void SpawnWordActionBtn()
     {

@@ -9,11 +9,13 @@ using DG.Tweening;
 public class Desktop : MonoBehaviour
 {
     [Header("*Manager")]
+    [SerializeField] DataManager DataManager;
     [SerializeField] WordManager WordManager;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract computerInteract;
+
 
     [Header("*Public")]
     [SerializeField] Image BlackScreen;
@@ -160,8 +162,6 @@ public class Desktop : MonoBehaviour
                 WordManager.InitWord();
                 // wordManager.WordBtnListSet();
                 // wordManager.WordActionBtnListSet();
-                
-                
 
                 confirmPopup.SetActive(false);
                 //todoWindow.SetActive(true);
@@ -228,7 +228,7 @@ public class Desktop : MonoBehaviour
                 RT.gameObject.SetActive(false);
             });
     }*/
-
+    
 }
 
 

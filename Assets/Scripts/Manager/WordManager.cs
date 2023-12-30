@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
+using UnityEditor;
 
 public class WordManager : Manager<WordManager>
 {
@@ -12,7 +13,7 @@ public class WordManager : Manager<WordManager>
     [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] DialogManager DialogManager;
-
+    
     [Space(10)]
     [SerializeField] TodoSpawner todoWordBtnSpawner;
      
@@ -80,6 +81,9 @@ public class WordManager : Manager<WordManager>
     #region ButtonListSetting
     public void WordBtnListSet()
     {
+        ResultPreview_NumberOfUsed.text = "";
+        ResultPreview_Gage.text = "";
+
         Debug.Log(enableWordBtnList.Count);
         foreach (IDBtn wordBtn in enableWordBtnList)
         {
@@ -196,27 +200,28 @@ public class WordManager : Manager<WordManager>
         string[] info = new string[2];
         if(isCreated)
         {
-            info[0] = String.Format("Used [ {0} / 3 ]", NumberOfUsed);
-            info[1] = String.Format(
-                "Overload [ + {0} ]\n" + 
-                "Stress [ + {1} ]\n" + 
-                "Anger [ + {2} ]\n" + 
-                "Risk [ + {3} ]", 
-                streamEvent.OverloadValue,
-                streamEvent.stressValue,
-                streamEvent.angerValue,
-                streamEvent.riskValue);
+            info[0] = String.Format($"--- Used [ {NumberOfUsed} / 3 ] ---");
+            info[1] = "";
+            caculGage(streamEvent.OverloadValue, "Overload");
+            caculGage(streamEvent.stressValue, "Stress");
+            caculGage(streamEvent.angerValue, "Anger");
+            caculGage(streamEvent.riskValue, "Risk");
+
+            void caculGage(int value, string gageType)
+            {
+                if (value != 0)
+                {
+                    if (value > 0) { info[1] += String.Format($"{gageType} [ +{value} ]\n"); }
+                    else { info[1] += String.Format($"{gageType} [ {value} ]\n"); }
+                }
+            }
         }
         else
         {
-            info[0] = "First time trying it";
-            info[1] = String.Format(
-                "Overload [ + {0} ]\n" + 
-                "Stress [ + ??? ]\n" + 
-                "Anger [ + ??? ]\n" + 
-                "Risk [ + ??? ]",
-                streamEvent.OverloadValue);
+            info[0] = "--- First time ---";
+            info[1] = String.Format($"Overload [ + {streamEvent.OverloadValue} ]");
         }
+
         ResultPreview_NumberOfUsed.text = info[0];
         ResultPreview_Gage.text = info[1];
     }

@@ -211,33 +211,40 @@ public class DialogManager : Manager<DialogManager>
         // 다음날로 가는 버튼 출력
         nextDayBtn.gameObject.SetActive(true);
         nextDayBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
+
+        void ClearGageAndText()
+        {
+            nextDayBtn.gameObject.SetActive(false);
+            nextDayBtn.image.color = new Color(0, 0, 0, 0);
+            stressText.alpha = 0;
+            angerText.alpha = 0;
+            riskText.alpha = 0;
+            overloadText.alpha = 0;
+            resultWindowGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            resultWindowOverloadGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
+            resultWindow.SetActive(true); //결과창
+        }
+        void EffectGage(Slider slider, int appliedGage, float time, Color color)
+        {
+            var sequence = DOTween.Sequence();
+            sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time)).SetEase(Ease.OutSine);
+            Image img = slider.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+            var sequence2 = DOTween.Sequence();
+            img.color = baseColor;
+            Color LastColor = Color.Lerp(baseColor, color, appliedGage * 0.01f);
+            sequence2.Append(img.DOColor(LastColor, time)).SetEase(Ease.OutSine);
+        }
+        void IncOpacityText(TMP_Text text, int appliedGage, int incGage, float time)
+        {
+            string gageAmount = "";
+            if (incGage >= 0) { gageAmount = appliedGage + " ( +" + incGage + " )"; }
+            else { gageAmount = appliedGage + " ( " + incGage + " )"; }
+            
+            text.text = gageAmount;
+            text.DOFade(1, time).SetEase(Ease.OutSine);
+        }
     }
-    void ClearGageAndText()
-    {
-        stressText.alpha = 0;
-        angerText.alpha = 0;
-        riskText.alpha = 0;
-        overloadText.alpha = 0;
-        resultWindowGage.GetComponent<RectTransform>().localPosition = Vector3.zero; 
-        resultWindowOverloadGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
-        resultWindow.SetActive(true); //결과창
-    }
-    void EffectGage(Slider slider, int appliedGage, float time, Color color)
-    {
-        var sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => slider.value, x => slider.value = x, (appliedGage * 0.01f), time)).SetEase(Ease.OutSine);
-        Image img = slider.transform.GetChild(1).GetChild(0).GetComponent<Image>();
-        var sequence2 = DOTween.Sequence();
-        img.color = baseColor;
-        Color LastColor = Color.Lerp(baseColor, color, appliedGage * 0.01f);
-        sequence2.Append(img.DOColor(LastColor, time)).SetEase(Ease.OutSine);
-    }
-    void IncOpacityText(TMP_Text text, int appliedGage, int incGage, float time)
-    {
-        string gageAmount = appliedGage + " ( +" + incGage + " )";
-        text.text = gageAmount;
-        text.DOFade(1, time).SetEase(Ease.OutSine);
-    }
+    
 
     public enum SpineAniState
     {

@@ -15,11 +15,20 @@ public class GameManager : MonoBehaviour
     [ProgressBar("OverloadGage", 100, EColor.Gray)]
     public int OverloadGage = 0;
 
+    [Header("*Build Debugging")]
+    [SerializeField] static GameObject bug;
+
     [Header("*Day")]
     public int CurrentDay = 1;
 
     private void Start()
     {
         // wordDatas = WordCSVReader.Parse("TestCVSFile2");
+    }
+
+    public static void BuildBug()
+    {
+        bug = GameObject.Find("Bug!");
+        bug.SetActive(true);
     }
 }
