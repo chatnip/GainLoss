@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Text;
+using DG.Tweening.Plugins.Core.PathCore;
 
 public class StreamManager : Manager<StreamManager>
 {
@@ -21,9 +23,10 @@ public class StreamManager : Manager<StreamManager>
 
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
-        ApplyGage();
-        CSVWriter.SaveCSVFile(id, "Assets/Resources/Sheet/", $"{DataManager.StreamEventsFileName}.csv");
-        
+        ApplyGage(); 
+        CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSheet_Saved.csv");
+        DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSheet_Saved.csv");
+
         List<Fragment> fragments = new();
         List<KeyValuePair<string, object>> basicDatas = new();
 
@@ -67,12 +70,11 @@ public class StreamManager : Manager<StreamManager>
         }
         ScenarioBase scenario = new(fragments);
 
-        DataManager.InitData();
-
         return scenario;
     }
 
-    void ApplyGage()
+
+    private void ApplyGage()
     {
         DialogManager.currentStreamEvent = this.currentStreamEvent;
 

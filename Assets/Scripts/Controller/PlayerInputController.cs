@@ -32,7 +32,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     protected override void Awake()
     {
-        base.Awake();
+        //base.Awake();
         TryGetComponent(out _input);
 
         _input.ObserveEveryValueChanged(x => x.currentControlScheme)

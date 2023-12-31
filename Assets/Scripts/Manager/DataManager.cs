@@ -18,8 +18,6 @@ public class DataManager : Manager<DataManager>
     [SerializeField] TextAsset BehaviorActionsFile;
     [SerializeField] TextAsset PlaceFile;
 
-    public static string StreamEventsFileName;
-
     [Header("*AllData")]
     public static List<Dictionary<string, object>> ActionEventDatas = new();
     public static List<Dictionary<string, object>> StreamEventDatas = new();
@@ -35,12 +33,12 @@ public class DataManager : Manager<DataManager>
     {
         base.Awake();
         InitData();
-        StreamEventsFileName = StreamEventsFile.name;
     }
 
     public void InitData()
     {
         #region original
+
         ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
         // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID | [3]:GetPlaceID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
@@ -62,6 +60,7 @@ public class DataManager : Manager<DataManager>
         // [0]:BehaviorActionName | [1]:BehaviorActionNameKor
         PlaceDatas = CSVReader.Read(this.PlaceFile);
         // [0]:PlaceName | [1]:PlaceNameKor
+
         #endregion
 
     }

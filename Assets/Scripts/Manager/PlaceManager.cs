@@ -50,7 +50,7 @@ public class PlaceManager : Manager<PlaceManager>
 
     protected override void Awake()
     {
-        base.Awake();
+        //base.Awake();
 
         homeBtn.OnClickAsObservable()
             .Subscribe(btn =>

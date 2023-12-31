@@ -71,9 +71,9 @@ public class Pause : MonoBehaviour
                 {
                     SceneManager.LoadScene("Title");
                 }
-                else if(chooseBtn == exitGameBtn)
+                else if (chooseBtn == exitGameBtn)
                 {
-                    Application.Quit();
+                    Application.Quit(); // 어플리케이션 종료
                 }
             });
     }

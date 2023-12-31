@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class CSVWriter : MonoBehaviour
 {
-    public static void SaveCSVFile(string id, string filePath, string fileName)
+    public static List<Dictionary<string, object>> SaveCSV_StreamEventDatas(string id, string filePath, string fileName)
     {
+        
+
         //CSV데이터 가져와 string값으로 저장
         string path = filePath + fileName;
         string s_sentenceSheetTemp = File.ReadAllText(path);
@@ -44,19 +46,42 @@ public class CSVWriter : MonoBehaviour
             for (int i = 0; i < (cell.Length - 1) / 3; i++)
             {
                 s_sentenceSheetTemp += value[i];
-                if (i == ((s_sentenceSheetCell.Length - 1) / 3) - 1)
+                if(i == cell.Length - 2)
+                { break; }
+                else if (i == ((s_sentenceSheetCell.Length - 1) / 3) - 1)
                 { s_sentenceSheetTemp += "\n"; }
                 else
                 { s_sentenceSheetTemp += ","; }
             }
         }
+        List<Dictionary<string, object>> datas = CSVReader.Read(s_sentenceSheetTemp);
+
+        #region
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(s_sentenceSheetTemp);
-        Stream fileStream = new FileStream(filePath + fileName, FileMode.Open, FileAccess.Write);
-        StreamWriter outStream = new StreamWriter(fileStream, Encoding.UTF8);
-        outStream.WriteLine(stringBuilder);
+        StreamWriter outStream = System.IO.File.CreateText(filePath + fileName);
+        outStream.Write(stringBuilder.ToString());
         outStream.Close();
 
+        #endregion
+
+        return datas;
+    }
+    public static void SaveCSV(string OriginalFilePath, string OriginalFileName, string MoveFilePath, string MoveFileName)
+    {
+        if (!File.Exists(MoveFilePath + MoveFileName))
+        {
+            FileStream fs = new FileStream(MoveFilePath + MoveFileName, FileMode.Append, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs, Encoding.Unicode);
+            sw.Close();
+
+            string s_sentenceSheetTemp = File.ReadAllText(OriginalFilePath + OriginalFileName);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(s_sentenceSheetTemp);
+            StreamWriter outStream = File.CreateText(MoveFilePath + MoveFileName);
+            outStream.Write(stringBuilder.ToString());
+            outStream.Close();
+        }
     }
 }

@@ -32,7 +32,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     protected override void Awake()
     {
-        base.Awake();
+        //base.Awake();
 
         placeData
             .Where(data => data != null)

@@ -32,3 +32,4 @@ public class GameManager : MonoBehaviour
         bug.SetActive(true);
     }
 }
+
