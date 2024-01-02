@@ -22,4 +22,8 @@ public class InteractObject : InteractCore
     {
         base.OnPointerExit(eventData);
     }
+    public override void Interact()
+    {
+
+    }
 }

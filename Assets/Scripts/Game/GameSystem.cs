@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UniRx;
+using System;
 
 public class GameSystem : MonoBehaviour
 {
@@ -53,7 +54,9 @@ public class GameSystem : MonoBehaviour
 
     public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
     {
-        objText.DOText(text, text.Length / 10).SetEase(Ease.Linear);
+        DOTween.Kill("Description");
+        objText.text = "";
+        objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Description");
         objPanel.SetActive(true);
     }
 

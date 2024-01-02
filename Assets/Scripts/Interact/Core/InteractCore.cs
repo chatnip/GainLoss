@@ -13,14 +13,13 @@ public class InteractCore : MonoBehaviour, IInteract, IPointerEnterHandler, IPoi
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        Outline.enabled = true;
+        //Outline.enabled = true;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        Outline.enabled = false;
+        //Outline.enabled = false;
     }
-
     public virtual void Interact()
     {
         

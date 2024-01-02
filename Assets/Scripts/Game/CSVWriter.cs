@@ -72,10 +72,10 @@ public class CSVWriter : MonoBehaviour
     {
         if (!File.Exists(MoveFilePath + MoveFileName))
         {
-            FileStream fs = new FileStream(MoveFilePath + MoveFileName, FileMode.Append, FileAccess.Write);
+            FileStream fs = new FileStream(MoveFilePath + MoveFileName, FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs, Encoding.Unicode);
             sw.Close();
-
+            
             string s_sentenceSheetTemp = File.ReadAllText(OriginalFilePath + OriginalFileName);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(s_sentenceSheetTemp);

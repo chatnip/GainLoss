@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -59,19 +60,24 @@ public class ComputerInteract : InteractObject
         Computer2DCamera.SetActive(false);
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void Interact()
     {
-        base.OnPointerDown(eventData);
         StartCoroutine(ScreenZoomIn());
     }
 
-    public override void OnPointerEnter(PointerEventData eventData)
-    {
-        base.OnPointerEnter(eventData);
-    }
+    /*    public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            StartCoroutine(ScreenZoomIn());
+        }
 
-    public override void OnPointerExit(PointerEventData eventData)
-    {
-        base.OnPointerExit(eventData);
-    }
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            base.OnPointerEnter(eventData);
+        }
+
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            base.OnPointerExit(eventData);
+        }*/
 }

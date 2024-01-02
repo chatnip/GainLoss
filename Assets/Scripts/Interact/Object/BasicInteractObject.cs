@@ -7,7 +7,7 @@ public class BasicInteractObject : InteractObject
 {
     [SerializeField] GameSystem GameSystem;
     [TextArea]
-    [SerializeField] string description;
+    [SerializeField] public string description;
 
     private void OnEnable()
     {
@@ -18,7 +18,12 @@ public class BasicInteractObject : InteractObject
         }
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void Interact()
+    {
+        GameSystem.ObjectDescriptionOn(description);
+    }
+
+/*    public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
         GameSystem.ObjectDescriptionOn(description);
@@ -32,5 +37,5 @@ public class BasicInteractObject : InteractObject
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
-    }
+    }*/
 }

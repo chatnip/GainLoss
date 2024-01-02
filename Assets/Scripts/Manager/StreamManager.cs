@@ -24,8 +24,8 @@ public class StreamManager : Manager<StreamManager>
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
         ApplyGage(); 
-        CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSheet_Saved.csv");
-        DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSheet_Saved.csv");
+        CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
+        DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
 
         List<Fragment> fragments = new();
         List<KeyValuePair<string, object>> basicDatas = new();
