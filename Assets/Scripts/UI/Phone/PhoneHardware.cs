@@ -12,6 +12,9 @@ public class PhoneHardware : MonoBehaviour
     [SerializeField] GameObject quarterViewCamera;
     [SerializeField] GameObject lockScreen;
 
+    [Header("*UICanvas")]
+    [SerializeField] GameObject InteractionUI3D;
+
 
     public void PhoneOn()
     {
@@ -23,6 +26,8 @@ public class PhoneHardware : MonoBehaviour
         quarterViewCamera.SetActive(false);
 
         phoneSoftware.ResetUI();
+
+        InteractionUI3D.SetActive(false);
     }
 
     public void PhoneOff()
@@ -33,6 +38,8 @@ public class PhoneHardware : MonoBehaviour
         quarterViewCamera.SetActive(true);
 
         this.gameObject.SetActive(false);
+
+        InteractionUI3D.SetActive(true);
     }
 
     private void OnEnable()

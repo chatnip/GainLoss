@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class BasicInteractObject : InteractObject
 
     private void OnEnable()
     {
-        if(GameSystem == null)
+        if (GameSystem == null)
         {
             GameObject game = GameObject.Find("GameSystem");
             game.TryGetComponent(out GameSystem);
@@ -21,21 +22,45 @@ public class BasicInteractObject : InteractObject
     public override void Interact()
     {
         GameSystem.ObjectDescriptionOn(description);
+        base.Interact();
+
+        /*GameSystem.ObjectDescriptionOn(description)
+            .OnComplete(() =>
+            {
+                if (GetWordID() != null)
+                {
+                    GetWordID()
+                        .OnComplete(() =>
+                        {
+                            AlreadyGotWordID();
+                        });
+                }
+                if (GetWordActionID() != null)
+                {
+                    Debug.Log("µé¾î°¨");
+                    GetWordActionID()
+                        .OnComplete(() =>
+                        {
+                            AlreadyGotWordActionID();
+                        });
+                }
+            });*/
+
     }
 
-/*    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-        GameSystem.ObjectDescriptionOn(description);
-    }
+    /*    public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            GameSystem.ObjectDescriptionOn(description);
+        }
 
-    public override void OnPointerEnter(PointerEventData eventData)
-    {
-        base.OnPointerEnter(eventData);
-    }
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            base.OnPointerEnter(eventData);
+        }
 
-    public override void OnPointerExit(PointerEventData eventData)
-    {
-        base.OnPointerExit(eventData);
-    }*/
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            base.OnPointerExit(eventData);
+        }*/
 }

@@ -44,6 +44,7 @@ public class PlaceSpawner : IDBtnSpawner
             }
             PlaceManager.enablePlaceBtnList.Clear();
         }
+        
     }
 
     public void PickBehaviorActionBtn()

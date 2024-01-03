@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using UnityEditor;
+using UnityEngine.InputSystem;
 
 public class WordManager : Manager<WordManager>
 {
@@ -36,15 +37,12 @@ public class WordManager : Manager<WordManager>
     // 선택한 단어 및 단어의 액션 목록
     [HideInInspector] public List<string> currentWordIDList = new();
     [HideInInspector] public List<ButtonValue> currentWordList = new();
-    [HideInInspector] private List<string> currentWordActionIDList = new();
+    [HideInInspector] public List<string> currentWordActionIDList = new();
     [HideInInspector] public List<ButtonValue> currentWordActionList = new();
 
     // 선택한 단어 및 단어의 액션
     [HideInInspector] public ButtonValue currentWord;
     private ButtonValue currentWordAction;
-
-
-    
 
 
     private void Start()
@@ -73,7 +71,7 @@ public class WordManager : Manager<WordManager>
         currentWordAction = null;
         // currentWordIDList.Clear();  // 목록을 지우도록 수정
         currentWordList.Clear();
-        currentWordActionIDList.Clear();
+        // currentWordActionIDList.Clear();
         currentWordActionList.Clear();
         currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
@@ -96,7 +94,7 @@ public class WordManager : Manager<WordManager>
                 {
                     currentWord = word;
                     Debug.Log("currentWord : " + currentWord.Name);
-                    InitWordActionID(currentWord.ID);
+                    InitWordAction(currentWord.ID);
                     todoWordBtnSpawner.SpawnWordActionBtn();
                 });
         }
@@ -241,42 +239,21 @@ public class WordManager : Manager<WordManager>
         }
     }
 
-    private void InitWordActionID(string id)
-    {
-        currentWordActionIDList.Clear(); // 초기화
-        /*foreach (var data in DataManager.StreamEventDatas[0]) // 스트림 이벤트 순회
-        {
-            if (data.Key.Contains(id))
-            {
-                string key = data.Key.ToString().Substring(4, 4);
-                currentWordActionIDList.Add(key);
-            }
-        }*/
-        foreach (var data in DataManager.WordActionDatas[3])
-        {
-            if (data.Key != "WordActionID")
-            {
-                string key = data.Key;
-                string wordRate = (string)DataManager.WordDatas[1][currentWord.ID];
-                string wordActionRate = (string)DataManager.WordActionDatas[1][key];
-                if (!(wordRate == "Positive" && wordActionRate == "Malicious"))
-                {
-                    currentWordActionIDList.Add(key);
-                }
-            }
-        }
-        InitWordAction();
-    }
-
-    private void InitWordAction()
+    private void InitWordAction(string wordID)
     {
         currentWordActionList.Clear(); // 초기화
-        foreach (string id in currentWordActionIDList) // ID 순회
+        foreach (string WordActionID in currentWordActionIDList) // ID 순회
         {
-            ButtonValue word = new(id, (string)DataManager.WordActionDatas[3][id]);
-            currentWordActionList.Add(word);
+            string wordRate = (string)DataManager.WordDatas[1][wordID];
+            string wordActionRate = (string)DataManager.WordActionDatas[1][WordActionID];
+            if (!(wordRate == "Positive" && wordActionRate == "Malicious"))
+            {
+                ButtonValue word = new(WordActionID, (string)DataManager.WordActionDatas[3][WordActionID]);
+                currentWordActionList.Add(word);
+            }
         }
     }
+
     #endregion
 }
 

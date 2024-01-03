@@ -16,6 +16,9 @@ public class ComputerInteract : InteractObject
     [Space(10)]
     [SerializeField] public GameObject Computer2DCamera;
 
+    [Header("*UICanvas")]
+    [SerializeField] GameObject InteractionUI3D;
+
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {
         screenObject.SetActive(true);
@@ -53,11 +56,13 @@ public class ComputerInteract : InteractObject
     {
         // 나중에 애니메이션 추가!!!
         Computer2DCamera.SetActive(true);
+        InteractionUI3D.SetActive(false);
     }
 
     private void ScreenOff()
     {
         Computer2DCamera.SetActive(false);
+        InteractionUI3D.SetActive(true);
     }
 
     public override void Interact()
