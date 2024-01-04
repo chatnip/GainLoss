@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,18 +8,20 @@ public class InteractObject : InteractCore
 {
     [SerializeField] string objectID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
-    [SerializeField] string getWordID;
+    [SerializeField] public string getWordID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
-    [SerializeField] string getWordActionID;
+    [SerializeField] public string getWordActionID;
 
+    CheckGetAllDatas CheckGetAllDatas;
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
     WordManager WordManager;
 
     private void Awake()
     {
+        CheckGetAllDatas = GameObject.Find("TerminateAPart").GetComponent<CheckGetAllDatas>();
         WordManager = GameObject.Find("WordManager").GetComponent<WordManager>();
-        GetSomething = GameObject.Find("MainCanvas").transform.Find("GetSomething").gameObject;
+        GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
     }
 
@@ -40,22 +41,38 @@ public class InteractObject : InteractCore
     }
     public override void Interact()
     {
-        if(this.getWordID != "")
-        {
-            GetWordID();
-        }
-        if (this.getWordActionID != "")
-        {
-            GetWordActionID();
-        }
+        if (this.getWordID != "") { GetWordID(); }
+        if (this.getWordActionID != "") { GetWordActionID(); }
+
+        CheckGetAllDatas.ApplyTerminateBtnAndText();
     }
 
     protected void GetWordID()
     {
-        
+        List<string> wordIDs = WordManager.currentWordIDList;
+        foreach (string wordID in wordIDs)
+        {
+            if (wordID == getWordID)
+            {
+                getWordID = "";
+                return;
+            }
+        }
+        getSomethingWithID.SetData(getWordID);
+        getWordID = "";
     }
     protected void GetWordActionID()
     {
-        
+        List<string> wordActionIDs = WordManager.currentWordActionIDList;
+        foreach (string wordActionID in wordActionIDs)
+        {
+            if (wordActionID == getWordActionID)
+            {
+                getWordActionID = "";
+                return;
+            }
+        }
+        getSomethingWithID.SetData(getWordActionID);
+        getWordActionID = "";
     }
 }
