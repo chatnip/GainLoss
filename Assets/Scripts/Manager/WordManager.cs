@@ -26,9 +26,6 @@ public class WordManager : Manager<WordManager>
     StringReactiveProperty currentWordActiionStr = new();
     [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
-    [Header("*Test")]
-    [SerializeField] WordJson WordJson;
-
 
     // 켜진 단어 및 단어의 액션 버튼 목록
     [SerializeField] public List<IDBtn> enableWordBtnList = new();
@@ -234,6 +231,7 @@ public class WordManager : Manager<WordManager>
         currentWordList.Clear(); // 초기화
         foreach (string id in currentWordIDList) // ID 순회
         {
+            
             ButtonValue word = new(id, (string)DataManager.WordDatas[5][id]);
             currentWordList.Add(word);
         }

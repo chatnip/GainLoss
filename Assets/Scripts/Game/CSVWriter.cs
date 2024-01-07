@@ -9,8 +9,6 @@ public class CSVWriter : MonoBehaviour
 {
     public static List<Dictionary<string, object>> SaveCSV_StreamEventDatas(string id, string filePath, string fileName)
     {
-        
-
         //CSV데이터 가져와 string값으로 저장
         string path = filePath + fileName;
         string s_sentenceSheetTemp = File.ReadAllText(path);
@@ -57,13 +55,13 @@ public class CSVWriter : MonoBehaviour
         List<Dictionary<string, object>> datas = CSVReader.Read(s_sentenceSheetTemp);
 
         #region
-
+/*
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(s_sentenceSheetTemp);
         StreamWriter outStream = System.IO.File.CreateText(filePath + fileName);
         outStream.Write(stringBuilder.ToString());
         outStream.Close();
-
+*/
         #endregion
 
         return datas;

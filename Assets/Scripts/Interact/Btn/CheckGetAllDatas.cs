@@ -52,7 +52,7 @@ public class CheckGetAllDatas : MonoBehaviour
                 if (interactObject.getWordID != "" || interactObject.getWordActionID != "")
                 {
                     _remain++;
-                    Debug.Log("아직 존재");
+                    //Debug.Log("아직 존재");
                 }
             }
         }

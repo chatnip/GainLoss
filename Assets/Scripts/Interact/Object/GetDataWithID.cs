@@ -7,7 +7,6 @@ using DG.Tweening;
 public class GetDataWithID : MonoBehaviour
 {
     [Header("*Manager")]
-    [SerializeField] WordJson WordJson;
     [SerializeField] WordManager WordManager;
 
     [Header("*GO")]
@@ -28,12 +27,14 @@ public class GetDataWithID : MonoBehaviour
             if (c_id[1] == 'A')
             {
                 setUI((string)DataManager.WordActionDatas[3][id], ".EXE");
-                InputWordActionData();
+
+                WordManager.currentWordActionIDList.Add(id);
             }
             else
             {
                 setUI((string)DataManager.WordDatas[5][id], ".AIL");
-                InputWordData();
+
+                WordManager.currentWordIDList.Add(id);
             }
         }
     }
@@ -53,21 +54,6 @@ public class GetDataWithID : MonoBehaviour
             .SetId("GetDataWithID");
     }
 
-    private void InputWordData()
-    {
-        WordManager.currentWordIDList.Add(id);
-        WordJson.JsonSaveTest(WordJson.json_filePath, WordJson.json_wordFileName, WordManager.currentWordIDList);
-        WordManager.currentWordIDList = WordJson.JsonLoadTest(WordJson.json_filePath, WordJson.json_wordFileName);
-
-    }
-
-    private void InputWordActionData()
-    {
-        WordManager.currentWordActionIDList.Add(id);
-        WordJson.JsonSaveTest(WordJson.json_filePath, WordJson.json_wordActionFileName, WordManager.currentWordActionIDList);
-        WordManager.currentWordIDList = WordJson.JsonLoadTest(WordJson.json_filePath, WordJson.json_wordActionFileName);
-
-    }
 
     private void clearCurrentGetID()
     {

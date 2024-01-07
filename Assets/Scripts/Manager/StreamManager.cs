@@ -2,19 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using System.Text;
-using DG.Tweening.Plugins.Core.PathCore;
 
 public class StreamManager : Manager<StreamManager>
 {
     [SerializeField] GameManager GameManager;
     [SerializeField] DialogManager DialogManager;
     [SerializeField] DataManager DataManager;
+    
 
     [HideInInspector] public string currentStreamEventID;
     [HideInInspector] public StreamEvent currentStreamEvent;
 
+    [HideInInspector] public List<Dictionary<string, object>> currentStreamEventDatas = new();
 
     public void StartDialog(string id)
     {
@@ -73,7 +72,6 @@ public class StreamManager : Manager<StreamManager>
         return scenario;
     }
 
-
     private void ApplyGage()
     {
         DialogManager.currentStreamEvent = this.currentStreamEvent;
@@ -88,6 +86,8 @@ public class StreamManager : Manager<StreamManager>
         if (GameManager.riskGage < 0) { GameManager.riskGage = 0; }
         if (GameManager.OverloadGage < 0) { GameManager.OverloadGage = 0; }
     }
+
+    
 }
 [System.Serializable]
 public class StreamEvent
