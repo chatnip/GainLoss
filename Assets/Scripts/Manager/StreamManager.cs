@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class StreamManager : Manager<StreamManager>
 {
@@ -18,13 +19,18 @@ public class StreamManager : Manager<StreamManager>
     public void StartDialog(string id)
     {
         DialogManager.ScenarioBase.Value = InitStreamEventID(id);
+
     }
 
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
-        ApplyGage(); 
-        CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
-        DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
+        ApplyGage();
+
+        SetNumberOfUses(id);
+
+
+        //CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
+        //DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
 
         List<Fragment> fragments = new();
         List<KeyValuePair<string, object>> basicDatas = new();
@@ -76,18 +82,35 @@ public class StreamManager : Manager<StreamManager>
     {
         DialogManager.currentStreamEvent = this.currentStreamEvent;
 
-        GameManager.stressGage += currentStreamEvent.stressValue;
-        GameManager.angerGage += currentStreamEvent.angerValue;
-        GameManager.riskGage += currentStreamEvent.riskValue;
-        GameManager.OverloadGage += currentStreamEvent.OverloadValue;
+        GameManager.currentMainInfo.stressGage += currentStreamEvent.stressValue;
+        GameManager.currentMainInfo.angerGage += currentStreamEvent.angerValue;
+        GameManager.currentMainInfo.riskGage += currentStreamEvent.riskValue;
+        GameManager.currentMainInfo.overloadGage += currentStreamEvent.OverloadValue;
 
-        if (GameManager.stressGage < 0) { GameManager.stressGage = 0; }
-        if (GameManager.angerGage < 0) { GameManager.angerGage = 0; }
-        if (GameManager.riskGage < 0) { GameManager.riskGage = 0; }
-        if (GameManager.OverloadGage < 0) { GameManager.OverloadGage = 0; }
+        if (GameManager.currentMainInfo.stressGage < 0) { GameManager.currentMainInfo.stressGage = 0; }
+        if (GameManager.currentMainInfo.angerGage < 0) { GameManager.currentMainInfo.angerGage = 0; }
+        if (GameManager.currentMainInfo.riskGage < 0) { GameManager.currentMainInfo.riskGage = 0; }
+        if (GameManager.currentMainInfo.overloadGage < 0) { GameManager.currentMainInfo.overloadGage = 0; }
     }
 
-    
+    private void SetNumberOfUses(string id)
+    {
+        string GetKey = "";
+        foreach (string Key in currentStreamEventDatas[0].Keys)
+        {
+            if(id == Key)
+            {
+                GetKey = Key;
+            }
+        }
+
+        currentStreamEventDatas[0][GetKey] = "TRUE";
+        int currentValue = Convert.ToInt32(currentStreamEventDatas[1][GetKey]);
+        currentStreamEventDatas[1][GetKey] = (currentValue + 1).ToString();
+
+        Debug.Log(GetKey + "/" + currentStreamEventDatas[0][GetKey] + "/" + currentStreamEventDatas[1][GetKey]);
+       
+    }
 }
 [System.Serializable]
 public class StreamEvent

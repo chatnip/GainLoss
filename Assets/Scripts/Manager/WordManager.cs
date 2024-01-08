@@ -118,13 +118,13 @@ public class WordManager : Manager<WordManager>
                     currentStreamEvent = SetStreamEvent(
                         currentWord.ID, 
                         currentWordAction.ID, 
-                        Convert.ToBoolean(DataManager.StreamEventDatas[0][StreamManager.currentStreamEventID]),
-                        Convert.ToInt32(DataManager.StreamEventDatas[1][StreamManager.currentStreamEventID]));
+                        Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
+                        Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
 
                     SetResultPreview(
                         currentStreamEvent,
-                        Convert.ToBoolean(DataManager.StreamEventDatas[0][StreamManager.currentStreamEventID]),
-                        Convert.ToInt32(DataManager.StreamEventDatas[1][StreamManager.currentStreamEventID]));
+                        Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
+                        Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
 
                 });
         }

@@ -8,7 +8,7 @@ using TMPro;
 public class PhoneSoftware : MonoBehaviour
 {
     [Header("*Manager")]
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GameManager GameManager;
 
     [Header("*Software")]
     [SerializeField] Button lockScreen;
@@ -66,7 +66,7 @@ public class PhoneSoftware : MonoBehaviour
 
         #region Day
 
-        MapBtnDay.text = gameManager.CurrentDay + " Day";
+        MapBtnDay.text = GameManager.currentMainInfo.day + " Day";
 
         #endregion
 

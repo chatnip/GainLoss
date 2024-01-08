@@ -187,15 +187,15 @@ public class DialogManager : Manager<DialogManager>
         yield return new WaitForSeconds(showTime);
 
         // 게이지 출력
-        EffectGage(stressSlider, GameManager.stressGage, showTime, stressBarColor);
-        EffectGage(angerSlider, GameManager.angerGage, showTime, angerBarColor);
-        EffectGage(riskSlider, GameManager.riskGage, showTime, riskBarColor);
+        EffectGage(stressSlider, GameManager.currentMainInfo.stressGage, showTime, stressBarColor);
+        EffectGage(angerSlider, GameManager.currentMainInfo.angerGage, showTime, angerBarColor);
+        EffectGage(riskSlider, GameManager.currentMainInfo.riskGage, showTime, riskBarColor);
         yield return new WaitForSeconds(showTime);
 
         // 수치(text) 출력
-        IncOpacityText(stressText, GameManager.stressGage, currentStreamEvent.stressValue, showTime);
-        IncOpacityText(angerText, GameManager.angerGage, currentStreamEvent.angerValue, showTime);
-        IncOpacityText(riskText, GameManager.riskGage, currentStreamEvent.riskValue, showTime);
+        IncOpacityText(stressText, GameManager.currentMainInfo.stressGage, currentStreamEvent.stressValue, showTime);
+        IncOpacityText(angerText, GameManager.currentMainInfo.angerGage, currentStreamEvent.angerValue, showTime);
+        IncOpacityText(riskText, GameManager.currentMainInfo.riskGage, currentStreamEvent.riskValue, showTime);
         yield return new WaitForSeconds(showTime);
 
         // 과부하 출력
@@ -203,9 +203,9 @@ public class DialogManager : Manager<DialogManager>
         resultWindowGage.transform.DOLocalMoveY(60f, showTime);
         yield return new WaitForSeconds(showTime);
 
-        EffectGage(overloadSilder, GameManager.OverloadGage, showTime, overloadBarColor);
+        EffectGage(overloadSilder, GameManager.currentMainInfo.overloadGage, showTime, overloadBarColor);
         yield return new WaitForSeconds(showTime);
-        IncOpacityText(overloadText, GameManager.OverloadGage, currentStreamEvent.OverloadValue, showTime);
+        IncOpacityText(overloadText, GameManager.currentMainInfo.overloadGage, currentStreamEvent.OverloadValue, showTime);
         yield return new WaitForSeconds(showTime);
 
         // 다음날로 가는 버튼 출력

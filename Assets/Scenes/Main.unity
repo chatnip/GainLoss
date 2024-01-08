@@ -9339,7 +9339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9809,12 +9809,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89faa17df15aab418298d39f4c454e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  json_filePath: 
-  json_wordFileName: 
-  json_wordActionFileName: 
-  json_sentenceFileName: 
+  json_filePath: Assets/Resources/Json/
+  json_mainInfoFileName: mainInfoDatabase.json
+  json_wordFileName: wordDatabase.json
+  json_wordActionFileName: wordActionDatabase.json
+  json_sentenceFileName: sentenceDatabase.json
   WordManager: {fileID: 1775436664}
   StreamManager: {fileID: 746527783}
+  GameManager: {fileID: 1799882741}
 --- !u!1 &661108414
 GameObject:
   m_ObjectHideFlags: 0
@@ -13398,7 +13400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05170570bd1b6904f8c556df44bb7e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1799882741}
+  GameManager: {fileID: 1799882741}
   lockScreen: {fileID: 1795666577}
   mapBtn: {fileID: 890632566}
   map: {fileID: 192906982}
@@ -14945,7 +14947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b770037a61ca8e94d97924a20a20641a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1799882741}
+  GameManager: {fileID: 1799882741}
   ComputerInteract: {fileID: 1656715935}
   windowButton: {fileID: 661108416}
   CurrentDayText: {fileID: 1748711832}
@@ -18080,6 +18082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectPooling: {fileID: 268666656}
   WordManager: {fileID: 1775436664}
+  StreamManager: {fileID: 746527783}
   wordParentObject: {fileID: 1322253632}
   wordActionParentObject: {fileID: 1869104371}
 --- !u!1 &1206525411
@@ -24793,11 +24796,11 @@ RectTransform:
   - {fileID: 1242345480}
   - {fileID: 702716023}
   - {fileID: 1207284027}
+  - {fileID: 249829826}
+  - {fileID: 1672429400}
   - {fileID: 6693010971843178698}
   - {fileID: 844579170}
   - {fileID: 1084193114}
-  - {fileID: 249829826}
-  - {fileID: 1672429400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -25780,7 +25783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7197a7bb6db3654397f9397a4035c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WordJson: {fileID: 654348490}
   WordManager: {fileID: 1775436664}
   Popup: {fileID: 1425741351}
   Name: {fileID: 1841263127}
@@ -28187,6 +28189,12 @@ MonoBehaviour:
   riskGage: 0
   OverloadGage: 0
   CurrentDay: 1
+  currentMainInfo:
+    day: 0
+    stressGage: 0
+    angerGage: 0
+    riskGage: 0
+    overloadGage: 0
 --- !u!1 &1804429451
 GameObject:
   m_ObjectHideFlags: 0

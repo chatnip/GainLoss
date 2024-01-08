@@ -7,6 +7,7 @@ using UnityEngine;
 public class TodoSpawner : IDBtnSpawner
 {
     [SerializeField] WordManager WordManager;
+    [SerializeField] StreamManager StreamManager;
 
     [Header("*WordParentObj")]
     [SerializeField] RectTransform wordParentObject;
@@ -64,7 +65,7 @@ public class TodoSpawner : IDBtnSpawner
 
             foreach (string s in streamEventIDs)
             {
-                if (Convert.ToBoolean(DataManager.StreamEventDatas[0][s]))
+                if (Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][s]))
                 { return false; }
             }
             return true;
@@ -84,7 +85,7 @@ public class TodoSpawner : IDBtnSpawner
 
             IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
             actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
-            if ((int)(DataManager.StreamEventDatas[1][WordManager.currentWord.ID + WordManager.currentWordActionList[i].ID]) >= 3)
+            if (Convert.ToInt32(StreamManager.currentStreamEventDatas[1][WordManager.currentWord.ID + WordManager.currentWordActionList[i].ID]) >= 3)
             { actionBtn.CannotUse(false, "Use up to the maximum(3)"); }
             else 
             { actionBtn.CannotUse(true, ""); }

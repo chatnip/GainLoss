@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using System;
 
+[Serializable]
 public class GameManager : MonoBehaviour
 {
-    [Header("*Gage")]
+    /*[Header("*Gage")]
     [ProgressBar("StressGage", 100, EColor.Red)]
     public int stressGage = 0;
     [ProgressBar("AngerGage", 100, EColor.Green)]
@@ -15,21 +17,25 @@ public class GameManager : MonoBehaviour
     [ProgressBar("OverloadGage", 100, EColor.Gray)]
     public int OverloadGage = 0;
 
-    [Header("*Build Debugging")]
-    [SerializeField] static GameObject bug;
-
     [Header("*Day")]
-    public int CurrentDay = 1;
+    public int CurrentDay = 1;*/
+
+    [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
 
     private void Start()
     {
         // wordDatas = WordCSVReader.Parse("TestCVSFile2");
     }
 
-    public static void BuildBug()
-    {
-        bug = GameObject.Find("Bug!");
-        bug.SetActive(true);
-    }
+}
+
+[Serializable]
+public class MainInfo
+{
+    public int day;
+    public int stressGage;
+    public int angerGage;
+    public int riskGage;
+    public int overloadGage;
 }
 

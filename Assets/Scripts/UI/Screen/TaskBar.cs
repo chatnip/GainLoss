@@ -8,7 +8,7 @@ using DG.Tweening;
 
 public class TaskBar : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GameManager GameManager;
     [SerializeField] ComputerInteract ComputerInteract;
     [SerializeField] Button windowButton;
     [SerializeField] TMP_Text CurrentDayText;
@@ -32,6 +32,6 @@ public class TaskBar : MonoBehaviour
     }
     private void OnEnable()
     {
-        CurrentDayText.text = "DAY " + gameManager.CurrentDay;
+        CurrentDayText.text = "DAY " + GameManager.currentMainInfo.day;
     }
 }

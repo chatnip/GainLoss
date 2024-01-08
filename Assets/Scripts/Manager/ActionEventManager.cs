@@ -33,6 +33,9 @@ public class ActionEventManager : Manager<ActionEventManager>
     protected override void Awake()
     {
         //base.Awake();
+        loading.gameObject.SetActive(true);
+        loading.alpha = 1.0f;
+        StartCoroutine(Post_ShowNextDayText(1f));
 
         placeData
             .Where(data => data != null)
@@ -73,13 +76,13 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     public void TurnOnLoading()
     {
-        StartCoroutine(ShowNextDayText(1f));
+        StartCoroutine(Past_ShowNextDayText(1f));
     }
-    private IEnumerator ShowNextDayText(float time)
+    private IEnumerator Past_ShowNextDayText(float time)
     {
         PassDayExplanationText.color = Color.white;
-        string TextTemp;
-        TextTemp = "DAY [" + GameManager.CurrentDay + "]";
+        string TextTemp = "";
+        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
 
         StartLoading();
 
@@ -87,12 +90,23 @@ public class ActionEventManager : Manager<ActionEventManager>
         yield return new WaitForSeconds(time + 0.5f);
 
         PassDayExplanationText.DOFade(0, time);
+
         SetData();
+
+        StartCoroutine(Post_ShowNextDayText(1f));
+    }
+
+    private IEnumerator Post_ShowNextDayText(float time)
+    {
+        PassDayExplanationText.color = Color.white;
+        string TextTemp = "";
+        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
+
         yield return new WaitForSeconds(time);
 
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
-        TextTemp = "DAY [" + GameManager.CurrentDay + "]";
+        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
         PassDayExplanationText.DOText(TextTemp, time);
         yield return new WaitForSeconds(time * 2);
         PassDayExplanationText.DOFade(0, time);
@@ -106,14 +120,14 @@ public class ActionEventManager : Manager<ActionEventManager>
         loadingSequence.OnStart(() =>
         {
             loading.gameObject.SetActive(true);
-            loading.DOFade(1f, 1f); 
+            loading.DOFade(1f, 1f);
         });
-    }    
+    }
     private void SetData()
     {
-        GameManager.CurrentDay++;
+        GameManager.currentMainInfo.day++;
 
-        MainSceneUI_Day.text = "Day " + GameManager.CurrentDay;
+        MainSceneUI_Day.text = "Day " + GameManager.currentMainInfo.day;
     }
     private void EndLoading()
     {
