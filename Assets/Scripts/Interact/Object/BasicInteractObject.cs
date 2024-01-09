@@ -21,9 +21,12 @@ public class BasicInteractObject : InteractObject
 
     public override void Interact()
     {
-        GameSystem.ObjectDescriptionOn(description);
-        base.Interact();
-
+        if(base.CanInteract)
+        {
+            GameSystem.ObjectDescriptionOn(description);
+            base.Interact();
+        }
+        
         /*GameSystem.ObjectDescriptionOn(description)
             .OnComplete(() =>
             {

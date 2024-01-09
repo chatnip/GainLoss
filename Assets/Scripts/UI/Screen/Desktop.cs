@@ -97,7 +97,7 @@ public class Desktop : MonoBehaviour
             .Subscribe(btn =>
             {
                 TurnOff();
-                ActionEventManager.TurnOnLoading();
+                //ActionEventManager.TurnOnLoading();
                 computerInteract.StartCoroutine(computerInteract.ScreenZoomOut(false));
             });
 

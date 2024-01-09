@@ -25,10 +25,6 @@ public class JsonManager : MonoBehaviour
 
         LoadAllGameDatas();
 
-        // SentenceSheet의 값을 받아와 Json파일에 저장하는 함수 / 즉, 데이터 초기화
-        //CSVToJson_SentenceSheet();
-
-        JsonLoad_MI(json_filePath, json_mainInfoFileName);
     }
 
     private void SetPath()
@@ -202,6 +198,9 @@ public class JsonManager : MonoBehaviour
     // Save ALL
     public void SaveAllGameDatas()
     {
+        // Save -> MainInfo Json
+        JsonSave(json_filePath, json_mainInfoFileName, GameManager.currentMainInfo);
+
         // Save -> Word Json
         JsonSave(json_filePath, json_wordFileName, WordManager.currentWordIDList);
 
@@ -232,11 +231,6 @@ public class JsonManager : MonoBehaviour
     void Set_StartMainInfo()
     {
         MainInfo mainDatas = new MainInfo();
-        mainDatas.day = 0;
-        mainDatas.stressGage = 0;
-        mainDatas.angerGage = 0;
-        mainDatas.riskGage = 0;
-        mainDatas.overloadGage = 0;
 
         JsonSave(json_filePath, json_mainInfoFileName, mainDatas);
     }

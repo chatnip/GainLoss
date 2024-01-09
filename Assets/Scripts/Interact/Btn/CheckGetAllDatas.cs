@@ -59,4 +59,5 @@ public class CheckGetAllDatas : MonoBehaviour
 
         return _remain;
     }
+
 }

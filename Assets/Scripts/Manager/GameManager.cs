@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using System;
 
 [Serializable]
@@ -20,6 +19,16 @@ public class GameManager : MonoBehaviour
     [Header("*Day")]
     public int CurrentDay = 1;*/
 
+    [Header("*Weed Stream")]
+    [SerializeField] public bool IsStreamDay_Mon;
+    [SerializeField] public bool IsStreamDay_Tue;
+    [SerializeField] public bool IsStreamDay_Wed;
+    [SerializeField] public bool IsStreamDay_Thu;
+    [SerializeField] public bool IsStreamDay_Fri;
+    [SerializeField] public bool IsStreamDay_Sat;
+    [SerializeField] public bool IsStreamDay_Sun;
+
+
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
 
     private void Start()
@@ -32,10 +41,19 @@ public class GameManager : MonoBehaviour
 [Serializable]
 public class MainInfo
 {
-    public int day;
-    public int stressGage;
-    public int angerGage;
-    public int riskGage;
-    public int overloadGage;
+    public bool ___________________________________________PrograssChart;
+    public int chapter = 1;
+    public int day = 1;
+
+    public bool ____________________________________________________Gage;
+    public int stressGage = 0;
+    public int angerGage = 0;
+    public int riskGage = 0;
+    public int overloadGage = 0;
+
+    public bool _____________________________________________GetBehavior;
+    public bool SiteSurvey = true;
+    public bool PreliminarySurvey = false;
+    public bool WatchingStream = true;
 }
 

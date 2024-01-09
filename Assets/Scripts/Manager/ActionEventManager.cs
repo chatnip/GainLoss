@@ -12,9 +12,12 @@ public class ActionEventManager : Manager<ActionEventManager>
     [Header("*Manager")]
     [SerializeField] GameManager GameManager;
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] JsonManager JsonManager;
 
     [Header("*LoadingWindow")]
+    [SerializeField] TMP_Text CurrentChapterText;
     [SerializeField] TMP_Text PassDayExplanationText;
+    [SerializeField] TMP_Text SavingPrograssText;
     [SerializeField] CanvasGroup loading;
     [SerializeField] TMP_Text MainSceneUI_Day;
 
@@ -33,6 +36,8 @@ public class ActionEventManager : Manager<ActionEventManager>
     protected override void Awake()
     {
         //base.Awake();
+        SetChapterText();
+        AppearTextObject(1f);
         loading.gameObject.SetActive(true);
         loading.alpha = 1.0f;
         StartCoroutine(Post_ShowNextDayText(1f));
@@ -44,6 +49,8 @@ public class ActionEventManager : Manager<ActionEventManager>
                 StartCoroutine(ParsePlace(data));
             });
     }
+
+    #region Place
 
     public IEnumerator PlaceSetting()
     {
@@ -74,12 +81,20 @@ public class ActionEventManager : Manager<ActionEventManager>
         this.placeData.Value = placeData;
     }
 
+    #endregion
+
+    #region PassDay Loading
+
     public void TurnOnLoading()
     {
+        SetChapterText();
+        AppearTextObject(1f);
         StartCoroutine(Past_ShowNextDayText(1f));
     }
     private IEnumerator Past_ShowNextDayText(float time)
     {
+        BeforeSaveDatas();
+
         PassDayExplanationText.color = Color.white;
         string TextTemp = "";
         TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
@@ -91,22 +106,21 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         PassDayExplanationText.DOFade(0, time);
 
-        SetData();
+        SetDayText();
 
         StartCoroutine(Post_ShowNextDayText(1f));
     }
-
     private IEnumerator Post_ShowNextDayText(float time)
     {
+        SaveDatas();
+
         PassDayExplanationText.color = Color.white;
-        string TextTemp = "";
-        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
 
         yield return new WaitForSeconds(time);
 
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
-        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
+        string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
         PassDayExplanationText.DOText(TextTemp, time);
         yield return new WaitForSeconds(time * 2);
         PassDayExplanationText.DOFade(0, time);
@@ -121,9 +135,11 @@ public class ActionEventManager : Manager<ActionEventManager>
         {
             loading.gameObject.SetActive(true);
             loading.DOFade(1f, 1f);
+
+            SavingPrograssText.text = "Saving...";
         });
     }
-    private void SetData()
+    private void SetDayText()
     {
         GameManager.currentMainInfo.day++;
 
@@ -136,9 +152,51 @@ public class ActionEventManager : Manager<ActionEventManager>
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
-            GameSystem.GameStart();
+            //GameSystem.GameStart();
         });
     }
 
+    #endregion
 
+    #region Set Chapter
+
+    private void SetChapterText()
+    {
+        int currentChapter = GameManager.currentMainInfo.chapter;
+        CurrentChapterText.text = "CHAPTER [ " + currentChapter.ToString() + " ]";
+    }
+
+    private void AppearTextObject(float durTime)
+    {
+        //Color Set
+        CurrentChapterText.color = new Color(255, 255, 255, 0);
+
+        //Pos Set
+        RectTransform rectTransform = CurrentChapterText.gameObject.GetComponent<RectTransform>();
+        Vector2 offset = rectTransform.anchoredPosition;
+        rectTransform.anchoredPosition = new Vector2(offset.x + rectTransform.rect.width, offset.y);
+
+        CurrentChapterText.DOFade(1f, durTime);
+        rectTransform.DOAnchorPos(offset, durTime);
+    }
+
+    #endregion
+
+    #region SaveDatas
+
+    private void BeforeSaveDatas()
+    {
+        SavingPrograssText.text = "< Saving... >";
+        SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    private void SaveDatas()
+    {
+        DOTween.Kill(SavingPrograssText);
+        JsonManager.SaveAllGameDatas();
+        SavingPrograssText.text = "< Saved >";
+        SavingPrograssText.DOFade(1f, 1f);
+    }
+
+    #endregion
 }

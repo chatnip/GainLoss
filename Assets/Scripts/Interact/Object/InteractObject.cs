@@ -12,6 +12,8 @@ public class InteractObject : InteractCore
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getWordActionID;
 
+    [HideInInspector] public bool CanInteract;
+
     CheckGetAllDatas CheckGetAllDatas;
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
@@ -19,10 +21,14 @@ public class InteractObject : InteractCore
 
     private void Awake()
     {
-        CheckGetAllDatas = GameObject.Find("TerminateAPart").GetComponent<CheckGetAllDatas>();
+        CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
         WordManager = GameObject.Find("WordManager").GetComponent<WordManager>();
         GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
+    }
+    private void OnEnable()
+    {
+        CanInteract = true;
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -45,6 +51,8 @@ public class InteractObject : InteractCore
         if (this.getWordActionID != "") { GetWordActionID(); }
 
         CheckGetAllDatas.ApplyTerminateBtnAndText();
+
+        CanInteract = false;
     }
 
     protected void GetWordID()

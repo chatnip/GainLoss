@@ -28,10 +28,13 @@ public class SetInteractionObjects : MonoBehaviour
     {
         if(OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
         {
-            OB.gameObject.GetComponent<OutlineObject>().enabled = true;
-            activeInteractionGOs.Add(OB.gameObject);
+            if (interactObject.CanInteract) 
+            { 
+                OB.gameObject.GetComponent<OutlineObject>().enabled = true;
+                activeInteractionGOs.Add(OB.gameObject);
 
-            objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
+                objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
+            }
         }
     }
     private void OnTriggerExit(Collider OB)
@@ -42,6 +45,19 @@ public class SetInteractionObjects : MonoBehaviour
             activeInteractionGOs.Remove(OB.gameObject);
 
             objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
+        }
+    }
+    private void OnTriggerStay(Collider OB)
+    {
+        if (OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
+        {
+            if (!interactObject.CanInteract)
+            {
+                OB.gameObject.GetComponent<OutlineObject>().enabled = false;
+                activeInteractionGOs.Remove(OB.gameObject);
+
+                objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
+            }
         }
     }
 
