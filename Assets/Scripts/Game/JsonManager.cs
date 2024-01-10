@@ -13,18 +13,19 @@ public class JsonManager : MonoBehaviour
     [HideInInspector] public string json_wordFileName;
     [HideInInspector] public string json_wordActionFileName;
     [HideInInspector] public string json_sentenceFileName;
+    [HideInInspector] public string json_BehaviorFileName;
 
     // public List<WordBase> myWords = new List<WordBase>();
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameManager GameManager;
- 
+    [SerializeField] BehaviorManager BehaviorManager;
+
     private void Awake()
     {
         SetPath();
 
         LoadAllGameDatas();
-
     }
 
     private void SetPath()
@@ -35,6 +36,7 @@ public class JsonManager : MonoBehaviour
         json_wordFileName = "wordDatabase.json";
         json_wordActionFileName = "wordActionDatabase.json";
         json_sentenceFileName = "sentenceDatabase.json";
+        json_BehaviorFileName = "behaviorDatabase.json";
     }
 
     #region Load Json
@@ -122,6 +124,10 @@ public class JsonManager : MonoBehaviour
         // Load -> Sentence Json
         StreamManager.currentStreamEventDatas =
             JsonLoad_LD(json_filePath, json_sentenceFileName);
+
+        // Load -> behavior Json
+        BehaviorManager.currentHaveBehaviors =
+            JsonLoad_L(json_filePath, json_BehaviorFileName);
     }
 
     #endregion
@@ -209,6 +215,9 @@ public class JsonManager : MonoBehaviour
 
         // Save -> Sentence Json
         JsonSave(json_filePath, json_sentenceFileName, StreamManager.currentStreamEventDatas);
+
+        // Save -> Behavior Json
+        JsonSave(json_filePath, json_BehaviorFileName, BehaviorManager.currentHaveBehaviors);
     }
 
     #endregion
@@ -225,6 +234,7 @@ public class JsonManager : MonoBehaviour
         Set_StartWord(); // Word IDs
         Set_StartWordAction(); // WordAction IDs
         Set_Sentence(); // Sentence IDs
+        Set_Behavior(); // Behavior string
 
     }
 
@@ -273,6 +283,17 @@ public class JsonManager : MonoBehaviour
         result.RemoveAt(0);
 
         JsonSave(json_filePath, json_sentenceFileName, result);
+    }
+    void Set_Behavior()
+    {
+        List<string> datas = new List<string>();
+        datas.Add("WatchingTheStreaming");
+        datas.Add("SiteSurvey");
+
+        IDs ids = new IDs();
+        ids.dataIDList = datas;
+
+        JsonSave(json_filePath, json_BehaviorFileName, ids.dataIDList);
     }
 
     #endregion

@@ -19,15 +19,6 @@ public class GameManager : MonoBehaviour
     [Header("*Day")]
     public int CurrentDay = 1;*/
 
-    [Header("*Weed Stream")]
-    [SerializeField] public bool IsStreamDay_Mon;
-    [SerializeField] public bool IsStreamDay_Tue;
-    [SerializeField] public bool IsStreamDay_Wed;
-    [SerializeField] public bool IsStreamDay_Thu;
-    [SerializeField] public bool IsStreamDay_Fri;
-    [SerializeField] public bool IsStreamDay_Sat;
-    [SerializeField] public bool IsStreamDay_Sun;
-
 
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
 
@@ -41,19 +32,13 @@ public class GameManager : MonoBehaviour
 [Serializable]
 public class MainInfo
 {
-    public bool ___________________________________________PrograssChart;
     public int chapter = 1;
     public int day = 1;
+    public string TodayOfTheWeek = "Monday";
 
-    public bool ____________________________________________________Gage;
     public int stressGage = 0;
     public int angerGage = 0;
     public int riskGage = 0;
     public int overloadGage = 0;
-
-    public bool _____________________________________________GetBehavior;
-    public bool SiteSurvey = true;
-    public bool PreliminarySurvey = false;
-    public bool WatchingStream = true;
 }
 

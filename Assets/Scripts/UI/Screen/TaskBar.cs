@@ -10,8 +10,10 @@ public class TaskBar : MonoBehaviour
 {
     [SerializeField] GameManager GameManager;
     [SerializeField] ComputerInteract ComputerInteract;
+    [Header("*UI")]
     [SerializeField] Button windowButton;
     [SerializeField] TMP_Text CurrentDayText;
+    [SerializeField] TMP_Text CurrentDayOfWeekText;
     [SerializeField] Image BlackScreen;
 
     private void Awake()
@@ -33,5 +35,8 @@ public class TaskBar : MonoBehaviour
     private void OnEnable()
     {
         CurrentDayText.text = "DAY " + GameManager.currentMainInfo.day;
+        CurrentDayOfWeekText.text = GameManager.currentMainInfo.TodayOfTheWeek;
+
+
     }
 }

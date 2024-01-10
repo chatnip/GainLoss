@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
 using TMPro;
@@ -19,7 +18,6 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] TMP_Text PassDayExplanationText;
     [SerializeField] TMP_Text SavingPrograssText;
     [SerializeField] CanvasGroup loading;
-    [SerializeField] TMP_Text MainSceneUI_Day;
 
 
     [Header("*Place")]
@@ -32,6 +30,10 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     [SerializeField] private ReactiveProperty<PlaceDataBase> placeData = new ReactiveProperty<PlaceDataBase>();
 
+    enum WeekDays
+    {
+        Monday = 0, Tuesday = 1, Wednesday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
+    }
 
     protected override void Awake()
     {
@@ -141,9 +143,22 @@ public class ActionEventManager : Manager<ActionEventManager>
     }
     private void SetDayText()
     {
+        //Day++
         GameManager.currentMainInfo.day++;
 
-        MainSceneUI_Day.text = "Day " + GameManager.currentMainInfo.day;
+        //Next Day of the Week
+        string strName = GameManager.currentMainInfo.TodayOfTheWeek;
+        int DayOrdinal1 = (int)Enum.Parse(typeof(WeekDays), strName) + 1;
+        if( DayOrdinal1 >= 7 )
+        { GameManager.currentMainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
+        else { GameManager.currentMainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
+
+        /*// UI
+        foreach (TMP_Text tmpText in DayUI)
+        { tmpText.text = "Day " + GameManager.currentMainInfo.day; }
+        foreach (TMP_Text tmpText in DayOfWeekUI)
+        { tmpText.text = GameManager.currentMainInfo.TodayOfTheWeek; }*/
+
     }
     private void EndLoading()
     {
