@@ -19,7 +19,7 @@ public class JsonManager : MonoBehaviour
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameManager GameManager;
-    [SerializeField] BehaviorManager BehaviorManager;
+    [SerializeField] ScheduleManager BehaviorManager;
 
     private void Awake()
     {
@@ -126,7 +126,7 @@ public class JsonManager : MonoBehaviour
             JsonLoad_LD(json_filePath, json_sentenceFileName);
 
         // Load -> behavior Json
-        BehaviorManager.currentHaveBehaviors =
+        BehaviorManager.currentHaveSchedule =
             JsonLoad_L(json_filePath, json_BehaviorFileName);
     }
 
@@ -217,7 +217,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
         // Save -> Behavior Json
-        JsonSave(json_filePath, json_BehaviorFileName, BehaviorManager.currentHaveBehaviors);
+        JsonSave(json_filePath, json_BehaviorFileName, BehaviorManager.currentHaveSchedule);
     }
 
     #endregion

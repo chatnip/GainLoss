@@ -12,14 +12,13 @@ public class PhoneSoftware : MonoBehaviour
 {
     [Header("*Manager")]
     [SerializeField] GameManager GameManager;
-    [SerializeField] BehaviorManager BehaviorManager;
+    [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] PhoneHardware PhoneHardware;
+    [SerializeField] SchedulePrograss SchedulePrograss;
 
     [Header("*Create Schedule")]
     [SerializeField] GameObject CreateScheduleGO;
     [SerializeField] GameObject ScheculeBtnGO;
-
-    [SerializeField] TMP_Text DayText;
-    [SerializeField] TMP_Text DayOfWeekText;
 
     [SerializeField] Button WatchingTheStreamingBtn;
     [SerializeField] TMP_Text WatchingTheStreamingText;
@@ -38,16 +37,20 @@ public class PhoneSoftware : MonoBehaviour
     [SerializeField] Button DecisionBtn;
     [SerializeField] TMP_Text DecisionWarningText;
 
+    [Header("*Everytime Set Text")]
+    [SerializeField] List<TMP_Text> DayText;
+    [SerializeField] List<TMP_Text> DayOfWeekText;
+
     [Header("*Software")]
     [SerializeField] Button lockScreen;
     [SerializeField] public Button mapBtn;
     [SerializeField] GameObject map;
-    [SerializeField] Button wordpadBtn;
-    [SerializeField] GameObject wordpad;
+    [SerializeField] Button AIL_padBtn;
+    [SerializeField] GameObject AIL_pad;
+    [SerializeField] Button EXE_padBtn;
+    [SerializeField] GameObject EXE_pad;
     [SerializeField] Button backBtn;
 
-    [Header("*Day")]
-    [SerializeField] TMP_Text MapBtnDay;
 
     private void Awake()
     {
@@ -111,18 +114,18 @@ public class PhoneSoftware : MonoBehaviour
             {
                 if (SelectedScheduleTexts[1].gameObject.name != null && SelectedScheduleTexts[1].gameObject.name != "")
                 {
-                    List<string> s_Temp = new List<string>
+                    DOTween.Kill(DecisionWarningText);
+                    List<string> ScheduleStrings = new List<string>
                     {
                         SelectedScheduleTexts[0].name,
                         SelectedScheduleTexts[1].name
                     };
-                    BehaviorManager.currentSelectedBehaviors = s_Temp;
-                    foreach (string name in s_Temp)
-                    {
-                        Debug.Log("할 일 정함: " + name);
-                    }
-                    CreateScheduleGO.SetActive(false);
 
+                    ScheduleManager.currentSelectedSchedule = ScheduleStrings;
+                    ScheduleManager.currentPrograssSchedule = ScheduleManager.currentSelectedSchedule[0];
+                    SchedulePrograss.Set_InAMScheduleUI();
+                    CreateScheduleGO.SetActive(false);
+                    PhoneHardware.PhoneOff();
                 }
                 else
                 {
@@ -134,7 +137,7 @@ public class PhoneSoftware : MonoBehaviour
 
         #endregion
 
-        #region Past
+        #region Base
         lockScreen
             .OnClickAsObservable()
             .Subscribe(btn =>
@@ -149,19 +152,27 @@ public class PhoneSoftware : MonoBehaviour
                 map.SetActive(true);
             });
 
-        wordpadBtn
+        AIL_padBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                wordpad.SetActive(true);
+                AIL_pad.SetActive(true);
             });
-        
+        EXE_padBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                EXE_pad.SetActive(true);
+            });
+
         backBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
                 map.SetActive(false);
-                wordpad.SetActive(false);
+                AIL_pad.SetActive(false);
+                if (!map.activeSelf && !AIL_pad.activeSelf)
+                { PhoneHardware.PhoneOff(); }
             });
         #endregion
     }
@@ -220,48 +231,64 @@ public class PhoneSoftware : MonoBehaviour
 
         #endregion
 
-        #region CreateSchedule
-
-        Turn = 0;
-        CreateScheduleGO.SetActive(true);
-
-        Transform[] allChildren = ScheculeBtnGO.GetComponentsInChildren<Transform>();
-        foreach (Transform child in allChildren)
+        #region Schedule
+        
+        //Create
+        if(ScheduleManager.currentSelectedSchedule.Count <= 0)
         {
-            foreach(string CanBehavior in BehaviorManager.currentHaveBehaviors)
+            Turn = 0;
+
+            CreateScheduleGO.SetActive(true);
+            SchedulePrograss.Set_InStartScheduleUI();
+
+            Transform[] allChildren = ScheculeBtnGO.GetComponentsInChildren<Transform>();
+            foreach (Transform child in allChildren)
             {
-                if(CanBehavior == child.name)
+                foreach (string CanBehavior in ScheduleManager.currentHaveSchedule)
                 {
-                    if(child.TryGetComponent(out Button btn))
+                    if (CanBehavior == child.name)
                     {
-                        btn.interactable = true;
+                        if (child.TryGetComponent(out Button btn))
+                        {
+                            btn.interactable = true;
+                        }
                     }
                 }
             }
+
+            foreach (TMP_Text text in SelectedScheduleTexts)
+            {
+                text.gameObject.name = null;
+                text.text = null;
+            }
         }
 
-        DayText.text = "DAY " + GameManager.currentMainInfo.day;
-        DayOfWeekText.text = GameManager.currentMainInfo.TodayOfTheWeek;
-
-        foreach(TMP_Text text in SelectedScheduleTexts)
-        {
-            text.gameObject.name = null;
-            text.text = null; 
-        }
         
 
-        
+
+
 
         #endregion
 
-        #region Past
+        #region Everytime
 
-        mapBtn.interactable = true;
+        foreach (TMP_Text txt in DayText)
+        {
+            txt.text = "DAY " + GameManager.currentMainInfo.day;
+        }
+        foreach (TMP_Text txt in DayOfWeekText)
+        {
+            txt.text = GameManager.currentMainInfo.TodayOfTheWeek;
+        }
+
+        //Set
+        if (ScheduleManager.currentPrograssSchedule == "SiteSurvey") { mapBtn.interactable = true; }
+        else { mapBtn.interactable = false; }
         map.SetActive(false);
-        wordpadBtn.interactable = true;
-        wordpad.SetActive(false);
-
-        MapBtnDay.text = GameManager.currentMainInfo.day + " Day";
+        AIL_padBtn.interactable = true;
+        AIL_pad.SetActive(false);
+        EXE_padBtn.interactable = true;
+        EXE_pad.SetActive(false);
 
         #endregion
 

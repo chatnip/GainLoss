@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhoneHardware : MonoBehaviour
 {
@@ -14,7 +16,23 @@ public class PhoneHardware : MonoBehaviour
 
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
+    [SerializeField] CanvasGroup Schedules;
 
+    [Header("*On/Off Btns")]
+    [SerializeField] Button PhoneOnOffBtn;
+
+    public void Awake()
+    {
+        PhoneOnOffBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                if(!this.gameObject.activeSelf)
+                {
+                    PhoneOn();
+                }
+            });
+
+    }
 
     public void PhoneOn()
     {
@@ -28,6 +46,9 @@ public class PhoneHardware : MonoBehaviour
         phoneSoftware.ResetUI();
 
         InteractionUI3D.SetActive(false);
+
+        Schedules.alpha = 0f;
+        PhoneOnOffBtn.gameObject.SetActive(false);
     }
 
     public void PhoneOff()
@@ -40,6 +61,9 @@ public class PhoneHardware : MonoBehaviour
         this.gameObject.SetActive(false);
 
         InteractionUI3D.SetActive(true);
+
+        Schedules.alpha = 1f;
+        PhoneOnOffBtn.gameObject.SetActive(true);
     }
 
     private void OnEnable()

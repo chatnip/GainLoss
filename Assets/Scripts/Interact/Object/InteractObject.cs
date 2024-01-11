@@ -21,7 +21,6 @@ public class InteractObject : InteractCore
 
     private void Awake()
     {
-        CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
         WordManager = GameObject.Find("WordManager").GetComponent<WordManager>();
         GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
@@ -50,6 +49,7 @@ public class InteractObject : InteractCore
         if (this.getWordID != "") { GetWordID(); }
         if (this.getWordActionID != "") { GetWordActionID(); }
 
+        CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
         CheckGetAllDatas.ApplyTerminateBtnAndText();
 
         CanInteract = false;

@@ -44,7 +44,8 @@ public class GameSystem : MonoBehaviour
     {
         playerPos.position = new Vector3(0, 0.2f, 0);
         playerPos.rotation = Quaternion.identity;
-        PhoneHardware.PhoneOn();
+        PhoneHardware.gameObject.SetActive(false);
+        //PhoneHardware.PhoneOn();
     }
 
     #region Loading
