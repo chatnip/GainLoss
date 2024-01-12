@@ -13,13 +13,13 @@ public class JsonManager : MonoBehaviour
     [HideInInspector] public string json_wordFileName;
     [HideInInspector] public string json_wordActionFileName;
     [HideInInspector] public string json_sentenceFileName;
-    [HideInInspector] public string json_BehaviorFileName;
+    [HideInInspector] public string json_ScheduleFileName;
 
     // public List<WordBase> myWords = new List<WordBase>();
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameManager GameManager;
-    [SerializeField] ScheduleManager BehaviorManager;
+    [SerializeField] ScheduleManager ScheduleManager;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class JsonManager : MonoBehaviour
         json_wordFileName = "wordDatabase.json";
         json_wordActionFileName = "wordActionDatabase.json";
         json_sentenceFileName = "sentenceDatabase.json";
-        json_BehaviorFileName = "behaviorDatabase.json";
+        json_ScheduleFileName = "scheduleDatabase.json";
     }
 
     #region Load Json
@@ -125,9 +125,9 @@ public class JsonManager : MonoBehaviour
         StreamManager.currentStreamEventDatas =
             JsonLoad_LD(json_filePath, json_sentenceFileName);
 
-        // Load -> behavior Json
-        BehaviorManager.currentHaveSchedule =
-            JsonLoad_L(json_filePath, json_BehaviorFileName);
+        // Load -> schedule Json
+        ScheduleManager.currentHaveScheduleID =
+            JsonLoad_L(json_filePath, json_ScheduleFileName);
     }
 
     #endregion
@@ -217,7 +217,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
         // Save -> Behavior Json
-        JsonSave(json_filePath, json_BehaviorFileName, BehaviorManager.currentHaveSchedule);
+        JsonSave(json_filePath, json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
     }
 
     #endregion
@@ -293,7 +293,7 @@ public class JsonManager : MonoBehaviour
         IDs ids = new IDs();
         ids.dataIDList = datas;
 
-        JsonSave(json_filePath, json_BehaviorFileName, ids.dataIDList);
+        JsonSave(json_filePath, json_ScheduleFileName, ids.dataIDList);
     }
 
     #endregion

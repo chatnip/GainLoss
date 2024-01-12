@@ -8,10 +8,10 @@ public class ScheduleManager : Manager<ScheduleManager>
 {
     #region Value
 
-    [HideInInspector] public List<string> currentHaveSchedule = new List<string>();
-    [HideInInspector] public List<string> currentSelectedSchedule = new List<string>();
+    [HideInInspector] public List<string> currentHaveScheduleID = new List<string>();
+    [HideInInspector] public List<string> currentSelectedScheduleID = new List<string>();
 
-    [HideInInspector] public string currentPrograssSchedule;
+    [HideInInspector] public string currentPrograssScheduleID;
 
     #endregion
 

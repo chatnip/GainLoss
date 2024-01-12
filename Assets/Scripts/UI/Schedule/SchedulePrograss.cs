@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
@@ -38,6 +39,7 @@ public class SchedulePrograss : MonoBehaviour
     private void Awake()
     {
         Set_InStartScheduleUI();
+
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -85,20 +87,20 @@ public class SchedulePrograss : MonoBehaviour
         SetNotProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
 
-        SetExplanation("SetSchedule");
+        SetExplanation("0");
     }
 
     public void Set_InAMScheduleUI()
     {
-        SetStartEachScheduleUI(scheduleManager.currentSelectedSchedule[0], ScheduleAM);
-        SetStartEachScheduleUI(scheduleManager.currentSelectedSchedule[1], SchedulePM);
+        SetStartEachScheduleUI(scheduleManager.currentSelectedScheduleID[0], ScheduleAM);
+        SetStartEachScheduleUI(scheduleManager.currentSelectedScheduleID[1], SchedulePM);
 
         SetComplatePrograssing(StartImg);
         SetProgressingUI(AMImg);
         SetNotProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
 
-        SetExplanation(scheduleManager.currentSelectedSchedule[0]);
+        SetExplanation(scheduleManager.currentPrograssScheduleID);
     }
 
     public void Set_InPMScheduleUI()
@@ -108,7 +110,7 @@ public class SchedulePrograss : MonoBehaviour
         SetProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
 
-        SetExplanation(scheduleManager.currentSelectedSchedule[1]);
+        SetExplanation(scheduleManager.currentPrograssScheduleID);
     }
 
     public void Set_InEndScheduleUI()
@@ -118,13 +120,12 @@ public class SchedulePrograss : MonoBehaviour
         SetComplatePrograssing(PMImg);
         SetProgressingUI(EndImg);
 
-        SetExplanation("EndToday");
+        SetExplanation("1");
     }
 
-    private void SetStartEachScheduleUI(string txt, TMP_Text inputTmp)
+    private void SetStartEachScheduleUI(string Id, TMP_Text inputTmp)
     {
-        if (txt == "SiteSurvey") { inputTmp.text = "장소 방문하기"; }
-        else if (txt == "WatchingTheStreaming") { inputTmp.text = "방송 시청하기"; }
+        inputTmp.text = (string)DataManager.ScheduleDatas[3][Id];
     }
 
     private void SetNotProgressingUI(Image img)
@@ -143,23 +144,19 @@ public class SchedulePrograss : MonoBehaviour
         img.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
     }
 
-    private void SetExplanation(string name)
+    private void SetExplanation(string id)
     {
-        if (name == "SetSchedule")
+        if (id == "0")
         {
             ExplanationTxt.text = "휴대폰을 키고,\n하루 일과를 계획하세요!";
         }
-        else if (name == "SiteSurvey")
-        {
-            ExplanationTxt.text = "휴대폰으로 장소를 정한 후에,\n그 장소의 목적을 달성하세요!";
-        }
-        else if (name == "WatchingTheStreaming")
-        {
-            ExplanationTxt.text = "컴퓨터로\n방송을 시청하세요!";
-        }
-        else if (name == "EndToday")
+        else if (id == "1")
         {
             ExplanationTxt.text = "하루를 종료하고,\n새로운 하루를 맞이하세요!";
+        }
+        else
+        {
+            ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
         }
     }
     #endregion

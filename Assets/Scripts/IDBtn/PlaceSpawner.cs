@@ -40,7 +40,7 @@ public class PlaceSpawner : IDBtnSpawner
         {
             for (int i = PlaceManager.enablePlaceBtnList.Count - 1; i >= 0; i--)
             {
-                ObjectPooling.ObjectPick(PlaceManager.enablePlaceBtnList[i]);
+                ObjectPooling.WordObjectPick(PlaceManager.enablePlaceBtnList[i]);
             }
             PlaceManager.enablePlaceBtnList.Clear();
         }
@@ -53,7 +53,7 @@ public class PlaceSpawner : IDBtnSpawner
         {
             for (int i = PlaceManager.enableBehaviorActionBtnList.Count - 1; i >= 0; i--)
             {
-                ObjectPooling.ObjectPick(PlaceManager.enableBehaviorActionBtnList[i]);
+                ObjectPooling.WordObjectPick(PlaceManager.enableBehaviorActionBtnList[i]);
             }
             PlaceManager.enableBehaviorActionBtnList.Clear();
         }

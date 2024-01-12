@@ -27,11 +27,12 @@ public class ObjectPooling : MonoBehaviour
         var wordBtnObject = WordBtnObjectesQueue.Dequeue();
         return wordBtnObject;
     }
-    public void ObjectPick(IDBtn wordBtnObject)
+
+
+    public void WordObjectPick(IDBtn wordBtnObject)
     {
         WordBtnObjectesQueue.Enqueue(wordBtnObject);
         wordBtnObject.transform.SetParent(wordPool);
         wordBtnObject.gameObject.SetActive(false);
     }
-
 }

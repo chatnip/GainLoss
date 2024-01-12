@@ -18,6 +18,7 @@ public class DataManager : Manager<DataManager>
     [SerializeField] TextAsset BehaviorActionsFile;
     [SerializeField] TextAsset PlaceFile;
     [SerializeField] TextAsset StreamingByDayFile;
+    [SerializeField] TextAsset ScheduleFile;
 
     [Header("*AllData")]
     public static List<Dictionary<string, object>> ActionEventDatas = new();
@@ -30,6 +31,7 @@ public class DataManager : Manager<DataManager>
     public static List<Dictionary<string, object>> BehaviorActionDatas = new();
     public static List<Dictionary<string, object>> PlaceDatas = new();
     public static List<Dictionary<string, object>> StreamingByDayDatas = new();
+    public static List<Dictionary<string, object>> ScheduleDatas = new();
 
     protected override void Awake()
     {
@@ -63,7 +65,9 @@ public class DataManager : Manager<DataManager>
         PlaceDatas = CSVReader.Read(this.PlaceFile);
         // [0]:PlaceName | [1]:PlaceNameKor
         StreamingByDayDatas = CSVReader.Read(this.StreamingByDayFile); // ID Type => ex) Mon, Tue...
-        // [0]:CanWatchingStreaming | [1]: Kor
+        // [0]:CanWatchingStreaming | [1]:Kor
+        ScheduleDatas = CSVReader.Read(this.ScheduleFile);
+        // [0]:Name | [1]:firstOfAll | [2]:ScheduleExplanation | [3]:KorName | [4]ScheduleExplanationKor
         #endregion
 
     }

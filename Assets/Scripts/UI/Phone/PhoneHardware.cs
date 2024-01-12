@@ -17,6 +17,7 @@ public class PhoneHardware : MonoBehaviour
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] CanvasGroup Schedules;
+    [SerializeField] GameObject ScheduleUIs;
 
     [Header("*On/Off Btns")]
     [SerializeField] Button PhoneOnOffBtn;

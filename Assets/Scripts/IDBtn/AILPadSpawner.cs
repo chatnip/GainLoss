@@ -32,7 +32,7 @@ public class AILpadSpawner : IDBtnSpawner
         {
             for (int i = WordManager.enableWordBtnList.Count - 1; i >= 0; i--)
             {
-                ObjectPooling.ObjectPick(WordManager.enableWordBtnList[i]);
+                ObjectPooling.WordObjectPick(WordManager.enableWordBtnList[i]);
             }
             WordManager.enableWordBtnList.Clear();
         }

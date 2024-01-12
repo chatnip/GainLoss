@@ -7,6 +7,9 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.Rendering;
 using DG.Tweening;
+using System;
+using System.Security.Cryptography;
+using System.Linq;
 
 public class PhoneSoftware : MonoBehaviour
 {
@@ -32,7 +35,6 @@ public class PhoneSoftware : MonoBehaviour
     [SerializeField] Button[] SelectedScheduleBtns;
     [SerializeField] TMP_Text[] SelectedScheduleTexts;
     int Turn;
-    Dictionary<string, int> TurnEachButton;
 
     [SerializeField] Button DecisionBtn;
     [SerializeField] TMP_Text DecisionWarningText;
@@ -43,12 +45,18 @@ public class PhoneSoftware : MonoBehaviour
 
     [Header("*Software")]
     [SerializeField] Button lockScreen;
-    [SerializeField] public Button mapBtn;
+    [SerializeField] public Button map_Btn;
+    [SerializeField] public Button map_backBtn;
     [SerializeField] GameObject map;
-    [SerializeField] Button AIL_padBtn;
+
+    [SerializeField] Button AIL_pad_Btn;
+    [SerializeField] Button AIL_pad_backBtn;
     [SerializeField] GameObject AIL_pad;
-    [SerializeField] Button EXE_padBtn;
+
+    [SerializeField] Button EXE_pad_Btn;
+    [SerializeField] Button EXE_pad_backBtn;
     [SerializeField] GameObject EXE_pad;
+
     [SerializeField] Button backBtn;
 
 
@@ -57,13 +65,6 @@ public class PhoneSoftware : MonoBehaviour
         #region Set Create Schedule Btn
 
         Turn = 0;
-        TurnEachButton = new Dictionary<string, int>()
-        { 
-            { PreliminarySurveyBtn.name, 1},
-            { SiteSurveyBtn.name, 2},
-            { DoingPartTimeJobBtn.name, 3},
-            { WatchingTheStreamingBtn.name, 4}
-        };
 
         WatchingTheStreamingBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -84,18 +85,13 @@ public class PhoneSoftware : MonoBehaviour
                 if (SelectedScheduleTexts[0].text != "" && SelectedScheduleTexts[0].text != null)
                 {
                     SelectedScheduleTexts[0].text = null;
-                    SelectedScheduleTexts[0].gameObject.name = null;
                     Turn--;
                 }
-                if(SelectedScheduleTexts[1].text != "" && SelectedScheduleTexts[1].text != null)
+                if (SelectedScheduleTexts[1].text != "" && SelectedScheduleTexts[1].text != null)
                 {
                     string s_temp = SelectedScheduleTexts[1].text;
                     SelectedScheduleTexts[0].text = s_temp;
                     SelectedScheduleTexts[1].text = null;
-
-                    s_temp = SelectedScheduleTexts[1].gameObject.name;
-                    SelectedScheduleTexts[0].gameObject.name = s_temp;
-                    SelectedScheduleTexts[1].gameObject.name = null;
                 }
             });
         SelectedScheduleBtns[1].OnClickAsObservable()
@@ -104,7 +100,6 @@ public class PhoneSoftware : MonoBehaviour
                 if (SelectedScheduleTexts[1].text != "" && SelectedScheduleTexts[1].text != null)
                 {
                     SelectedScheduleTexts[1].text = null;
-                    SelectedScheduleTexts[1].gameObject.name = null;
                     Turn--;
                 }
             });
@@ -112,17 +107,23 @@ public class PhoneSoftware : MonoBehaviour
         DecisionBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                if (SelectedScheduleTexts[1].gameObject.name != null && SelectedScheduleTexts[1].gameObject.name != "")
+                if ((SelectedScheduleTexts[0].text != null && SelectedScheduleTexts[0].text != "") &&
+                (SelectedScheduleTexts[1].text != null && SelectedScheduleTexts[1].text != ""))
                 {
                     DOTween.Kill(DecisionWarningText);
                     List<string> ScheduleStrings = new List<string>
                     {
-                        SelectedScheduleTexts[0].name,
-                        SelectedScheduleTexts[1].name
+                        SelectedScheduleTexts[0].text,
+                        SelectedScheduleTexts[1].text
                     };
+                    List<string> Ids = new List<string>();
+                    foreach(string ScheduleString in ScheduleStrings)
+                    {
+                        Ids.Add((string)DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == ScheduleString).Key);
+                    }
 
-                    ScheduleManager.currentSelectedSchedule = ScheduleStrings;
-                    ScheduleManager.currentPrograssSchedule = ScheduleManager.currentSelectedSchedule[0];
+                    ScheduleManager.currentSelectedScheduleID = Ids;
+                    ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
                     SchedulePrograss.Set_InAMScheduleUI();
                     CreateScheduleGO.SetActive(false);
                     PhoneHardware.PhoneOff();
@@ -137,7 +138,26 @@ public class PhoneSoftware : MonoBehaviour
 
         #endregion
 
+        #region site Survey
+
+        map_Btn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                map.SetActive(true);
+            });
+
+        map_backBtn
+            .OnClickAsObservable () 
+            .Subscribe(btn =>
+            { 
+                map.SetActive(false); 
+            });
+
+        #endregion
+
         #region Base
+
         lockScreen
             .OnClickAsObservable()
             .Subscribe(btn =>
@@ -145,25 +165,34 @@ public class PhoneSoftware : MonoBehaviour
                 lockScreen.gameObject.SetActive(false);
             });
 
-        mapBtn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                map.SetActive(true);
-            });
 
-        AIL_padBtn
+        AIL_pad_Btn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
                 AIL_pad.SetActive(true);
             });
-        EXE_padBtn
+        AIL_pad_backBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                AIL_pad.SetActive(false);
+            });
+
+
+        EXE_pad_Btn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
                 EXE_pad.SetActive(true);
             });
+        EXE_pad_backBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                EXE_pad.SetActive(false);
+            });
+
 
         backBtn
             .OnClickAsObservable()
@@ -171,8 +200,8 @@ public class PhoneSoftware : MonoBehaviour
             {
                 map.SetActive(false);
                 AIL_pad.SetActive(false);
-                if (!map.activeSelf && !AIL_pad.activeSelf)
-                { PhoneHardware.PhoneOff(); }
+                EXE_pad.SetActive(false);
+                CreateScheduleGO.SetActive(false);
             });
         #endregion
     }
@@ -184,41 +213,41 @@ public class PhoneSoftware : MonoBehaviour
         string ScheduleText = tmp.text;
         if (Turn == 0)
         {
-            if (SelectedScheduleTexts[Turn].text == null || SelectedScheduleTexts[Turn].text == "")
+            SelectedScheduleTexts[0].text = ScheduleText;
+            Turn++;
+        }
+        else if (Turn == 1)
+        {
+            if (SelectedScheduleTexts[0].text != ScheduleText)
             {
-                SelectedScheduleTexts[Turn].text = ScheduleText;
-                SelectedScheduleTexts[Turn].gameObject.name = ScheduleBtn.gameObject.name;
+                SelectedScheduleTexts[1].text = ScheduleText;
                 Turn++;
             }
         }
-        else if(Turn == 1)
+        if (Turn >= 2)
         {
-            string FirstText = SelectedScheduleTexts[Turn - 1].text;
-            if ((SelectedScheduleTexts[Turn].text == null || SelectedScheduleTexts[Turn].text == "") &&
-                (FirstText != ScheduleText))
-            {
-                SelectedScheduleTexts[Turn].text = ScheduleText;
-                SelectedScheduleTexts[Turn].gameObject.name = ScheduleBtn.gameObject.name;
-                Turn++;
-            }
-        }
-        if(Turn >= 2)
-        {
-            SetOrdering(SelectedScheduleTexts[0].gameObject.name, SelectedScheduleTexts[1].gameObject.name);
+            SetOrdering(SelectedScheduleTexts[0].text, SelectedScheduleTexts[1].text);
         }
     }
-    private void SetOrdering(string firstBtn, string secondBtn)
+    private void SetOrdering(string firstText, string secondText)
     {
-        if(TurnEachButton[firstBtn] > TurnEachButton[secondBtn])
+        string firstKey = "";
+        string SecondKey = "";
+        foreach (string Kor in DataManager.ScheduleDatas[3].Values)
         {
-            string Temp = SelectedScheduleTexts[0].text;
-            SelectedScheduleTexts[0].text = SelectedScheduleTexts[1].text;
-            SelectedScheduleTexts[1].text = Temp;
-
-            string Temp2 = SelectedScheduleTexts[0].gameObject.name;
-            SelectedScheduleTexts[0].gameObject.name = SelectedScheduleTexts[1].gameObject.name;
-            SelectedScheduleTexts[1].gameObject.name = Temp2;
+            if (firstText == Kor)
+            { firstKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
+            if (secondText == Kor)
+            { SecondKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
         }
+        if (Convert.ToInt32(DataManager.ScheduleDatas[1][firstKey]) > Convert.ToInt32(DataManager.ScheduleDatas[1][SecondKey]))
+        {
+            string temp = SelectedScheduleTexts[0].text;
+            SelectedScheduleTexts[0].text = SelectedScheduleTexts[1].text;
+            SelectedScheduleTexts[1].text = temp;
+        }
+
+
     }
 
     #endregion
@@ -232,25 +261,26 @@ public class PhoneSoftware : MonoBehaviour
         #endregion
 
         #region Schedule
-        
+
         //Create
-        if(ScheduleManager.currentSelectedSchedule.Count <= 0)
+        if (ScheduleManager.currentSelectedScheduleID.Count <= 0)
         {
             Turn = 0;
-
             CreateScheduleGO.SetActive(true);
+
             SchedulePrograss.Set_InStartScheduleUI();
 
-            Transform[] allChildren = ScheculeBtnGO.GetComponentsInChildren<Transform>();
-            foreach (Transform child in allChildren)
+            for (int i = 0; i < ScheculeBtnGO.transform.childCount; i++)
             {
-                foreach (string CanBehavior in ScheduleManager.currentHaveSchedule)
+                Button BtnGO = ScheculeBtnGO.transform.GetChild(i).GetComponent<Button>();
+                foreach (string CanScheduleID in ScheduleManager.currentHaveScheduleID)
                 {
-                    if (CanBehavior == child.name)
+                    string Kor = DataManager.ScheduleDatas[3][CanScheduleID].ToString();
+                    if (BtnGO.transform.GetChild(0).TryGetComponent(out TMP_Text tmp_Text))
                     {
-                        if (child.TryGetComponent(out Button btn))
+                        if (tmp_Text.text == Kor)
                         {
-                            btn.interactable = true;
+                            BtnGO.interactable = true;
                         }
                     }
                 }
@@ -258,12 +288,11 @@ public class PhoneSoftware : MonoBehaviour
 
             foreach (TMP_Text text in SelectedScheduleTexts)
             {
-                text.gameObject.name = null;
                 text.text = null;
             }
         }
 
-        
+
 
 
 
@@ -282,12 +311,12 @@ public class PhoneSoftware : MonoBehaviour
         }
 
         //Set
-        if (ScheduleManager.currentPrograssSchedule == "SiteSurvey") { mapBtn.interactable = true; }
-        else { mapBtn.interactable = false; }
+        if (ScheduleManager.currentPrograssScheduleID == "S02") { map_Btn.interactable = true; }
+        else { map_Btn.interactable = false; }
         map.SetActive(false);
-        AIL_padBtn.interactable = true;
+        AIL_pad_Btn.interactable = true;
         AIL_pad.SetActive(false);
-        EXE_padBtn.interactable = true;
+        EXE_pad_Btn.interactable = true;
         EXE_pad.SetActive(false);
 
         #endregion

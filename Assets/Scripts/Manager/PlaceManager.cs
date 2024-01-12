@@ -56,7 +56,7 @@ public class PlaceManager : Manager<PlaceManager>
             .Subscribe(btn =>
             {
                 // 맵 버튼 비활성화
-                PhoneSoftware.mapBtn.interactable = false;
+                PhoneSoftware.map_Btn.interactable = false;
                 // 핸드폰 끄기
                 PhoneHardware.PhoneOff();
             });

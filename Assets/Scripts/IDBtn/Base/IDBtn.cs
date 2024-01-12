@@ -62,6 +62,7 @@ public class IDBtn : MonoBehaviour
         button.image.sprite = folderImage;
     }
 
+
     public void AddVisiableWordRate(string Rate)
     {
         rate_text.text = Rate;
