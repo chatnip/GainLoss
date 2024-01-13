@@ -36,7 +36,7 @@ public class PlaceManager : Manager<PlaceManager>
 
     // 켜진 장소 및 장소의 액션 버튼 목록
     [HideInInspector] public List<IDBtn> enablePlaceBtnList = new();
-    [HideInInspector] public List<IDBtn> enableBehaviorActionBtnList = new();
+    //[HideInInspector] public List<IDBtn> enableBehaviorActionBtnList = new();
 
     // 선택한 장소 및 장소의 액션 목록
     [SerializeField] public List<string> currentPlaceIDList = new();
@@ -56,7 +56,7 @@ public class PlaceManager : Manager<PlaceManager>
             .Subscribe(btn =>
             {
                 // 맵 버튼 비활성화
-                PhoneSoftware.map_Btn.interactable = false;
+                //PhoneSoftware.map_Btn.interactable = false;
                 // 핸드폰 끄기
                 PhoneHardware.PhoneOff();
             });
@@ -104,12 +104,12 @@ public class PlaceManager : Manager<PlaceManager>
                     behaviorHeaderText.text = text;
                     behaviorPopup.SetActive(true);
                     InitBehaviorActionID(currentPlace.ID);
-                    placeBtnSpawner.SpawnBehaviorActionBtn();
+                    //placeBtnSpawner.SpawnBehaviorActionBtn();
                 });
         }
     }
 
-    public void BehaviorActionBtnListSet()
+    /*public void BehaviorActionBtnListSet()
     {
         foreach (IDBtn behaviorActionBtn in enableBehaviorActionBtnList)
         {
@@ -124,7 +124,7 @@ public class PlaceManager : Manager<PlaceManager>
                     behaviorConfirmPopup.SetActive(true);
                 });
         }
-    }
+    }*/
     #endregion
 
     #region Init

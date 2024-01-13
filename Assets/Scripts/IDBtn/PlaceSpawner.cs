@@ -15,7 +15,7 @@ public class PlaceSpawner : IDBtnSpawner
         return wordBtn;
     }
 
-    public void SpawnBehaviorActionBtn()
+    /*public void SpawnBehaviorActionBtn()
     {
         PickBehaviorActionBtn(); // 버튼 초기화
         for (int i = 0; i < PlaceManager.currentBehaviorActionList.Count; i++)
@@ -27,7 +27,7 @@ public class PlaceSpawner : IDBtnSpawner
             PlaceManager.BehaviorActionBtnListSet(); // 데이터 삽입
             behaviorActionBtn.gameObject.SetActive(true); // 활성화
         }
-    }
+    }*/
 
     protected override void PickIDBtn()
     {
@@ -47,7 +47,7 @@ public class PlaceSpawner : IDBtnSpawner
         
     }
 
-    public void PickBehaviorActionBtn()
+    /*public void PickBehaviorActionBtn()
     {
         if (PlaceManager.enableBehaviorActionBtnList.Count != 0)
         {
@@ -57,13 +57,13 @@ public class PlaceSpawner : IDBtnSpawner
             }
             PlaceManager.enableBehaviorActionBtnList.Clear();
         }
-    }
+    }*/
 
 
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        PickBehaviorActionBtn();
+        //PickBehaviorActionBtn();
     }
 }

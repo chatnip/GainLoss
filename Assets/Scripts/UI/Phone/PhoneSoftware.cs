@@ -45,8 +45,8 @@ public class PhoneSoftware : MonoBehaviour
 
     [Header("*Software")]
     [SerializeField] Button lockScreen;
-    [SerializeField] public Button map_Btn;
-    [SerializeField] public Button map_backBtn;
+    //[SerializeField] public Button map_Btn;
+    //[SerializeField] public Button map_backBtn;
     [SerializeField] GameObject map;
 
     [SerializeField] Button AIL_pad_Btn;
@@ -59,7 +59,7 @@ public class PhoneSoftware : MonoBehaviour
 
     [SerializeField] Button backBtn;
 
-
+    #region Main
     private void Awake()
     {
         #region Set Create Schedule Btn
@@ -140,7 +140,7 @@ public class PhoneSoftware : MonoBehaviour
 
         #region site Survey
 
-        map_Btn
+        /*map_Btn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -152,7 +152,7 @@ public class PhoneSoftware : MonoBehaviour
             .Subscribe(btn =>
             { 
                 map.SetActive(false); 
-            });
+            });*/
 
         #endregion
 
@@ -198,13 +198,15 @@ public class PhoneSoftware : MonoBehaviour
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                map.SetActive(false);
-                AIL_pad.SetActive(false);
-                EXE_pad.SetActive(false);
-                CreateScheduleGO.SetActive(false);
+                PhoneHardware.PhoneOff();
             });
         #endregion
     }
+    private void OnEnable()
+    {
+        ResetUI();
+    }
+    #endregion
 
     #region About Create Schedule
 
@@ -252,6 +254,8 @@ public class PhoneSoftware : MonoBehaviour
 
     #endregion
 
+    #region Reset
+
     public void ResetUI()
     {
         #region LockScreen
@@ -266,7 +270,7 @@ public class PhoneSoftware : MonoBehaviour
         if (ScheduleManager.currentSelectedScheduleID.Count <= 0)
         {
             Turn = 0;
-            CreateScheduleGO.SetActive(true);
+            //CreateScheduleGO.SetActive(true);
 
             SchedulePrograss.Set_InStartScheduleUI();
 
@@ -311,8 +315,9 @@ public class PhoneSoftware : MonoBehaviour
         }
 
         //Set
-        if (ScheduleManager.currentPrograssScheduleID == "S02") { map_Btn.interactable = true; }
-        else { map_Btn.interactable = false; }
+        /*if (ScheduleManager.currentPrograssScheduleID == "S02") { map_Btn.interactable = true; }
+        else { map_Btn.interactable = false; }*/
+        CreateScheduleGO.SetActive(false);
         map.SetActive(false);
         AIL_pad_Btn.interactable = true;
         AIL_pad.SetActive(false);
@@ -323,8 +328,20 @@ public class PhoneSoftware : MonoBehaviour
 
     }
 
-    private void OnEnable()
+    public void SetCurrentScheduleUI()
     {
-        ResetUI();
+        string id = ScheduleManager.currentPrograssScheduleID;
+        switch (id)
+        {
+            case "S00":
+                CreateScheduleGO.SetActive(true); 
+                break;
+            case "S02":
+                map.SetActive(true);
+                break;
+        }
     }
+
+    #endregion
+
 }

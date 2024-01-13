@@ -1,11 +1,20 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PhoneHardware : MonoBehaviour
 {
+    #region Value
+
+    [Header("Property")]
+    [SerializeField] SchedulePrograss SchedulePrograss;
+    [SerializeField] ScheduleManager ScheduleManager;
+
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
     [SerializeField] GameObject phone2DCamera;
@@ -16,24 +25,131 @@ public class PhoneHardware : MonoBehaviour
 
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
-    [SerializeField] CanvasGroup Schedules;
+    [SerializeField] GameObject Schedules;
     [SerializeField] GameObject ScheduleUIs;
 
     [Header("*On/Off Btns")]
-    [SerializeField] Button PhoneOnOffBtn;
+    [SerializeField] Button PhoneListOpenBtn;
+    [SerializeField] Button PhoneOnBtn;
+    [SerializeField] Button PhoneOnByScheduleBtn;
+
+    [SerializeField] List<string> DoNotNeedBtns;
+
+    #endregion
+
+    #region Main
 
     public void Awake()
     {
-        PhoneOnOffBtn.OnClickAsObservable()
+        PhoneListOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                if(!this.gameObject.activeSelf)
-                {
-                    PhoneOn();
-                }
+                SetOnOffPhoneBtn();
+            });
+
+
+        PhoneOnBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ResetPhoneBtn();
+                PhoneOn();
+
+            });
+        PhoneOnByScheduleBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ResetPhoneBtn();
+                PhoneOn();
+                phoneSoftware.SetCurrentScheduleUI();
             });
 
     }
+
+    private void OnEnable()
+    {
+        PhoneOn();
+    }
+
+    private void OnDisable()
+    {
+        PhoneOff();
+    }
+
+    #endregion
+
+    #region Reset
+
+    private void ResetPhoneBtn()
+    {
+        SchedulePrograss.ResetExlanation();
+
+        SetOff(PhoneOnBtn, new Vector2(0, 75));
+        SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
+
+        void SetOff(Button btn, Vector2 endPos)
+        {
+            btn.interactable = false;
+            btn.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+            btn.gameObject.GetComponent<RectTransform>().anchoredPosition = endPos;
+            btn.gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
+
+    #region Effectful
+
+    private void SetOnOffPhoneBtn()
+    {
+        DOTween.Kill(PhoneOnBtn);
+        DOTween.Kill(PhoneOnByScheduleBtn);
+        if(!PhoneOnBtn.gameObject.activeSelf && !PhoneOnByScheduleBtn.gameObject.activeSelf)
+        {
+            SchedulePrograss.SetByScheduleBtnOwnTxt();
+            SetOn(PhoneOnBtn, new Vector2(0, 0));
+            foreach(string DoNotNeedBtn in DoNotNeedBtns)
+            {
+                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
+            }
+            SetOn(PhoneOnByScheduleBtn, new Vector2(0, -50));
+        }
+        else
+        {
+            SetOff(PhoneOnBtn, new Vector2(0, 75));
+            foreach (string DoNotNeedBtn in DoNotNeedBtns)
+            {
+                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
+            }
+            SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
+        }
+
+        void SetOn(Button btn, Vector2 endPos)
+        {
+            btn.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+            btn.gameObject.SetActive(true);
+            btn.gameObject.GetComponent<CanvasGroup>().DOFade(1, 0.3f);
+            btn.gameObject.GetComponent<RectTransform>().DOAnchorPos(endPos, 0.3f)
+                .OnComplete(() =>
+                {
+                    btn.interactable = true;
+                });
+        }
+        void SetOff(Button btn, Vector2 endPos)
+        {
+            btn.interactable = false;
+            btn.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+            btn.gameObject.GetComponent<CanvasGroup>().DOFade(0, 0.3f);
+            btn.gameObject.GetComponent<RectTransform>().DOAnchorPos(endPos, 0.3f)
+                .OnComplete(() =>
+                {
+                    btn.gameObject.SetActive(false);
+                });
+        }
+    }
+
+    #endregion
+
+    #region Phone On/Off
 
     public void PhoneOn()
     {
@@ -48,8 +164,9 @@ public class PhoneHardware : MonoBehaviour
 
         InteractionUI3D.SetActive(false);
 
-        Schedules.alpha = 0f;
-        PhoneOnOffBtn.gameObject.SetActive(false);
+        Schedules.gameObject.SetActive(false);
+
+        PhoneListOpenBtn.gameObject.SetActive(false);
     }
 
     public void PhoneOff()
@@ -63,17 +180,9 @@ public class PhoneHardware : MonoBehaviour
 
         InteractionUI3D.SetActive(true);
 
-        Schedules.alpha = 1f;
-        PhoneOnOffBtn.gameObject.SetActive(true);
+        Schedules.gameObject.SetActive(true);
+        PhoneListOpenBtn.gameObject.SetActive(true);
     }
 
-    private void OnEnable()
-    {
-        PhoneOn();
-    }
-
-    private void OnDisable()
-    {
-        PhoneOff();
-    }
+    #endregion
 }

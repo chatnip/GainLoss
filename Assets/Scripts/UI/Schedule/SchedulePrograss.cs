@@ -20,9 +20,11 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] TMP_Text ScheduleAM;
     [SerializeField] TMP_Text SchedulePM;
     [SerializeField] TMP_Text ExplanationTxt;
+    [SerializeField] TMP_Text ByScheduleBtnOwnTxt;
 
     [Header("*Btns")]
     [SerializeField] Button ExplanationBtn;
+    [SerializeField] Button ByScheduleBtn;
     bool OnExplanation = false;
 
     [Header("Imgs")]
@@ -38,44 +40,62 @@ public class SchedulePrograss : MonoBehaviour
 
     private void Awake()
     {
-        Set_InStartScheduleUI();
-
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                if(OnExplanation)
-                {
-                    DOTween.Kill(ExplanationTxt);
-                    DOTween.Kill(ExplanationBtn);
-
-                    ExplanationTxt.DOFade(1, 0);
-                    ExplanationTxt.DOFade(0, 0.5f)
-                        .OnComplete(() => 
-                        {
-                            ExplanationTxt.gameObject.SetActive(false);
-                        });
-                    ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 100), 0.5f);
-
-                    OnExplanation = false;
-                }
-                else
-                {
-                    DOTween.Kill(ExplanationTxt);
-                    DOTween.Kill(ExplanationBtn);
-
-                    ExplanationTxt.DOFade(0, 0);
-                    ExplanationTxt.gameObject.SetActive(true);
-                    ExplanationTxt.DOFade(1, 0.5f);
-                    ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 25), 0.5f);
-
-                    OnExplanation = true;
-                }
+                OnOffExlanation();
             });
     }
-    
+
     #endregion
 
     #region UI
+
+    private void OnOffExlanation()
+    {
+        if (OnExplanation)
+        {
+            DOTween.Kill(ExplanationTxt);
+            DOTween.Kill(ExplanationBtn);
+
+            ExplanationTxt.DOFade(1, 0);
+            ExplanationTxt.DOFade(0, 0.5f)
+                .OnComplete(() =>
+                {
+                    ExplanationTxt.gameObject.SetActive(false);
+                });
+            ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 100), 0.5f);
+
+            OnExplanation = false;
+        }
+        else
+        {
+            if (scheduleManager.currentPrograssScheduleID != null)
+            {
+                SetExplanation(scheduleManager.currentPrograssScheduleID);
+            }
+
+            DOTween.Kill(ExplanationTxt);
+            DOTween.Kill(ExplanationBtn);
+
+            ExplanationTxt.DOFade(0, 0);
+            ExplanationTxt.gameObject.SetActive(true);
+            ExplanationTxt.DOFade(1, 0.5f);
+            ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 25), 0.5f);
+
+            OnExplanation = true;
+        }
+    }
+
+    public void ResetExlanation()
+    {
+        DOTween.Kill(ExplanationTxt);
+        DOTween.Kill(ExplanationBtn);
+
+        ExplanationBtn.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 100);
+        ExplanationTxt.gameObject.SetActive(false);
+        OnExplanation = false;
+    }
 
     public void Set_InStartScheduleUI()
     {
@@ -87,7 +107,6 @@ public class SchedulePrograss : MonoBehaviour
         SetNotProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
 
-        SetExplanation("0");
     }
 
     public void Set_InAMScheduleUI()
@@ -99,8 +118,6 @@ public class SchedulePrograss : MonoBehaviour
         SetProgressingUI(AMImg);
         SetNotProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
-
-        SetExplanation(scheduleManager.currentPrograssScheduleID);
     }
 
     public void Set_InPMScheduleUI()
@@ -109,8 +126,6 @@ public class SchedulePrograss : MonoBehaviour
         SetComplatePrograssing(AMImg);
         SetProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
-
-        SetExplanation(scheduleManager.currentPrograssScheduleID);
     }
 
     public void Set_InEndScheduleUI()
@@ -119,8 +134,6 @@ public class SchedulePrograss : MonoBehaviour
         SetComplatePrograssing(AMImg);
         SetComplatePrograssing(PMImg);
         SetProgressingUI(EndImg);
-
-        SetExplanation("1");
     }
 
     private void SetStartEachScheduleUI(string Id, TMP_Text inputTmp)
@@ -146,18 +159,12 @@ public class SchedulePrograss : MonoBehaviour
 
     private void SetExplanation(string id)
     {
-        if (id == "0")
-        {
-            ExplanationTxt.text = "휴대폰을 키고,\n하루 일과를 계획하세요!";
-        }
-        else if (id == "1")
-        {
-            ExplanationTxt.text = "하루를 종료하고,\n새로운 하루를 맞이하세요!";
-        }
-        else
-        {
-            ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
-        }
+        ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
     }
+    public void SetByScheduleBtnOwnTxt()
+    {
+        ByScheduleBtnOwnTxt.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentPrograssScheduleID];
+    }
+
     #endregion
 }

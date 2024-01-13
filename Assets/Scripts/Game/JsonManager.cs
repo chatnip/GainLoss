@@ -128,6 +128,7 @@ public class JsonManager : MonoBehaviour
         // Load -> schedule Json
         ScheduleManager.currentHaveScheduleID =
             JsonLoad_L(json_filePath, json_ScheduleFileName);
+        ScheduleManager.currentPrograssScheduleID = "S00";
     }
 
     #endregion
@@ -233,7 +234,7 @@ public class JsonManager : MonoBehaviour
         Set_StartMainInfo(); // Main Info
         Set_StartWord(); // Word IDs
         Set_StartWordAction(); // WordAction IDs
-        Set_Sentence(); // Sentence IDs
+        Set_StartSentence(); // Sentence IDs
         Set_Behavior(); // Behavior string
 
     }
@@ -265,7 +266,7 @@ public class JsonManager : MonoBehaviour
 
         JsonSave(json_filePath, json_wordActionFileName, Datas);
     }
-    void Set_Sentence()
+    void Set_StartSentence()
     {
         string path = "Assets/Resources/Sheet/SentenceSheet.csv";
         string[] saveFiles = File.ReadAllText(path).Split('\n');
@@ -287,8 +288,8 @@ public class JsonManager : MonoBehaviour
     void Set_Behavior()
     {
         List<string> datas = new List<string>();
-        datas.Add("WatchingTheStreaming");
-        datas.Add("SiteSurvey");
+        datas.Add("S02");
+        datas.Add("S03");
 
         IDs ids = new IDs();
         ids.dataIDList = datas;
