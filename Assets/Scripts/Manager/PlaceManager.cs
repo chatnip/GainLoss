@@ -15,14 +15,18 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
 
-    [Space(10)]
-    [SerializeField] PlaceSpawner placeBtnSpawner;
+    [Header("*Player")]
+    [SerializeField] GameObject Player;
+    /*[Space(10)]
+    [SerializeField] PlacePadSpawner placeBtnSpawner;*/
 
     [Header("*Place")]
     [SerializeField] Button homeBtn;
     [SerializeField] List<IDBtn> placeBtnList = new();
+    [Tooltip("Must make sure to get the order right FOR CSV")]
+    [SerializeField] List<GameObject> placeGOList = new();
 
-    [Header("*Behavior")]
+    /*[Header("*Behavior")]
     [SerializeField] GameObject behaviorPopup;
     [SerializeField] Button behaviorBackground;
     [SerializeField] TMP_Text behaviorHeaderText;
@@ -34,22 +38,27 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] Button behaviorCancelButton;
     
 
-    // 켜진 장소 및 장소의 액션 버튼 목록
+    // 켜진 장소 및 장소의 액션 버튼 목록*/
     [HideInInspector] public List<IDBtn> enablePlaceBtnList = new();
     //[HideInInspector] public List<IDBtn> enableBehaviorActionBtnList = new();
 
     // 선택한 장소 및 장소의 액션 목록
     [SerializeField] public List<string> currentPlaceIDList = new();
     [SerializeField] public List<ButtonValue> currentPlaceList = new();
-    [HideInInspector] private List<string> currentBehaviorActionIDList = new();
-    [HideInInspector] public List<ButtonValue> currentBehaviorActionList = new();
+    /*[HideInInspector] private List<string> currentBehaviorActionIDList = new();
+    [HideInInspector] public List<ButtonValue> currentBehaviorActionList = new();*/
 
     // 선택한 장소 및 장소의 액션
-    private ButtonValue currentPlace;
-    private ButtonValue currentBehaviorAction;
+    [HideInInspector] public ButtonValue currentPlace = null;
+    //private ButtonValue currentBehaviorAction;
 
     protected override void Awake()
     {
+        SetCurrent3DMap(currentPlace);
+
+        //currentPlace = new ButtonValue("P00", DataManager.PlaceDatas[1]["P00"].ToString());
+
+        //SetCurrent3DMap(currentPlace);
         //base.Awake();
 
         homeBtn.OnClickAsObservable()
@@ -62,7 +71,7 @@ public class PlaceManager : Manager<PlaceManager>
             });
 
 
-        behaviorBackground.OnClickAsObservable()
+        /*behaviorBackground.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 behaviorPopup.SetActive(false);
@@ -80,7 +89,7 @@ public class PlaceManager : Manager<PlaceManager>
                 ActionEventManager.currentActionEventID = currentPlace.ID + currentBehaviorAction.ID;
                 ActionEventManager.StartCoroutine(ActionEventManager.PlaceSetting());
                 PhoneHardware.PhoneOff();
-            });
+            });*/
     }
 
     private void Start()
@@ -89,7 +98,36 @@ public class PlaceManager : Manager<PlaceManager>
         // 나중에 켜질때마다 활성화
     }
 
+    #region Spawn3Dmap
+
+    private void SetCurrent3DMap(ButtonValue buttonValue)
+    {
+        if(buttonValue.ID == null || buttonValue.ID == "")
+        {
+            foreach(GameObject go in placeGOList)
+            {
+                go.SetActive(false);
+            }
+            placeGOList[0].SetActive(true);
+        }
+        else 
+        {
+            int s = Convert.ToInt32(buttonValue.ID.Substring(1));
+            foreach (GameObject go in placeGOList)
+            {
+                go.SetActive(false);
+            }
+            placeGOList[s].SetActive(true);
+
+            placeGOList[s].transform.position = Vector3.zero;
+        }
+
+    }
+
+    #endregion
+
     #region ButtonListSeting
+
     public void PlaceBtnListSet()
     {
         foreach (IDBtn placeBtn in placeBtnList)
@@ -100,14 +138,23 @@ public class PlaceManager : Manager<PlaceManager>
                 .Subscribe(place =>
                 {
                     currentPlace = place;
-                    string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
+                    Debug.Log("정해진 장소: " + currentPlace.ID + " / " + currentPlace.Name);
+                    PhoneHardware.DoNotNeedBtns_ExceptionSituation = true;
+
+                    PhoneHardware.PhoneOff();
+                    SetCurrent3DMap(currentPlace);
+
+                    /*string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
                     behaviorHeaderText.text = text;
                     behaviorPopup.SetActive(true);
                     InitBehaviorActionID(currentPlace.ID);
-                    //placeBtnSpawner.SpawnBehaviorActionBtn();
+                    placeBtnSpawner.SpawnBehaviorActionBtn();*/
                 });
         }
     }
+
+
+
 
     /*public void BehaviorActionBtnListSet()
     {
@@ -145,7 +192,7 @@ public class PlaceManager : Manager<PlaceManager>
         PlaceBtnListSet();
     }
 
-    private void InitBehaviorActionID(string id)
+    /*private void InitBehaviorActionID(string id)
     {
         currentBehaviorActionIDList.Clear(); // 초기화
         foreach (var data in DataManager.ActionEventDatas[0]) // 액션 이벤트 순회
@@ -167,6 +214,6 @@ public class PlaceManager : Manager<PlaceManager>
             ButtonValue word = new(id, (string)DataManager.BehaviorActionDatas[1][id]);
             currentBehaviorActionList.Add(word);
         }
-    }
+    }*/
     #endregion
 }

@@ -14,12 +14,14 @@ public class JsonManager : MonoBehaviour
     [HideInInspector] public string json_wordActionFileName;
     [HideInInspector] public string json_sentenceFileName;
     [HideInInspector] public string json_ScheduleFileName;
+    [HideInInspector] public string json_PlaceFileName;
 
     // public List<WordBase> myWords = new List<WordBase>();
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameManager GameManager;
     [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] PlaceManager PlaceManager;
 
     private void Awake()
     {
@@ -37,6 +39,7 @@ public class JsonManager : MonoBehaviour
         json_wordActionFileName = "wordActionDatabase.json";
         json_sentenceFileName = "sentenceDatabase.json";
         json_ScheduleFileName = "scheduleDatabase.json";
+        json_PlaceFileName = "placeDatabase.json";
     }
 
     #region Load Json
@@ -129,6 +132,11 @@ public class JsonManager : MonoBehaviour
         ScheduleManager.currentHaveScheduleID =
             JsonLoad_L(json_filePath, json_ScheduleFileName);
         ScheduleManager.currentPrograssScheduleID = "S00";
+
+        // Load -> place Json
+        PlaceManager.currentPlaceIDList =
+            JsonLoad_L(json_filePath, json_PlaceFileName);
+        
     }
 
     #endregion
@@ -217,8 +225,11 @@ public class JsonManager : MonoBehaviour
         // Save -> Sentence Json
         JsonSave(json_filePath, json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
-        // Save -> Behavior Json
+        // Save -> Schedule Json
         JsonSave(json_filePath, json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
+
+        // Save -> Place Json
+        JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceIDList);
     }
 
     #endregion
@@ -235,7 +246,8 @@ public class JsonManager : MonoBehaviour
         Set_StartWord(); // Word IDs
         Set_StartWordAction(); // WordAction IDs
         Set_StartSentence(); // Sentence IDs
-        Set_Behavior(); // Behavior string
+        Set_StartSchedule(); // Schedule IDs
+        Set_StartPlace(); // Place IDs
 
     }
 
@@ -285,7 +297,7 @@ public class JsonManager : MonoBehaviour
 
         JsonSave(json_filePath, json_sentenceFileName, result);
     }
-    void Set_Behavior()
+    void Set_StartSchedule()
     {
         List<string> datas = new List<string>();
         datas.Add("S02");
@@ -295,6 +307,17 @@ public class JsonManager : MonoBehaviour
         ids.dataIDList = datas;
 
         JsonSave(json_filePath, json_ScheduleFileName, ids.dataIDList);
+    }
+    void Set_StartPlace()
+    {
+        List<string> datas = new List<string>();
+        datas.Add("P01");
+        datas.Add("P02");
+
+        IDs ids = new IDs();
+        ids.dataIDList = datas;
+
+        JsonSave(json_filePath, json_PlaceFileName, ids.dataIDList);
     }
 
     #endregion

@@ -48,15 +48,19 @@ public class PhoneSoftware : MonoBehaviour
     //[SerializeField] public Button map_Btn;
     //[SerializeField] public Button map_backBtn;
     [SerializeField] GameObject map;
-
+    [Header("*ail")]
     [SerializeField] Button AIL_pad_Btn;
     [SerializeField] Button AIL_pad_backBtn;
     [SerializeField] GameObject AIL_pad;
-
+    [Header("*exe")]
     [SerializeField] Button EXE_pad_Btn;
     [SerializeField] Button EXE_pad_backBtn;
     [SerializeField] GameObject EXE_pad;
-
+    [Header("*place")]
+    [SerializeField] Button Place_pad_Btn;
+    [SerializeField] Button Place_pad_backBtn;
+    [SerializeField] GameObject Place_pad;
+    [Header("*Allback")]
     [SerializeField] Button backBtn;
 
     #region Main
@@ -193,6 +197,18 @@ public class PhoneSoftware : MonoBehaviour
                 EXE_pad.SetActive(false);
             });
 
+        Place_pad_Btn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                Place_pad.SetActive(true);
+            });
+        Place_pad_backBtn
+            .OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                Place_pad.SetActive(false);
+            });
 
         backBtn
             .OnClickAsObservable()
@@ -319,10 +335,15 @@ public class PhoneSoftware : MonoBehaviour
         else { map_Btn.interactable = false; }*/
         CreateScheduleGO.SetActive(false);
         map.SetActive(false);
+
         AIL_pad_Btn.interactable = true;
         AIL_pad.SetActive(false);
+
         EXE_pad_Btn.interactable = true;
         EXE_pad.SetActive(false);
+         
+        Place_pad_Btn.interactable = true;
+        Place_pad.SetActive(false);
 
         #endregion
 

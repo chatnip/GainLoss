@@ -33,7 +33,8 @@ public class PhoneHardware : MonoBehaviour
     [SerializeField] Button PhoneOnBtn;
     [SerializeField] Button PhoneOnByScheduleBtn;
 
-    [SerializeField] List<string> DoNotNeedBtns;
+    List<string> DoNotNeedBtns;
+    [HideInInspector] public bool DoNotNeedBtns_ExceptionSituation;
 
     #endregion
 
@@ -41,6 +42,12 @@ public class PhoneHardware : MonoBehaviour
 
     public void Awake()
     {
+        DoNotNeedBtns = new List<string>()
+        {
+            "S01", "S03", "S04", "S99"
+        };
+        DoNotNeedBtns_ExceptionSituation = false;
+
         PhoneListOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -111,6 +118,7 @@ public class PhoneHardware : MonoBehaviour
             {
                 if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
             }
+            if (DoNotNeedBtns_ExceptionSituation) { return; }
             SetOn(PhoneOnByScheduleBtn, new Vector2(0, -50));
         }
         else
@@ -120,6 +128,7 @@ public class PhoneHardware : MonoBehaviour
             {
                 if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
             }
+            if (DoNotNeedBtns_ExceptionSituation) { return; }
             SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
         }
 
