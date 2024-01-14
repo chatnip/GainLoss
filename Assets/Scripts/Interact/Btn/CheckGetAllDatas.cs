@@ -7,17 +7,24 @@ using TMPro;
 
 public class CheckGetAllDatas : MonoBehaviour
 {
-    [SerializeField] GameObject CurrentMap;
+    [SerializeField] public GameObject CurrentMap;
     [SerializeField] TMP_Text Info;
     [SerializeField] Button TerminateBtn;
 
+    [SerializeField] PlaceManager PlaceManager;
+    [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] SetInteractionObjects SetInteractionObjects;
 
     private void Awake()
     {
         TerminateBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                Debug.Log("다음 파트로 넘어가기 또는 정하기");
+                ScheduleManager.PassNextSchedule();
+                PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
+                PlaceManager.StartGoingSomewhereLoading(1.5f);
+                
+                this.gameObject.SetActive(false);
             });
     }
 

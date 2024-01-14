@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class SchedulePrograss : MonoBehaviour
 {
     #region Value
-
+    
     [Header("*Manger")]
     [SerializeField] ScheduleManager scheduleManager;
 
@@ -33,6 +33,8 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] Image PMImg;
     [SerializeField] Image EndImg;
 
+    delegate void dele();
+
     #endregion
 
 
@@ -40,6 +42,8 @@ public class SchedulePrograss : MonoBehaviour
 
     private void Awake()
     {
+        Set_InStartScheduleUI();
+
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -49,7 +53,7 @@ public class SchedulePrograss : MonoBehaviour
 
     #endregion
 
-    #region UI
+    #region Progress UI
 
     private void OnOffExlanation()
     {
@@ -99,8 +103,8 @@ public class SchedulePrograss : MonoBehaviour
 
     public void Set_InStartScheduleUI()
     {
-        ScheduleAM.text = "오전 계획 (필요)";
-        SchedulePM.text = "오후 계획 (필요)";
+        ScheduleAM.text = "오전 (계획 필요)";
+        SchedulePM.text = "오후 (계획 필요)";
 
         SetProgressingUI(StartImg);
         SetNotProgressingUI(AMImg);
@@ -111,8 +115,8 @@ public class SchedulePrograss : MonoBehaviour
 
     public void Set_InAMScheduleUI()
     {
-        SetStartEachScheduleUI(scheduleManager.currentSelectedScheduleID[0], ScheduleAM);
-        SetStartEachScheduleUI(scheduleManager.currentSelectedScheduleID[1], SchedulePM);
+        ScheduleAM.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentSelectedScheduleID[0]];
+        SchedulePM.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentSelectedScheduleID[1]];
 
         SetComplatePrograssing(StartImg);
         SetProgressingUI(AMImg);
@@ -136,10 +140,7 @@ public class SchedulePrograss : MonoBehaviour
         SetProgressingUI(EndImg);
     }
 
-    private void SetStartEachScheduleUI(string Id, TMP_Text inputTmp)
-    {
-        inputTmp.text = (string)DataManager.ScheduleDatas[3][Id];
-    }
+    
 
     private void SetNotProgressingUI(Image img)
     {
@@ -157,6 +158,7 @@ public class SchedulePrograss : MonoBehaviour
         img.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
     }
 
+
     private void SetExplanation(string id)
     {
         ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
@@ -167,4 +169,7 @@ public class SchedulePrograss : MonoBehaviour
     }
 
     #endregion
+
+
+
 }

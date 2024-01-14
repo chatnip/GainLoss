@@ -61,4 +61,17 @@ public class SetInteractionObjects : MonoBehaviour
         }
     }
 
+    public void OffInteractiveOB()
+    {
+        sphereCollider.radius = 0;
+    }
+    public void OnInteractiveOB()
+    {
+        sphereCollider.radius = this.colliderRadius;
+    }
+    public void ClearInteractiveOB()
+    {
+        activeInteractionGOs.Clear();
+    }
+
 }

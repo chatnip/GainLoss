@@ -288,7 +288,7 @@ public class PhoneSoftware : MonoBehaviour
             Turn = 0;
             //CreateScheduleGO.SetActive(true);
 
-            SchedulePrograss.Set_InStartScheduleUI();
+            //SchedulePrograss.Set_InStartScheduleUI();
 
             for (int i = 0; i < ScheculeBtnGO.transform.childCount; i++)
             {

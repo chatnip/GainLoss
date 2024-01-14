@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
+using DG.Tweening;
 
 public class PlaceManager : Manager<PlaceManager>
 {
@@ -14,9 +15,15 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
+    [SerializeField] CheckGetAllDatas CheckGetAllDatas;
 
     [Header("*Player")]
-    [SerializeField] GameObject Player;
+    [SerializeField] SetInteractionObjects SetInteractionObjects;
+
+    [Header("*Going Somewhere loading")]
+    [SerializeField] CanvasGroup GoingSomewhereloadingCG;
+    [SerializeField] TMP_Text CurrentPlaceTxt;
+
     /*[Space(10)]
     [SerializeField] PlacePadSpawner placeBtnSpawner;*/
 
@@ -36,9 +43,10 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] TMP_Text behaviorConfirmText;
     [SerializeField] Button behaviorConfirmButton;
     [SerializeField] Button behaviorCancelButton;
+    // 켜진 장소 및 장소의 액션 버튼 목록*/
+
     
 
-    // 켜진 장소 및 장소의 액션 버튼 목록*/
     [HideInInspector] public List<IDBtn> enablePlaceBtnList = new();
     //[HideInInspector] public List<IDBtn> enableBehaviorActionBtnList = new();
 
@@ -51,6 +59,8 @@ public class PlaceManager : Manager<PlaceManager>
     // 선택한 장소 및 장소의 액션
     [HideInInspector] public ButtonValue currentPlace = null;
     //private ButtonValue currentBehaviorAction;
+
+    #region Main
 
     protected override void Awake()
     {
@@ -98,17 +108,23 @@ public class PlaceManager : Manager<PlaceManager>
         // 나중에 켜질때마다 활성화
     }
 
+    #endregion
+
     #region Spawn3Dmap
 
-    private void SetCurrent3DMap(ButtonValue buttonValue)
+    public void SetCurrent3DMap(ButtonValue buttonValue)
     {
-        if(buttonValue.ID == null || buttonValue.ID == "")
+        if(buttonValue.ID == null || buttonValue.ID == "" || buttonValue.ID == "P00")
         {
             foreach(GameObject go in placeGOList)
             {
                 go.SetActive(false);
             }
             placeGOList[0].SetActive(true);
+            CheckGetAllDatas.CurrentMap = placeGOList[0];
+
+            SetInteractionObjects.OnInteractiveOB();
+            CheckGetAllDatas.gameObject.SetActive(false);
         }
         else 
         {
@@ -118,8 +134,11 @@ public class PlaceManager : Manager<PlaceManager>
                 go.SetActive(false);
             }
             placeGOList[s].SetActive(true);
-
+            CheckGetAllDatas.CurrentMap = placeGOList[s];
             placeGOList[s].transform.position = Vector3.zero;
+
+            SetInteractionObjects.OnInteractiveOB();
+            CheckGetAllDatas.gameObject.SetActive(true);
         }
 
     }
@@ -139,10 +158,11 @@ public class PlaceManager : Manager<PlaceManager>
                 {
                     currentPlace = place;
                     Debug.Log("정해진 장소: " + currentPlace.ID + " / " + currentPlace.Name);
+                    PhoneHardware.PhoneOff();
                     PhoneHardware.DoNotNeedBtns_ExceptionSituation = true;
 
-                    PhoneHardware.PhoneOff();
-                    SetCurrent3DMap(currentPlace);
+                    StartGoingSomewhereLoading(1.5f);
+
 
                     /*string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
                     behaviorHeaderText.text = text;
@@ -172,6 +192,38 @@ public class PlaceManager : Manager<PlaceManager>
                 });
         }
     }*/
+    #endregion
+
+    #region Going Somewhere
+
+    public void StartGoingSomewhereLoading(float delay)
+    {
+        StartCoroutine(GoingSomewhereLoading(delay));
+    }
+
+    private IEnumerator GoingSomewhereLoading(float delay)
+    {
+        CurrentPlaceTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
+        GoingSomewhereloadingCG.alpha = 0f;
+        GoingSomewhereloadingCG.DOFade(1, delay);
+        GoingSomewhereloadingCG.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(delay);
+
+        SetInteractionObjects.OffInteractiveOB();
+        SetInteractionObjects.ClearInteractiveOB();
+        SetCurrent3DMap(currentPlace);
+
+        yield return new WaitForSeconds(delay);
+
+        GoingSomewhereloadingCG.DOFade(0, delay)
+            .OnComplete(() =>
+            {
+                GoingSomewhereloadingCG.gameObject.SetActive(false);
+            });
+
+    }
+
     #endregion
 
     #region Init

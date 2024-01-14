@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ComputerInteract : InteractObject
 {
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] ScheduleManager ScheduleManager;
+
     [Header("*Camera")]
     [Tooltip("메인 가상 카메라")]
     [SerializeField] GameObject quarterViewCamera;
@@ -18,6 +18,19 @@ public class ComputerInteract : InteractObject
 
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
+
+    [TextArea]
+    [SerializeField] public string description;
+
+    private void OnEnable()
+    {
+        /*string id = ScheduleManager.currentPrograssScheduleID;
+        if(id == null || id == "") { return; }
+        else if("S03" == id) // 스케쥴 아이디가 방송 시청하라면...
+        {
+            CanInteract = false;
+        }*/
+    }
 
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {

@@ -49,8 +49,11 @@ public class InteractObject : InteractCore
         if (this.getWordID != "") { GetWordID(); }
         if (this.getWordActionID != "") { GetWordActionID(); }
 
-        CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
-        CheckGetAllDatas.ApplyTerminateBtnAndText();
+        if (GameObject.Find("TerminatePart") != null)
+        {
+            CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
+            CheckGetAllDatas.ApplyTerminateBtnAndText();
+        }
 
         CanInteract = false;
     }
