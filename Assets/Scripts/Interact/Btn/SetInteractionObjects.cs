@@ -28,8 +28,8 @@ public class SetInteractionObjects : MonoBehaviour
     {
         if(OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
         {
-            if (interactObject.CanInteract) 
-            { 
+            if (interactObject.CanInteract)
+            {
                 OB.gameObject.GetComponent<OutlineObject>().enabled = true;
                 activeInteractionGOs.Add(OB.gameObject);
 

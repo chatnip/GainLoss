@@ -13,8 +13,8 @@ public class AILpadSpawner : IDBtnSpawner
     {
         for (int i = 0; i < WordManager.currentWordIDList.Count; i++)
         {
-            Debug.Log(WordManager.currentWordList[i].ID);
-            IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]);
+            //IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]);
+            IDBtn wordBtn = CreateIDBtn(new ButtonValue(WordManager.currentWordIDList[i], DataManager.WordDatas[5][WordManager.currentWordIDList[i]].ToString()));
             wordBtn.transform.SetParent(wordParentObject);
             wordBtn.buttonType = ButtonType.WordPadType;
             WordManager.enableWordBtnList.Add(wordBtn);

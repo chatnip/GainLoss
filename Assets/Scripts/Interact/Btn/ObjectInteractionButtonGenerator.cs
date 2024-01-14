@@ -76,6 +76,33 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour
 
     }
 
-    
+    public void SetOnAllBtns()
+    {
+        foreach(GameObject Btn in allInteractionBtns) 
+        {
+            if(Btn.TryGetComponent(out Button buttonComp))
+            {
+                buttonComp.interactable = true;
+            }
+            if (Btn.TryGetComponent(out CanvasGroup CG))
+            {
+                CG.alpha = 1;
+            }
+        }
+    }
+    public void SetOffAllBtns()
+    {
+        foreach (GameObject Btn in allInteractionBtns)
+        {
+            if (Btn.TryGetComponent(out Button buttonComp))
+            {
+                buttonComp.interactable = false;
+            }
+            if (Btn.TryGetComponent(out CanvasGroup CG))
+            {
+                CG.alpha = 0.3f;
+            }
+        }
+    }
 
 }

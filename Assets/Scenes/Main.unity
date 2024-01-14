@@ -8948,6 +8948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PhoneHardware: {fileID: 420522339}
+  ObjectInteractionButtonGenerator: {fileID: 1637006480}
   loading: {fileID: 844579173}
   objPanel: {fileID: 1084193113}
   objText: {fileID: 308292751}
@@ -9015,6 +9016,28 @@ MonoBehaviour:
   CanInteract: 1
   GameSystem: {fileID: 0}
   description: "DVD\uAE30\uAE30... ... ... \uC548\uB155 DVD\uAE30\uAE30..."
+--- !u!64 &452139885
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452139876}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7579889380004551648, guid: 1d3e6acb1d3500a4c9c4f91b5b7e1354, type: 3}
 --- !u!1 &457766877
 GameObject:
   m_ObjectHideFlags: 0
@@ -14591,6 +14614,28 @@ MonoBehaviour:
   GameSystem: {fileID: 0}
   description: "\uC637\uAC78\uC774\uB2E4. \uB531\uD788 \uC9C0\uAE08 \uAC78\uC5B4\uB450\uC9C4
     \uC54A\uC744 \uAC83\uC774\uB2E4."
+--- !u!64 &674609017
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674609008}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8733850631468049571, guid: 0d03442fc94b4ef42ad14823d6d71d0e, type: 3}
 --- !u!1 &678305114
 GameObject:
   m_ObjectHideFlags: 0
@@ -40119,10 +40164,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1123150004108570827, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: getWordID
-      value: 
+    - target: {fileID: 1466588645579808403, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: outlineMode
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2573394056635004622, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: outlineMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017873210523286409, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: outlineMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: Schedules
+      value: 
+      objectReference: {fileID: 227287642}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -40137,6 +40194,14 @@ PrefabInstance:
         \uB4EF\uD558\uB2E4."
       objectReference: {fileID: 0}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: PhoneHardware
+      value: 
+      objectReference: {fileID: 420522339}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: PhoneOpenBtns
+      value: 
+      objectReference: {fileID: 568514505}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: InteractionUI3D
       value: 
       objectReference: {fileID: 1637006475}
@@ -40148,6 +40213,10 @@ PrefabInstance:
       propertyPath: Computer2DCamera
       value: 
       objectReference: {fileID: 404626696}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: SchedulePrograss
+      value: 
+      objectReference: {fileID: 227287644}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: quarterViewCamera
       value: 
@@ -43040,12 +43109,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8174714231093633676, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
       insertIndex: -1
       addedObject: {fileID: 452139881}
+    - targetCorrespondingSourceObject: {fileID: 8174714231093633676, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 452139885}
     - targetCorrespondingSourceObject: {fileID: 5417049618602806074, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
       insertIndex: -1
       addedObject: {fileID: 674609012}
     - targetCorrespondingSourceObject: {fileID: 5417049618602806074, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
       insertIndex: -1
       addedObject: {fileID: 674609013}
+    - targetCorrespondingSourceObject: {fileID: 5417049618602806074, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 674609017}
     - targetCorrespondingSourceObject: {fileID: 4260813729422735325, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
       insertIndex: -1
       addedObject: {fileID: 972444521}

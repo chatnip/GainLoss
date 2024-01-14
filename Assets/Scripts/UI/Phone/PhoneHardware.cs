@@ -58,15 +58,17 @@ public class PhoneHardware : MonoBehaviour
         PhoneOnBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ResetPhoneBtn();
+                SchedulePrograss.ResetExlanation();
+                ResetPhoneBtns();
                 PhoneOn();
-
             });
         PhoneOnByScheduleBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ResetPhoneBtn();
+                SchedulePrograss.ResetExlanation();
+                ResetPhoneBtns();
                 PhoneOn();
+
                 phoneSoftware.SetCurrentScheduleUI();
             });
 
@@ -86,10 +88,8 @@ public class PhoneHardware : MonoBehaviour
 
     #region Reset
 
-    private void ResetPhoneBtn()
+    public void ResetPhoneBtns()
     {
-        SchedulePrograss.ResetExlanation();
-
         SetOff(PhoneOnBtn, new Vector2(0, 75));
         SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
 

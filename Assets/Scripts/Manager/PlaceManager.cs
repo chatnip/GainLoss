@@ -125,6 +125,8 @@ public class PlaceManager : Manager<PlaceManager>
 
             SetInteractionObjects.OnInteractiveOB();
             CheckGetAllDatas.gameObject.SetActive(false);
+            placeGOList[0].transform.position = Vector3.zero;
+
         }
         else 
         {
@@ -140,6 +142,8 @@ public class PlaceManager : Manager<PlaceManager>
             SetInteractionObjects.OnInteractiveOB();
             CheckGetAllDatas.gameObject.SetActive(true);
         }
+
+        SetInteractionObjects.transform.parent.gameObject.transform.position = new Vector3(0, 0.2f, 0);
 
     }
 

@@ -10,6 +10,7 @@ using System;
 public class GameSystem : MonoBehaviour
 {
     [SerializeField] PhoneHardware PhoneHardware;
+    [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
 
     [Header("*Popular UI")]
     [SerializeField] public CanvasGroup loading;
@@ -72,6 +73,7 @@ public class GameSystem : MonoBehaviour
         objText.text = "";
         objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
         objPanel.SetActive(true);
+        ObjectInteractionButtonGenerator.SetOffAllBtns();
     }
     
     public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
@@ -79,6 +81,7 @@ public class GameSystem : MonoBehaviour
         DOTween.Complete("Obj_Description");
         objPanel.SetActive(false);
         objText.text = null;
+        ObjectInteractionButtonGenerator.SetOnAllBtns();
     }
 
     #endregion

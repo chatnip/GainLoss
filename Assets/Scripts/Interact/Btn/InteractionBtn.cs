@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InteractionBtn : InteractCore
 {
@@ -14,6 +15,7 @@ public class InteractionBtn : InteractCore
     [SerializeField] public TMP_Text txt_name_right;
 
     [SerializeField] public GameObject TargetGO;
+    [SerializeField] public Button thisBtn;
     //[SerializeField] Button InteractiveBtn_comp;
 
     public void Awake()
@@ -24,7 +26,10 @@ public class InteractionBtn : InteractCore
     
     public override void OnPointerDown(PointerEventData eventData)
     {
-        base.OnPointerDown(eventData);
-        TargetGO.GetComponent<InteractObject>().Interact();
+        if(thisBtn.interactable)
+        {
+            base.OnPointerDown(eventData);
+            TargetGO.GetComponent<InteractObject>().Interact();
+        }
     }
 }

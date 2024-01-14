@@ -6,6 +6,8 @@ public class ComputerInteract : InteractObject
 {
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] SchedulePrograss SchedulePrograss;
+    [SerializeField] PhoneHardware PhoneHardware;
 
     [Header("*Camera")]
     [Tooltip("메인 가상 카메라")]
@@ -18,6 +20,7 @@ public class ComputerInteract : InteractObject
 
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
+    [SerializeField] GameObject PhoneOpenBtns;
 
     [TextArea]
     [SerializeField] public string description;
@@ -38,6 +41,11 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(false);
         screenViewCamera.SetActive(true);
 
+        SchedulePrograss.gameObject.SetActive(false);
+        SchedulePrograss.ResetExlanation();
+        PhoneOpenBtns.SetActive(false);
+        PhoneHardware.ResetPhoneBtns();
+
         //yield return new WaitForSeconds(1f);
 
         ScreenOn();
@@ -50,6 +58,9 @@ public class ComputerInteract : InteractObject
         ScreenOff();
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);
+
+        PhoneOpenBtns.SetActive(true);
+        SchedulePrograss.gameObject.SetActive(true);
 
         //yield return new WaitForSeconds(1f);
 
@@ -80,7 +91,9 @@ public class ComputerInteract : InteractObject
 
     public override void Interact()
     {
-        StartCoroutine(ScreenZoomIn());
+        if (ScheduleManager.currentPrograssScheduleID == "S03") { StartCoroutine(ScreenZoomIn()); }
+        else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
+
     }
 
     /*    public override void OnPointerDown(PointerEventData eventData)
