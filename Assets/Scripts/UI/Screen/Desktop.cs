@@ -15,6 +15,7 @@ public class Desktop : MonoBehaviour
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract computerInteract;
+    [SerializeField] ScheduleManager ScheduleManager;
 
 
     [Header("*Public")]
@@ -99,6 +100,7 @@ public class Desktop : MonoBehaviour
                 TurnOff();
                 //ActionEventManager.TurnOnLoading();
                 computerInteract.StartCoroutine(computerInteract.ScreenZoomOut(false));
+                ScheduleManager.PassNextSchedule();
             });
 
         popupExitBtn.OnClickAsObservable()

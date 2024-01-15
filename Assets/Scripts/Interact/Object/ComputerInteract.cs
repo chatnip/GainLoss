@@ -25,6 +25,8 @@ public class ComputerInteract : InteractObject
     [TextArea]
     [SerializeField] public string description;
 
+    //[HideInInspector] public bool CanInter = true;
+
     private void OnEnable()
     {
         /*string id = ScheduleManager.currentPrograssScheduleID;

@@ -14,7 +14,7 @@ public class SchedulePrograss : MonoBehaviour
     #region Value
     
     [Header("*Manger")]
-    [SerializeField] ScheduleManager scheduleManager;
+    [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("Txts")]
     [SerializeField] TMP_Text ScheduleAM;
@@ -32,6 +32,7 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] Image AMImg;
     [SerializeField] Image PMImg;
     [SerializeField] Image EndImg;
+    [SerializeField] Color CurrentPrograssColor;
 
     delegate void dele();
 
@@ -42,7 +43,8 @@ public class SchedulePrograss : MonoBehaviour
 
     private void Awake()
     {
-        Set_InStartScheduleUI();
+        ScheduleManager.PassNextSchedule();
+        //Set_InStartScheduleUI();
 
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -74,9 +76,9 @@ public class SchedulePrograss : MonoBehaviour
         }
         else
         {
-            if (scheduleManager.currentPrograssScheduleID != null)
+            if (ScheduleManager.currentPrograssScheduleID != null)
             {
-                SetExplanation(scheduleManager.currentPrograssScheduleID);
+                SetExplanation(ScheduleManager.currentPrograssScheduleID);
             }
 
             DOTween.Kill(ExplanationTxt);
@@ -115,8 +117,8 @@ public class SchedulePrograss : MonoBehaviour
 
     public void Set_InAMScheduleUI()
     {
-        ScheduleAM.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentSelectedScheduleID[0]];
-        SchedulePM.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentSelectedScheduleID[1]];
+        ScheduleAM.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentSelectedScheduleID[0]];
+        SchedulePM.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentSelectedScheduleID[1]];
 
         SetComplatePrograssing(StartImg);
         SetProgressingUI(AMImg);
@@ -145,16 +147,19 @@ public class SchedulePrograss : MonoBehaviour
     private void SetNotProgressingUI(Image img)
     {
         DOTween.Kill(img.GetComponent<CanvasGroup>());
+        img.gameObject.GetComponent<Image>().color = Color.white;
         img.gameObject.GetComponent<CanvasGroup>().alpha = 0.3f;
     }
     private void SetProgressingUI(Image img)
     {
         img.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
-        img.gameObject.GetComponent<CanvasGroup>().DOFade(0.3f, 1.75f).SetLoops(-1, LoopType.Yoyo);
+        img.gameObject.GetComponent<Image>().color = CurrentPrograssColor;
+        img.gameObject.GetComponent<CanvasGroup>().DOFade(0.3f, 1.25f).SetLoops(-1, LoopType.Yoyo);
     }
     private void SetComplatePrograssing(Image img)
     {
         DOTween.Kill(img.GetComponent<CanvasGroup>());
+        img.gameObject.GetComponent<Image>().color = Color.white;
         img.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
     }
 
@@ -165,7 +170,7 @@ public class SchedulePrograss : MonoBehaviour
     }
     public void SetByScheduleBtnOwnTxt()
     {
-        ByScheduleBtnOwnTxt.text = (string)DataManager.ScheduleDatas[3][scheduleManager.currentPrograssScheduleID];
+        ByScheduleBtnOwnTxt.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentPrograssScheduleID];
     }
 
     #endregion

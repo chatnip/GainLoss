@@ -14,6 +14,7 @@ public class CheckGetAllDatas : MonoBehaviour
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SetInteractionObjects SetInteractionObjects;
+    [SerializeField] PhoneHardware PhoneHardware;
 
     private void Awake()
     {
@@ -23,7 +24,8 @@ public class CheckGetAllDatas : MonoBehaviour
                 ScheduleManager.PassNextSchedule();
                 PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
                 PlaceManager.StartGoingSomewhereLoading(1.5f);
-                
+                PhoneHardware.DoNotNeedBtns_ExceptionSituation = false;
+
                 this.gameObject.SetActive(false);
             });
     }

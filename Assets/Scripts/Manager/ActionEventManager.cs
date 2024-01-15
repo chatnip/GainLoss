@@ -12,6 +12,8 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] GameManager GameManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] JsonManager JsonManager;
+    [SerializeField] ScheduleManager ScheduleManager;
+    
 
     [Header("*LoadingWindow")]
     [SerializeField] TMP_Text CurrentChapterText;
@@ -180,7 +182,6 @@ public class ActionEventManager : Manager<ActionEventManager>
         int currentChapter = GameManager.currentMainInfo.chapter;
         CurrentChapterText.text = "CHAPTER [ " + currentChapter.ToString() + " ]";
     }
-
     private void AppearTextObject(float durTime)
     {
         //Color Set
@@ -203,12 +204,16 @@ public class ActionEventManager : Manager<ActionEventManager>
     {
         SavingPrograssText.text = "< Saving... >";
         SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+
+        ScheduleManager.ResetDay();
     }
 
     private void SaveDatas()
     {
         DOTween.Kill(SavingPrograssText);
+
         JsonManager.SaveAllGameDatas();
+
         SavingPrograssText.text = "< Saved >";
         SavingPrograssText.DOFade(1f, 1f);
     }
