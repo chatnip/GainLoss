@@ -207,7 +207,7 @@ public class PlaceManager : Manager<PlaceManager>
 
     private IEnumerator GoingSomewhereLoading(float delay)
     {
-        CurrentPlaceTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
+        CurrentPlaceTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID] + "(으)로 이동합니다.";
         GoingSomewhereloadingCG.alpha = 0f;
         GoingSomewhereloadingCG.DOFade(1, delay);
         GoingSomewhereloadingCG.gameObject.SetActive(true);

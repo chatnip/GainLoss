@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 [Serializable]
 public class MainInfo
 {
+    public bool NewGame = false;
     public int chapter = 1;
     public int day = 1;
     public string TodayOfTheWeek = "Monday";

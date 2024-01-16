@@ -69,6 +69,7 @@ public class Pause : MonoBehaviour
             {
                 if(chooseBtn == backToTitleBtn)
                 {
+                    DOTween.KillAll();
                     SceneManager.LoadScene("Title");
                 }
                 else if (chooseBtn == exitGameBtn)

@@ -26,8 +26,12 @@ public class JsonManager : MonoBehaviour
     private void Awake()
     {
         SetPath();
-
         LoadAllGameDatas();
+        if (GameManager.currentMainInfo.NewGame)
+        {
+            ResetJson();
+            LoadAllGameDatas();
+        }
     }
 
     private void SetPath()
@@ -238,7 +242,7 @@ public class JsonManager : MonoBehaviour
 
     // Reset SentenceSheet - Json
     [ContextMenu("ResetJson")]
-    void ResetJson()
+    public void ResetJson()
     {
         SetPath();
 
