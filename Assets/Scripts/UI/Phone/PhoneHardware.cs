@@ -42,6 +42,7 @@ public class PhoneHardware : MonoBehaviour
 
     public void Awake()
     {
+        this.gameObject.SetActive(false);
         DoNotNeedBtns = new List<string>()
         {
             "S01", "S03", "S04", "S99"

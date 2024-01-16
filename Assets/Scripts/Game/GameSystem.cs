@@ -17,36 +17,58 @@ public class GameSystem : MonoBehaviour
 
     [Header("*Obj Panel")]
     [SerializeField] public GameObject objPanel;
+    [SerializeField] public Button objPanelBtn_toSkip;
     [SerializeField] public TMP_Text objText;
     [SerializeField] public Button objPanelExitBtn;
 
     [Header("*Npc Panel")]
     [SerializeField] public GameObject NpcPanel;
+    [SerializeField] public Button NpcPanelBtn_toSkip;
     [SerializeField] public TMP_Text NpcText;
     [SerializeField] public Image NpcImg;
     [SerializeField] public Button NpcPanelExitBtn;
+
+    ConversationBase conversations;
+    bool conversationTweeningNow = false;
+    int currentOrder = 0;
 
     [Header("*Player")]
     public Transform playerPos;
 
     private void Start()
     {
-        GameStart();
+        SetPlayerTransform();
 
-        objPanelExitBtn
-            .OnClickAsObservable()
+
+        objPanelExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 ObjectDescriptionOff();
             });
+        objPanelBtn_toSkip.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ObjectDescriptionSkip();
+            });
+
+
+        NpcPanelExitBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                NpcDescriptionOff();
+            });
+        NpcPanelBtn_toSkip.OnClickAsObservable()
+            .Subscribe(btn => 
+            { 
+                NpcDescriptionSkip();
+            });
+
     }
 
-    public void GameStart()
+    public void SetPlayerTransform()
     {
         playerPos.position = new Vector3(0, 0.2f, 0);
         playerPos.rotation = Quaternion.identity;
-        PhoneHardware.gameObject.SetActive(false);
-        //PhoneHardware.PhoneOn();
     }
 
     #region Loading
@@ -70,10 +92,16 @@ public class GameSystem : MonoBehaviour
 
     public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
     {
+        ObjectInteractionButtonGenerator.SetOffAllBtns();
+
         objText.text = "";
         objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
         objPanel.SetActive(true);
-        ObjectInteractionButtonGenerator.SetOffAllBtns();
+    }
+    
+    public void ObjectDescriptionSkip()
+    {
+        DOTween.Complete("Obj_Description");
     }
     
     public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
@@ -81,6 +109,7 @@ public class GameSystem : MonoBehaviour
         DOTween.Complete("Obj_Description");
         objPanel.SetActive(false);
         objText.text = null;
+
         ObjectInteractionButtonGenerator.SetOnAllBtns();
     }
 
@@ -88,18 +117,52 @@ public class GameSystem : MonoBehaviour
 
     #region Npc Panel
 
-    public void NpcDescriptionOn(string text) // NPC 설명 패널 켜기
+    public void NpcDescriptionOn(ConversationBase conversationBase) // NPC 설명 패널 켜기
     {
-        NpcText.text = "";
-        NpcText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Npc_Description");
+        ObjectInteractionButtonGenerator.SetOffAllBtns();
+        this.conversations = conversationBase;
+        SetTween(0);
+
         NpcPanel.SetActive(true);
     }
 
-    public void NpcDescriptionOff() // 오브젝트 설명 패널 끄기
+    public void NpcDescriptionSkip()
     {
-        DOTween.Complete("Npc_Description");
+        if (conversationTweeningNow)
+        {
+            DOTween.Complete(NpcText);
+        }
+        else if (!conversationTweeningNow && (conversations.NpcConversations.Count > currentOrder))
+        {
+            NpcText.text = null;
+            SetTween(currentOrder);
+        }
+    }
+
+    public void NpcDescriptionOff() // NPC 설명 패널 끄기
+    {
         NpcPanel.SetActive(false);
         NpcText.text = null;
+        conversationTweeningNow = false;
+        currentOrder = 0;
+        ObjectInteractionButtonGenerator.SetOnAllBtns();
+    }
+
+    private Tween SetTween(int i)
+    {
+        Tween tw = NpcText.DOText(conversations.NpcConversations[i].conversation, conversations.NpcConversations[i].conversationDurTime)
+                     .SetEase(Ease.Linear)
+                     .OnStart(() =>
+                     {
+                         conversationTweeningNow = true;
+                         NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
+                     })
+                     .OnComplete(() =>
+                     {
+                         conversationTweeningNow = false;
+                         currentOrder++;
+                     });
+        return tw;
     }
 
     #endregion

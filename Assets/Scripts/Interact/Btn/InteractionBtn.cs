@@ -29,7 +29,8 @@ public class InteractionBtn : InteractCore
         if(thisBtn.interactable)
         {
             base.OnPointerDown(eventData);
-            TargetGO.GetComponent<InteractObject>().Interact();
+            if (TargetGO.TryGetComponent(out InteractObject interactObject)) { interactObject.Interact(); }
+            else if (TargetGO.TryGetComponent(out InteractNpc interactNpc)) { interactNpc.Interact(); }
         }
     }
 }

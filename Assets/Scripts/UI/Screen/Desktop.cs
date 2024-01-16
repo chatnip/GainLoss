@@ -99,7 +99,7 @@ public class Desktop : MonoBehaviour
             {
                 TurnOff();
                 //ActionEventManager.TurnOnLoading();
-                computerInteract.StartCoroutine(computerInteract.ScreenZoomOut(false));
+                computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
                 ScheduleManager.PassNextSchedule();
             });
 

@@ -22,15 +22,15 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] CanvasGroup loading;
 
 
-    [Header("*Place")]
+    /*[Header("*Place")]
     [HideInInspector] public string currentActionEventID;
     [SerializeField] List<PlaceDataBase> placeList = new();
     [SerializeField] Transform placeParent;
     [SerializeField] GameObject currentPlace;
     [SerializeField] GameObject home;
+    */
 
-
-    [SerializeField] private ReactiveProperty<PlaceDataBase> placeData = new ReactiveProperty<PlaceDataBase>();
+    //[SerializeField] private ReactiveProperty<PlaceDataBase> placeData = new ReactiveProperty<PlaceDataBase>();
 
     enum WeekDays
     {
@@ -46,14 +46,14 @@ public class ActionEventManager : Manager<ActionEventManager>
         loading.alpha = 1.0f;
         StartCoroutine(Post_ShowNextDayText(1f));
 
-        placeData
+        /*placeData
             .Where(data => data != null)
             .Subscribe(data =>
             {
                 StartCoroutine(ParsePlace(data));
-            });
+            });*/
     }
-
+/*
     #region Place
 
     public IEnumerator PlaceSetting()
@@ -86,7 +86,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     }
 
     #endregion
-
+*/
     #region PassDay Loading
 
     public void TurnOnLoading()
@@ -213,6 +213,8 @@ public class ActionEventManager : Manager<ActionEventManager>
         DOTween.Kill(SavingPrograssText);
 
         JsonManager.SaveAllGameDatas();
+
+        GameSystem.SetPlayerTransform();
 
         SavingPrograssText.text = "< Saved >";
         SavingPrograssText.DOFade(1f, 1f);

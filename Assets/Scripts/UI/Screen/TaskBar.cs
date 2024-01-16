@@ -29,7 +29,7 @@ public class TaskBar : MonoBehaviour
                     {
                         BlackScreen.gameObject.SetActive(true);
                     });
-                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut(false));
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
             });
     }
     private void OnEnable()
