@@ -8,6 +8,11 @@ using DG.Tweening;
 
 public class Pause : MonoBehaviour
 {
+    #region Value
+
+    [Header("*Input")]
+    [SerializeField] PlayerInputController PlayerInputController;
+
     [Header("*EnableCamera")]
     [SerializeField] GameObject QuarterViewCamera;
     bool QuarterViewCameraSet = true;
@@ -35,6 +40,10 @@ public class Pause : MonoBehaviour
 
     [SerializeField] float DisappearTime = 0.1f;
     [SerializeField] float DisappearLastSize = 0.75f;
+
+    #endregion
+
+    #region Main
 
     private void Awake()
     {
@@ -80,7 +89,6 @@ public class Pause : MonoBehaviour
     }
 
 
-
     public void OnEnable()
     {
         chooseBtn = null;
@@ -95,10 +103,11 @@ public class Pause : MonoBehaviour
 
         EffectfulWindow.AppearEffectful(this.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
 
+        PlayerInputController.CanMove = false;
+
     }
     public void closePausePopup()
     {
-        
         chooseBtn = null;
         for (int i = 0; i < anotherCamerasCanvas.Count; i++)
         {
@@ -109,5 +118,9 @@ public class Pause : MonoBehaviour
 
         EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
         EffectfulWindow.DisappearEffectful(reconfirmWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+
+        PlayerInputController.CanMove = true;
     }
+
+    #endregion
 }

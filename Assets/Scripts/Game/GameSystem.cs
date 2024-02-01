@@ -71,7 +71,7 @@ public class GameSystem : MonoBehaviour
         playerPos.rotation = Quaternion.identity;
     }
 
-    #region Loading
+    /*#region Loading
 
     public void TurnOnLoading()
     {
@@ -86,13 +86,13 @@ public class GameSystem : MonoBehaviour
         .OnComplete(() => loading.gameObject.SetActive(false));
     }
 
-    #endregion
+    #endregion*/
 
     #region Obj Panel
 
     public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
     {
-        ObjectInteractionButtonGenerator.SetOffAllBtns();
+        ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
 
         objText.text = "";
         objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
@@ -110,7 +110,7 @@ public class GameSystem : MonoBehaviour
         objPanel.SetActive(false);
         objText.text = null;
 
-        ObjectInteractionButtonGenerator.SetOnAllBtns();
+        ObjectInteractionButtonGenerator.SetOnOffAllBtns(true);
     }
 
     #endregion
@@ -119,7 +119,7 @@ public class GameSystem : MonoBehaviour
 
     public void NpcDescriptionOn(ConversationBase conversationBase) // NPC 설명 패널 켜기
     {
-        ObjectInteractionButtonGenerator.SetOffAllBtns();
+        ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
         this.conversations = conversationBase;
         SetTween(0);
 
@@ -145,7 +145,7 @@ public class GameSystem : MonoBehaviour
         NpcText.text = null;
         conversationTweeningNow = false;
         currentOrder = 0;
-        ObjectInteractionButtonGenerator.SetOnAllBtns();
+        ObjectInteractionButtonGenerator.SetOnOffAllBtns(true);
     }
 
     private Tween SetTween(int i)

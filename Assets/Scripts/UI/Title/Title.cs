@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UniRx;
-using TMPro;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.IO;
@@ -70,6 +68,8 @@ public class Title : MonoBehaviour
             {
                 Application.Quit();
             });
+
+        
 
     }
     private void OnEnable()

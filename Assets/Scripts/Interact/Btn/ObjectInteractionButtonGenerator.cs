@@ -1,18 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Linq;
 
-public class ObjectInteractionButtonGenerator : MonoBehaviour
+public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
 {
+    #region Value
+
+    [Header("*Property")]
+    [SerializeField] public PlayerInputController PlayerInputController;
+    [SerializeField] SetInteractionObjects SetInteractionObjects;
+    [SerializeField] GameObject phone2D;
+    [SerializeField] GameObject computer2D;
+
+    [Header("*Component")]
+    [SerializeField] CanvasScaler thisScaler;
+    [SerializeField] CanvasGroup thisGroup;
+
     [Header("*Btn")]
     [SerializeField] Button InteractionBtn;
     [SerializeField] GameObject parentGO;
 
     List<GameObject> allInteractionBtns = new List<GameObject>();
     List<GameObject> activeInteractionBtns = new List<GameObject>();
+
+    [HideInInspector] public bool SectionIsThis = false;
+    
+
+    #endregion
+
+    #region Btns
 
     public void ObPooling(GameObject targetGO, List<GameObject> activeGOs)
     {
@@ -25,7 +43,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour
     {
         foreach (GameObject CanInterationBtn in allInteractionBtns) 
         {
-            if(CanInterationBtn.GetComponent<InteractionBtn>().TargetGO == targetGO)
+            if(CanInterationBtn.GetComponent<InteractObjectBtn>().TargetGO == targetGO)
             {
                 return false;
             }
@@ -40,7 +58,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour
         btn.SetActive(false);
         btn.name = targetGO.name + "Btn";
         
-        InteractionBtn interactionBtn = btn.GetComponent<InteractionBtn>();
+        InteractObjectBtn interactionBtn = btn.GetComponent<InteractObjectBtn>();
         interactionBtn.TargetGO = targetGO;
         interactionBtn.txt_name_left.text = targetGO.name;
 
@@ -70,39 +88,105 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour
         for (int i = 0; i < activeInteractionBtns.Count; i++)
         {
             v3_pos = new Vector3(0, i * InteractionBtn.GetComponent<RectTransform>().rect.height, 0);
-            activeInteractionBtns[i].GetComponent<RectTransform>().anchoredPosition = v3_pos;
-            activeInteractionBtns[i].SetActive(true);
+            activeInteractionBtns[activeInteractionBtns.Count - i - 1].GetComponent<RectTransform>().anchoredPosition = v3_pos;
+            activeInteractionBtns[activeInteractionBtns.Count - i - 1].SetActive(true);
         }
 
     }
 
-    public void SetOnAllBtns()
+    public void SetOnOffAllBtns(bool OnOff)
     {
         foreach(GameObject Btn in allInteractionBtns) 
         {
             if(Btn.TryGetComponent(out Button buttonComp))
             {
-                buttonComp.interactable = true;
+                buttonComp.interactable = OnOff;
             }
             if (Btn.TryGetComponent(out CanvasGroup CG))
             {
-                CG.alpha = 1;
+                if (OnOff) { CG.alpha = 1.0f; }
+                else { CG.alpha = 0.3f; }
             }
         }
     }
-    public void SetOffAllBtns()
+
+    #endregion
+    
+    #region Interact
+    public void SetOnOffInteractObjectBtn()
     {
-        foreach (GameObject Btn in allInteractionBtns)
+        if (!phone2D.activeSelf && !computer2D.activeSelf)
         {
-            if (Btn.TryGetComponent(out Button buttonComp))
+            // 오브젝트 상호작용으로 변경
+            if (!SectionIsThis)
             {
-                buttonComp.interactable = false;
+                PlayerInputController.interact = this;
+                SectionIsThis = true;
+                PlayerInputController.SetSectionBtns(SetSectionBtns(), this);
+                DOTween.To(() => thisScaler.scaleFactor, x => thisScaler.scaleFactor = x, 1f, 0.3f);
+                DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
             }
-            if (Btn.TryGetComponent(out CanvasGroup CG))
+            // 오브젝트 상호작용에서 벗어나기
+            else
             {
-                CG.alpha = 0.3f;
+                SetOffAllOutline();
+                PlayerInputController.ClearSeletedBtns();
+                SectionIsThis = false;
+                PlayerInputController.SetSectionBtns(null, null);
+                DOTween.To(() => thisScaler.scaleFactor, x => thisScaler.scaleFactor = x, 0.6f, 0.3f);
+                DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 0.6f, 0.3f)
+                    .OnComplete(() =>
+                    {
+                        SetOffAllOutline();
+                    });
+
+
             }
         }
     }
+    public void Interact()
+    {
+        if(PlayerInputController.SelectBtn != null) 
+        { 
+            if(PlayerInputController.SelectBtn.TryGetComponent(out InteractObjectBtn interactObjectBtn))
+            {
+                interactObjectBtn.interactObject();
+            }
+        }
+    }
+    public List<Button> SetSectionBtns()
+    {
+        if(this.transform.GetChild(0) != null)
+        {
+            Transform[] allChildren = GetComponentsInChildren<Transform>();
+            List<Button> btns = new List<Button>();
+            foreach (Transform child in allChildren)
+            {
+                if (child.TryGetComponent(out Button btn))
+                {
+                    btns.Add(btn);
+                }
+            }
+
+            return btns;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void SetOffAllOutline()
+    {
+        foreach (GameObject child in allInteractionBtns)
+        {
+            if (child.TryGetComponent(out UnityEngine.UI.Outline childOutline))
+            {
+                childOutline.enabled = false;
+            }
+        }
+    }
+
+    #endregion
 
 }

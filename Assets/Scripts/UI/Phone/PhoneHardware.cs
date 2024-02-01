@@ -7,13 +7,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PhoneHardware : MonoBehaviour
+public class PhoneHardware : MonoBehaviour, IInteract
 {
     #region Value
 
     [Header("Property")]
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] PlayerInputController PlayerInputController;
 
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
@@ -32,9 +33,11 @@ public class PhoneHardware : MonoBehaviour
     [SerializeField] Button PhoneListOpenBtn;
     [SerializeField] Button PhoneOnBtn;
     [SerializeField] Button PhoneOnByScheduleBtn;
+    [HideInInspector] public List<Button> PhoneOnButtons;
 
     List<string> DoNotNeedBtns;
     [HideInInspector] public bool DoNotNeedBtns_ExceptionSituation;
+    [HideInInspector] public bool sectionIsThis = false;
 
     #endregion
 
@@ -43,6 +46,10 @@ public class PhoneHardware : MonoBehaviour
     public void Awake()
     {
         this.gameObject.SetActive(false);
+        PhoneOnButtons = new List<Button>()
+        {
+            PhoneOnBtn, PhoneOnByScheduleBtn
+        };
         DoNotNeedBtns = new List<string>()
         {
             "S01", "S03", "S04", "S99"
@@ -62,6 +69,8 @@ public class PhoneHardware : MonoBehaviour
                 SchedulePrograss.ResetExlanation();
                 ResetPhoneBtns();
                 PhoneOn();
+
+                phoneSoftware.SetCurrentScheduleUI(false);
             });
         PhoneOnByScheduleBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -70,10 +79,11 @@ public class PhoneHardware : MonoBehaviour
                 ResetPhoneBtns();
                 PhoneOn();
 
-                phoneSoftware.SetCurrentScheduleUI();
+                phoneSoftware.SetCurrentScheduleUI(true);
             });
 
     }
+    
 
     private void OnEnable()
     {
@@ -83,6 +93,26 @@ public class PhoneHardware : MonoBehaviour
     private void OnDisable()
     {
         PhoneOff();
+    }
+
+    public void Interact()
+    {
+        if (PlayerInputController.SelectBtn == PhoneOnBtn) 
+        {
+            SchedulePrograss.ResetExlanation();
+            ResetPhoneBtns();
+            PhoneOn();
+
+            phoneSoftware.SetCurrentScheduleUI(false);
+        }
+        else if (PlayerInputController.SelectBtn == PhoneOnByScheduleBtn) 
+        {
+            SchedulePrograss.ResetExlanation();
+            ResetPhoneBtns();
+            PhoneOn();
+
+            phoneSoftware.SetCurrentScheduleUI(true);
+        }
     }
 
     #endregion
@@ -107,30 +137,51 @@ public class PhoneHardware : MonoBehaviour
 
     #region Effectful
 
-    private void SetOnOffPhoneBtn()
+    public void SetOnOffPhoneBtn()
     {
         DOTween.Kill(PhoneOnBtn);
         DOTween.Kill(PhoneOnByScheduleBtn);
-        if(!PhoneOnBtn.gameObject.activeSelf && !PhoneOnByScheduleBtn.gameObject.activeSelf)
+
+        if(!sectionIsThis) // 휴대폰 버튼이 상호작용 버튼들로 적용
         {
+            sectionIsThis = true;
+
             SchedulePrograss.SetByScheduleBtnOwnTxt();
             SetOn(PhoneOnBtn, new Vector2(0, 0));
-            foreach(string DoNotNeedBtn in DoNotNeedBtns)
-            {
-                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
-            }
-            if (DoNotNeedBtns_ExceptionSituation) { return; }
-            SetOn(PhoneOnByScheduleBtn, new Vector2(0, -50));
-        }
-        else
-        {
-            SetOff(PhoneOnBtn, new Vector2(0, 75));
+            PlayerInputController.SetSectionBtns(SetPhoneOnButtons(), this);
             foreach (string DoNotNeedBtn in DoNotNeedBtns)
             {
-                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) { return; }
+                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) 
+                {
+                    return; 
+                }
+            }
+            if (DoNotNeedBtns_ExceptionSituation) { return; }
+
+            SetOn(PhoneOnByScheduleBtn, new Vector2(0, -50));
+            PlayerInputController.SetSectionBtns(SetPhoneOnButtons(), this);
+            
+        }
+        else // 휴대폰 버튼이 상호작용 버튼들로 적용 해제
+        {
+
+            sectionIsThis = false;
+
+            SetOff(PhoneOnBtn, new Vector2(0, 75));
+            PlayerInputController.SetSectionBtns(null, null);
+            foreach (string DoNotNeedBtn in DoNotNeedBtns)
+            {
+                if (DoNotNeedBtn == ScheduleManager.currentPrograssScheduleID) 
+                {
+                    PlayerInputController.SetSectionBtns(null, null);
+                    return; 
+                }
             }
             if (DoNotNeedBtns_ExceptionSituation) { return; }
             SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
+
+            PlayerInputController.SetSectionBtns(null, null);
+            PlayerInputController.interact = null;
         }
 
         void SetOn(Button btn, Vector2 endPos)
@@ -155,7 +206,23 @@ public class PhoneHardware : MonoBehaviour
                     btn.gameObject.SetActive(false);
                 });
         }
+
     }
+    
+    //Cacul
+    
+
+    public List<Button> SetPhoneOnButtons()
+    {
+        List<Button> buttons = new List<Button>();
+        foreach(Button btn in PhoneOnButtons)
+        {
+            if (btn.gameObject.activeSelf) { buttons.Add(btn); }
+            Debug.Log(btn.name);
+        }
+        return buttons;
+    }
+
 
     #endregion
 
@@ -177,6 +244,8 @@ public class PhoneHardware : MonoBehaviour
         Schedules.gameObject.SetActive(false);
 
         PhoneListOpenBtn.gameObject.SetActive(false);
+
+        PlayerInputController.CanMove = false;
     }
 
     public void PhoneOff()
@@ -192,6 +261,10 @@ public class PhoneHardware : MonoBehaviour
 
         Schedules.gameObject.SetActive(true);
         PhoneListOpenBtn.gameObject.SetActive(true);
+        sectionIsThis = false;
+
+        PlayerInputController.CanMove = true;
+        
     }
 
     #endregion

@@ -7,33 +7,52 @@ using TMPro;
 
 public class CheckGetAllDatas : MonoBehaviour
 {
-    [SerializeField] public GameObject CurrentMap;
-    [SerializeField] TMP_Text Info;
-    [SerializeField] Button TerminateBtn;
+    #region Value
 
+    [Header("*Map")]
+    [SerializeField] public GameObject CurrentMap;
+
+    [Header("*Component")]
+    [SerializeField] TMP_Text Info;
+    [SerializeField] public Button TerminateBtn;
+
+    [Header("*Property")]
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SetInteractionObjects SetInteractionObjects;
     [SerializeField] PhoneHardware PhoneHardware;
+
+    #endregion
+
+    #region Main
 
     private void Awake()
     {
         TerminateBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ScheduleManager.PassNextSchedule();
-                PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
-                PlaceManager.StartGoingSomewhereLoading(1.5f);
-                PhoneHardware.DoNotNeedBtns_ExceptionSituation = false;
-
-                this.gameObject.SetActive(false);
+                TerminatePlaceAndGoHome();
             });
+    }
+    
+    public void TerminatePlaceAndGoHome()
+    {
+        ScheduleManager.PassNextSchedule();
+        PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
+        PlaceManager.StartGoingSomewhereLoading(1.5f);
+        PhoneHardware.DoNotNeedBtns_ExceptionSituation = false;
+
+        this.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         ApplyTerminateBtnAndText();
     }
+
+    #endregion
+
+    #region
 
     public void ApplyTerminateBtnAndText()
     {
@@ -69,4 +88,5 @@ public class CheckGetAllDatas : MonoBehaviour
         return _remain;
     }
 
+    #endregion
 }

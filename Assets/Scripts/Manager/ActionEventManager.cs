@@ -13,7 +13,10 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] GameSystem GameSystem;
     [SerializeField] JsonManager JsonManager;
     [SerializeField] ScheduleManager ScheduleManager;
-    
+
+    [Header("*Input")]
+    [SerializeField] PlayerInputController PlayerInputController;
+
 
     [Header("*LoadingWindow")]
     [SerializeField] TMP_Text CurrentChapterText;
@@ -169,6 +172,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
+            PlayerInputController.CanMove = true;
             //GameSystem.GameStart();
         });
     }

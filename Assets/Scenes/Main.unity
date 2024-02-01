@@ -3418,7 +3418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &192906983
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3464,6 +3464,7 @@ GameObject:
   - component: {fileID: 194846046}
   - component: {fileID: 194846045}
   - component: {fileID: 194846044}
+  - component: {fileID: 194846048}
   m_Layer: 5
   m_Name: WatchingTheStreaming
   m_TagString: Untagged
@@ -3603,6 +3604,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194846042}
   m_CullTransparentMesh: 1
+--- !u!114 &194846048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194846042}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &201909049
 GameObject:
   m_ObjectHideFlags: 0
@@ -8510,6 +8526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SchedulePrograss: {fileID: 227287644}
   ScheduleManager: {fileID: 1944875640}
+  PlayerInputController: {fileID: 1955638128}
   phoneScreen: {fileID: 1795775185}
   phone2DCamera: {fileID: 293448836}
   phoneSoftware: {fileID: 919177753}
@@ -8522,7 +8539,9 @@ MonoBehaviour:
   PhoneListOpenBtn: {fileID: 568514508}
   PhoneOnBtn: {fileID: 2077207258}
   PhoneOnByScheduleBtn: {fileID: 564608626}
+  PhoneOnButtons: []
   DoNotNeedBtns_ExceptionSituation: 0
+  sectionIsThis: 0
 --- !u!1 &425219872
 GameObject:
   m_ObjectHideFlags: 0
@@ -8865,6 +8884,7 @@ GameObject:
   - component: {fileID: 444339180}
   - component: {fileID: 444339179}
   - component: {fileID: 444339178}
+  - component: {fileID: 444339181}
   m_Layer: 5
   m_Name: Home
   m_TagString: Untagged
@@ -8974,6 +8994,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444339176}
   m_CullTransparentMesh: 1
+--- !u!114 &444339181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444339176}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &444898172
 GameObject:
   m_ObjectHideFlags: 0
@@ -10353,6 +10388,7 @@ GameObject:
   - component: {fileID: 498963113}
   - component: {fileID: 498963112}
   - component: {fileID: 498963115}
+  - component: {fileID: 498963116}
   m_Layer: 5
   m_Name: AILpadBtn
   m_TagString: Untagged
@@ -10492,6 +10528,21 @@ MonoBehaviour:
   baked: 0
   modifiedFromInspector: 0
   bakedShadows: []
+--- !u!114 &498963116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498963110}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &503394419
 GameObject:
   m_ObjectHideFlags: 0
@@ -10729,6 +10780,7 @@ GameObject:
   - component: {fileID: 506483373}
   - component: {fileID: 506483372}
   - component: {fileID: 506483371}
+  - component: {fileID: 506483375}
   m_Layer: 5
   m_Name: DecisionBtn
   m_TagString: Untagged
@@ -10869,6 +10921,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 506483369}
   m_CullTransparentMesh: 1
+--- !u!114 &506483375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506483369}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &508593679
 GameObject:
   m_ObjectHideFlags: 0
@@ -11514,6 +11581,7 @@ GameObject:
   - component: {fileID: 557732251}
   - component: {fileID: 557732250}
   - component: {fileID: 557732253}
+  - component: {fileID: 557732254}
   m_Layer: 5
   m_Name: NetCafe
   m_TagString: Untagged
@@ -11652,6 +11720,21 @@ MonoBehaviour:
   CannotUseLabal: {fileID: 0}
   reason: {fileID: 0}
   isButton: 0
+--- !u!114 &557732254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557732247}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &564515343
 GameObject:
   m_ObjectHideFlags: 0
@@ -11731,6 +11814,7 @@ GameObject:
   - component: {fileID: 564608626}
   - component: {fileID: 564608625}
   - component: {fileID: 564608629}
+  - component: {fileID: 564608633}
   m_Layer: 5
   m_Name: PhoneOnByScheduleBtn
   m_TagString: Untagged
@@ -11882,6 +11966,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &564608633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564608623}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.526355, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &565296284
 GameObject:
   m_ObjectHideFlags: 0
@@ -19684,6 +19783,8 @@ MonoBehaviour:
   ScheduleManager: {fileID: 1944875640}
   PhoneHardware: {fileID: 420522339}
   SchedulePrograss: {fileID: 227287644}
+  PlayerInputController: {fileID: 1955638128}
+  PlaceManager: {fileID: 581735053}
   CreateScheduleGO: {fileID: 1758463226}
   ScheculeBtnGO: {fileID: 1688880926}
   WatchingTheStreamingBtn: {fileID: 194846045}
@@ -19702,6 +19803,12 @@ MonoBehaviour:
   - {fileID: 681976196}
   DecisionBtn: {fileID: 506483372}
   DecisionWarningText: {fileID: 179028845}
+  PlaceBtns:
+  - {fileID: 444339178}
+  - {fileID: 557732250}
+  - {fileID: 1829126526}
+  - {fileID: 1355895145}
+  - {fileID: 1416614116}
   DayText:
   - {fileID: 278432345}
   - {fileID: 240830066}
@@ -22842,6 +22949,7 @@ GameObject:
   - component: {fileID: 1043225439}
   - component: {fileID: 1043225438}
   - component: {fileID: 1043225437}
+  - component: {fileID: 1043225441}
   m_Layer: 5
   m_Name: EXEpadBtn
   m_TagString: Untagged
@@ -22981,6 +23089,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043225435}
   m_CullTransparentMesh: 1
+--- !u!114 &1043225441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043225435}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1049304316
 GameObject:
   m_ObjectHideFlags: 0
@@ -24571,6 +24694,7 @@ GameObject:
   - component: {fileID: 1134250208}
   - component: {fileID: 1134250207}
   - component: {fileID: 1134250206}
+  - component: {fileID: 1134250210}
   m_Layer: 5
   m_Name: DoingPartTimeJob
   m_TagString: Untagged
@@ -24710,6 +24834,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134250204}
   m_CullTransparentMesh: 1
+--- !u!114 &1134250210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134250204}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1139588295
 GameObject:
   m_ObjectHideFlags: 0
@@ -27037,6 +27176,7 @@ GameObject:
   - component: {fileID: 1228069246}
   - component: {fileID: 1228069245}
   - component: {fileID: 1228069244}
+  - component: {fileID: 1228069248}
   m_Layer: 5
   m_Name: PreliminarySurvey
   m_TagString: Untagged
@@ -27176,6 +27316,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228069242}
   m_CullTransparentMesh: 1
+--- !u!114 &1228069248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228069242}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1239863617
 GameObject:
   m_ObjectHideFlags: 0
@@ -29361,6 +29516,7 @@ GameObject:
   - component: {fileID: 1350064418}
   - component: {fileID: 1350064417}
   - component: {fileID: 1350064416}
+  - component: {fileID: 1350064420}
   m_Layer: 5
   m_Name: Place_padBtn
   m_TagString: Untagged
@@ -29500,6 +29656,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350064414}
   m_CullTransparentMesh: 1
+--- !u!114 &1350064420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350064414}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1350367735
 GameObject:
   m_ObjectHideFlags: 0
@@ -29647,6 +29818,7 @@ GameObject:
   - component: {fileID: 1355895146}
   - component: {fileID: 1355895145}
   - component: {fileID: 1355895148}
+  - component: {fileID: 1355895149}
   m_Layer: 5
   m_Name: Park
   m_TagString: Untagged
@@ -29785,6 +29957,21 @@ MonoBehaviour:
   CannotUseLabal: {fileID: 0}
   reason: {fileID: 0}
   isButton: 0
+--- !u!114 &1355895149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355895143}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1361947564
 GameObject:
   m_ObjectHideFlags: 0
@@ -31614,6 +31801,7 @@ GameObject:
   - component: {fileID: 1416614117}
   - component: {fileID: 1416614116}
   - component: {fileID: 1416614119}
+  - component: {fileID: 1416614120}
   m_Layer: 5
   m_Name: Alley
   m_TagString: Untagged
@@ -31752,6 +31940,21 @@ MonoBehaviour:
   CannotUseLabal: {fileID: 0}
   reason: {fileID: 0}
   isButton: 0
+--- !u!114 &1416614120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416614114}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1416848173
 GameObject:
   m_ObjectHideFlags: 0
@@ -32672,6 +32875,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d82dcc341cef538419428ad3aac348ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EventSystem: {fileID: 1725327361}
+  PlayerInputController: {fileID: 1955638128}
   sphereCollider: {fileID: 1438225783}
   colliderRadius: 1.5
   ColliderPos: {x: 0, y: 0.3, z: 0}
@@ -33312,6 +33517,7 @@ MonoBehaviour:
   GameSystem: {fileID: 445175857}
   JsonManager: {fileID: 654348490}
   ScheduleManager: {fileID: 1944875640}
+  PlayerInputController: {fileID: 1955638128}
   CurrentChapterText: {fileID: 1246853663}
   PassDayExplanationText: {fileID: 618912631}
   SavingPrograssText: {fileID: 224789418}
@@ -33916,6 +34122,7 @@ GameObject:
   - component: {fileID: 1534754378}
   - component: {fileID: 1534754377}
   - component: {fileID: 1534754376}
+  - component: {fileID: 1534754380}
   m_Layer: 5
   m_Name: SecondBehavior
   m_TagString: Untagged
@@ -34056,6 +34263,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534754374}
   m_CullTransparentMesh: 1
+--- !u!114 &1534754380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534754374}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!224 &1534975969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -34084,6 +34306,7 @@ GameObject:
   - component: {fileID: 1543515388}
   - component: {fileID: 1543515387}
   - component: {fileID: 1543515386}
+  - component: {fileID: 1543515389}
   m_Layer: 5
   m_Name: ExitBtn
   m_TagString: Untagged
@@ -34192,6 +34415,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543515384}
   m_CullTransparentMesh: 1
+--- !u!114 &1543515389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543515384}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1544979873
 GameObject:
   m_ObjectHideFlags: 0
@@ -35704,6 +35942,7 @@ GameObject:
   - component: {fileID: 1609658721}
   - component: {fileID: 1609658720}
   - component: {fileID: 1609658719}
+  - component: {fileID: 1609658723}
   m_Layer: 5
   m_Name: SiteSurvey
   m_TagString: Untagged
@@ -35843,6 +36082,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609658717}
   m_CullTransparentMesh: 1
+--- !u!114 &1609658723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609658717}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1631668043
 GameObject:
   m_ObjectHideFlags: 0
@@ -36275,6 +36529,7 @@ GameObject:
   - component: {fileID: 1637006479}
   - component: {fileID: 1637006478}
   - component: {fileID: 1637006477}
+  - component: {fileID: 1637006481}
   - component: {fileID: 1637006480}
   m_Layer: 5
   m_Name: InteractiveCanvas
@@ -36333,7 +36588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 0.6
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -36377,8 +36632,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a5de0a534dff694897389a47b43b04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerInputController: {fileID: 1955638128}
+  SetInteractionObjects: {fileID: 1438225784}
+  phone2D: {fileID: 293448836}
+  computer2D: {fileID: 404626696}
+  thisScaler: {fileID: 1637006478}
+  thisGroup: {fileID: 1637006481}
   InteractionBtn: {fileID: 6407318792460239634, guid: 87c09d31d37e36b45862da68efe0bd50, type: 3}
   parentGO: {fileID: 1637006475}
+  SectionIsThis: 0
+--- !u!225 &1637006481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637006475}
+  m_Enabled: 1
+  m_Alpha: 0.6
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1642373946
 GameObject:
   m_ObjectHideFlags: 0
@@ -40322,6 +40596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMainInfo:
+    NewGame: 0
     chapter: 0
     day: 0
     TodayOfTheWeek: Mon
@@ -40913,6 +41188,7 @@ GameObject:
   - component: {fileID: 1829126527}
   - component: {fileID: 1829126526}
   - component: {fileID: 1829126529}
+  - component: {fileID: 1829126530}
   m_Layer: 5
   m_Name: Cafe
   m_TagString: Untagged
@@ -41051,6 +41327,21 @@ MonoBehaviour:
   CannotUseLabal: {fileID: 0}
   reason: {fileID: 0}
   isButton: 0
+--- !u!114 &1829126530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829126524}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 6, y: 6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1835714379
 GameObject:
   m_ObjectHideFlags: 0
@@ -44239,8 +44530,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61826e0ecbfbc804c9ae17beebc3da18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameSystem: {fileID: 445175857}
   pause: {fileID: 6693010971843178699}
+  PhoneHardware: {fileID: 420522339}
+  PhoneSoftware: {fileID: 919177753}
+  ObjectInteractionButtonGenerator: {fileID: 1637006480}
+  SchedulePrograss: {fileID: 227287644}
+  CheckGetAllDatas: {fileID: 325235752}
+  Panel_Object: {fileID: 1084193113}
+  Panel_Npc: {fileID: 968929449}
+  Pads:
+  - {fileID: 2073955926}
+  - {fileID: 1798420774}
+  - {fileID: 41115224}
   _input: {fileID: 1955638129}
+  SectionBtns: []
+  SelectBtn: {fileID: 0}
   settingOn:
     m_Name: Setting On
     m_Type: 1
@@ -44250,6 +44555,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  CanMove: 0
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
   cursorLocked: 1
@@ -44295,6 +44601,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b796ed34-6ac9-41e7-b8d4-d8b6fc5d717b
     m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 79abf92b-342a-4ad0-917c-b9520a803b7f
+    m_ActionName: Player/Phone[/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b8d05c18-bf73-43f6-9d60-60f2cbc8008f
+    m_ActionName: Player/ChangeSeletedBtn_Down
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a1fe9e42-aa68-4b3f-a21f-4f17bdeb1b82
+    m_ActionName: Player/SeleteBtn
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 18292785-7bfc-4831-84d1-14f6701bbecc
+    m_ActionName: Player/ChangeSeletedBtn_Up[/XInputControllerWindows/dpad/up]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1a283306-0715-4183-82f4-f9d0ba5fd2ef
+    m_ActionName: Player/BackBtn[/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8d0b8c0b-0f17-47c5-aaf2-67821e9f2a05
+    m_ActionName: Player/InteractObjectBtn[/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b46b99a5-4f8d-4985-8fdf-33dddc664aee
+    m_ActionName: Player/ShowScheduleDetailBtn[/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c786319d-2559-4fc8-9bde-83ba54235f29
+    m_ActionName: Player/TerminatePart
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -44655,6 +44993,7 @@ GameObject:
   - component: {fileID: 1964579223}
   - component: {fileID: 1964579222}
   - component: {fileID: 1964579221}
+  - component: {fileID: 1964579225}
   m_Layer: 5
   m_Name: FirstBehavior
   m_TagString: Untagged
@@ -44795,6 +45134,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964579219}
   m_CullTransparentMesh: 1
+--- !u!114 &1964579225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964579219}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.5254902, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: 5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1966319384
 GameObject:
   m_ObjectHideFlags: 0
@@ -47910,6 +48264,7 @@ GameObject:
   - component: {fileID: 2077207258}
   - component: {fileID: 2077207261}
   - component: {fileID: 2077207262}
+  - component: {fileID: 2077207263}
   m_Layer: 5
   m_Name: PhoneOnBtn
   m_TagString: Untagged
@@ -48061,6 +48416,21 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2077207263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077207256}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 0.526355, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: 4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2081520030
 GameObject:
   m_ObjectHideFlags: 0
@@ -50666,6 +51036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471fc7ab928f7ce498963d213dbae706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerInputController: {fileID: 1955638128}
   QuarterViewCamera: {fileID: 1023763536}
   anotherCamerasCanvas: []
   resumeBtn: {fileID: 5092617306392957341}

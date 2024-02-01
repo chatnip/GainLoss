@@ -1,3 +1,4 @@
+using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InteractionBtn : InteractCore
+public class InteractObjectBtn : InteractCore
 {
     [Header("*Manager")]
     [SerializeField] GameSystem GameSystem;
@@ -29,8 +30,13 @@ public class InteractionBtn : InteractCore
         if(thisBtn.interactable)
         {
             base.OnPointerDown(eventData);
-            if (TargetGO.TryGetComponent(out InteractObject interactObject)) { interactObject.Interact(); }
-            else if (TargetGO.TryGetComponent(out InteractNpc interactNpc)) { interactNpc.Interact(); }
+            interactObject();
         }
     }
+    public void interactObject()
+    {
+        if (TargetGO.TryGetComponent(out InteractObject interactObject)) { interactObject.Interact(); }
+        else if (TargetGO.TryGetComponent(out InteractNpc interactNpc)) { interactNpc.Interact(); }
+    }
+
 }

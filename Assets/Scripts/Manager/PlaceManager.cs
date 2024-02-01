@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -29,7 +28,7 @@ public class PlaceManager : Manager<PlaceManager>
 
     [Header("*Place")]
     [SerializeField] Button homeBtn;
-    [SerializeField] List<IDBtn> placeBtnList = new();
+    [SerializeField] public List<IDBtn> placeBtnList = new();
     [Tooltip("Must make sure to get the order right FOR CSV")]
     [SerializeField] List<GameObject> placeGOList = new();
 
@@ -160,13 +159,7 @@ public class PlaceManager : Manager<PlaceManager>
                 .Select(place => placeBtn.buttonValue)
                 .Subscribe(place =>
                 {
-                    currentPlace = place;
-                    Debug.Log("정해진 장소: " + currentPlace.ID + " / " + currentPlace.Name);
-                    PhoneHardware.PhoneOff();
-                    PhoneHardware.DoNotNeedBtns_ExceptionSituation = true;
-
-                    StartGoingSomewhereLoading(1.5f);
-
+                    SetPlaceBtnSet(place);
 
                     /*string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
                     behaviorHeaderText.text = text;
@@ -177,8 +170,15 @@ public class PlaceManager : Manager<PlaceManager>
         }
     }
 
+    public void SetPlaceBtnSet(ButtonValue BV)
+    {
+        currentPlace = BV;
+        Debug.Log("정해진 장소: " + currentPlace.ID + " / " + currentPlace.Name);
+        PhoneHardware.PhoneOff();
+        PhoneHardware.DoNotNeedBtns_ExceptionSituation = true;
 
-
+        StartGoingSomewhereLoading(1.5f);
+    }
 
     /*public void BehaviorActionBtnListSet()
     {

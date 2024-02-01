@@ -19,6 +19,7 @@ public class BasicInteractObject : InteractObject
         }
     }
 
+
     public override void Interact()
     {
         if(base.CanInteract)

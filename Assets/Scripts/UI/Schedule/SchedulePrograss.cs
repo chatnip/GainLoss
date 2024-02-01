@@ -57,7 +57,7 @@ public class SchedulePrograss : MonoBehaviour
 
     #region Progress UI
 
-    private void OnOffExlanation()
+    public void OnOffExlanation()
     {
         if (OnExplanation)
         {
