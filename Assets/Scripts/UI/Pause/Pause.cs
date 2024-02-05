@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class Pause : MonoBehaviour
+public class Pause : MonoBehaviour, IInteract
 {
     #region Value
 
@@ -23,6 +23,7 @@ public class Pause : MonoBehaviour
     [SerializeField] Button resumeBtn;
     [SerializeField] Button backToTitleBtn;
     [SerializeField] Button exitGameBtn;
+    List<Button> pauseBtns;
 
     [Header("*Window")]
     [SerializeField] public GameObject reconfirmWindow;
@@ -47,10 +48,13 @@ public class Pause : MonoBehaviour
 
     private void Awake()
     {
+        pauseBtns = new List<Button>()
+        { resumeBtn, backToTitleBtn, exitGameBtn };
+
         resumeBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                closePausePopup();
+                ft_closePausePopup();
             });
         backToTitleBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -89,8 +93,12 @@ public class Pause : MonoBehaviour
     }
 
 
-    public void OnEnable()
+    private void OnEnable()
     {
+        PlayerInputController.isPause = true;
+        PlayerInputController.StopMove();
+
+
         chooseBtn = null;
         anotherCamerasCanvasSet = new List<bool>();
         for(int i = 0; i < anotherCamerasCanvas.Count; i++)
@@ -103,10 +111,73 @@ public class Pause : MonoBehaviour
 
         EffectfulWindow.AppearEffectful(this.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
 
-        PlayerInputController.CanMove = false;
 
     }
-    public void closePausePopup()
+    private void OnDisable()
+    {
+        PlayerInputController.isPause = false;
+    }
+
+    public void Interact()
+    {
+        if (PlayerInputController.SelectBtn == resumeBtn)
+        { ft_closePausePopup(); return; }
+        else if (PlayerInputController.SelectBtn == backToTitleBtn)
+        {
+            PlayerInputController.SetSectionBtns(new List<Button>() { yesBtn, noBtn }, this);
+
+            chooseActionText.text = "[ Back To Title ]";
+            chooseBtn = backToTitleBtn;
+
+            EffectfulWindow.AppearEffectful(reconfirmWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+
+
+            return;
+        }
+        else if (PlayerInputController.SelectBtn == exitGameBtn)
+        {
+            PlayerInputController.SetSectionBtns(new List<Button>() { yesBtn, noBtn }, this);
+
+            chooseActionText.text = "[ Exit Game ]";
+            chooseBtn = exitGameBtn;
+
+            EffectfulWindow.AppearEffectful(reconfirmWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+
+
+            return;
+        }
+
+        if(PlayerInputController.SelectBtn == yesBtn) 
+        {
+            if (chooseBtn == backToTitleBtn)
+            {
+                DOTween.KillAll();
+                SceneManager.LoadScene("Title");
+            }
+            else if (chooseBtn == exitGameBtn)
+            {
+                Application.Quit(); // 어플리케이션 종료
+            }
+            return; 
+        }
+        else if (PlayerInputController.SelectBtn == noBtn) 
+        {
+            EffectfulWindow.DisappearEffectful(reconfirmWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+            return; 
+        }
+    }
+
+    #endregion
+
+    #region OnOff Func
+
+    public void ft_openPausePopup()
+    {
+        this.gameObject.SetActive(true);
+        PlayerInputController.SetSectionBtns(pauseBtns, this);
+
+    }
+    public void ft_closePausePopup()
     {
         chooseBtn = null;
         for (int i = 0; i < anotherCamerasCanvas.Count; i++)
@@ -120,6 +191,8 @@ public class Pause : MonoBehaviour
         EffectfulWindow.DisappearEffectful(reconfirmWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
 
         PlayerInputController.CanMove = true;
+
+        PlayerInputController.ClearSeletedBtns();
     }
 
     #endregion

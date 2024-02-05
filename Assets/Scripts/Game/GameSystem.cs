@@ -9,7 +9,6 @@ using System;
 
 public class GameSystem : MonoBehaviour
 {
-    [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
 
     [Header("*Popular UI")]

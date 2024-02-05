@@ -25,7 +25,7 @@ public class SchedulePrograss : MonoBehaviour
     [Header("*Btns")]
     [SerializeField] Button ExplanationBtn;
     [SerializeField] Button ByScheduleBtn;
-    bool OnExplanation = false;
+    [HideInInspector] public bool OnExplanation = false;
 
     [Header("Imgs")]
     [SerializeField] Image StartImg;
@@ -33,8 +33,6 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] Image PMImg;
     [SerializeField] Image EndImg;
     [SerializeField] Color CurrentPrograssColor;
-
-    delegate void dele();
 
     #endregion
 

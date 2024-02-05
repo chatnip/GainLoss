@@ -8,7 +8,7 @@ public abstract class IDBtnSpawner : MonoBehaviour
     [Header("*Property")]
     [SerializeField] protected ObjectPooling ObjectPooling;
  
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         SpawnIDBtn();
     }

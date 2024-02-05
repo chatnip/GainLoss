@@ -7,9 +7,12 @@ using TMPro;
 using UniRx;
 using UnityEditor;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class WordManager : Manager<WordManager>
 {
+    #region Value
+
     [Header("*Property")]
     [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
@@ -20,7 +23,7 @@ public class WordManager : Manager<WordManager>
      
     [Header("*View")]
     [SerializeField] TMP_Text viewWordAction;
-    [SerializeField] Button resetBtn;
+    [SerializeField] public Button resetBtn;
     [SerializeField] TMP_Text ResultPreview_NumberOfUsed;
     [SerializeField] TMP_Text ResultPreview_Gage;
     StringReactiveProperty currentWordActiionStr = new();
@@ -41,6 +44,9 @@ public class WordManager : Manager<WordManager>
     [HideInInspector] public ButtonValue currentWord;
     private ButtonValue currentWordAction;
 
+    #endregion
+
+    #region Main
 
     private void Start()
     {
@@ -60,7 +66,6 @@ public class WordManager : Manager<WordManager>
                 TodoReset();
             });
     }
-
     public void TodoReset()
     {
         todoWordBtnSpawner.PickWordActionBtn();
@@ -73,7 +78,12 @@ public class WordManager : Manager<WordManager>
         currentWordActiionStr.Value = "아무것도 하지 않는다";
     }
 
+    #endregion
+
     #region ButtonListSetting
+
+    #region AIL
+
     public void WordBtnListSet()
     {
         ResultPreview_NumberOfUsed.text = "";
@@ -89,13 +99,21 @@ public class WordManager : Manager<WordManager>
                 .RepeatUntilDisable(wordBtn)
                 .Subscribe(word =>
                 {
-                    currentWord = word;
-                    Debug.Log("currentWord : " + currentWord.Name);
-                    InitWordAction(currentWord.ID);
-                    todoWordBtnSpawner.SpawnWordActionBtn();
+                    WordBtnApply(word);
                 });
         }
     }
+    public void WordBtnApply(ButtonValue BV)
+    {
+        currentWord = BV;
+        Debug.Log("currentWord : " + currentWord.Name);
+        InitWordAction(currentWord.ID);
+        todoWordBtnSpawner.SpawnWordActionBtn();
+    }
+
+    #endregion
+
+    #region EXE
 
     public void WordActionBtnListSet()
     {
@@ -109,26 +127,34 @@ public class WordManager : Manager<WordManager>
                 .RepeatUntilDisable(wordActionBtn)
                 .Subscribe(action =>
                 {
-                    currentWordAction = action;
-                    Debug.Log("currentWordAction : " + currentWordAction.Name);
-                    string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
-                    currentWordActiionStr.Value = text;
-                    StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
-                    
-                    currentStreamEvent = SetStreamEvent(
-                        currentWord.ID, 
-                        currentWordAction.ID, 
-                        Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
-                        Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
-
-                    SetResultPreview(
-                        currentStreamEvent,
-                        Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
-                        Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
-
+                    WordActionBtnApply(action);
                 });
         }
     }
+    public void WordActionBtnApply(ButtonValue BV)
+    {
+        currentWordAction = BV;
+        Debug.Log("currentWordAction : " + currentWordAction.Name);
+        string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
+        currentWordActiionStr.Value = text;
+        StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
+
+        currentStreamEvent = SetStreamEvent(
+            currentWord.ID,
+            currentWordAction.ID,
+            Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
+            Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
+
+        SetResultPreview(
+            currentStreamEvent,
+            Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
+            Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
+    }
+
+    #endregion
+
+    #region Set
+
     private StreamEvent SetStreamEvent(string wordID, string wordActionID, bool isCreated, int NumberOfUsed)
     {
         StreamEvent streamEvent = new StreamEvent();
@@ -223,9 +249,13 @@ public class WordManager : Manager<WordManager>
 
     #endregion
 
+    #endregion
+
     #region Init
+
     // JsonLoadTest() == InitWordID()
     // 나중에 하루 지날때마다 실행되도록 해야함
+
     public void InitWord()
     {
         currentWordList.Clear(); // 초기화
@@ -235,8 +265,7 @@ public class WordManager : Manager<WordManager>
             currentWordList.Add(word);
         }
     }
-
-    private void InitWordAction(string wordID)
+    public void InitWordAction(string wordID)
     {
         currentWordActionList.Clear(); // 초기화
         foreach (string WordActionID in currentWordActionIDList) // ID 순회

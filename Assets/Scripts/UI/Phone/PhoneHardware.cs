@@ -11,7 +11,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
 {
     #region Value
 
-    [Header("Property")]
+    [Header("*Property")]
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlayerInputController PlayerInputController;
@@ -46,6 +46,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
     public void Awake()
     {
         this.gameObject.SetActive(false);
+        PlayerInputController.StopMove();
+
         PhoneOnButtons = new List<Button>()
         {
             PhoneOnBtn, PhoneOnByScheduleBtn
@@ -218,7 +220,6 @@ public class PhoneHardware : MonoBehaviour, IInteract
         foreach(Button btn in PhoneOnButtons)
         {
             if (btn.gameObject.activeSelf) { buttons.Add(btn); }
-            Debug.Log(btn.name);
         }
         return buttons;
     }
@@ -245,7 +246,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
         PhoneListOpenBtn.gameObject.SetActive(false);
 
-        PlayerInputController.CanMove = false;
+        PlayerInputController.StopMove();
     }
 
     public void PhoneOff()

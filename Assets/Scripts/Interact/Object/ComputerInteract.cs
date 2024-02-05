@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class ComputerInteract : InteractObject
 {
+    [Header("*property")]
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PhoneHardware PhoneHardware;
+    [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
 
     [Header("*Camera")]
     [Tooltip("메인 가상 카메라")]
@@ -75,22 +78,27 @@ public class ComputerInteract : InteractObject
 
     private void ScreenOn()
     {
+        ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
         // 나중에 애니메이션 추가!!!
         Computer2DCamera.SetActive(true);
         InteractionUI3D.SetActive(false);
+
+        PlayerInputController.StopMove();
     }
 
     private void ScreenOff()
     {
         Computer2DCamera.SetActive(false);
         InteractionUI3D.SetActive(true);
+
+        PlayerInputController.CanMove = true;
     }
 
     public override void Interact()
     {
         if (ScheduleManager.currentPrograssScheduleID == "S03") { StartCoroutine(ScreenZoomIn()); }
         else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
-
+        //StartCoroutine(ScreenZoomIn());
     }
 
     /*    public override void OnPointerDown(PointerEventData eventData)

@@ -3,9 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TodoSpawner : IDBtnSpawner
+public class TodoSpawner : IDBtnSpawner, IInteract
 {
+    #region Value
+
+    [Header("*Property")]
+    [SerializeField] Desktop Desktop;
+    [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
 
@@ -13,6 +19,68 @@ public class TodoSpawner : IDBtnSpawner
     [SerializeField] RectTransform wordParentObject;
     [SerializeField] RectTransform wordActionParentObject;
 
+    #endregion
+
+    #region Main
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        SetThisSectionBtns(wordParentObject);
+
+
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        PickWordActionBtn();
+    }
+
+    private void SetThisSectionBtns(RectTransform parentRT)
+    {
+        Button[] allChildren = parentRT.GetComponentsInChildren<Button>();
+        List<Button> btns = new List<Button>(allChildren);
+        PlayerInputController.SetSectionBtns(btns, this);
+    }
+
+    public void Interact()
+    {
+        if (PlayerInputController.SelectBtn.TryGetComponent(out IDBtn iDBtn))
+        {
+            if(iDBtn.buttonType == ButtonType.WordType)
+            {
+                WordManager.WordBtnApply(iDBtn.buttonValue);
+                SetThisSectionBtns(wordActionParentObject);
+
+                return;
+            }
+            else if (iDBtn.buttonType == ButtonType.WordActionType)
+            {
+                WordManager.WordActionBtnApply(iDBtn.buttonValue);
+                PlayerInputController.SetSectionBtns(new List<Button>() { WordManager.resetBtn, Desktop.streamStartBtn }, this);
+
+                return;
+            }
+        }
+        else if(PlayerInputController.SelectBtn == WordManager.resetBtn)
+        {
+            WordManager.TodoReset();
+            WordManager.resetBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
+            outilne.enabled = false;
+            SetThisSectionBtns(wordParentObject);
+        }
+        else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn)
+        {
+            Desktop.streamStartBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
+            outilne.enabled = false;
+            Desktop.StartStream();
+            PlayerInputController.SetSectionBtns(null, null);
+        }
+
+    }
+
+    #endregion
+
+    #region Create Btns
 
     protected override IDBtn CreateIDBtn(ButtonValue word)
     {
@@ -27,6 +95,8 @@ public class TodoSpawner : IDBtnSpawner
     {
         SpawnWordBtn();
     }
+
+    #region AIL Btns
 
     private void SpawnWordBtn()
     {
@@ -50,8 +120,6 @@ public class TodoSpawner : IDBtnSpawner
         }
         WordManager.WordBtnListSet(); // µ•¿Ã≈Õ ª¿‘
     }
-
-    
     private bool CheckCanUseMalicious(string rate, string wordID)
     {
         if (rate == "Malicious")
@@ -74,6 +142,9 @@ public class TodoSpawner : IDBtnSpawner
         { return true; }
     }
 
+    #endregion
+
+    #region EXE Btns
 
     public void SpawnWordActionBtn()
     {
@@ -101,6 +172,10 @@ public class TodoSpawner : IDBtnSpawner
         WordManager.WordActionBtnListSet(); // µ•¿Ã≈Õ ª¿‘
     }
 
+    #endregion
+
+    #region Pick
+
     protected override void PickIDBtn()
     {
         PickWordBtn();
@@ -118,8 +193,6 @@ public class TodoSpawner : IDBtnSpawner
         }
     }
 
-    /// <summary>
-    /// </summary>
     public void PickWordActionBtn()
     {
         if (WordManager.enableWordActionBtnList.Count != 0)
@@ -132,11 +205,8 @@ public class TodoSpawner : IDBtnSpawner
         }
     }
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        PickWordActionBtn();
-    }
+    #endregion
 
-    
+
+    #endregion
 }

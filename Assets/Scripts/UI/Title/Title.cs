@@ -5,9 +5,12 @@ using UniRx;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.IO;
+using System.Collections.Generic;
 
-public class Title : MonoBehaviour
+public class Title : MonoBehaviour, IInteract
 {
+    [Header("*Property")]
+    [SerializeField] TitleInputController TitleInputController;
 
     [Header("*TitleBtn")]
     [SerializeField] Button newGameBtn;
@@ -15,6 +18,7 @@ public class Title : MonoBehaviour
     [SerializeField] GameObject cannotUseContinue;
     [SerializeField] Button OptionBtn;
     [SerializeField] Button QuitBtn;
+    List<Button> btns;
 
     [Header("*Window")]
     [SerializeField] Image BlackScreenImg;
@@ -23,6 +27,11 @@ public class Title : MonoBehaviour
 
     private void Awake()
     {
+        btns = new List<Button>()
+        {
+            newGameBtn, continueBtn, OptionBtn, QuitBtn
+        };
+
         MainInfo SavedMainInfo = JsonLoad_MI();
         if(SavedMainInfo.day == 1 )
         {
@@ -74,6 +83,7 @@ public class Title : MonoBehaviour
     }
     private void OnEnable()
     {
+        TitleInputController.SetSectionBtns(btns, this);
         BlackScreenImg.gameObject.SetActive(true);
         EffectfulWindow.AppearEffectful(this.GetComponent<RectTransform>(), 1f, 0.5f, Ease.InOutBack);
         BlackScreenImg.DOFade(0.0f, 0.5f)
@@ -83,6 +93,45 @@ public class Title : MonoBehaviour
                 BlackScreenImg.gameObject.SetActive(false);
             });
     }
+    
+    public void Interact()
+    {
+        if(TitleInputController.SelectBtn == newGameBtn)
+        {
+            BlackScreenImg.gameObject.SetActive(true);
+            BlackScreenImg.DOFade(1.0f, 0.7f)
+                .SetEase(Ease.InOutBack)
+                .OnComplete(() =>
+                {
+                    MainInfo newMainInfo = new MainInfo();
+                    newMainInfo.NewGame = true;
+                    JsonSave(newMainInfo);
+                    DOTween.KillAll();
+                    SceneManager.LoadScene("Main");
+                });
+        }
+        if (TitleInputController.SelectBtn == continueBtn)
+        {
+            BlackScreenImg.gameObject.SetActive(true);
+            BlackScreenImg.DOFade(1.0f, 0.7f)
+                .SetEase(Ease.InOutBack)
+                .OnComplete(() =>
+                {
+                    DOTween.KillAll();
+                    SceneManager.LoadScene("Main");
+                });
+        }
+        if (TitleInputController.SelectBtn == OptionBtn)
+        {
+            EffectfulWindow.AppearEffectful(OptionWindow.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
+        }
+        if (TitleInputController.SelectBtn == QuitBtn)
+        {
+            Application.Quit();
+        }
+
+    }
+
 
     private void JsonSave(MainInfo mainDatas)
     {

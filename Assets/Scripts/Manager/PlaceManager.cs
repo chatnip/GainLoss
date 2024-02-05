@@ -10,6 +10,7 @@ using DG.Tweening;
 public class PlaceManager : Manager<PlaceManager>
 {
     [Header("*Property")]
+    [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PhoneHardware PhoneHardware;
@@ -203,6 +204,7 @@ public class PlaceManager : Manager<PlaceManager>
     public void StartGoingSomewhereLoading(float delay)
     {
         StartCoroutine(GoingSomewhereLoading(delay));
+        PlayerInputController.StopMove();
     }
 
     private IEnumerator GoingSomewhereLoading(float delay)
@@ -224,6 +226,7 @@ public class PlaceManager : Manager<PlaceManager>
             .OnComplete(() =>
             {
                 GoingSomewhereloadingCG.gameObject.SetActive(false);
+                PlayerInputController.CanMove = true;
             });
 
     }

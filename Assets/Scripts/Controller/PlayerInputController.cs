@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
 using UnityEngine.UI;
-using static Beautify.Universal.Beautify;
-using System;
 
 public class PlayerInputController : Manager<PlayerInputController>
 {
@@ -14,17 +11,32 @@ public class PlayerInputController : Manager<PlayerInputController>
     [Header("*Property")]
     [SerializeField] GameSystem GameSystem;
     [SerializeField] Pause pause;
+    [HideInInspector] public bool isPause = false;
+    [HideInInspector] public bool isStreaming = false;
+
+    [Header("*Phone")]
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
+    [SerializeField] GameObject PhoneCamera2D;
+    [SerializeField] List<GameObject> Pads;
+
+    [Header("*Computer")]
+    [SerializeField] ComputerInteract ComputerInteract;
+    [SerializeField] Desktop Desktop;
+    [SerializeField] GameObject ComputerCamera2D;
+
+    [Header("*Interact Object")]
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] GameObject Panel_Object;
     [SerializeField] GameObject Panel_Npc;
     List<GameObject> Panels = new List<GameObject>();
 
-    [Header("*GameObject")]
-    [SerializeField] List<GameObject> Pads;
+    [Header("*Schedule")]
+    [SerializeField] SchedulePrograss SchedulePrograss;
+
+    [Header("*Camera")]
+    [SerializeField] GameObject QuarterViewCamera; 
     
     [Header("*Input Setting")]
     [SerializeField] public PlayerInput _input;
@@ -33,7 +45,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [SerializeField] InputAction settingOn;
 
     [Header("*Character Input Values")]
-    public bool CanMove;
+    public static bool CanMove = false;
     public Vector2 move;
     public Vector2 look;
 
@@ -227,6 +239,12 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (CanMove) { look = newLookDirection; }
     }
 
+    public void StopMove()
+    {
+        CanMove = false;
+        move = Vector2.zero;
+    }
+
     #endregion
 
     #region Unique Func
@@ -236,16 +254,25 @@ public class PlayerInputController : Manager<PlayerInputController>
     {
         if (pause.gameObject.activeSelf)
         {
-            pause.closePausePopup();
+            pause.ft_closePausePopup();
         }
         else
         {
-            pause.gameObject.SetActive(true);
+            if (PhoneHardware.sectionIsThis)
+            { PhoneHardware.SetOnOffPhoneBtn(); }
+            if (ObjectInteractionButtonGenerator.SectionIsThis)
+            { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+            if (SchedulePrograss.OnExplanation)
+            { SchedulePrograss.OnOffExlanation(); }
+
+            pause.ft_openPausePopup();
         }
     }
 
     private void OnOffPhone(InputAction.CallbackContext obj)
     {
+        if(isPause || !QuarterViewCamera.activeSelf) { return; }
+
         foreach(GameObject Go in Panels)
         {
             if (Go.activeSelf) { return; }
@@ -253,12 +280,16 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+        if (SchedulePrograss.OnExplanation) 
+        { SchedulePrograss.OnOffExlanation(); }
 
         PhoneHardware.SetOnOffPhoneBtn();
     }
 
     private void OnOffInteractObject(InputAction.CallbackContext obj)
     {
+        if (isPause || !QuarterViewCamera.activeSelf) { return; }
+
         foreach (GameObject Go in Panels)
         {
             if (Go.activeSelf) { return; }
@@ -266,6 +297,8 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
+        if (SchedulePrograss.OnExplanation)
+        { SchedulePrograss.OnOffExlanation(); }
 
         ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
 
@@ -273,11 +306,27 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
+        if (isPause) { return; }
+
+        if (PhoneHardware.sectionIsThis)
+        { PhoneHardware.SetOnOffPhoneBtn(); }
+        if (ObjectInteractionButtonGenerator.SectionIsThis)
+        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+
         SchedulePrograss.OnOffExlanation();
     }
 
     private void TerminatePart(InputAction.CallbackContext context)
     {
+        if (isPause) { return; }
+
+        if (PhoneHardware.sectionIsThis)
+        { PhoneHardware.SetOnOffPhoneBtn(); }
+        if (ObjectInteractionButtonGenerator.SectionIsThis)
+        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+        if (SchedulePrograss.OnExplanation)
+        { SchedulePrograss.OnOffExlanation(); }
+
         if (CheckGetAllDatas.TerminateBtn.gameObject.activeSelf)
         {
             CheckGetAllDatas.TerminatePlaceAndGoHome();
@@ -286,14 +335,41 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void BackBtn(InputAction.CallbackContext obj)
     {
+        //Pause
+        if (pause.gameObject.activeSelf) 
+        { pause.ft_closePausePopup(); return; }
 
-        if (Panel_Object.activeSelf)
+        //Panels
+        if (Panel_Object.activeSelf) 
         { GameSystem.ObjectDescriptionOff(); return; }
-        else if (Panel_Npc.activeSelf)
+        else if (Panel_Npc.activeSelf) 
         { GameSystem.NpcDescriptionOff(); return; }
 
+        //Computer
+        if (ComputerOffWindow(Desktop.confirmPopup)) 
+        { return; }
+        else if (ComputerOffWindow(Desktop.todoWindow)) 
+        { return; }
+        else if (ComputerCamera2D.activeSelf) //Computer Screen
+        {
+            StartCoroutine(ComputerInteract.ScreenZoomOut());
+            ClearSeletedBtns();
+            return;
+        }
 
-        for (int i = 0; i < Pads.Count; i++)
+        bool ComputerOffWindow(GameObject Window)
+        {
+            if (Window.activeSelf)
+            {
+                Desktop.DisappearPopup(Window);
+                Desktop.setDesktopSectionBtns();
+                return true;
+            }
+            return false;
+        }
+
+        //Phone
+        for (int i = 0; i < Pads.Count; i++) //Pads
         {
             if (Pads[i].gameObject.activeSelf) 
             { 
@@ -301,21 +377,21 @@ public class PlayerInputController : Manager<PlayerInputController>
                 return;
             }
         }
-
-        if (PhoneSoftware.transform.parent.gameObject.activeSelf)
+        if (PhoneCamera2D.activeSelf) //PhoneScreen
         {
-            Debug.Log("dd");
             PhoneHardware.PhoneOff();
             ClearSeletedBtns();
             return;
         }
 
+        //Section
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
 
     }
+
 
     #endregion
 
@@ -331,7 +407,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (SelectBtn != null)
         {
             SelectBtn.TryGetComponent(out Button btn);
-            if (interact != null && btn.interactable)
+            if (interact != null && btn.interactable && btn.gameObject.activeSelf)
             {
                 interact.Interact();
             }
@@ -392,6 +468,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnOffSelectedBtn(Button btn)
     {
+        if(SectionBtns == null || btn == null) { return; } 
         foreach (Button SectionBtn in SectionBtns)
         {
             if(SectionBtn == btn)

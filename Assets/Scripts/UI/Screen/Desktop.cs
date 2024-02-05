@@ -6,9 +6,13 @@ using UniRx;
 using TMPro;
 using DG.Tweening;
 
-public class Desktop : MonoBehaviour
+public class Desktop : MonoBehaviour, IInteract
 {
+
+    #region Value
+
     [Header("*Manager")]
+    [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] DataManager DataManager;
     [SerializeField] WordManager WordManager;
     [SerializeField] ActionEventManager ActionEventManager;
@@ -35,19 +39,19 @@ public class Desktop : MonoBehaviour
     [SerializeField] public Button streamOpenBtn;
     [SerializeField] GameObject streamWindow;
     [SerializeField] GameObject resultWindow;
-    [SerializeField] Button streamStartBtn;
+    [SerializeField] public Button streamStartBtn;
     [SerializeField] Button streamEndBtn;
 
     [Header("*Todo")]
     [SerializeField] Button todoExitBtn;
-    [SerializeField] GameObject todoWindow;
+    [SerializeField] public GameObject todoWindow;
 
     [Header("*ConfirmPopup")]
     [SerializeField] DesktopSoftwere desktopSoftwere;
     [SerializeField] Button popupExitBtn;
     [SerializeField] Button confirmBtn;
     [SerializeField] TMP_Text confirmText;
-    [SerializeField] GameObject confirmPopup;
+    [SerializeField] public GameObject confirmPopup;
 
     [Header("*WindowFrame")]
     [SerializeField] float AppearTime;
@@ -55,6 +59,10 @@ public class Desktop : MonoBehaviour
 
     [SerializeField] float DisappearTime;
     [SerializeField] float DisappearLastSize;
+
+    #endregion
+
+    #region Main
 
     private void Awake()
     {
@@ -84,14 +92,7 @@ public class Desktop : MonoBehaviour
         streamStartBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
-                //todoWindow.SetActive(false);
-
-                EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-                //streamWindow.SetActive(true);
-
-                StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
-                StreamManager.StartDialog(StreamManager.currentStreamEventID);
+                StartStream();
             });
 
         streamEndBtn.OnClickAsObservable()
@@ -107,16 +108,79 @@ public class Desktop : MonoBehaviour
             .Subscribe(btn =>
             {
                 //confirmPopup.SetActive(false);
-                EffectfulWindow.DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+                DisappearPopup(confirmPopup);
             });
 
         todoExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 //todoWindow.SetActive(false);
-                EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+                DisappearPopup(todoWindow);
             });
     }
+
+    public void StartStream()
+    {
+        EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+        //todoWindow.SetActive(false);
+
+        EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+        //streamWindow.SetActive(true);
+
+        StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
+        StreamManager.StartDialog(StreamManager.currentStreamEventID);
+    }
+    public void DisappearPopup(GameObject Popup)
+    {
+        EffectfulWindow.DisappearEffectful(Popup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+    }
+
+    private void OnEnable()
+    {
+        TurnOn();
+    }
+
+    public void Interact()
+    {
+        #region Open Btns
+
+        if (PlayerInputController.SelectBtn == snsOpenBtn) 
+        { return; }
+        else if (PlayerInputController.SelectBtn == fancafeOpenBtn) 
+        { return; }
+        else if(PlayerInputController.SelectBtn == streamOpenBtn) 
+        {
+            desktopSoftwere = DesktopSoftwere.Stream;
+            ConfirmPopupSetting();
+            PlayerInputController.SetSectionBtns(new List<Button>() { confirmBtn }, this);
+            return;
+        }
+
+        #endregion
+
+        #region Confirm Btns
+
+        if(PlayerInputController.SelectBtn == popupExitBtn)
+        {
+            EffectfulWindow.DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+            return;
+        }
+        else if(PlayerInputController.SelectBtn == confirmBtn)
+        {
+            WordManager.TodoReset();
+            WordManager.InitWord();
+
+            confirmPopup.SetActive(false);
+            EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+            return;
+        }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Confirm
 
     private void ConfirmPopupSetting()
     {
@@ -173,6 +237,10 @@ public class Desktop : MonoBehaviour
         EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
     }
 
+    #endregion
+
+    #region Turn ON/OFF
+
     private void TurnOff()
     {
         BlackScreen.color = Color.black;
@@ -184,6 +252,7 @@ public class Desktop : MonoBehaviour
                 BlackScreen.gameObject.SetActive(true);
             });
     }
+
     private void TurnOn()
     {
         //snsWindow.SetActive(false);
@@ -197,11 +266,16 @@ public class Desktop : MonoBehaviour
             {
                 BlackScreen.gameObject.SetActive(false);
             });
+        setDesktopSectionBtns();
     }
-    private void OnEnable()
+    public void setDesktopSectionBtns()
     {
-        TurnOn();
+        PlayerInputController.SetSectionBtns(new List<Button>() { snsOpenBtn, fancafeOpenBtn, streamOpenBtn }, this);
     }
+
+    #endregion
+
+    
 
 
     /*public static void AppearEffectful(RectTransform RT, List<Button> btns, float time, float size)

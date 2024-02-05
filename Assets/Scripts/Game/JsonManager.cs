@@ -264,7 +264,7 @@ public class JsonManager : MonoBehaviour
     void Set_StartWord()
     {
         List<string> Datas = new List<string>();
-
+        Datas.Add("W001");
         Datas.Add("W004");
 
         JsonSave(json_filePath, json_wordFileName, Datas);
@@ -274,6 +274,7 @@ public class JsonManager : MonoBehaviour
         List<string> Datas = new List<string>();
 
         Datas.Add("WA01");
+        Datas.Add("WA02");
 
         JsonSave(json_filePath, json_wordActionFileName, Datas);
     }
