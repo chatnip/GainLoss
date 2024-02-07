@@ -8,15 +8,19 @@ using UniRx;
 using TMPro;
 using Spine.Unity;
 
-public class DialogManager : Manager<DialogManager>
+public class DialogManager : Manager<DialogManager>, IInteract
 {
+    #region Value
+
     [SerializeField] GameManager GameManager;
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] Desktop Desktop;
 
     [Header("*Dialog")]
     [SerializeField] public TMP_Text streamTitleText;
     [SerializeField] TMP_Text streamScriptText;
-    [SerializeField] Button dialogNextBtn;
+    [SerializeField] public Button dialogNextBtn;
     [SerializeField] InputAction click;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
 
@@ -50,10 +54,14 @@ public class DialogManager : Manager<DialogManager>
     [SerializeField] Color overloadBarColor;
 
     [Header("*Other")]
-    [SerializeField] Button nextDayBtn;
+    [SerializeField] Button EndBtn;
+    [HideInInspector] public bool turnOver = false;
 
     [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
+    #endregion
+
+    #region Main
 
     private void OnEnable()
     {
@@ -84,6 +92,24 @@ public class DialogManager : Manager<DialogManager>
             });
         */
     }
+
+    public void Interact()
+    {
+        if (PlayerInputController.SelectBtn == dialogNextBtn)
+        { turnOver = true; return; }
+        else if (PlayerInputController.SelectBtn == EndBtn)
+        { 
+            Desktop.EndStream();
+            PlayerInputController.SetSectionBtns(null, null);
+            Desktop.streamWindow.SetActive(false);
+            Desktop.resultWindow.SetActive(false);
+        }
+
+    }
+
+    #endregion
+
+    #region Animation
 
     private void AnimationSetup(SpineAniState state)
     {
@@ -120,6 +146,22 @@ public class DialogManager : Manager<DialogManager>
         }
     }
 
+    public enum SpineAniState
+    {
+        A01,
+        A02,
+        A03,
+        A04,
+        A05,
+        A06,
+        A07,
+        A08
+    }
+
+    #endregion
+
+    #region Dialog
+
     public IEnumerator DialogTexting(ScenarioBase scenarioBase)
     {
         streamScriptText.text = null;
@@ -127,7 +169,7 @@ public class DialogManager : Manager<DialogManager>
         for (int i = 0; i < scenarioBase.Fragments.Count; i++)
         {
             int temp = i;
-            var sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence();
             streamScriptText.text = null;
 
             skeletonGraphic.AnimationState.SetEmptyAnimations(0);
@@ -138,9 +180,10 @@ public class DialogManager : Manager<DialogManager>
                     .SetEase(Ease.Linear)
                     .OnUpdate(() =>
                     {
-                        if (click.triggered)
+                        if (click.triggered || turnOver)
                         {
                             sequence.Complete();
+                            turnOver = false;
                         }
                     }));
 
@@ -157,12 +200,14 @@ public class DialogManager : Manager<DialogManager>
 
             yield return new WaitUntil(() =>
             {
-                if (click.triggered)
+                if (click.triggered || turnOver)
                 {
+                    turnOver = false;
                     return true;
                 }
                 return false;
             });
+            turnOver = false;
             continue;
         }
 
@@ -174,8 +219,15 @@ public class DialogManager : Manager<DialogManager>
         // GameSystem.StartGame();
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작
 
+        turnOver = false;
+        PlayerInputController.SetSectionBtns(null, null);
+
         StartCoroutine(ResultWindowOn());
     }
+
+    #endregion
+
+    #region ResultWindow
 
     IEnumerator ResultWindowOn()
     {
@@ -209,13 +261,14 @@ public class DialogManager : Manager<DialogManager>
         yield return new WaitForSeconds(showTime);
 
         // 다음날로 가는 버튼 출력
-        nextDayBtn.gameObject.SetActive(true);
-        nextDayBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
+        EndBtn.gameObject.SetActive(true);
+        EndBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
+        PlayerInputController.SetSectionBtns(new List<Button>() { EndBtn }, this);
 
         void ClearGageAndText()
         {
-            nextDayBtn.gameObject.SetActive(false);
-            nextDayBtn.image.color = new Color(0, 0, 0, 0);
+            EndBtn.gameObject.SetActive(false);
+            EndBtn.image.color = new Color(0, 0, 0, 0);
             stressText.alpha = 0;
             angerText.alpha = 0;
             riskText.alpha = 0;
@@ -244,18 +297,10 @@ public class DialogManager : Manager<DialogManager>
             text.DOFade(1, time).SetEase(Ease.OutSine);
         }
     }
-    
 
-    public enum SpineAniState
-    {
-        A01,
-        A02,
-        A03,
-        A04,
-        A05,
-        A06,
-        A07,
-        A08
-    }
+    #endregion
+
+
+    
 
 }

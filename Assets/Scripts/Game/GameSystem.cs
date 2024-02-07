@@ -9,6 +9,8 @@ using System;
 
 public class GameSystem : MonoBehaviour
 {
+    #region Value
+
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
 
     [Header("*Popular UI")]
@@ -33,6 +35,10 @@ public class GameSystem : MonoBehaviour
 
     [Header("*Player")]
     public Transform playerPos;
+
+    #endregion
+
+    #region Main
 
     private void Start()
     {
@@ -69,6 +75,8 @@ public class GameSystem : MonoBehaviour
         playerPos.position = new Vector3(0, 0.2f, 0);
         playerPos.rotation = Quaternion.identity;
     }
+
+    #endregion
 
     /*#region Loading
 

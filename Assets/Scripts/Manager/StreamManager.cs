@@ -111,6 +111,7 @@ public class StreamManager : Manager<StreamManager>
         Debug.Log(GetKey + "/" + currentStreamEventDatas[0][GetKey] + "/" + currentStreamEventDatas[1][GetKey]);
        
     }
+
 }
 [System.Serializable]
 public class StreamEvent

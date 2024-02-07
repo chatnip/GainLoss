@@ -18,7 +18,7 @@ public class ScheduleManager : Manager<ScheduleManager>
     [HideInInspector] public string currentPrograssScheduleID;
 
     [Header("*Btn")]
-    [SerializeField] Button EndDayBtn;
+    [SerializeField] public Button EndDayBtn;
 
     #endregion
 

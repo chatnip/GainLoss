@@ -14,6 +14,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
+    [SerializeField] DialogManager DialogManager;
 
     [Header("*WordParentObj")]
     [SerializeField] RectTransform wordParentObject;
@@ -73,7 +74,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             Desktop.streamStartBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
             outilne.enabled = false;
             Desktop.StartStream();
-            PlayerInputController.SetSectionBtns(null, null);
+            PlayerInputController.SetSectionBtns(new List<Button>() { DialogManager.dialogNextBtn }, DialogManager);
         }
 
     }

@@ -41,7 +41,7 @@ public class CheckGetAllDatas : MonoBehaviour
         PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
         PlaceManager.StartGoingSomewhereLoading(1.5f);
         PhoneHardware.DoNotNeedBtns_ExceptionSituation = false;
-
+        TerminateBtn.gameObject.SetActive(false);   
         this.gameObject.SetActive(false);
     }
 

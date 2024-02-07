@@ -10,9 +10,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     [Header("*Property")]
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] Pause pause;
     [HideInInspector] public bool isPause = false;
-    [HideInInspector] public bool isStreaming = false;
 
     [Header("*Phone")]
     [SerializeField] PhoneHardware PhoneHardware;
@@ -34,6 +34,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     [Header("*Schedule")]
     [SerializeField] SchedulePrograss SchedulePrograss;
+    [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("*Camera")]
     [SerializeField] GameObject QuarterViewCamera; 
@@ -331,6 +332,10 @@ public class PlayerInputController : Manager<PlayerInputController>
         {
             CheckGetAllDatas.TerminatePlaceAndGoHome();
         }
+        else if (ScheduleManager.EndDayBtn.gameObject.activeSelf)
+        {
+            ActionEventManager.TurnOnLoading();
+        }
     }
 
     private void BackBtn(InputAction.CallbackContext obj)
@@ -349,6 +354,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (ComputerOffWindow(Desktop.confirmPopup)) 
         { return; }
         else if (ComputerOffWindow(Desktop.todoWindow)) 
+        { return; }
+        else if (Desktop.streamWindow.activeSelf) 
         { return; }
         else if (ComputerCamera2D.activeSelf) //Computer Screen
         {

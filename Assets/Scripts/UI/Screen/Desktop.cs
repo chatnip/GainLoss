@@ -37,8 +37,8 @@ public class Desktop : MonoBehaviour, IInteract
 
     [Header("*Stream")]
     [SerializeField] public Button streamOpenBtn;
-    [SerializeField] GameObject streamWindow;
-    [SerializeField] GameObject resultWindow;
+    [SerializeField] public GameObject streamWindow;
+    [SerializeField] public GameObject resultWindow;
     [SerializeField] public Button streamStartBtn;
     [SerializeField] Button streamEndBtn;
 
@@ -98,10 +98,7 @@ public class Desktop : MonoBehaviour, IInteract
         streamEndBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                TurnOff();
-                //ActionEventManager.TurnOnLoading();
-                computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
-                ScheduleManager.PassNextSchedule();
+                EndStream();
             });
 
         popupExitBtn.OnClickAsObservable()
@@ -129,6 +126,13 @@ public class Desktop : MonoBehaviour, IInteract
 
         StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
         StreamManager.StartDialog(StreamManager.currentStreamEventID);
+    }
+    public void EndStream()
+    {
+        TurnOff();
+        //ActionEventManager.TurnOnLoading();
+        computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
+        ScheduleManager.PassNextSchedule();
     }
     public void DisappearPopup(GameObject Popup)
     {

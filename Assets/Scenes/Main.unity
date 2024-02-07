@@ -7384,6 +7384,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameManager: {fileID: 1799882741}
   GameSystem: {fileID: 445175857}
+  PlayerInputController: {fileID: 1955638128}
+  Desktop: {fileID: 1553190507}
   streamTitleText: {fileID: 276275330}
   streamScriptText: {fileID: 1913725447}
   dialogNextBtn: {fileID: 1206525415}
@@ -7422,7 +7424,8 @@ MonoBehaviour:
   overloadSilder: {fileID: 1468799966}
   overloadText: {fileID: 1195057976}
   overloadBarColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
-  nextDayBtn: {fileID: 910032425}
+  EndBtn: {fileID: 910032425}
+  turnOver: 0
   currentStreamEvent:
     numberOfUses: 0
     stressValue: 0
@@ -19532,7 +19535,7 @@ GameObject:
   - component: {fileID: 910032426}
   - component: {fileID: 910032425}
   m_Layer: 5
-  m_Name: EndDayBtn
+  m_Name: EndBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26220,6 +26223,7 @@ MonoBehaviour:
   PlayerInputController: {fileID: 1955638128}
   WordManager: {fileID: 1775436664}
   StreamManager: {fileID: 746527783}
+  DialogManager: {fileID: 365968366}
   wordParentObject: {fileID: 1322253632}
   wordActionParentObject: {fileID: 1869104371}
 --- !u!1 &1206525411
@@ -44639,9 +44643,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameSystem: {fileID: 445175857}
+  ActionEventManager: {fileID: 1472056745}
   pause: {fileID: 6693010971843178699}
   isPause: 0
-  isStreaming: 0
   PhoneHardware: {fileID: 420522339}
   PhoneSoftware: {fileID: 919177753}
   PhoneCamera2D: {fileID: 293448836}
@@ -44657,6 +44661,7 @@ MonoBehaviour:
   Panel_Object: {fileID: 1084193113}
   Panel_Npc: {fileID: 968929449}
   SchedulePrograss: {fileID: 227287644}
+  ScheduleManager: {fileID: 1944875640}
   QuarterViewCamera: {fileID: 1023763536}
   _input: {fileID: 1955638129}
   SectionBtns: []
