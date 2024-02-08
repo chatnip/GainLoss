@@ -154,7 +154,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
 
         for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
-
             IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
             actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
             if (Convert.ToInt32(StreamManager.currentStreamEventDatas[1][WordManager.currentWord.ID + WordManager.currentWordActionList[i].ID]) >= 3)
@@ -164,10 +163,8 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             actionBtn.AddVisiableWordRate((string)DataManager.WordActionDatas[1][WordManager.currentWordActionList[i].ID]); // 등급 표시
             actionBtn.buttonType = ButtonType.WordActionType; // 정렬
             WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
-                                                                // WordManager.WordActionBtnListSet(); // 데이터 삽입
+            // WordManager.WordActionBtnListSet(); // 데이터 삽입
             actionBtn.gameObject.SetActive(true); // 활성화
-
-            
 
         }
         WordManager.WordActionBtnListSet(); // 데이터 삽입

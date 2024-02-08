@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using UnityEditor;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 
 public class WordManager : Manager<WordManager>
 {
