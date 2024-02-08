@@ -58,7 +58,7 @@ public class CheckGetAllDatas : MonoBehaviour
     {
         if (checkGetAllDatas(CurrentMap) <= 0)
         {
-            Info.text = "Terminate this Part";
+            Info.text = "Complete";
             TerminateBtn.gameObject.SetActive(true);
         }
         else

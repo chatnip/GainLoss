@@ -14,6 +14,9 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     [SerializeField] GameObject phone2D;
     [SerializeField] GameObject computer2D;
 
+    [Header("*GameObject")]
+    [SerializeField] Image pad_start;
+
     [Header("*Component")]
     [SerializeField] CanvasScaler thisScaler;
     [SerializeField] CanvasGroup thisGroup;
@@ -36,6 +39,8 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     {
         if (NeedGenBtn(targetGO)) { GenBtn(targetGO); }
         SetActiveBtns(activeGOs);
+
+
     }
 
     // 새로 생성해야하는지 판별
@@ -85,9 +90,14 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
         }
 
         Vector3 v3_pos;
-        for (int i = 0; i < activeInteractionBtns.Count; i++)
+        for (int i = 0; i <= activeInteractionBtns.Count; i++)
         {
             v3_pos = new Vector3(0, i * InteractionBtn.GetComponent<RectTransform>().rect.height, 0);
+            if (i == activeInteractionBtns.Count)
+            { 
+                pad_start.GetComponent<RectTransform>().anchoredPosition = v3_pos + new Vector3( -10, 10, 0);
+                return; 
+            }
             activeInteractionBtns[activeInteractionBtns.Count - i - 1].GetComponent<RectTransform>().anchoredPosition = v3_pos;
             activeInteractionBtns[activeInteractionBtns.Count - i - 1].SetActive(true);
         }

@@ -33,6 +33,7 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] Image PMImg;
     [SerializeField] Image EndImg;
     [SerializeField] Color CurrentPrograssColor;
+    [SerializeField] CanvasGroup padControllerCG;
 
     #endregion
 
@@ -70,6 +71,10 @@ public class SchedulePrograss : MonoBehaviour
                 });
             ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 100), 0.5f);
 
+            DOTween.Kill(padControllerCG);
+
+            padControllerCG.DOFade(0.3f, 0.5f);
+
             OnExplanation = false;
         }
         else
@@ -86,6 +91,10 @@ public class SchedulePrograss : MonoBehaviour
             ExplanationTxt.gameObject.SetActive(true);
             ExplanationTxt.DOFade(1, 0.5f);
             ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 25), 0.5f);
+
+            DOTween.Kill(padControllerCG);
+
+            padControllerCG.DOFade(1, 0.5f);
 
             OnExplanation = true;
         }
