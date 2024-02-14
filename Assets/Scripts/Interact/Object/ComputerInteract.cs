@@ -96,7 +96,9 @@ public class ComputerInteract : InteractObject
 
     public override void Interact()
     {
-        if (ScheduleManager.currentPrograssScheduleID == "S03") { StartCoroutine(ScreenZoomIn()); }
+        if (ScheduleManager.currentPrograssScheduleID == "S01" ||
+            ScheduleManager.currentPrograssScheduleID == "S03") // S01: 사전 조사 | S03: 방송
+        { StartCoroutine(ScreenZoomIn()); }
         else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
         //StartCoroutine(ScreenZoomIn());
     }

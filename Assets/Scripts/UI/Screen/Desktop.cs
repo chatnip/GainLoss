@@ -46,6 +46,10 @@ public class Desktop : MonoBehaviour, IInteract
     [SerializeField] Button todoExitBtn;
     [SerializeField] public GameObject todoWindow;
 
+    [Header("*Preliminary Survey")] // = PS
+    [SerializeField] Button PSOpenBtn;
+    [SerializeField] public GameObject PSWindow;
+
     [Header("*ConfirmPopup")]
     [SerializeField] DesktopSoftwere desktopSoftwere;
     [SerializeField] Button popupExitBtn;
@@ -159,6 +163,13 @@ public class Desktop : MonoBehaviour, IInteract
             PlayerInputController.SetSectionBtns(new List<Button>() { confirmBtn }, this);
             return;
         }
+        else if(PlayerInputController.SelectBtn == PSOpenBtn)
+        {
+            desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
+            ConfirmPopupSetting();
+            PlayerInputController.SetSectionBtns(new List<Button>() { confirmBtn }, this);
+            return;
+        }
 
         #endregion
 
@@ -171,12 +182,21 @@ public class Desktop : MonoBehaviour, IInteract
         }
         else if(PlayerInputController.SelectBtn == confirmBtn)
         {
-            WordManager.TodoReset();
-            WordManager.InitWord();
+            if (ScheduleManager.currentPrograssScheduleID == "S01")
+            {
+                confirmPopup.SetActive(false);
+                EffectfulWindow.AppearEffectful(PSWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+                return;
+            }
+            else if(ScheduleManager.currentPrograssScheduleID == "S03")
+            {
+                WordManager.TodoReset();
+                WordManager.InitWord();
 
-            confirmPopup.SetActive(false);
-            EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-            return;
+                confirmPopup.SetActive(false);
+                EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+                return;
+            }
         }
 
         #endregion
@@ -198,6 +218,9 @@ public class Desktop : MonoBehaviour, IInteract
                 break;
             case DesktopSoftwere.Stream:
                 StreamConfirm();
+                break;
+            case DesktopSoftwere.PreliminarySurvey:
+                PreliminarySurveyConfirm();
                 break;
         }    
     }
@@ -241,6 +264,17 @@ public class Desktop : MonoBehaviour, IInteract
         EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
     }
 
+    private void PreliminarySurveyConfirm()
+    {
+        confirmBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                confirmPopup.SetActive(false);
+                EffectfulWindow.AppearEffectful(PSWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+            });
+        EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+    }
+
     #endregion
 
     #region Turn ON/OFF
@@ -261,6 +295,9 @@ public class Desktop : MonoBehaviour, IInteract
     {
         //snsWindow.SetActive(false);
         //fancafeWindow.SetActive(false);
+        List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
+        if (ScheduleManager.currentPrograssScheduleID == "S01") { setAbleInteractBtn(PSOpenBtn, OpenBtns); }
+        else if (ScheduleManager.currentPrograssScheduleID == "S03") { setAbleInteractBtn(streamOpenBtn, OpenBtns); }
         resultWindow.SetActive(false);
         streamWindow.SetActive(false);
         todoWindow.SetActive(false);
@@ -272,9 +309,18 @@ public class Desktop : MonoBehaviour, IInteract
             });
         setDesktopSectionBtns();
     }
+    private void setAbleInteractBtn(Button AbleBtn, List<Button> Btns)
+    {
+        foreach(Button btn in Btns)
+        {
+            if(btn == AbleBtn) { btn.interactable = true; }
+            else { btn.interactable = false; }
+        }
+    }
+
     public void setDesktopSectionBtns()
     {
-        PlayerInputController.SetSectionBtns(new List<Button>() { snsOpenBtn, fancafeOpenBtn, streamOpenBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<Button>() { snsOpenBtn, fancafeOpenBtn, streamOpenBtn, PSOpenBtn }, this);
     }
 
     #endregion
@@ -316,5 +362,6 @@ public enum DesktopSoftwere
 { 
     SNS,
     FanCafe,
-    Stream
+    Stream,
+    PreliminarySurvey
 }

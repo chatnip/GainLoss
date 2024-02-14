@@ -23,6 +23,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [Header("*Computer")]
     [SerializeField] ComputerInteract ComputerInteract;
     [SerializeField] Desktop Desktop;
+    [SerializeField] PreliminarySurveyWindow PreliminarySurveyWindow;
     [SerializeField] GameObject ComputerCamera2D;
 
     [Header("*Interact Object")]
@@ -355,6 +356,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         { return; }
         else if (ComputerOffWindow(Desktop.todoWindow)) 
         { return; }
+        else if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_clearChooseClue();
+            return; 
+        }
         else if (Desktop.streamWindow.activeSelf) 
         { return; }
         else if (ComputerCamera2D.activeSelf) //Computer Screen
@@ -411,6 +417,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         else if (Panel_Npc.activeSelf)
         { GameSystem.NpcDescriptionSkip(); return; }
 
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
+        }
+
         if (SelectBtn != null)
         {
             SelectBtn.TryGetComponent(out Button btn);
@@ -437,6 +448,12 @@ public class PlayerInputController : Manager<PlayerInputController>
             }
             OnOffSelectedBtn(SelectBtn);
         }
+
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+        }
+
     }
 
     private void UpSelectedBtn(InputAction.CallbackContext obj)
@@ -453,6 +470,10 @@ public class PlayerInputController : Manager<PlayerInputController>
                 SelectBtn = SectionBtns[(index - 1)];
             }
             OnOffSelectedBtn(SelectBtn);
+        }
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
         }
     }
 
