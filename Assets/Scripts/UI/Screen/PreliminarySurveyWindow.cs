@@ -27,6 +27,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [SerializeField] Image combineUI;
     [SerializeField] Image targetPointer;
 
+    float PointerSpeed = 1.0f;
 
     #endregion
 
@@ -36,6 +37,11 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     {
         ft_setData(); // Set Clue Reduction Img
         ft_setPadSection(clueReductionBtns.ToList());
+    }
+
+    private void LateUpdate()
+    {
+        ft_pointerMove();
     }
 
     public void Interact()
@@ -139,7 +145,18 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     #endregion
 
+    #region Pointer
 
+    private void ft_pointerMove()
+    {
+        if(PlayerInputController.pointerMove != Vector2.zero)
+        {
+            targetPointer.TryGetComponent(out RectTransform RT);
+            RT.anchoredPosition += PlayerInputController.pointerMove.normalized * PointerSpeed;
+        }
+    }
+
+    #endregion
 
     #endregion
 

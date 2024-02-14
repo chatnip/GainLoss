@@ -48,6 +48,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     [Header("*Character Input Values")]
     public static bool CanMove = false;
+    public Vector2 pointerMove;
     public Vector2 move;
     public Vector2 look;
 
@@ -137,6 +138,9 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["ShowScheduleDetailBtn"].started += OnOffShowScheduleDetailBtn;
         playerInput["TerminatePart"].started += TerminatePart;
 
+        playerInput["PointerMove"].performed += OnPointerMove;
+        playerInput["PointerMove"].canceled += OnPointerMoveStop;
+
         playerInput["BackBtn"].started += BackBtn;
 
         //playerInput["Interact"].started += OnInteract;
@@ -161,6 +165,9 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["InteractObjectBtn"].started -= OnOffInteractObject;
         _input.actions["ShowScheduleDetailBtn"].started -= OnOffShowScheduleDetailBtn;
         _input.actions["TerminatePart"].started -= TerminatePart;
+
+        _input.actions["PointerMove"].performed -= OnPointerMove;
+        _input.actions["PointerMove"].canceled -= OnPointerMoveStop;
 
         _input.actions["BackBtn"].started -= BackBtn;
 
@@ -405,6 +412,19 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     }
 
+    private void OnPointerMove(InputAction.CallbackContext obj)
+    {
+        PointerMoveInput(obj.ReadValue<Vector2>());
+    }
+    public void OnPointerMoveStop(InputAction.CallbackContext obj)
+    {
+        PointerMoveInput(Vector2.zero);
+    }
+    public void PointerMoveInput(Vector2 newPointerMoveDirection)
+    {
+        if (Desktop.PSWindow.activeSelf) { pointerMove = newPointerMoveDirection; }
+    }
+    
 
     #endregion
 

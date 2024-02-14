@@ -16,6 +16,8 @@ public class PlacePadSpawner : IDBtnSpawner
             IDBtn PlaceBtn = CreateIDBtn(new ButtonValue(PlaceManager.currentPlaceIDList[i], DataManager.PlaceDatas[1][PlaceManager.currentPlaceIDList[i]].ToString()));
             PlaceBtn.transform.SetParent(PlaceParentObject);
             PlaceBtn.buttonType = ButtonType.WordPadType;
+            if (PlaceBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            PlaceBtn.text.fontSize = 90;
             PlaceManager.enablePlaceBtnList.Add(PlaceBtn);
             PlaceBtn.gameObject.SetActive(true);
         }

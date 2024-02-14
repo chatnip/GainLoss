@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "PointerMove",
+                    "type": "Value",
+                    "id": "36327272-a808-4d7d-850f-97e97f77e213",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Look",
                     "type": "Value",
                     "id": "2690c379-f54d-45be-a724-414123833eb4",
@@ -398,6 +407,17 @@
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "TerminatePart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26afc3af-ed25-4d93-b4fe-3224b63e7efc",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "PointerMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -133,7 +133,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
                 PlayerInputController.interact = this;
                 SectionIsThis = true;
                 PlayerInputController.SetSectionBtns(SetSectionBtns(), this);
-                DOTween.To(() => thisScaler.scaleFactor, x => thisScaler.scaleFactor = x, 1f, 0.3f);
+                DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(1920, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
             }
             // 오브젝트 상호작용에서 벗어나기
@@ -143,7 +143,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
                 PlayerInputController.ClearSeletedBtns();
                 SectionIsThis = false;
                 PlayerInputController.SetSectionBtns(null, null);
-                DOTween.To(() => thisScaler.scaleFactor, x => thisScaler.scaleFactor = x, 0.6f, 0.3f);
+                DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(3000, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 0.6f, 0.3f)
                     .OnComplete(() =>
                     {

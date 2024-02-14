@@ -17,6 +17,8 @@ public class AILpadSpawner : IDBtnSpawner
             IDBtn wordBtn = CreateIDBtn(new ButtonValue(WordManager.currentWordIDList[i], DataManager.WordDatas[5][WordManager.currentWordIDList[i]].ToString()));
             wordBtn.transform.SetParent(wordParentObject);
             wordBtn.buttonType = ButtonType.WordPadType;
+            if (wordBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            wordBtn.text.fontSize = 90;
             WordManager.enableWordBtnList.Add(wordBtn);
             wordBtn.gameObject.SetActive(true);
         }

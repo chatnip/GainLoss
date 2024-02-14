@@ -14,8 +14,8 @@ public class IDBtn : MonoBehaviour
 
     [Header("*Button")]
     [SerializeField] public Button button;
-    [SerializeField] TMP_Text text;
-    [SerializeField] TMP_Text rate_text;
+    [SerializeField] public TMP_Text text;
+    [SerializeField] public TMP_Text rate_text;
     [SerializeField] RectTransform rect;
     [SerializeField] public ButtonType buttonType;
 

@@ -17,6 +17,8 @@ public class EXEpadSpawner : IDBtnSpawner
             IDBtn wordActionBtn = CreateIDBtn(new ButtonValue(WordManager.currentWordActionIDList[i], DataManager.WordActionDatas[3][WordManager.currentWordActionIDList[i]].ToString()));
             wordActionBtn.transform.SetParent(wordActionParentObject);
             wordActionBtn.buttonType = ButtonType.WordPadType;
+            if (wordActionBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            wordActionBtn.text.fontSize = 90;
             WordManager.enableWordActionBtnList.Add(wordActionBtn);
             wordActionBtn.gameObject.SetActive(true);
         }
