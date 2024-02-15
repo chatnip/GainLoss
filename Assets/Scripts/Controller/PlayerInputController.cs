@@ -137,6 +137,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["InteractObjectBtn"].started += OnOffInteractObject;
         playerInput["ShowScheduleDetailBtn"].started += OnOffShowScheduleDetailBtn;
         playerInput["TerminatePart"].started += TerminatePart;
+        playerInput["SetSomething"].started += SetSomething;
 
         playerInput["PointerMove"].performed += OnPointerMove;
         playerInput["PointerMove"].canceled += OnPointerMoveStop;
@@ -165,6 +166,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["InteractObjectBtn"].started -= OnOffInteractObject;
         _input.actions["ShowScheduleDetailBtn"].started -= OnOffShowScheduleDetailBtn;
         _input.actions["TerminatePart"].started -= TerminatePart;
+        _input.actions["SetSomething"].started -= SetSomething;
 
         _input.actions["PointerMove"].performed -= OnPointerMove;
         _input.actions["PointerMove"].canceled -= OnPointerMoveStop;
@@ -325,9 +327,22 @@ public class PlayerInputController : Manager<PlayerInputController>
         SchedulePrograss.OnOffExlanation();
     }
 
+    private void SetSomething(InputAction.CallbackContext obj)
+
+    {
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
+        }
+    }
     private void TerminatePart(InputAction.CallbackContext context)
     {
         if (isPause) { return; }
+
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_tryToCombine();
+        }
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
@@ -439,7 +454,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
+            interact.Interact();
         }
 
         if (SelectBtn != null)

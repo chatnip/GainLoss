@@ -121,6 +121,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SetSomething",
+                    "type": "Button",
+                    "id": "03fd85ad-c94d-464c-8432-a0956ef7ef8a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -418,6 +427,17 @@
                     "processors": "StickDeadzone",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "PointerMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f91116fd-a618-4969-a750-02fb74ecfdc0",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "SetSomething",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

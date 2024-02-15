@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class IDBtn : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class IDBtn : MonoBehaviour
 
     [HideInInspector] public bool isButton;
 
-    
 
     private void OnEnable()
     {
@@ -52,16 +52,24 @@ public class IDBtn : MonoBehaviour
             case ButtonType.BehaviorActionType:
                 IDBtnSetup();
                 break;
+            case ButtonType.ClueSpotType:
+                break;
         }
     }
 
-    void WordTypeAdd()
+    private void WordTypeAdd()
     {
         text.text += ".ail";
         text.rectTransform.localPosition = new Vector3(0, -10, 0);
         button.image.sprite = folderImage;
     }
 
+    public void ClueSpotTypeInput()
+    {
+        TryGetComponent(out Image image);
+        image.DOFillAmount(1.0f, 0.2f)
+            .SetEase(Ease.InCubic);
+    }
 
     public void AddVisiableWordRate(string Rate)
     {
@@ -105,5 +113,6 @@ public enum ButtonType
     WordPadType,
     WordActionType,
     PlaceType,
-    BehaviorActionType
+    BehaviorActionType,
+    ClueSpotType
 }
