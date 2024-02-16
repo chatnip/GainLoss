@@ -136,11 +136,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c7de5987022014b865698f5df4f648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clueName: "\uC0AC\uC2B4\uC758 \uCF54 \uBD80\uBD84"
   mainSprite: {fileID: 21300000, guid: ac8389bbed63e354aadc952ee5844e0a, type: 3}
   ClueSpotBtns:
   - {fileID: 8189238916477135719}
   partnerBtn: {fileID: 0}
-  CanCombineIDs: []
+  CanCombineIDList: []
 --- !u!1001 &6506383719988240058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149,6 +150,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6312439258669514723}
     m_Modifications:
+    - target: {fileID: 3165279445286401501, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
+      propertyPath: buttonValue.Name
+      value: "\uCF54 \uC911\uC559"
+      objectReference: {fileID: 0}
     - target: {fileID: 5573740873672982684, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
       propertyPath: m_Name
       value: ClueSpotBtn
@@ -232,6 +237,18 @@ PrefabInstance:
     - target: {fileID: 5883289927700523355, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7267914123111516714, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1007718502, guid: 4e4a90858cb723146b80cdccdaf2bf5f, type: 3}
+    - target: {fileID: 7267914123111516714, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7267914123111516714, guid: 7225754ffdd810c4ab18b8739f1a6a91, type: 3}
+      propertyPath: m_FillMethod
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

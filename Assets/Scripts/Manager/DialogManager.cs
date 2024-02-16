@@ -99,7 +99,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
         { turnOver = true; return; }
         else if (PlayerInputController.SelectBtn == EndBtn)
         { 
-            Desktop.EndStream();
+            Desktop.EndScheduleThis();
             PlayerInputController.SetSectionBtns(null, null);
             Desktop.streamWindow.SetActive(false);
             Desktop.resultWindow.SetActive(false);

@@ -102,7 +102,7 @@ public class Desktop : MonoBehaviour, IInteract
         streamEndBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                EndStream();
+                EndScheduleThis();
             });
 
         popupExitBtn.OnClickAsObservable()
@@ -131,7 +131,7 @@ public class Desktop : MonoBehaviour, IInteract
         StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
         StreamManager.StartDialog(StreamManager.currentStreamEventID);
     }
-    public void EndStream()
+    public void EndScheduleThis()
     {
         TurnOff();
         //ActionEventManager.TurnOnLoading();

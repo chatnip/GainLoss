@@ -1,6 +1,8 @@
 using Cinemachine.Utility;
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -13,6 +15,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] Desktop Desktop;
 
     [Header("*What Value is Changing")]
     [SerializeField] public PreliminarySurveySO SelectedPreliminarySurveySO;
@@ -25,11 +28,18 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [SerializeField] Button resetBtn;
     [SerializeField] Button tryToCombineBtn;
 
+    [Header("*RT")]
+    [SerializeField] RectTransform clueImg;
+    [SerializeField] RectTransform targetPointer;
+
     [Header("*Img")]
     [SerializeField] Image[] selectedImgs = new Image[2];
-    [SerializeField] RectTransform clueImg;
     [SerializeField] Image combineRotateUI;
-    [SerializeField] RectTransform targetPointer;
+
+    [Header("*Sprite")]
+    [SerializeField] Sprite RotateSprite;
+    [SerializeField] Sprite CompleteSprite;
+    [SerializeField] Sprite FailSprite;
 
     [Header("*Txt")]
     [SerializeField] TMP_Text AnnouncementTxt;
@@ -37,11 +47,17 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [Header("*GOs")]
     [SerializeField] List<GameObject> Life_X_GO;
 
+    [Header("*Result")]
+    [SerializeField] public GameObject resultWindowParentGO;
+    [SerializeField] RectTransform resultWindowRT;
+    [SerializeField] TMP_Text[] clueTxts = new TMP_Text[2];
+    [SerializeField] TMP_Text incomeDataTxt;
+    [SerializeField] Button endBtn;
 
     [Header("*other Component")]
     [SerializeField] DOTweenAnimation combineRotateUI_DTA;
 
-    float PointerSpeed = 1.0f;
+    float pointerSpeed = 1.0f;
 
     #endregion
 
@@ -56,7 +72,8 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     private void LateUpdate()
     {
-        ft_pointerMove();
+        if (!resultWindowParentGO.activeSelf)
+        { ft_pointerMove(); }
     }
     
 
@@ -67,6 +84,15 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     #region Set
     private void ft_setData()
     {
+        SelectedPreliminarySurveySO = null;
+        chooseClueData = new ClueData[2];
+        genClueData = new ClueData[8];
+        currentClueData = null;
+        AnnouncementTxt.color = new UnityEngine.Color(0, 0, 0, 0);
+        foreach(var X in Life_X_GO)
+        { X.gameObject.SetActive(false); }
+        combineRotateUI.sprite = RotateSprite;
+
         SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS(); // Set Selected PSSO
 
         for (int i = 0; i < clueReductionBtns.Length; i++) // Set Reduction Img
@@ -170,7 +196,17 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     // 단서 찾기 시도
     public void Interact()
     {
-        if (currentClueData != null)
+        if (PlayerInputController.SelectBtn == endBtn)
+        {
+            Desktop.EndScheduleThis();
+            PlayerInputController.SetSectionBtns(null, null);
+            resultWindowParentGO.SetActive(false);
+            foreach (Transform child in clueImg)
+            { Destroy(child.gameObject); }
+            this.gameObject.SetActive(false);
+
+        }
+        else if (currentClueData != null)
         {
             foreach (IDBtn idBtn in currentClueData.ClueSpotBtns)
             {
@@ -187,8 +223,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         if (chooseClueData[0] == null || chooseClueData[1] == null)
         {
             DOTween.Kill(AnnouncementTxt);
+            AnnouncementTxt.color = new UnityEngine.Color(0, 0, 0, 1);
             AnnouncementTxt.text = "※ 2가지 모두 선택해야합니다. ※";
-            AnnouncementTxt.DOFade(0.0f, 0.7f);
+            AnnouncementTxt.DOFade(0.0f, 1.0f);
             return;
         }
         
@@ -200,7 +237,8 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
                 if( CD_1 == CD_2)
                 {
                     CanCombine = true;
-                    Debug.Log(CD_1 + "의 ID를 통해 결과 실행하기");
+                    // ID에 따른 성공 결과 출력 및 데이터 적용
+                    ft_resultComplete(chooseClueData, CD_1);
                 }
             }
         }
@@ -209,6 +247,32 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             ft_minusTryAmount();
         }
     }
+
+    // 성공 시
+    private void ft_resultComplete(ClueData[] fromClueDatas, string incomeID)
+    {
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+        combineRotateUI_DTA.DOPause();
+        combineRotateUI.transform.rotation = Quaternion.identity;
+        combineRotateUI.sprite = CompleteSprite;
+
+        for (int i = 0; i < clueTxts.Length; i++)
+        { 
+            clueTxts[i].text = fromClueDatas[i].clueName;
+            foreach(IDBtn CD_idBtn in fromClueDatas[i].ClueSpotBtns)
+            {
+                if(CD_idBtn.buttonValue.ID == incomeID) { clueTxts[i].text += "\n<size=30>" +  CD_idBtn.buttonValue.Name + "</size>"; }
+            }
+        }
+        incomeDataTxt.text = incomeID;
+
+        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+        Debug.Log("획득한 소득 데이터로 실제 삽입 구간");
+
+        resultWindowParentGO.SetActive(true);
+    }
+
+    // 실패 시 시도 가능 횟수 감소
     private void ft_minusTryAmount()
     {
         for(int i = 0; i < Life_X_GO.Count; i++)
@@ -218,16 +282,28 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
                 Life_X_GO[i].gameObject.SetActive(true);
                 if(i == Life_X_GO.Count - 1)
                 {
-                    ft_noTryAmount();
+                    ft_resultFail();
                 }
                 return;
             }
         }
         
     }
-    private void ft_noTryAmount()
+    // 실패 시 ( = 모두 소진 시 )
+    private void ft_resultFail()
     {
-        Debug.Log("모두 소진함");
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+        combineRotateUI_DTA.DOPause(); 
+        combineRotateUI.transform.rotation = Quaternion.identity;
+        combineRotateUI.sprite = FailSprite;
+
+        for (int i = 0; i < clueTxts.Length; i++)
+        { clueTxts[i].text = "증거 미확인"; }
+        incomeDataTxt.text = "미획득";
+
+        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+
+        resultWindowParentGO.SetActive(true);
     }
 
     #endregion
@@ -238,7 +314,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     {
         // Move
         if (PlayerInputController.pointerMove != Vector2.zero) 
-        { targetPointer.anchoredPosition += PlayerInputController.pointerMove.normalized * PointerSpeed; }
+        { targetPointer.anchoredPosition += PlayerInputController.pointerMove.normalized * pointerSpeed; }
 
         //Move Limit
         if (targetPointer.anchoredPosition.x > clueImg.rect.width / 2) { targetPointer.anchoredPosition = new Vector2(clueImg.rect.width / 2, targetPointer.anchoredPosition.y); }

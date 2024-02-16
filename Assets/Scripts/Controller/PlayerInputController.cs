@@ -63,6 +63,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     // public BoolReactiveProperty interactMode = new BoolReactiveProperty();
 
     public IInteract interact;
+    private List<Button> TempSectionBtns;
+    private Button TempSelectedBtn;
+    private IInteract TempInteract;
 
     #endregion
 
@@ -266,15 +269,15 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (pause.gameObject.activeSelf)
         {
             pause.ft_closePausePopup();
+
+            SetSectionBtns(TempSectionBtns, TempInteract);
+            OnOffSelectedBtn(TempSelectedBtn);
         }
         else
         {
-            if (PhoneHardware.sectionIsThis)
-            { PhoneHardware.SetOnOffPhoneBtn(); }
-            if (ObjectInteractionButtonGenerator.SectionIsThis)
-            { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-            if (SchedulePrograss.OnExplanation)
-            { SchedulePrograss.OnOffExlanation(); }
+            TempSectionBtns = this.SectionBtns;
+            TempInteract = this.interact;
+            TempSelectedBtn = this.SelectBtn;
 
             pause.ft_openPausePopup();
         }
@@ -330,7 +333,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void SetSomething(InputAction.CallbackContext obj)
 
     {
-        if (Desktop.PSWindow.activeSelf)
+        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf)
         {
             PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
         }
@@ -339,7 +342,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     {
         if (isPause) { return; }
 
-        if (Desktop.PSWindow.activeSelf)
+        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf) 
         {
             PreliminarySurveyWindow.ft_tryToCombine();
         }
@@ -380,8 +383,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         { return; }
         else if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_clearChooseClue();
-            return; 
+            if (!PreliminarySurveyWindow.resultWindowParentGO.activeSelf)
+            {
+                PreliminarySurveyWindow.ft_clearChooseClue();
+            }
+            return;
         }
         else if (Desktop.streamWindow.activeSelf) 
         { return; }

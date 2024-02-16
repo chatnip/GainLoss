@@ -7,6 +7,9 @@ public class ClueData : MonoBehaviour
 {
     #region Value
 
+    [Header("*Original")]
+    [SerializeField] public string clueName;
+
     [Header("*Img")]
     [SerializeField] public Sprite mainSprite;
 
