@@ -166,10 +166,11 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     }
     public List<Button> SetSectionBtns()
     {
-        if(this.transform.GetChild(0) != null)
+        List<Button> btns = new List<Button>();
+        if (this.transform.GetChild(0) != null)
         {
             Transform[] allChildren = GetComponentsInChildren<Transform>();
-            List<Button> btns = new List<Button>();
+            btns = new List<Button>();
             foreach (Transform child in allChildren)
             {
                 if (child.TryGetComponent(out Button btn))
@@ -177,13 +178,8 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
                     btns.Add(btn);
                 }
             }
-
-            return btns;
         }
-        else
-        {
-            return null;
-        }
+        return btns;
     }
 
     public void SetOffAllOutline()

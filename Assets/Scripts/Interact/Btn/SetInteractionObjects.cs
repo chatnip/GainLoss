@@ -120,15 +120,15 @@ public class SetInteractionObjects : MonoBehaviour
 
     public void OffInteractiveOB()
     {
-        sphereCollider.radius = 0;
+        //sphereCollider.radius = 0;
+        sphereCollider.enabled = false;
+        activeInteractionGOs.Clear();
+        objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
     }
     public void OnInteractiveOB()
     {
-        sphereCollider.radius = this.colliderRadius;
-    }
-    public void ClearInteractiveOB()
-    {
-        activeInteractionGOs.Clear();
+        //sphereCollider.radius = this.colliderRadius;
+        sphereCollider.enabled = true;
     }
 
     #endregion

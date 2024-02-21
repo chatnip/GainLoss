@@ -16,6 +16,7 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
     [SerializeField] CheckGetAllDatas CheckGetAllDatas;
+    [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
 
     [Header("*Player")]
     [SerializeField] SetInteractionObjects SetInteractionObjects;
@@ -123,10 +124,10 @@ public class PlaceManager : Manager<PlaceManager>
             placeGOList[0].SetActive(true);
             CheckGetAllDatas.CurrentMap = placeGOList[0];
 
-            SetInteractionObjects.OnInteractiveOB();
-            CheckGetAllDatas.gameObject.SetActive(false);
             placeGOList[0].transform.position = Vector3.zero;
+            CheckGetAllDatas.gameObject.SetActive(false);
 
+            SetInteractionObjects.OnInteractiveOB();
         }
         else 
         {
@@ -137,13 +138,14 @@ public class PlaceManager : Manager<PlaceManager>
             }
             placeGOList[s].SetActive(true);
             CheckGetAllDatas.CurrentMap = placeGOList[s];
+
             placeGOList[s].transform.position = Vector3.zero;
+            CheckGetAllDatas.gameObject.SetActive(true);
 
             SetInteractionObjects.OnInteractiveOB();
-            CheckGetAllDatas.gameObject.SetActive(true);
         }
 
-        SetInteractionObjects.transform.parent.gameObject.transform.position = new Vector3(0, 0.2f, 0);
+        Debug.Log("플레이어 위치 초기화하기");
 
     }
 
@@ -217,8 +219,9 @@ public class PlaceManager : Manager<PlaceManager>
         yield return new WaitForSeconds(delay);
 
         SetInteractionObjects.OffInteractiveOB();
-        SetInteractionObjects.ClearInteractiveOB();
         SetCurrent3DMap(currentPlace);
+
+        //PlayerController.ResetPlayerSpot();
 
         yield return new WaitForSeconds(delay);
 

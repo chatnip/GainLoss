@@ -522,7 +522,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     public void SetSectionBtns(List<Button> btns, IInteract inter)
     {
-        if(btns == null || inter == null)
+        if(btns == null || inter == null || btns.Count == 0)
         {
             ClearSeletedBtns();
         }

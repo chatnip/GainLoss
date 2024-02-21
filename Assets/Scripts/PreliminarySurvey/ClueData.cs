@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using DG.Tweening;
 
 public class ClueData : MonoBehaviour
 {
@@ -13,12 +14,14 @@ public class ClueData : MonoBehaviour
     [Header("*Img")]
     [SerializeField] public Sprite mainSprite;
 
-    [Header("*IDBtn")]
-    [SerializeField] public List<IDBtn> ClueSpotBtns = new List<IDBtn>();
+    [Header("*Txt")]
+    [SerializeField] public GameObject TxtBox;
+
+    [Header("*Btn")]
+    [SerializeField] public Button ClueSpotBtn;
 
     [Header("*What Value is Changing")]
     [SerializeField] public Button partnerBtn;
-    [SerializeField] public List<string> CanCombineIDList = new List<string>();
 
     #endregion
 
@@ -26,24 +29,18 @@ public class ClueData : MonoBehaviour
 
     private void Awake()
     {
-        foreach(IDBtn idBtn in ClueSpotBtns)
-        {
-            idBtn.TryGetComponent(out Button btn);
-            btn.OnClickAsObservable()
+        ClueSpotBtn.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    ft_getID(idBtn);
+                    ft_showInfo();
                 });
-        }
     }
 
-    public void ft_getID(IDBtn idBtn)
+    public void ft_showInfo()
     {
-        if (!CanCombineIDList.Contains(idBtn.buttonValue.ID))
-        {
-            idBtn.ClueSpotTypeInput();
-            CanCombineIDList.Add(idBtn.buttonValue.ID);
-        }
+        ClueSpotBtn.TryGetComponent(out Image img);
+        if (img.fillAmount == 0) { img.DOFillAmount(1, 1); }
+        TxtBox.SetActive(true);
     }
 
     #endregion

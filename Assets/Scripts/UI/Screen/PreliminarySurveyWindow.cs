@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using TMPro;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +22,6 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     [Header("*What Value is Changing")]
     [SerializeField] public PreliminarySurveySO SelectedPreliminarySurveySO;
-    [SerializeField] ClueData[] chooseClueData = new ClueData[2];
     [SerializeField] ClueData[] genClueData = new ClueData[8];
     [SerializeField] ClueData currentClueData;
 
@@ -32,10 +34,6 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [SerializeField] RectTransform clueImg;
     [SerializeField] RectTransform targetPointer;
 
-    [Header("*Img")]
-    [SerializeField] Image[] selectedImgs = new Image[2];
-    [SerializeField] Image combineRotateUI;
-
     [Header("*Sprite")]
     [SerializeField] Sprite RotateSprite;
     [SerializeField] Sprite CompleteSprite;
@@ -43,6 +41,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     [Header("*Txt")]
     [SerializeField] TMP_Text AnnouncementTxt;
+    [SerializeField] TMP_Text[] ChooseClueNumTxts = new TMP_Text[4];
 
     [Header("*GOs")]
     [SerializeField] List<GameObject> Life_X_GO;
@@ -50,12 +49,12 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [Header("*Result")]
     [SerializeField] public GameObject resultWindowParentGO;
     [SerializeField] RectTransform resultWindowRT;
-    [SerializeField] TMP_Text[] clueTxts = new TMP_Text[2];
-    [SerializeField] TMP_Text incomeDataTxt;
+    [SerializeField] GameObject OnlyFail;
+    [SerializeField] GameObject OnlyComplete;
+    [SerializeField] Image[] CompleteImgs = new Image[4];
+    [SerializeField] TMP_Text incomeData;
     [SerializeField] Button endBtn;
 
-    [Header("*other Component")]
-    [SerializeField] DOTweenAnimation combineRotateUI_DTA;
 
     float pointerSpeed = 1.0f;
 
@@ -67,7 +66,6 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     {
         ft_setData(); // Set Clue Reduction Img
         ft_setPadSection(clueReductionBtns.ToList());
-        ft_setChooeseClueImg();
     }
 
     private void LateUpdate()
@@ -84,14 +82,15 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     #region Set
     private void ft_setData()
     {
+        resultWindowParentGO.SetActive(false);
         SelectedPreliminarySurveySO = null;
-        chooseClueData = new ClueData[2];
         genClueData = new ClueData[8];
-        currentClueData = null;
+        currentClueData = genClueData[0];
         AnnouncementTxt.color = new UnityEngine.Color(0, 0, 0, 0);
-        foreach(var X in Life_X_GO)
+        foreach(GameObject X in Life_X_GO)
         { X.gameObject.SetActive(false); }
-        combineRotateUI.sprite = RotateSprite;
+        foreach(TMP_Text num in ChooseClueNumTxts)
+        { num.text = ""; }
 
         SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS(); // Set Selected PSSO
 
@@ -142,55 +141,65 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     #region Data
 
+    // 안내 문구
+    private void ft_setAnnouncementText(string Announcement)
+    {
+        DOTween.Kill(AnnouncementTxt);
+        AnnouncementTxt.text = Announcement;
+        AnnouncementTxt.DOFade(1, 0)
+            .OnComplete(() =>
+            {
+                AnnouncementTxt.DOFade(0, 2);
+            });
+    }
+
     // 자료를 선택
     public void ft_setChooseClue(Button btn)
     {
-        foreach (ClueData clue in genClueData)
+        foreach(ClueData clueData in genClueData)
         {
-            if (clue.partnerBtn == btn)
+            if(clueData.partnerBtn == btn)
             {
-                if (chooseClueData[0] == null)
+                if(ChooseClueNumTxts[ChooseClueNumTxts.Length - 1].text != null && ChooseClueNumTxts[ChooseClueNumTxts.Length - 1].text != "")
                 {
-                    chooseClueData[0] = clue;
+                    ft_setAnnouncementText("더 이상 선택 자료를 추가할 수 없습니다.");
+                    return;
                 }
-                else if (chooseClueData[1] == null)
+                for(int i = 0; i < ChooseClueNumTxts.Length; i++)
                 {
-                    chooseClueData[1] = clue;
+                    if (ft_inputChooseNum(i, clueData))
+                    { return; }
                 }
             }
         }
-        ft_setChooeseClueImg();
     }
-    private void ft_setChooeseClueImg()
+    private bool ft_inputChooseNum(int num, ClueData chooseCD)
     {
-        for (int i = 0; i < chooseClueData.Length; i++)
+        string trySetNum = (Array.IndexOf(genClueData, chooseCD) + 1).ToString();
+        foreach (TMP_Text Text in  ChooseClueNumTxts) // 같은 수가 있는지 판별하고, 있으면 추가 X
         {
-            if (chooseClueData[i] != null)
+            if(Text.text == trySetNum)
             {
-                selectedImgs[i].sprite = chooseClueData[i].mainSprite;
-            }
-            else
-            {
-                selectedImgs[i].sprite = null;
+                ft_setAnnouncementText("이미 추가 추가된 자료입니다.");
+                return true;
             }
         }
-        if (chooseClueData[0] != null &&
-            chooseClueData[1] != null)
-        { 
-            combineRotateUI.gameObject.SetActive(true);
-            combineRotateUI_DTA.DOPlay(); 
-        }
-        else
+        if (ChooseClueNumTxts[num].text == null || ChooseClueNumTxts[num].text == "") // 빈 공간이 있는지 판별하여 가장 왼쪽에 삽입
         {
-            combineRotateUI.gameObject.SetActive(false);
-            combineRotateUI_DTA.DOPause(); 
+            ChooseClueNumTxts[num].text = trySetNum;
+            return true;
         }
-
+        return false;
     }
+
+    // Reset
     public void ft_clearChooseClue()
     {
-        chooseClueData = new ClueData[2];
-        ft_setChooeseClueImg();
+        foreach(TMP_Text txt in ChooseClueNumTxts)
+        {
+            txt.text = "";
+        }
+        
     }
 
     // 단서 찾기 시도
@@ -208,11 +217,8 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         }
         else if (currentClueData != null)
         {
-            foreach (IDBtn idBtn in currentClueData.ClueSpotBtns)
-            {
-                float range = Vector3.Distance(idBtn.transform.position, targetPointer.transform.position);
-                if (range < 0.5f) { currentClueData.ft_getID(idBtn); }
-            }
+            float range = Vector3.Distance(currentClueData.ClueSpotBtn.transform.position, targetPointer.transform.position);
+            if (range < 0.5f) { currentClueData.ft_showInfo(); }
         }
     }
 
@@ -220,90 +226,66 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     // 결합 시도
     public void ft_tryToCombine()
     {
-        if (chooseClueData[0] == null || chooseClueData[1] == null)
-        {
-            DOTween.Kill(AnnouncementTxt);
-            AnnouncementTxt.color = new UnityEngine.Color(0, 0, 0, 1);
-            AnnouncementTxt.text = "※ 2가지 모두 선택해야합니다. ※";
-            AnnouncementTxt.DOFade(0.0f, 1.0f);
-            return;
-        }
-        
-        bool CanCombine = false;
-        foreach(string CD_1 in chooseClueData[0].CanCombineIDList)
-        {
-            foreach(string CD_2 in chooseClueData[1].CanCombineIDList)
-            {
-                if( CD_1 == CD_2)
-                {
-                    CanCombine = true;
-                    // ID에 따른 성공 결과 출력 및 데이터 적용
-                    ft_resultComplete(chooseClueData, CD_1);
-                }
-            }
-        }
-        if (!CanCombine)
-        {
-            ft_minusTryAmount();
-        }
-    }
+        string tryNum = "";
+        for(int i = 0; i < ChooseClueNumTxts.Length; i++)
+        { if (ChooseClueNumTxts[i].text != null && ChooseClueNumTxts[i].text != "") { tryNum += ChooseClueNumTxts[i].text; } }
 
-    // 성공 시
-    private void ft_resultComplete(ClueData[] fromClueDatas, string incomeID)
-    {
-        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
-        combineRotateUI_DTA.DOPause();
-        combineRotateUI.transform.rotation = Quaternion.identity;
-        combineRotateUI.sprite = CompleteSprite;
-
-        for (int i = 0; i < clueTxts.Length; i++)
-        { 
-            clueTxts[i].text = fromClueDatas[i].clueName;
-            foreach(IDBtn CD_idBtn in fromClueDatas[i].ClueSpotBtns)
-            {
-                if(CD_idBtn.buttonValue.ID == incomeID) { clueTxts[i].text += "\n<size=30>" +  CD_idBtn.buttonValue.Name + "</size>"; }
-            }
-        }
-        incomeDataTxt.text = incomeID;
-
-        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
-        Debug.Log("획득한 소득 데이터로 실제 삽입 구간");
-
-        resultWindowParentGO.SetActive(true);
+        if(SelectedPreliminarySurveySO.answerNum == tryNum)
+        { ft_resultComplete();}
+        else if (tryNum.Length < 4)
+        { ft_setAnnouncementText("모두 선택하지 않았습니다."); }
+        else
+        { ft_minusTryAmount(); }
     }
 
     // 실패 시 시도 가능 횟수 감소
     private void ft_minusTryAmount()
     {
-        for(int i = 0; i < Life_X_GO.Count; i++)
+        for (int i = 0; i < Life_X_GO.Count; i++)
         {
             if (!Life_X_GO[i].gameObject.activeSelf)
             {
                 Life_X_GO[i].gameObject.SetActive(true);
-                if(i == Life_X_GO.Count - 1)
+                if (i == Life_X_GO.Count - 1)
                 {
                     ft_resultFail();
                 }
                 return;
             }
         }
-        
-    }
-    // 실패 시 ( = 모두 소진 시 )
-    private void ft_resultFail()
-    {
-        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
-        combineRotateUI_DTA.DOPause(); 
-        combineRotateUI.transform.rotation = Quaternion.identity;
-        combineRotateUI.sprite = FailSprite;
 
-        for (int i = 0; i < clueTxts.Length; i++)
-        { clueTxts[i].text = "증거 미확인"; }
-        incomeDataTxt.text = "미획득";
+    }
+
+    // 성공 시
+    private void ft_resultComplete()
+    {
+        char[] Nums = SelectedPreliminarySurveySO.answerNum.ToCharArray(0, 4);
+        for(int i = 0; i < CompleteImgs.Length; i++)
+        {
+            int index = ((int)Nums[i] - 49);
+            CompleteImgs[i].sprite = genClueData[index].mainSprite;
+        }
+        incomeData.text = SelectedPreliminarySurveySO.getID + "을(를)\n획득했습니다.";
+
+        OnlyFail.gameObject.SetActive(false);
+        OnlyComplete.gameObject.SetActive(true);
 
         PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
-
         resultWindowParentGO.SetActive(true);
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+    }
+    
+    // 실패 시 ( = 결합 시도 가능 횟수 모두 소진 시 )
+    private void ft_resultFail()
+    {
+        incomeData.text = "아무것도 알아내지 못했습니다.";
+
+        OnlyFail.gameObject.SetActive(true);
+        OnlyComplete.gameObject.SetActive(false);
+
+        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+        resultWindowParentGO.SetActive(true);
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
 
     #endregion

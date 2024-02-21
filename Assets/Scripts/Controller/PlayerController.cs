@@ -118,6 +118,11 @@ public class PlayerController : MonoBehaviour
     }
     */
 
+
+    public void ResetPlayerSpot()
+    {
+        this.gameObject.transform.position = new Vector3(0, 0.2f, 0);
+    }
     private void AssignAnimationIDs()
     {
         _animIDSpeed = Animator.StringToHash("Speed");
