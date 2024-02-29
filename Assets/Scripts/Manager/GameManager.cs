@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 [Serializable]
 public class GameManager : MonoBehaviour
@@ -20,12 +21,15 @@ public class GameManager : MonoBehaviour
     public int CurrentDay = 1;*/
 
 
+
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
 
     private void Start()
     {
         // wordDatas = WordCSVReader.Parse("TestCVSFile2");
     }
+
+   
 
 }
 
@@ -36,6 +40,7 @@ public class MainInfo
     public int chapter = 1;
     public int day = 1;
     public string TodayOfTheWeek = "Monday";
+    public int money = 100;
 
     public int stressGage = 0;
     public int angerGage = 0;

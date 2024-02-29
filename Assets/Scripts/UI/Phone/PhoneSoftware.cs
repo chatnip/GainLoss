@@ -16,6 +16,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] PlaceManager PlaceManager;
+    [SerializeField] PartTimeJobManager PartTimeJobManager;
 
     [Header("*Create Schedule")]
     [SerializeField] GameObject CreateScheduleGO;
@@ -275,6 +276,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             SchedulePrograss.Set_InAMScheduleUI();
             CreateScheduleGO.SetActive(false);
             PhoneHardware.PhoneOff();
+
+            PartTimeJobManager.distinctionPartTimeJob();
         }
         else
         {

@@ -11,6 +11,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [Header("*Property")]
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ActionEventManager ActionEventManager;
+    [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] Pause pause;
     [HideInInspector] public bool isPause = false;
 
@@ -25,6 +26,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     [SerializeField] Desktop Desktop;
     [SerializeField] PreliminarySurveyWindow PreliminarySurveyWindow;
     [SerializeField] GameObject ComputerCamera2D;
+
+    [Header("*PartTimeJob")]
+    [SerializeField] Button PartTimeJobLoadingBtn;
 
     [Header("*Interact Object")]
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
@@ -343,9 +347,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (isPause) { return; }
 
         if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf) 
-        {
-            PreliminarySurveyWindow.ft_tryToCombine();
-        }
+        { PreliminarySurveyWindow.ft_tryToCombine(); }
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
@@ -354,6 +356,10 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (SchedulePrograss.OnExplanation)
         { SchedulePrograss.OnOffExlanation(); }
 
+        if (PartTimeJobLoadingBtn.gameObject.activeSelf)
+        {
+            StartCoroutine(PartTimeJobManager.StartPartTimeJob());
+        }
         if (CheckGetAllDatas.TerminateBtn.gameObject.activeSelf)
         {
             CheckGetAllDatas.TerminatePlaceAndGoHome();

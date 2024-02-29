@@ -24,6 +24,10 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] TMP_Text SavingPrograssText;
     [SerializeField] CanvasGroup loading;
 
+    [Header("*UI")]
+    [SerializeField] TMP_Text moneyText;
+    [SerializeField] TMP_Text dayText;
+
 
     /*[Header("*Place")]
     [HideInInspector] public string currentActionEventID;
@@ -114,12 +118,13 @@ public class ActionEventManager : Manager<ActionEventManager>
         PassDayExplanationText.DOFade(0, time);
 
         SetDayText();
-
         StartCoroutine(Post_ShowNextDayText(1f));
     }
     private IEnumerator Post_ShowNextDayText(float time)
     {
         SaveDatas();
+
+        setMainUI();
 
         PassDayExplanationText.color = Color.white;
 
@@ -177,6 +182,12 @@ public class ActionEventManager : Manager<ActionEventManager>
         });
     }
 
+
+    private void setMainUI()
+    {
+        moneyText.text = GameManager.currentMainInfo.money.ToString();
+        dayText.text = GameManager.currentMainInfo.day.ToString();
+    }
     #endregion
 
     #region Set Chapter

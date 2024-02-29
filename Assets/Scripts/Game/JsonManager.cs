@@ -300,8 +300,10 @@ public class JsonManager : MonoBehaviour
     void Set_StartSchedule()
     {
         List<string> datas = new List<string>();
+        datas.Add("S01");
         datas.Add("S02");
         datas.Add("S03");
+        datas.Add("S04");
 
         IDs ids = new IDs();
         ids.dataIDList = datas;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +9,11 @@ using UnityEngine.UI;
 public class ScheduleManager : Manager<ScheduleManager>
 {
     #region Value
+    [Header("*Property")]
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ActionEventManager ActionEventManager;
+    [SerializeField] PartTimeJobManager PartTimeJobManager;
 
     [HideInInspector] public List<string> currentHaveScheduleID = new List<string>();
     [HideInInspector] public List<string> currentSelectedScheduleID = new List<string>();
@@ -39,9 +42,9 @@ public class ScheduleManager : Manager<ScheduleManager>
             if (currentSelectedScheduleID.Count == 0)
             {
                 SchedulePrograss.Set_InStartScheduleUI();
+
                 return;
             }
-            
         }
         else
         {
@@ -51,14 +54,17 @@ public class ScheduleManager : Manager<ScheduleManager>
             {
                 currentPrograssScheduleID = currentSelectedScheduleID[1];
                 SchedulePrograss.Set_InPMScheduleUI();
+
+                PartTimeJobManager.distinctionPartTimeJob();
+
                 return;
             }
             else if (currentPrograssScheduleID == currentSelectedScheduleID[1])
             {
                 currentPrograssScheduleID = "S99";
                 SchedulePrograss.Set_InEndScheduleUI();
-
                 EndDayBtn.gameObject.SetActive(true);
+
                 return;
             }
 
@@ -82,6 +88,8 @@ public class ScheduleManager : Manager<ScheduleManager>
         }
 
     }
+
+    
 
     public void ResetDay()
     {

@@ -6,7 +6,7 @@ using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
-    #region 변수
+    #region Value
     [Header("Player")]
     [Tooltip("캐릭터의 속도")]
     [SerializeField] float MoveSpeed = 2.0f;
@@ -95,6 +95,8 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Main
+
     private void Awake()
     {
     }
@@ -110,6 +112,8 @@ public class PlayerController : MonoBehaviour
         GroundedCheck();
         Move();
     }
+
+    #endregion
 
     /*
     private void LateUpdate()
