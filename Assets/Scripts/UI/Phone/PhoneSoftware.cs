@@ -17,6 +17,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
+    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
 
     [Header("*Create Schedule")]
     [SerializeField] GameObject CreateScheduleGO;
@@ -369,6 +370,10 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                         }
                     }
                 }
+            }
+            if(PreliminarySurveyManager.AvailablePreliminarySurveySOs.Count == 0 || PreliminarySurveyManager.AvailablePreliminarySurveySOs == null)
+            {
+                PreliminarySurveyBtn.interactable = false;
             }
 
             foreach (TMP_Text text in SelectedScheduleTexts)

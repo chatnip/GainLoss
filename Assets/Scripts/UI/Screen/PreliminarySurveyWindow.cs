@@ -1,13 +1,9 @@
-using Cinemachine.Utility;
 using DG.Tweening;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,6 +41,12 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     [Header("*GOs")]
     [SerializeField] List<GameObject> Life_X_GO;
+
+    [Header("*cutscene")]
+    [SerializeField] Image cutsceneImg;
+    [SerializeField] TMP_Text cutsceneTxt;
+    public Sequence sequence;
+    bool cutsceneIsPlaying = false;
 
     [Header("*Result")]
     [SerializeField] public GameObject resultWindowParentGO;
@@ -205,7 +207,24 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     // 단서 찾기 시도
     public void Interact()
     {
-        if (PlayerInputController.SelectBtn == endBtn)
+        if (cutsceneIsPlaying)
+        {
+            if (!sequence.IsPlaying())
+            {
+                if (SelectedPreliminarySurveySO.cutsceneSprites.IndexOf(cutsceneImg.sprite) < SelectedPreliminarySurveySO.cutsceneSprites.Count - 1)
+                {
+                    sequence.timeScale = 1.0f;
+                    StartCoroutine(setImg(SelectedPreliminarySurveySO.cutsceneSprites, cutsceneImg.sprite));
+                }
+                cutsceneIsPlaying = false;
+                sequence.Play();
+            }
+            else
+            {
+                sequence.timeScale = 25.0f;
+            }
+        }
+        if (PlayerInputController.SelectBtn == endBtn && endBtn.interactable)
         {
             Desktop.EndScheduleThis();
             PlayerInputController.SetSectionBtns(null, null);
@@ -231,7 +250,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         { if (ChooseClueNumTxts[i].text != null && ChooseClueNumTxts[i].text != "") { tryNum += ChooseClueNumTxts[i].text; } }
 
         if(SelectedPreliminarySurveySO.answerNum == tryNum)
-        { ft_resultComplete();}
+        { playCutscene(); }
         else if (tryNum.Length < 4)
         { ft_setAnnouncementText("모두 선택하지 않았습니다."); }
         else
@@ -256,11 +275,67 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     }
 
+
     // 성공 시
-    private void ft_resultComplete()
+    private void playCutscene()
     {
+        endBtn.interactable = false;
+        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+
+        cutsceneImg.color = new Color(0, 0, 0, 0);
+        cutsceneImg.gameObject.SetActive(true);
+        cutsceneTxt.text = "";
+
+
+        sequence = DOTween.Sequence();
+        sequence.timeScale = 1.0f;
+        cutsceneImg.sprite = SelectedPreliminarySurveySO.cutsceneSprites[0];
+        
+        sequence.Append(cutsceneImg.DOFade(1.0f, 0.25f));
+        for (int i = 0; i < SelectedPreliminarySurveySO.cutsceneSprites.Count; i++)
+        {
+            
+            sequence.Append(cutsceneImg.DOColor(Color.white, 0.25f));
+            sequence.Append(cutsceneTxt.DOText(SelectedPreliminarySurveySO.cutsceneDialogs[i], 2.0f)
+                .OnStart(() =>
+                {
+                    cutsceneTxt.transform.parent.gameObject.SetActive(true);
+                    cutsceneIsPlaying = true;
+                })
+                .OnComplete(() =>
+                {
+                    sequence.Pause();
+                }));
+            sequence.Append(cutsceneImg.DOColor(Color.black, 0.25f)
+                .OnStart(() =>
+                {
+                    cutsceneTxt.text = "";
+                    cutsceneTxt.transform.parent.gameObject.SetActive(false);
+                }));
+        }
+
+        sequence
+            .OnComplete(() =>
+            {
+                showResult();
+
+                cutsceneImg.color = new Color(0, 0, 0, 0);
+                cutsceneImg.gameObject.SetActive(false);
+                cutsceneTxt.text = "";
+            });
+    }
+    private IEnumerator setImg(List<Sprite> spriteList, Sprite currentSprite)
+    {
+        yield return new WaitForSeconds(0.25f);
+        Sprite s = spriteList[spriteList.IndexOf(currentSprite) + 1];
+        cutsceneImg.sprite = s;
+
+    }
+    private void showResult()
+    {
+        endBtn.interactable = true;
         char[] Nums = SelectedPreliminarySurveySO.answerNum.ToCharArray(0, 4);
-        for(int i = 0; i < CompleteImgs.Length; i++)
+        for (int i = 0; i < CompleteImgs.Length; i++)
         {
             int index = ((int)Nums[i] - 49);
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
@@ -270,8 +345,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
 
-        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
         resultWindowParentGO.SetActive(true);
+        Debug.Log(SelectedPreliminarySurveySO.name);
+        PreliminarySurveyManager.CPSSO_IDs.Add(SelectedPreliminarySurveySO.name);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
     

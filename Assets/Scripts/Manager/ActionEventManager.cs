@@ -13,6 +13,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] GameSystem GameSystem;
     [SerializeField] JsonManager JsonManager;
     [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
 
     [Header("*Input")]
     [SerializeField] PlayerInputController PlayerInputController;
@@ -227,6 +228,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     {
         DOTween.Kill(SavingPrograssText);
 
+        PreliminarySurveyManager.ft_setAPSSOs();
         JsonManager.SaveAllGameDatas();
 
         GameSystem.SetPlayerTransform();

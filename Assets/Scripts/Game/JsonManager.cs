@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening.Plugins.Core.PathCore;
+using static UnityEditor.PlayerSettings;
 
 public class JsonManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class JsonManager : MonoBehaviour
     [HideInInspector] public string json_sentenceFileName;
     [HideInInspector] public string json_ScheduleFileName;
     [HideInInspector] public string json_PlaceFileName;
+    [HideInInspector] public string json_PSFileName;
 
     // public List<WordBase> myWords = new List<WordBase>();
     [SerializeField] WordManager WordManager;
@@ -22,6 +24,7 @@ public class JsonManager : MonoBehaviour
     [SerializeField] GameManager GameManager;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlaceManager PlaceManager;
+    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
 
     private void Awake()
     {
@@ -44,6 +47,7 @@ public class JsonManager : MonoBehaviour
         json_sentenceFileName = "sentenceDatabase.json";
         json_ScheduleFileName = "scheduleDatabase.json";
         json_PlaceFileName = "placeDatabase.json";
+        json_PSFileName = "gotPSDatabase.json";
     }
 
     #region Load Json
@@ -140,7 +144,12 @@ public class JsonManager : MonoBehaviour
         // Load -> place Json
         PlaceManager.currentPlaceIDList =
             JsonLoad_L(json_filePath, json_PlaceFileName);
-        
+
+        // Load -> got PreliminarySurvey Json
+        PreliminarySurveyManager.CPSSO_IDs =
+            JsonLoad_L(json_filePath, json_PSFileName);
+
+
     }
 
     #endregion
@@ -234,6 +243,9 @@ public class JsonManager : MonoBehaviour
 
         // Save -> Place Json
         JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceIDList);
+
+        // Save -> Got PreliminarySurvey Json
+        JsonSave(json_filePath, json_PSFileName, PreliminarySurveyManager.CPSSO_IDs);
     }
 
     #endregion
@@ -246,38 +258,16 @@ public class JsonManager : MonoBehaviour
     {
         SetPath();
 
-        Set_StartMainInfo(); // Main Info
-        Set_StartWord(); // Word IDs
-        Set_StartWordAction(); // WordAction IDs
+        JsonSave(json_filePath, json_mainInfoFileName, new MainInfo());
+        JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001", "W004" });
+        JsonSave(json_filePath, json_wordActionFileName, new List<string>() { "WA01", "WA02" });
+        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
+        JsonSave(json_filePath, json_PlaceFileName, new List<string>() { "P01", "P02"});
+        JsonSave(json_filePath, json_PSFileName, new List<string>() { });
+
         Set_StartSentence(); // Sentence IDs
-        Set_StartSchedule(); // Schedule IDs
-        Set_StartPlace(); // Place IDs
-
     }
 
-    void Set_StartMainInfo()
-    {
-        MainInfo mainDatas = new MainInfo();
-
-        JsonSave(json_filePath, json_mainInfoFileName, mainDatas);
-    }
-    void Set_StartWord()
-    {
-        List<string> Datas = new List<string>();
-        Datas.Add("W001");
-        Datas.Add("W004");
-
-        JsonSave(json_filePath, json_wordFileName, Datas);
-    }
-    void Set_StartWordAction()
-    {
-        List<string> Datas = new List<string>();
-
-        Datas.Add("WA01");
-        Datas.Add("WA02");
-
-        JsonSave(json_filePath, json_wordActionFileName, Datas);
-    }
     void Set_StartSentence()
     {
         string path = "Assets/Resources/Sheet/SentenceSheet.csv";
@@ -296,30 +286,6 @@ public class JsonManager : MonoBehaviour
         result.RemoveAt(0);
 
         JsonSave(json_filePath, json_sentenceFileName, result);
-    }
-    void Set_StartSchedule()
-    {
-        List<string> datas = new List<string>();
-        datas.Add("S01");
-        datas.Add("S02");
-        datas.Add("S03");
-        datas.Add("S04");
-
-        IDs ids = new IDs();
-        ids.dataIDList = datas;
-
-        JsonSave(json_filePath, json_ScheduleFileName, ids.dataIDList);
-    }
-    void Set_StartPlace()
-    {
-        List<string> datas = new List<string>();
-        datas.Add("P01");
-        datas.Add("P02");
-
-        IDs ids = new IDs();
-        ids.dataIDList = datas;
-
-        JsonSave(json_filePath, json_PlaceFileName, ids.dataIDList);
     }
 
     #endregion
