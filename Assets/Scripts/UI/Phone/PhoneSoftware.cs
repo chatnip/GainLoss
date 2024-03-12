@@ -421,11 +421,11 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     public void SetCurrentScheduleUI(bool IsThisSchedule)
     {
-        List<Button> btns = new List<Button>();
+        List<List<Button>> btns = new List<List<Button>>();
         if (!IsThisSchedule)
         {
-            btns = new List<Button>() 
-            { AIL_pad_Btn, EXE_pad_Btn, Place_pad_Btn };
+            btns = new List<List<Button>>
+            { new List<Button> { AIL_pad_Btn, EXE_pad_Btn, Place_pad_Btn } };
             PlayerInputController.SetSectionBtns(btns, this);
         }
         else 
@@ -435,14 +435,21 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             {
                 case "S00":
                     CreateScheduleGO.SetActive(true);
-                    btns = new List<Button>() 
-                    { PreliminarySurveyBtn, SiteSurveyBtn, WatchingTheStreamingBtn, DoingPartTimeJobBtn, 
-                        SelectedScheduleBtns[0], SelectedScheduleBtns[1], DecisionBtn };
+                    btns = new List<List<Button>>()
+                    { 
+                        new List<Button>() { PreliminarySurveyBtn },
+                        new List<Button>() { SiteSurveyBtn },
+                        new List<Button>() { WatchingTheStreamingBtn },
+                        new List<Button>() { DoingPartTimeJobBtn },
+                        new List<Button>() { SelectedScheduleBtns[0] },
+                        new List<Button>() { SelectedScheduleBtns[1] },
+                        new List<Button>() { DecisionBtn } 
+                    };
                     PlayerInputController.SetSectionBtns(btns, this);
                     break;
                 case "S02":
                     map.SetActive(true);
-                    btns = PlaceBtns;
+                    btns = new List<List<Button>>() { PlaceBtns };
                     PlayerInputController.SetSectionBtns(btns, this);
                     break;
             }

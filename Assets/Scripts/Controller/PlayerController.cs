@@ -7,6 +7,7 @@ using UniRx;
 public class PlayerController : MonoBehaviour
 {
     #region Value
+
     [Header("Player")]
     [Tooltip("캐릭터의 속도")]
     [SerializeField] float MoveSpeed = 2.0f;
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour
             return _input._input.currentControlScheme == "KeyboardMouse";
         }
     }
+
     #endregion
 
     #region Main

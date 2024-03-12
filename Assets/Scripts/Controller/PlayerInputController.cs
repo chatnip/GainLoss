@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerInputController : Manager<PlayerInputController>
 {
@@ -46,7 +47,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     
     [Header("*Input Setting")]
     [SerializeField] public PlayerInput _input;
-    [SerializeField] public List<Button> SectionBtns;
+    [SerializeField] public List<List<Button>> SectionBtns;
     [SerializeField] public Button SelectBtn;
     [SerializeField] InputAction settingOn;
 
@@ -67,7 +68,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     // public BoolReactiveProperty interactMode = new BoolReactiveProperty();
 
     public IInteract interact;
-    private List<Button> TempSectionBtns;
+    private List<List<Button>> TempSectionBtns;
     private Button TempSelectedBtn;
     private IInteract TempInteract;
 
@@ -136,6 +137,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["Look"].performed += OnLook;
         playerInput["Pause"].started += OnPause;
 
+        playerInput["ChangeSeletedBtn_Right"].started += RightSelectedBtn;
+        playerInput["ChangeSeletedBtn_Left"].started += LeftSelectedBtn;
         playerInput["ChangeSeletedBtn_Down"].started += DownSelectedBtn;
         playerInput["ChangeSeletedBtn_Up"].started += UpSelectedBtn;
         playerInput["SeleteBtn"].started += ApplySeleteBtn;
@@ -165,8 +168,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["Look"].performed -= OnLook;
         _input.actions["Pause"].started -= OnPause;
 
+        _input.actions["ChangeSeletedBtn_Right"].started -= RightSelectedBtn;
+        _input.actions["ChangeSeletedBtn_Left"].started -= LeftSelectedBtn;
         _input.actions["ChangeSeletedBtn_Down"].started -= DownSelectedBtn;
         _input.actions["ChangeSeletedBtn_Up"].started -= UpSelectedBtn;
+
         _input.actions["SeleteBtn"].started -= ApplySeleteBtn;
 
         _input.actions["Phone"].started -= OnOffPhone;
@@ -480,18 +486,27 @@ public class PlayerInputController : Manager<PlayerInputController>
         
     }
 
-    private void DownSelectedBtn(InputAction.CallbackContext obj)
+    private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        if(SectionBtns != null && SectionBtns.Count > 1)
+        if(SectionBtns != null && SectionBtns.Count >= 1)
         {
-            int index = SectionBtns.IndexOf(SelectBtn);
-            if (index >= SectionBtns.Count - 1) 
+            List<Button> currentBtnList = new List<Button>();
+            foreach(List<Button> BtnList in SectionBtns)
             {
-                SelectBtn = SectionBtns[0];
+                if(BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int index = currentBtnList.IndexOf(SelectBtn);
+            if (index >= currentBtnList.Count - 1) 
+            {
+                SelectBtn = currentBtnList[0];
             }
             else
             {
-                SelectBtn = SectionBtns[(index + 1)];
+                SelectBtn = currentBtnList[(index + 1)];
             }
             OnOffSelectedBtn(SelectBtn);
         }
@@ -503,18 +518,92 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     }
 
+    private void LeftSelectedBtn(InputAction.CallbackContext obj)
+    {
+        if (SectionBtns != null && SectionBtns.Count >= 1)
+        {
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
+            {
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int index = currentBtnList.IndexOf(SelectBtn);
+            if (index <= 0)
+            {
+                SelectBtn = currentBtnList[currentBtnList.Count - 1];
+            }
+            else
+            {
+                SelectBtn = currentBtnList[(index - 1)];
+            }
+            OnOffSelectedBtn(SelectBtn);
+        }
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+        }
+    }
+
+
+    private void DownSelectedBtn(InputAction.CallbackContext obj)
+    {
+        if (SectionBtns != null && SectionBtns.Count > 1)
+        {
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
+            {
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int lineIndex = SectionBtns.IndexOf(currentBtnList);
+            int index = currentBtnList.IndexOf(SelectBtn);
+
+            if(lineIndex >= SectionBtns.Count - 1)
+            {
+                SelectBtn = SectionBtns[0][index];
+            }
+            else
+            {
+                SelectBtn = SectionBtns[lineIndex + 1][index];
+            }
+            OnOffSelectedBtn(SelectBtn);
+        }
+
+        if (Desktop.PSWindow.activeSelf)
+        {
+            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+        }
+    }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
-            int index = SectionBtns.IndexOf(SelectBtn);
-            if (index <= 0)
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
             {
-                SelectBtn = SectionBtns[SectionBtns.Count - 1];
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int lineIndex = SectionBtns.IndexOf(currentBtnList);
+            int index = currentBtnList.IndexOf(SelectBtn);
+
+            if(lineIndex <= 0)
+            {
+                SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
             }
             else
             {
-                SelectBtn = SectionBtns[(index - 1)];
+                SelectBtn = SectionBtns[lineIndex - 1][index];
             }
             OnOffSelectedBtn(SelectBtn);
         }
@@ -525,8 +614,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
 
 
-
-    public void SetSectionBtns(List<Button> btns, IInteract inter)
+    public void SetSectionBtns(List<List<Button>> btns, IInteract inter)
     {
         if(btns == null || inter == null || btns.Count == 0)
         {
@@ -535,7 +623,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         else
         {
             SectionBtns = btns;
-            SelectBtn = btns[0];
+            SelectBtn = btns[0][0];
             OnOffSelectedBtn(SelectBtn);
             this.interact = inter;
         }
@@ -543,23 +631,25 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnOffSelectedBtn(Button btn)
     {
-        if(SectionBtns == null || btn == null) { return; } 
-        foreach (Button SectionBtn in SectionBtns)
+        if(SectionBtns == null || btn == null) { return; }
+
+        List<Button> allSectionList = new List<Button>();
+        foreach(List<Button> btns in SectionBtns)
+        {
+            allSectionList.AddRange(btns);
+        }
+
+        foreach (Button SectionBtn in allSectionList)
         {
             if(SectionBtn == btn)
             {
                 if(SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                {
-                    outline.enabled = true;
-                }
+                { outline.enabled = true; }
             }
             else
             {
                 if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                {
-                    outline.enabled = false;
-                }
-
+                { outline.enabled = false; }
             }
         }
     }

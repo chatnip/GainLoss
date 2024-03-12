@@ -263,7 +263,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
         // 다음날로 가는 버튼 출력
         EndBtn.gameObject.SetActive(true);
         EndBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
-        PlayerInputController.SetSectionBtns(new List<Button>() { EndBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { EndBtn } }, this);
 
         void ClearGageAndText()
         {

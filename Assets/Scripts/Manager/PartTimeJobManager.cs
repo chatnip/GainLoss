@@ -62,7 +62,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
     }
     public IEnumerator StartPartTimeJob()
     {
-        PlayerInputController.SetSectionBtns(new List<Button> { partTimeJob_EndBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { partTimeJob_EndBtn } }, this);
         partTimeJob_StartBtn.gameObject.SetActive(false);
         partTimeJob_LoadingCG.gameObject.SetActive(true);
         partTimeJob_LoadingCG.DOFade(1.0f, 0.5f);

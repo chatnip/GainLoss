@@ -214,12 +214,12 @@ public class PhoneHardware : MonoBehaviour, IInteract
     //Cacul
     
 
-    public List<Button> SetPhoneOnButtons()
+    public List<List<Button>> SetPhoneOnButtons()
     {
-        List<Button> buttons = new List<Button>();
+        List<List<Button>> buttons = new List<List<Button>>();
         foreach(Button btn in PhoneOnButtons)
         {
-            if (btn.gameObject.activeSelf) { buttons.Add(btn); }
+            if (btn.gameObject.activeSelf) { buttons.Add(new List<Button> { btn }); }
         }
         return buttons;
     }

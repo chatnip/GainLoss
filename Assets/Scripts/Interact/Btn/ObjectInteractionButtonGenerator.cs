@@ -164,18 +164,18 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
             }
         }
     }
-    public List<Button> SetSectionBtns()
+    public List<List<Button>> SetSectionBtns()
     {
-        List<Button> btns = new List<Button>();
+        List<List<Button>> btns = new List<List<Button>>();
         if (this.transform.GetChild(0) != null)
         {
             Transform[] allChildren = GetComponentsInChildren<Transform>();
-            btns = new List<Button>();
+            btns = new List<List<Button>>();
             foreach (Transform child in allChildren)
             {
                 if (child.TryGetComponent(out Button btn))
                 {
-                    btns.Add(btn);
+                    btns.Add(new List<Button> { btn });
                 }
             }
         }

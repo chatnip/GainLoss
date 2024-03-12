@@ -67,7 +67,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     private void OnEnable()
     {
         ft_setData(); // Set Clue Reduction Img
-        ft_setPadSection(clueReductionBtns.ToList());
+        ft_setPadSection(new List<List<Button>> { 
+            new List<Button> { clueReductionBtns[0], clueReductionBtns[1], clueReductionBtns[2], clueReductionBtns[3] },
+            new List<Button> { clueReductionBtns[4], clueReductionBtns[5], clueReductionBtns[6], clueReductionBtns[7] }});
     }
 
     private void LateUpdate()
@@ -135,7 +137,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     #endregion
 
     #region Pad
-    private void ft_setPadSection(List<Button> BtnList)
+    private void ft_setPadSection(List<List<Button>> BtnList)
     {
         PlayerInputController.SetSectionBtns(BtnList , this);
     }
@@ -280,7 +282,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     private void playCutscene()
     {
         endBtn.interactable = false;
-        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 
         cutsceneImg.color = new Color(0, 0, 0, 0);
         cutsceneImg.gameObject.SetActive(true);
@@ -359,7 +361,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
 
-        PlayerInputController.SetSectionBtns(new List<Button> { endBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
         resultWindowParentGO.SetActive(true);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }

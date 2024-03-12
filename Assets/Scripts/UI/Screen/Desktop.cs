@@ -160,14 +160,14 @@ public class Desktop : MonoBehaviour, IInteract
         {
             desktopSoftwere = DesktopSoftwere.Stream;
             ConfirmPopupSetting();
-            PlayerInputController.SetSectionBtns(new List<Button>() { confirmBtn }, this);
+            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
             return;
         }
         else if(PlayerInputController.SelectBtn == PSOpenBtn)
         {
             desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
             ConfirmPopupSetting();
-            PlayerInputController.SetSectionBtns(new List<Button>() { confirmBtn }, this);
+            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
             return;
         }
 
@@ -320,7 +320,11 @@ public class Desktop : MonoBehaviour, IInteract
 
     public void setDesktopSectionBtns()
     {
-        PlayerInputController.SetSectionBtns(new List<Button>() { snsOpenBtn, fancafeOpenBtn, streamOpenBtn, PSOpenBtn }, this);
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { 
+            new List<Button> { snsOpenBtn },
+            new List<Button> { fancafeOpenBtn },
+            new List<Button> { streamOpenBtn },
+            new List<Button> { PSOpenBtn } }, this);
     }
 
     #endregion

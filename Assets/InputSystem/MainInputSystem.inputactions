@@ -60,9 +60,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChangeSeletedBtn_Down",
+                    "name": "ChangeSeletedBtn_Right",
                     "type": "Button",
-                    "id": "b8d05c18-bf73-43f6-9d60-60f2cbc8008f",
+                    "id": "0c2a0ef0-c2d0-4979-a645-3dc24eb22390",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeSeletedBtn_Left",
+                    "type": "Button",
+                    "id": "d891a809-b983-4dd9-b2d3-e4ee286fd0c5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -72,6 +81,15 @@
                     "name": "ChangeSeletedBtn_Up",
                     "type": "Button",
                     "id": "18292785-7bfc-4831-84d1-14f6701bbecc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeSeletedBtn_Down",
+                    "type": "Button",
+                    "id": "b8d05c18-bf73-43f6-9d60-60f2cbc8008f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -322,28 +340,6 @@
                 },
                 {
                     "name": "",
-                    "id": "2999de61-9a53-49a1-931f-3594fc91a284",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "ChangeSeletedBtn_Down",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "51456c04-2bc9-4004-aa07-3e286a81c184",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "ChangeSeletedBtn_Down",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5a2f394a-de7f-4fc3-aac1-baab32a53492",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -357,17 +353,6 @@
                     "name": "",
                     "id": "31dc22ef-b94b-4b15-a653-3ea121ce1d0f",
                     "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "ChangeSeletedBtn_Up",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "82673e5d-1f05-4bcf-93ba-435307f1f5d8",
-                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
@@ -438,6 +423,39 @@
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "SetSomething",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b041971-8ca4-442d-af76-ea400556d38b",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "ChangeSeletedBtn_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "839af454-29d1-4bf7-8861-a30a5d05b7ae",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "ChangeSeletedBtn_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2999de61-9a53-49a1-931f-3594fc91a284",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "ChangeSeletedBtn_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

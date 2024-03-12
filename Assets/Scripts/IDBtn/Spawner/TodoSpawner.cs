@@ -39,7 +39,12 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     private void SetThisSectionBtns(RectTransform parentRT)
     {
         Button[] allChildren = parentRT.GetComponentsInChildren<Button>();
-        List<Button> btns = new List<Button>(allChildren);
+        List<List<Button>> allBtnsList = new List<List<Button>>();
+        for(int i = 0; i < allChildren.Length; i++)
+        {
+            allBtnsList.Add(new List<Button> { allChildren[i] });
+        }
+        List<List<Button>> btns = new List<List<Button>>(allBtnsList);
         PlayerInputController.SetSectionBtns(btns, this);
     }
 
@@ -57,7 +62,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             else if (iDBtn.buttonType == ButtonType.WordActionType)
             {
                 WordManager.WordActionBtnApply(iDBtn.buttonValue);
-                PlayerInputController.SetSectionBtns(new List<Button>() { WordManager.resetBtn, Desktop.streamStartBtn }, this);
+                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
 
                 return;
             }
@@ -74,7 +79,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             Desktop.streamStartBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
             outilne.enabled = false;
             Desktop.StartStream();
-            PlayerInputController.SetSectionBtns(new List<Button>() { DialogManager.dialogNextBtn }, DialogManager);
+            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { DialogManager.dialogNextBtn } }, DialogManager);
         }
 
     }

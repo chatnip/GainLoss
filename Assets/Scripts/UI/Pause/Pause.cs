@@ -23,7 +23,7 @@ public class Pause : MonoBehaviour, IInteract
     [SerializeField] Button resumeBtn;
     [SerializeField] Button backToTitleBtn;
     [SerializeField] Button exitGameBtn;
-    List<Button> pauseBtns;
+    List<List<Button>> pauseBtns;
 
     [Header("*Window")]
     [SerializeField] public GameObject reconfirmWindow;
@@ -48,8 +48,12 @@ public class Pause : MonoBehaviour, IInteract
 
     private void Awake()
     {
-        pauseBtns = new List<Button>()
-        { resumeBtn, backToTitleBtn, exitGameBtn };
+        pauseBtns = new List<List<Button>>
+        { 
+            new List<Button> { resumeBtn },
+            new List<Button> { backToTitleBtn },
+            new List<Button> { exitGameBtn } 
+        };
 
         resumeBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -124,7 +128,7 @@ public class Pause : MonoBehaviour, IInteract
         { ft_closePausePopup(); return; }
         else if (PlayerInputController.SelectBtn == backToTitleBtn)
         {
-            PlayerInputController.SetSectionBtns(new List<Button>() { yesBtn, noBtn }, this);
+            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { yesBtn, noBtn } }, this);
 
             chooseActionText.text = "[ Back To Title ]";
             chooseBtn = backToTitleBtn;
@@ -136,7 +140,7 @@ public class Pause : MonoBehaviour, IInteract
         }
         else if (PlayerInputController.SelectBtn == exitGameBtn)
         {
-            PlayerInputController.SetSectionBtns(new List<Button>() { yesBtn, noBtn }, this);
+            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { yesBtn, noBtn } }, this);
 
             chooseActionText.text = "[ Exit Game ]";
             chooseBtn = exitGameBtn;

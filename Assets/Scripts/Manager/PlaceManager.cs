@@ -11,6 +11,7 @@ public class PlaceManager : Manager<PlaceManager>
 {
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] PlayerController PlayerController;
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PhoneHardware PhoneHardware;
@@ -145,7 +146,9 @@ public class PlaceManager : Manager<PlaceManager>
             SetInteractionObjects.OnInteractiveOB();
         }
 
-        Debug.Log("플레이어 위치 초기화하기");
+        Debug.Log("플레이어 위치 초기화");
+
+        //PlayerController.ResetPlayerSpot();
 
     }
 
@@ -221,7 +224,6 @@ public class PlaceManager : Manager<PlaceManager>
         SetInteractionObjects.OffInteractiveOB();
         SetCurrent3DMap(currentPlace);
 
-        //PlayerController.ResetPlayerSpot();
 
         yield return new WaitForSeconds(delay);
 
