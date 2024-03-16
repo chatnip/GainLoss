@@ -3,23 +3,16 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class NpcInteractObject : InteractNpc
+public class NpcInteractObject : InteractObject
 {
-    [SerializeField] GameSystem GameSystem;
-
-
-    private void OnEnable()
-    {
-        if (GameSystem == null)
-        {
-            GameObject game = GameObject.Find("GameSystem");
-            game.TryGetComponent(out GameSystem);
-        }
-    }
+    [SerializeField] protected ConversationBase ConversationBase_SO;
 
     public override void Interact()
     {
-        GameSystem.NpcDescriptionOn(base.ConversationBase_SO);
-
+        if (base.CanInteract)
+        {
+            GameSystem.NpcDescriptionOn(ConversationBase_SO);
+            base.Interact();
+        }
     }
 }

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ComputerInteract : InteractObject
 {
+    #region Value
+
     [Header("*property")]
-    [SerializeField] GameSystem GameSystem;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PhoneHardware PhoneHardware;
@@ -28,17 +29,23 @@ public class ComputerInteract : InteractObject
     [TextArea]
     [SerializeField] public string description;
 
-    //[HideInInspector] public bool CanInter = true;
+    #endregion
 
+    /*
+    [HideInInspector] public bool CanInter = true;
+    
     private void OnEnable()
     {
-        /*string id = ScheduleManager.currentPrograssScheduleID;
+        string id = ScheduleManager.currentPrograssScheduleID;
         if(id == null || id == "") { return; }
         else if("S03" == id) // 스케쥴 아이디가 방송 시청하라면...
         {
             CanInteract = false;
-        }*/
+        }
     }
+    */
+
+    #region Screen
 
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
     {
@@ -94,6 +101,10 @@ public class ComputerInteract : InteractObject
         PlayerInputController.CanMove = true;
     }
 
+    #endregion
+
+    #region Interact
+
     public override void Interact()
     {
         if (ScheduleManager.currentPrograssScheduleID == "S01" ||
@@ -102,6 +113,8 @@ public class ComputerInteract : InteractObject
         else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
         //StartCoroutine(ScreenZoomIn());
     }
+
+    #endregion
 
     /*    public override void OnPointerDown(PointerEventData eventData)
         {

@@ -14,6 +14,8 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] WordManager WordManager;
+    [SerializeField] PlaceManager PlaceManager;
     [SerializeField] Desktop Desktop;
 
     [Header("*What Value is Changing")]
@@ -342,7 +344,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             int index = ((int)Nums[i] - 49);
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
         }
-        incomeData.text = SelectedPreliminarySurveySO.getID + "À»(¸¦)\nÈ¹µæÇß½À´Ï´Ù.";
+        incomeData.text = ft_setTextGetData(SelectedPreliminarySurveySO.getID) + "\n¡Ú È¹µæ ¡Ú";
 
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
@@ -351,6 +353,36 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         Debug.Log(SelectedPreliminarySurveySO.name);
         PreliminarySurveyManager.CPSSO_IDs.Add(SelectedPreliminarySurveySO.name);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+    }
+    // °á°ú Text ¿Ï¼º ¹× È¹µæ ID »ðÀÔ(Àû¿ë)
+    private string ft_setTextGetData(string ID)
+    {
+        string name = "";
+        if(ID.Substring(0, 2) == "WA")
+        {
+            if (!WordManager.currentWordActionIDList.Contains(ID))
+            {
+                name = DataManager.WordActionDatas[3][ID].ToString() + ".EXE";
+                WordManager.currentWordActionIDList.Add(ID);
+            }
+        }
+        else if(ID.Substring(0, 1) == "W")
+        {
+            if (!WordManager.currentWordIDList.Contains(ID))
+            {
+                name = DataManager.WordDatas[5][ID].ToString() + ".AIL";
+                WordManager.currentWordIDList.Add(ID);
+            }
+        }
+        else if(ID.Substring(0, 1) == "P")
+        {
+            if (!PlaceManager.currentPlaceIDList.Contains(ID))
+            {
+                name = DataManager.PlaceDatas[1][ID].ToString() + "(Place)";
+                PlaceManager.currentPlaceIDList.Add(ID);
+            }
+        }
+        return name;
     }
     
     // ½ÇÆÐ ½Ã ( = °áÇÕ ½Ãµµ °¡´É È½¼ö ¸ðµÎ ¼ÒÁø ½Ã )

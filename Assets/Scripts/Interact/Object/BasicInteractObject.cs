@@ -6,19 +6,7 @@ using UnityEngine.EventSystems;
 
 public class BasicInteractObject : InteractObject
 {
-    [SerializeField] GameSystem GameSystem;
-    [TextArea]
-    [SerializeField] public string description;
-
-    private void OnEnable()
-    {
-        if (GameSystem == null)
-        {
-            GameObject game = GameObject.Find("GameSystem");
-            game.TryGetComponent(out GameSystem);
-        }
-    }
-
+    [TextArea] [SerializeField] public string description;
 
     public override void Interact()
     {
@@ -27,7 +15,6 @@ public class BasicInteractObject : InteractObject
             GameSystem.ObjectDescriptionOn(description);
             base.Interact();
         }
-        
         /*GameSystem.ObjectDescriptionOn(description)
             .OnComplete(() =>
             {
@@ -49,9 +36,7 @@ public class BasicInteractObject : InteractObject
                         });
                 }
             });*/
-
     }
-
     /*    public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);

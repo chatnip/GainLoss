@@ -38,22 +38,9 @@ public class SetInteractionObjects : MonoBehaviour
 
     private void OnTriggerEnter(Collider OB)
     {
-        if(OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
+        if(OB.TryGetComponent(out InteractObject interactObject))
         {
             if (interactObject.CanInteract)
-            {
-                OB.gameObject.GetComponent<OutlineObject>().enabled = true;
-                activeInteractionGOs.Add(OB.gameObject);
-
-                objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
-
-                if (objectInteractionButtonGenerator.SectionIsThis)
-                { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
-            }
-        }
-        if (OB.TryGetComponent<InteractNpc>(out InteractNpc interactNpc))
-        {
-            if (interactNpc.CanInteract)
             {
                 OB.gameObject.GetComponent<OutlineObject>().enabled = true;
                 activeInteractionGOs.Add(OB.gameObject);
@@ -67,17 +54,7 @@ public class SetInteractionObjects : MonoBehaviour
     }
     private void OnTriggerExit(Collider OB)
     {
-        if (OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
-        {
-            OB.gameObject.GetComponent<OutlineObject>().enabled = false;
-            activeInteractionGOs.Remove(OB.gameObject);
-
-            objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
-
-            if (objectInteractionButtonGenerator.SectionIsThis)
-            { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
-        }
-        if (OB.TryGetComponent<InteractNpc>(out InteractNpc interactNpc))
+        if (OB.TryGetComponent(out InteractObject interactObject))
         {
             OB.gameObject.GetComponent<OutlineObject>().enabled = false;
             activeInteractionGOs.Remove(OB.gameObject);
@@ -91,19 +68,9 @@ public class SetInteractionObjects : MonoBehaviour
     }
     private void OnTriggerStay(Collider OB)
     {
-        if (OB.TryGetComponent<InteractObject>(out InteractObject interactObject))
+        if (OB.TryGetComponent(out InteractObject interactObject))
         {
             if (!interactObject.CanInteract)
-            {
-                OB.gameObject.GetComponent<OutlineObject>().enabled = false;
-                activeInteractionGOs.Remove(OB.gameObject);
-
-                objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
-            }
-        }
-        if (OB.TryGetComponent<InteractNpc>(out InteractNpc interactNpc))
-        {
-            if (!interactNpc.CanInteract)
             {
                 OB.gameObject.GetComponent<OutlineObject>().enabled = false;
                 activeInteractionGOs.Remove(OB.gameObject);

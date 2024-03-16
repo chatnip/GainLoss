@@ -36,7 +36,6 @@ public class InteractObjectBtn : InteractCore
     public void interactObject()
     {
         if (TargetGO.TryGetComponent(out InteractObject interactObject)) { interactObject.Interact(); }
-        else if (TargetGO.TryGetComponent(out InteractNpc interactNpc)) { interactNpc.Interact(); }
     }
 
 }

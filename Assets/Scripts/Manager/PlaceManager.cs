@@ -129,6 +129,9 @@ public class PlaceManager : Manager<PlaceManager>
             CheckGetAllDatas.gameObject.SetActive(false);
 
             SetInteractionObjects.OnInteractiveOB();
+
+            foreach (Transform child in placeGOList[0].transform)
+            { if (child.TryGetComponent(out InteractObject IO)) { IO.ft_setOnNOP(); } }
         }
         else 
         {
@@ -144,6 +147,9 @@ public class PlaceManager : Manager<PlaceManager>
             CheckGetAllDatas.gameObject.SetActive(true);
 
             SetInteractionObjects.OnInteractiveOB();
+
+            foreach (Transform child in placeGOList[s].transform)
+            { if (child.TryGetComponent(out InteractObject IO)) { IO.ft_setOnNOP(); } }
         }
 
         Debug.Log("플레이어 위치 초기화");

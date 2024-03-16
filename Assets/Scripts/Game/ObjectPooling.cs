@@ -4,35 +4,54 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
+    [Header("*Word Btn")]
     [SerializeField] List<IDBtn> WordBtnObjectPrefabs = new List<IDBtn>();
-    [SerializeField] Queue<IDBtn> WordBtnObjectesQueue = new Queue<IDBtn>();
+    [SerializeField] Queue<IDBtn> WordBtnObjectsQueue = new Queue<IDBtn>();
     [SerializeField] RectTransform wordPool;
+
+    [Header("*Norification Object")]
+    [SerializeField] public List<GameObject> NorificationObjectPrefabs = new List<GameObject>();
 
     private void Awake()
     {
-        SetupQueue();
+        Setup();
     }
 
-    private void SetupQueue()
+    private void Setup()
     {
         for (int i = 0; i < WordBtnObjectPrefabs.Count; i++)
         {
-            WordBtnObjectesQueue.Enqueue(WordBtnObjectPrefabs[i]);
+            WordBtnObjectsQueue.Enqueue(WordBtnObjectPrefabs[i]);
             WordBtnObjectPrefabs[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < NorificationObjectPrefabs.Count; i++)
+        {
+            NorificationObjectPrefabs[i].gameObject.SetActive(false);
         }
     }
 
     public IDBtn WordBtnObjectPool()
     {
-        var wordBtnObject = WordBtnObjectesQueue.Dequeue();
+        var wordBtnObject = WordBtnObjectsQueue.Dequeue();
         return wordBtnObject;
     }
 
-
     public void WordObjectPick(IDBtn wordBtnObject)
     {
-        WordBtnObjectesQueue.Enqueue(wordBtnObject);
+        WordBtnObjectsQueue.Enqueue(wordBtnObject);
         wordBtnObject.transform.SetParent(wordPool);
         wordBtnObject.gameObject.SetActive(false);
+    }
+
+    public GameObject ft_getUsableNOP()
+    {
+        for(int i = 0; i < NorificationObjectPrefabs.Count; i++)
+        {
+            if (!NorificationObjectPrefabs[i].gameObject.activeSelf)
+            {
+                return NorificationObjectPrefabs[i];
+            }
+        }
+        return null;
     }
 }

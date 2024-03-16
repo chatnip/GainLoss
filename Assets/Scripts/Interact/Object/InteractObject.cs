@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,31 +7,53 @@ using UnityEngine.EventSystems;
 
 public class InteractObject : InteractCore
 {
+    #region Value
+
+    [Header("*IDs")]
     [SerializeField] string objectID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getWordID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getWordActionID;
 
+    [Header("*Norification Object")]
+    [Tooltip("It's a factor that changes every time.")]
+    [SerializeField] public GameObject CurrentNorificationObject;
+    [SerializeField] public Vector3 NOP_Scale;
+    [SerializeField] private float NOP_Distance;
+
     [HideInInspector] public bool CanInteract = true;
 
+    protected GameSystem GameSystem;
+    ObjectPooling ObjectPooling;
     CheckGetAllDatas CheckGetAllDatas;
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
     WordManager WordManager;
 
+    #endregion
+
+    #region Main
+
     private void Awake()
     {
+        GameSystem = GameObject.Find("GameSystem").GetComponent<GameSystem>(); ;
         WordManager = GameObject.Find("WordManager").GetComponent<WordManager>();
         GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
+        ObjectPooling = GameObject.Find("ObjectPooling").GetComponent<ObjectPooling>();
 
         CanInteract = true;
     }
+
     private void OnEnable()
     {
         CanInteract = true;
     }
+
+    #endregion
+
+    #region Pointer
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -46,6 +69,11 @@ public class InteractObject : InteractCore
     {
         base.OnPointerExit(eventData);
     }
+
+    #endregion
+
+    #region Interact
+
     public override void Interact()
     {
         if (this.getWordID != "") { GetWordID(); }
@@ -55,6 +83,7 @@ public class InteractObject : InteractCore
         {
             CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
             CheckGetAllDatas.ApplyTerminateBtnAndText();
+            ft_setOffNOP();
         }
 
         //if(CanInteract) { CanInteract = false; }
@@ -66,6 +95,10 @@ public class InteractObject : InteractCore
 
 
     }
+
+    #endregion
+
+    #region Get ID
 
     protected void GetWordID()
     {
@@ -95,4 +128,40 @@ public class InteractObject : InteractCore
         getSomethingWithID.SetData(getWordActionID);
         getWordActionID = "";
     }
+
+    #endregion
+
+    #region Norification Object
+
+    public void ft_setOnNOP()
+    {
+        if ((getWordID == "" || getWordID == null) && (getWordActionID == "" || getWordActionID == null)) { return; }
+
+        bool canGettingWord = true, canGettingWordAction = true;
+        if(WordManager.currentWordIDList.Contains(getWordID)) { canGettingWord = false; }
+        if (WordManager.currentWordActionIDList.Contains(getWordActionID)) { canGettingWordAction = false; }
+
+        if(canGettingWord || canGettingWordAction)
+        {
+            CurrentNorificationObject = ObjectPooling.ft_getUsableNOP();
+            CurrentNorificationObject.SetActive(true);
+            CurrentNorificationObject.transform.localScale = NOP_Scale;
+            CurrentNorificationObject.transform.position = this.gameObject.transform.position + (Vector3.up * NOP_Distance);
+            CurrentNorificationObject.transform.DORotate(new Vector3(0, 360, 0), 2.5f, RotateMode.FastBeyond360)
+                     .SetEase(Ease.Linear)
+                     .SetLoops(-1);
+        }
+    }
+    private void ft_setOffNOP()
+    {
+        if(CurrentNorificationObject != null)
+        {
+            CurrentNorificationObject.transform.DOKill();
+            CurrentNorificationObject.SetActive(false);
+            CurrentNorificationObject = null;
+        }
+        
+    }
+
+    #endregion
 }
