@@ -146,7 +146,7 @@ public class JsonManager : MonoBehaviour
             JsonLoad_L(json_filePath, json_PlaceFileName);
 
         // Load -> got PreliminarySurvey Json
-        PreliminarySurveyManager.CPSSO_IDs =
+        PreliminarySurveyManager.ExceptionPSSO_IDs =
             JsonLoad_L(json_filePath, json_PSFileName);
 
 
@@ -245,7 +245,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceIDList);
 
         // Save -> Got PreliminarySurvey Json
-        JsonSave(json_filePath, json_PSFileName, PreliminarySurveyManager.CPSSO_IDs);
+        JsonSave(json_filePath, json_PSFileName, PreliminarySurveyManager.ExceptionPSSO_IDs);
     }
 
     #endregion

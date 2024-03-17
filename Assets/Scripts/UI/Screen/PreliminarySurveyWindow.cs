@@ -344,14 +344,14 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             int index = ((int)Nums[i] - 49);
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
         }
-        incomeData.text = ft_setTextGetData(SelectedPreliminarySurveySO.getID) + "\n¡Ú È¹µæ ¡Ú";
+        incomeData.text = ft_setTextGetData(SelectedPreliminarySurveySO.getID);
 
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
 
         resultWindowParentGO.SetActive(true);
         Debug.Log(SelectedPreliminarySurveySO.name);
-        PreliminarySurveyManager.CPSSO_IDs.Add(SelectedPreliminarySurveySO.name);
+        PreliminarySurveyManager.ExceptionPSSO_IDs.Add(SelectedPreliminarySurveySO.name);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
     // °á°ú Text ¿Ï¼º ¹× È¹µæ ID »ðÀÔ(Àû¿ë)
@@ -360,29 +360,32 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         string name = "";
         if(ID.Substring(0, 2) == "WA")
         {
-            if (!WordManager.currentWordActionIDList.Contains(ID))
-            {
-                name = DataManager.WordActionDatas[3][ID].ToString() + ".EXE";
-                WordManager.currentWordActionIDList.Add(ID);
-            }
+            name = ft_setEachTextGetData(DataManager.WordActionDatas[3], WordManager.currentWordActionIDList, ID, ".EXE");
         }
         else if(ID.Substring(0, 1) == "W")
         {
-            if (!WordManager.currentWordIDList.Contains(ID))
-            {
-                name = DataManager.WordDatas[5][ID].ToString() + ".AIL";
-                WordManager.currentWordIDList.Add(ID);
-            }
+            name = ft_setEachTextGetData(DataManager.WordDatas[5], WordManager.currentWordIDList, ID, ".AIL");
         }
         else if(ID.Substring(0, 1) == "P")
         {
-            if (!PlaceManager.currentPlaceIDList.Contains(ID))
-            {
-                name = DataManager.PlaceDatas[1][ID].ToString() + "(Place)";
-                PlaceManager.currentPlaceIDList.Add(ID);
-            }
+            name = ft_setEachTextGetData(DataManager.PlaceDatas[1], PlaceManager.currentPlaceIDList, ID, "(Place)");
         }
         return name;
+
+        string ft_setEachTextGetData(Dictionary<string, object> Data, List<string> haveThings, string id, string type)
+        {
+            string nameTemp = "";
+            if (!haveThings.Contains(id))
+            {
+                nameTemp = Data[id].ToString() + ".EXE" + "\n¡Ú È¹µæ ¡Ú";
+                haveThings.Add(id);
+            }
+            else
+            {
+                nameTemp = "¡Ø ÀÌ¹Ì °¡Áö°í ÀÖ´Â ¿ä¼Ò ¡Ø";
+            }
+            return nameTemp;
+        }
     }
     
     // ½ÇÆÐ ½Ã ( = °áÇÕ ½Ãµµ °¡´É È½¼ö ¸ðµÎ ¼ÒÁø ½Ã )

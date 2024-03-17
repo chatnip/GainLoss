@@ -371,7 +371,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     }
                 }
             }
-            if(PreliminarySurveyManager.AvailablePreliminarySurveySOs.Count == 0 || PreliminarySurveyManager.AvailablePreliminarySurveySOs == null)
+            if(PreliminarySurveyManager.AvailablePreliminarySurveySOs.Count == 0 ||
+                PreliminarySurveyManager.AvailablePreliminarySurveySOs == null ||
+                GameManager.currentMainInfo.overloadGage < 30)
             {
                 PreliminarySurveyBtn.interactable = false;
             }
