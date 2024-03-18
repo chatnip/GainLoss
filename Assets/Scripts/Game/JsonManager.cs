@@ -262,7 +262,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001", "W004" });
         JsonSave(json_filePath, json_wordActionFileName, new List<string>() { "WA01", "WA02" });
         JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
-        JsonSave(json_filePath, json_PlaceFileName, new List<string>() { "P01", "P02"});
+        JsonSave(json_filePath, json_PlaceFileName, new List<string>() { "P03" });
         JsonSave(json_filePath, json_PSFileName, new List<string>() { });
 
         Set_StartSentence(); // Sentence IDs

@@ -8,6 +8,7 @@ public class GetDataWithID : MonoBehaviour
 {
     [Header("*Manager")]
     [SerializeField] WordManager WordManager;
+    [SerializeField] PlaceManager PlaceManager;
 
     [Header("*GO")]
     [SerializeField] GameObject Popup;
@@ -27,20 +28,24 @@ public class GetDataWithID : MonoBehaviour
             if (c_id[1] == 'A')
             {
                 setUI((string)DataManager.WordActionDatas[3][id], ".EXE");
-
                 WordManager.currentWordActionIDList.Add(id);
             }
             else
             {
                 setUI((string)DataManager.WordDatas[5][id], ".AIL");
-
                 WordManager.currentWordIDList.Add(id);
             }
+        }
+        else if (c_id[0] == 'P')
+        {
+            setUI((string)DataManager.PlaceDatas[1][id], "(Place)");
+            PlaceManager.currentPlaceIDList.Add(id);
         }
     }
 
     private void setUI(string name, string type)
     {
+        clearCurrentGetID();
         DOTween.Kill("GetDataWithID");
         Name.text = name;
         Extension.text = type;

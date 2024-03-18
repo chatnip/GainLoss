@@ -8,29 +8,23 @@ using UnityEditor;
 public class DataManager : Manager<DataManager>
 {
     [Header("*All_CSV_File")]
-    [SerializeField] TextAsset ActionEventsFile;
     [SerializeField] TextAsset StreamEventsFile;
     [SerializeField] TextAsset TitlesFile;
     [SerializeField] TextAsset BasicDialogsFile;
     [SerializeField] TextAsset DialogsFile;
     [SerializeField] TextAsset WordsFile;
     [SerializeField] TextAsset WordActionsFile;
-    [SerializeField] TextAsset BehaviorActionsFile;
     [SerializeField] TextAsset PlaceFile;
-    [SerializeField] TextAsset StreamingByDayFile;
     [SerializeField] TextAsset ScheduleFile;
 
     [Header("*AllData")]
-    public static List<Dictionary<string, object>> ActionEventDatas = new();
     public static List<Dictionary<string, object>> StreamEventDatas = new();
     public static List<Dictionary<string, object>> TitleDatas = new();
     public static List<Dictionary<string, object>> BasicDialogDatas = new();
     public static List<Dictionary<string, object>> DialogDatas = new();
     public static List<Dictionary<string, object>> WordDatas = new();
     public static List<Dictionary<string, object>> WordActionDatas = new();
-    public static List<Dictionary<string, object>> BehaviorActionDatas = new();
     public static List<Dictionary<string, object>> PlaceDatas = new();
-    public static List<Dictionary<string, object>> StreamingByDayDatas = new();
     public static List<Dictionary<string, object>> ScheduleDatas = new();
 
     protected override void Awake()
@@ -43,11 +37,8 @@ public class DataManager : Manager<DataManager>
     {
         #region original
 
-        ActionEventDatas = CSVReader.Read(this.ActionEventsFile);
-        // [0]:MinVisitValue | [1]:GetWordID | [2]:GetBehaviorActionID | [3]:GetPlaceID
         StreamEventDatas = CSVReader.Read(this.StreamEventsFile);
-        // [0]:Used | [1]:StressGage | [2]:AngerGage | [3]:RiskGage | [4]:StreamTitle | [5]:StreamTitleKor
-        // => [0]:IsCreate | [1]:Value
+        // [0]:IsCreate | [1]:Value
         TitleDatas = CSVReader.Read(this.TitlesFile);
         // [0]:TitleName | [1]:TitleNameKor
         BasicDialogDatas = CSVReader.Read(this.BasicDialogsFile); // WA**T**D**
@@ -55,17 +46,11 @@ public class DataManager : Manager<DataManager>
         DialogDatas = CSVReader.Read(this.DialogsFile);
         // [0]:AnimationID | [1]:Dialog | [2]:DialogKor
         WordDatas = CSVReader.Read(this.WordsFile);
-        // [0]:WordName | [1]:WordNameKor
-        // => [0]:WordName | [1]:WordRate | [2]:Stress | [3]:Anger | [4]:Risk | [5]:WordNameKor
+        // [0]:WordName | [1]:WordRate | [2]:Stress | [3]:Anger | [4]:Risk | [5]:WordNameKor
         WordActionDatas = CSVReader.Read(this.WordActionsFile);
-        // [0]:WordActionName | [1]:WordActionNameKor
-        // => [0]:WordActionName | [1]:WordActionRate | [2]:OverloadingGage | [3]:WordActionNameKor
-        BehaviorActionDatas = CSVReader.Read(this.BehaviorActionsFile);
-        // [0]:BehaviorActionName | [1]:BehaviorActionNameKor
+        // [0]:WordActionName | [1]:WordActionRate | [2]:OverloadingGage | [3]:WordActionNameKor
         PlaceDatas = CSVReader.Read(this.PlaceFile);
         // [0]:PlaceName | [1]:PlaceNameKor
-        StreamingByDayDatas = CSVReader.Read(this.StreamingByDayFile); // ID Type => ex) Mon, Tue...
-        // [0]:CanWatchingStreaming | [1]:Kor
         ScheduleDatas = CSVReader.Read(this.ScheduleFile);
         // [0]:Name | [1]:firstOfAll | [2]:ScheduleExplanation | [3]:KorName | [4]ScheduleExplanationKor
         #endregion

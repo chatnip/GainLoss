@@ -99,10 +99,6 @@ public class PlayerController : MonoBehaviour
 
     #region Main
 
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
         AssignAnimationIDs();

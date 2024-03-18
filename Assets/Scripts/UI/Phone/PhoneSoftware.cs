@@ -221,14 +221,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
         if (PlayerInputController.SelectBtn.gameObject.name == "Home")
         { PhoneHardware.PhoneOff(); PlayerInputController.ClearSeletedBtns(); return; }
-        else if (PlayerInputController.SelectBtn.gameObject.name == "NetCafe")
-        { PlaceManager.SetPlaceBtnSet(PlaceManager.placeBtnList[0].buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
-        else if (PlayerInputController.SelectBtn.gameObject.name == "Cafe")
-        { PlaceManager.SetPlaceBtnSet(PlaceManager.placeBtnList[1].buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
-        else if (PlayerInputController.SelectBtn.gameObject.name == "Park")
-        { PlaceManager.SetPlaceBtnSet(PlaceManager.placeBtnList[2].buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
-        else if (PlayerInputController.SelectBtn.gameObject.name == "Alley")
-        { PlaceManager.SetPlaceBtnSet(PlaceManager.placeBtnList[3].buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
+        else
+        { PlaceManager.SetPlaceBtnSet(PlayerInputController.SelectBtn.GetComponent<IDBtn>().buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
 
         #endregion
     }

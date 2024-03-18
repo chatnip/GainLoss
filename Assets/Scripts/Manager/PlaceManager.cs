@@ -169,9 +169,9 @@ public class PlaceManager : Manager<PlaceManager>
             placeBtn.button
                 .OnClickAsObservable()
                 .Select(place => placeBtn.buttonValue)
-                .Subscribe(place =>
+                .Subscribe(placeBV =>
                 {
-                    SetPlaceBtnSet(place);
+                    SetPlaceBtnSet(placeBV);
 
                     /*string text = string.Format("<#D40047><b>{0}</b></color> 에서 무엇을 할까?", currentPlace.Name);
                     behaviorHeaderText.text = text;
@@ -179,6 +179,8 @@ public class PlaceManager : Manager<PlaceManager>
                     InitBehaviorActionID(currentPlace.ID);
                     placeBtnSpawner.SpawnBehaviorActionBtn();*/
                 });
+
+            Debug.Log(placeBtn.buttonValue.ID + placeBtn.gameObject.name);
         }
     }
 

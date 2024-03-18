@@ -15,6 +15,8 @@ public class InteractObject : InteractCore
     [SerializeField] public string getWordID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getWordActionID;
+    [Tooltip("if this Object can't get something, you have to this string empty!")]
+    [SerializeField] public string getPlaceID;
 
     [Header("*Norification Object")]
     [Tooltip("It's a factor that changes every time.")]
@@ -30,6 +32,7 @@ public class InteractObject : InteractCore
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
     WordManager WordManager;
+    PlaceManager PlaceManager;
 
     #endregion
 
@@ -42,6 +45,7 @@ public class InteractObject : InteractCore
         GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
         ObjectPooling = GameObject.Find("ObjectPooling").GetComponent<ObjectPooling>();
+        PlaceManager = GameObject.Find("PlaceManager").GetComponent <PlaceManager>();
 
         CanInteract = true;
     }
@@ -78,6 +82,7 @@ public class InteractObject : InteractCore
     {
         if (this.getWordID != "") { GetWordID(); }
         if (this.getWordActionID != "") { GetWordActionID(); }
+        if (this.getPlaceID != "") { GetPlaceID(); }
 
         if (GameObject.Find("TerminatePart") != null)
         {
@@ -128,6 +133,20 @@ public class InteractObject : InteractCore
         getSomethingWithID.SetData(getWordActionID);
         getWordActionID = "";
     }
+    protected void GetPlaceID()
+    {
+        List<string> PlaceIDs = PlaceManager.currentPlaceIDList;
+        foreach (string PlaceID in PlaceIDs)
+        {
+            if (PlaceID == getPlaceID)
+            {
+                getPlaceID = "";
+                return;
+            }
+        }
+        getSomethingWithID.SetData(getPlaceID);
+        getPlaceID = "";
+    }
 
     #endregion
 
@@ -135,13 +154,16 @@ public class InteractObject : InteractCore
 
     public void ft_setOnNOP()
     {
-        if ((getWordID == "" || getWordID == null) && (getWordActionID == "" || getWordActionID == null)) { return; }
+        if ((getWordID == "" || getWordID == null) && 
+            (getWordActionID == "" || getWordActionID == null) &&
+            (getPlaceID == "" || getPlaceID == null)) { return; }
 
-        bool canGettingWord = true, canGettingWordAction = true;
-        if(WordManager.currentWordIDList.Contains(getWordID)) { canGettingWord = false; }
+        bool canGettingWord = true, canGettingWordAction = true, canGettingPlace = true;
+        if (WordManager.currentWordIDList.Contains(getWordID)) { canGettingWord = false; }
         if (WordManager.currentWordActionIDList.Contains(getWordActionID)) { canGettingWordAction = false; }
+        if (PlaceManager.currentPlaceIDList.Contains(getPlaceID)) {  canGettingPlace = false; }
 
-        if(canGettingWord || canGettingWordAction)
+        if(canGettingWord || canGettingWordAction || canGettingPlace)
         {
             CurrentNorificationObject = ObjectPooling.ft_getUsableNOP();
             CurrentNorificationObject.SetActive(true);
