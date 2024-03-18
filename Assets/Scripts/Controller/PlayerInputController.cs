@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UniRx;
 using UnityEngine.UI;
 using System.Collections;
+using DG.Tweening;
 
 public class PlayerInputController : Manager<PlayerInputController>
 {
@@ -295,7 +296,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void OnOffPhone(InputAction.CallbackContext obj)
     {
-        if(isPause || !QuarterViewCamera.activeSelf) { return; }
+        if(isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         foreach(GameObject Go in Panels)
         {
@@ -312,7 +313,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void OnOffInteractObject(InputAction.CallbackContext obj)
     {
-        if (isPause || !QuarterViewCamera.activeSelf) { return; }
+        if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         foreach (GameObject Go in Panels)
         {
@@ -330,7 +331,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
-        if (isPause) { return; }
+        if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
@@ -343,14 +344,14 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void SetSomething(InputAction.CallbackContext obj)
 
     {
-        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf)
+        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
         {
             PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
         }
     }
     private void TerminatePart(InputAction.CallbackContext context)
     {
-        if (isPause) { return; }
+        if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf) 
         { PreliminarySurveyWindow.ft_tryToCombine(); }
@@ -381,6 +382,10 @@ public class PlayerInputController : Manager<PlayerInputController>
         //Pause
         if (pause.gameObject.activeSelf) 
         { pause.ft_closePausePopup(); return; }
+
+        //Cutscene
+        if (GameSystem.cutsceneImg.gameObject.activeSelf)
+        { return; }
 
         //Panels
         if (Panel_Object.activeSelf) 
@@ -465,6 +470,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
+        if (GameSystem.cutsceneImg.gameObject.activeSelf)
+        { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg); return; }
+
         if (Panel_Object.activeSelf)
         { GameSystem.ObjectDescriptionSkip(); return; }
         else if (Panel_Npc.activeSelf)

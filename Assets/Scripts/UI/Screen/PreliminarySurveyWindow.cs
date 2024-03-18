@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -44,9 +43,6 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
     [Header("*GOs")]
     [SerializeField] List<GameObject> Life_X_GO;
-
-    [Header("*cutscene")]
-    public Sequence sequence;
 
     [Header("*Result")]
     [SerializeField] public GameObject resultWindowParentGO;
@@ -209,23 +205,6 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     // 단서 찾기 시도
     public void Interact()
     {
-        if (cutsceneSO.cutsceneIsPlaying)
-        {
-            if (!sequence.IsPlaying())
-            {
-                if (SelectedPreliminarySurveySO.cutsceneSO.cutsceneSprites.IndexOf(GameSystem.cutsceneImg.sprite) < SelectedPreliminarySurveySO.cutsceneSO.cutsceneSprites.Count - 1)
-                {
-                    sequence.timeScale = 1.0f;
-                    StartCoroutine(setImg(SelectedPreliminarySurveySO.cutsceneSO.cutsceneSprites, GameSystem.cutsceneImg.sprite));
-                }
-                cutsceneSO.cutsceneIsPlaying = false;
-                sequence.Play();
-            }
-            else
-            {
-                sequence.timeScale = 25.0f;
-            }
-        }
         if (PlayerInputController.SelectBtn == endBtn && endBtn.interactable)
         {
             Desktop.EndScheduleThis();
@@ -256,14 +235,16 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             endBtn.interactable = false;
             PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 
-            sequence = cutsceneSO.makeCutscene(SelectedPreliminarySurveySO.cutsceneSO, GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
-            sequence.OnComplete(() =>
+            cutsceneSO.currentCSSO = SelectedPreliminarySurveySO.cutsceneSO;
+            cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
+            cutsceneSO.cutsceneSeq.OnComplete(() =>
             {
                 showResult();
-
+                endBtn.interactable = true;
                 GameSystem.cutsceneImg.color = new Color(0, 0, 0, 0);
                 GameSystem.cutsceneImg.gameObject.SetActive(false);
                 GameSystem.cutsceneTxt.text = "";
+                cutsceneSO.currentCSSO = null;
             });
         }
         else if (tryNum.Length < 4)
@@ -289,16 +270,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         }
 
     }
-
-
-    // 성공 시 연출 (컷씬 보여주기)
     
-    private IEnumerator setImg(List<Sprite> spriteList, Sprite currentSprite)
-    {
-        yield return new WaitForSeconds(0.25f);
-        Sprite s = spriteList[spriteList.IndexOf(currentSprite) + 1];
-        GameSystem.cutsceneImg.sprite = s;
-    }
     // 결과 보여주기
     private void showResult()
     {

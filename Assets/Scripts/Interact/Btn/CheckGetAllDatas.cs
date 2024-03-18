@@ -75,7 +75,7 @@ public class CheckGetAllDatas : MonoBehaviour
         Transform[] allChildren = OBparentMap.GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
         {
-            if (child.TryGetComponent(out InteractObject interactObject))
+            if (child.TryGetComponent(out InteractObject interactObject) && child.gameObject.activeSelf)
             {
                 if (interactObject.getWordID != "" || interactObject.getWordActionID != "" || interactObject.getPlaceID != "")
                 {

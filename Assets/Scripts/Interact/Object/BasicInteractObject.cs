@@ -16,19 +16,23 @@ public class BasicInteractObject : InteractObject
         {
             if(cutsceneSO != null)
             {
-                /*Sequence sequence = cutsceneSO.makeCutscene(cutsceneSO, cutsceneImg, cutsceneTxt, cutsceneIsPlaying);
-                sequence.OnComplete(() =>
-                { 
-                    cutsceneImg.color = new Color(0, 0, 0, 0);
-                    cutsceneImg.gameObject.SetActive(false);
-                    cutsceneTxt.text = "";
-                });*/
+                cutsceneSO.currentCSSO = this.cutsceneSO;
+                cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
+                cutsceneSO.cutsceneSeq.OnComplete(() =>
+                {
+                    GameSystem.cutsceneImg.color = new Color(0, 0, 0, 0);
+                    GameSystem.cutsceneImg.gameObject.SetActive(false);
+                    GameSystem.cutsceneTxt.text = "";
+                    cutsceneSO.currentCSSO = null;
+                    base.Interact();
+                });
             }
             else
             {
                 GameSystem.ObjectDescriptionOn(description);
+                base.Interact();
             }
-            base.Interact();
+            
         }
     }
 }

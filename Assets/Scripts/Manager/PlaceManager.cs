@@ -124,15 +124,17 @@ public class PlaceManager : Manager<PlaceManager>
                 go.SetActive(false);
             }
             placeGOList[0].SetActive(true);
-            CheckGetAllDatas.CurrentMap = placeGOList[0];
 
             placeGOList[0].transform.position = Vector3.zero;
-            CheckGetAllDatas.gameObject.SetActive(false);
 
             SetInteractionObjects.OnInteractiveOB();
 
             foreach (Transform child in placeGOList[0].transform)
             { if (child.TryGetComponent(out InteractObject IO)) { IO.ft_setOnNOP(); } }
+
+
+            CheckGetAllDatas.CurrentMap = placeGOList[0];
+            CheckGetAllDatas.gameObject.SetActive(false);
         }
         else 
         {
@@ -142,10 +144,8 @@ public class PlaceManager : Manager<PlaceManager>
                 go.SetActive(false);
             }
             placeGOList[s].SetActive(true);
-            CheckGetAllDatas.CurrentMap = placeGOList[s];
 
             placeGOList[s].transform.position = Vector3.zero;
-            CheckGetAllDatas.gameObject.SetActive(true);
 
             int visitAmount = 0; // 방문한 횟수 구하기
             foreach(string ID in currentPlaceID_Dict.Keys)
@@ -158,7 +158,11 @@ public class PlaceManager : Manager<PlaceManager>
             SetInteractionObjects.OnInteractiveOB();
 
             foreach (Transform child in placeGOList[s].transform)
-            { if (child.TryGetComponent(out InteractObject IO)) { IO.ft_setOnNOP(); } }
+            { if (child.TryGetComponent(out InteractObject IO) && child.gameObject.activeSelf) { IO.ft_setOnNOP(); } }
+
+
+            CheckGetAllDatas.CurrentMap = placeGOList[s];
+            CheckGetAllDatas.gameObject.SetActive(true);
         }
 
         Debug.Log("플레이어 위치 초기화");

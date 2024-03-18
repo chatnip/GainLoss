@@ -27,18 +27,18 @@ public class GetDataWithID : MonoBehaviour
         {
             if (c_id[1] == 'A')
             {
-                setUI((string)DataManager.WordActionDatas[3][id], ".EXE");
+                setUI(DataManager.WordActionDatas[3][id].ToString(), ".EXE");
                 WordManager.currentWordActionIDList.Add(id);
             }
             else
             {
-                setUI((string)DataManager.WordDatas[5][id], ".AIL");
+                setUI(DataManager.WordDatas[5][id].ToString(), ".AIL");
                 WordManager.currentWordIDList.Add(id);
             }
         }
         else if (c_id[0] == 'P')
         {
-            setUI((string)DataManager.PlaceDatas[1][id], "(Place)");
+            setUI(DataManager.PlaceDatas[1][id].ToString(), "(Place)");
             PlaceManager.currentPlaceID_Dict.Add(id, 0);
         }
     }
@@ -46,7 +46,7 @@ public class GetDataWithID : MonoBehaviour
     private void setUI(string name, string type)
     {
         clearCurrentGetID();
-        DOTween.Kill("GetDataWithID");
+        DOTween.Kill(this.gameObject.GetComponent<RectTransform>());
         Name.text = name;
         Extension.text = type;
         DOTween.To(() => Popup.GetComponent<RectTransform>().anchoredPosition, x => Popup.GetComponent<RectTransform>().anchoredPosition = x, new Vector2(-20, Popup.GetComponent<RectTransform>().anchoredPosition.y), 1)
