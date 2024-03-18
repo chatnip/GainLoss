@@ -24,6 +24,7 @@ public class BasicInteractObject : InteractObject
                     GameSystem.cutsceneImg.gameObject.SetActive(false);
                     GameSystem.cutsceneTxt.text = "";
                     cutsceneSO.currentCSSO = null;
+                    if(description != null &&  description != "") { GameSystem.ObjectDescriptionOn(description); }
                     base.Interact();
                 });
             }
