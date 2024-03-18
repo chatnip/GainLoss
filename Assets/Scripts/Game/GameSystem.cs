@@ -29,6 +29,10 @@ public class GameSystem : MonoBehaviour
     [SerializeField] public Image NpcImg;
     [SerializeField] public Button NpcPanelExitBtn;
 
+    [Header("*Cutscene")]
+    [SerializeField] public Image cutsceneImg;
+    [SerializeField] public TMP_Text cutsceneTxt;
+
     ConversationBase conversations;
     bool conversationTweeningNow = false;
     int currentOrder = 0;

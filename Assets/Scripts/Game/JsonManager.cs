@@ -1,10 +1,7 @@
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening.Plugins.Core.PathCore;
-using static UnityEditor.PlayerSettings;
 
 public class JsonManager : MonoBehaviour
 {
@@ -83,6 +80,19 @@ public class JsonManager : MonoBehaviour
         IDs saveData = JsonUtility.FromJson<IDs>(saveFile);
         return saveData.dataIDList;
     }
+    public Dictionary<string, int> JsonLoad_D(string jsonPath, string jsonName)
+    {
+        List<string> LineDatas = JsonLoad_L(jsonPath, jsonName);
+        Dictionary<string, int> DicData = new Dictionary<string, int>();
+        foreach(string LineData in LineDatas)
+        {
+            string[] s = LineData.Split(',');
+            DicData.Add(s[0], Convert.ToInt32(s[1]));
+        }
+        return DicData;
+
+
+    }
     private List<Dictionary<string, object>> JsonLoad_LD(string jsonPath, string jsonName)
     {
         List<string> LineDatas = JsonLoad_L(jsonPath, jsonName);
@@ -142,8 +152,8 @@ public class JsonManager : MonoBehaviour
         ScheduleManager.currentPrograssScheduleID = "S00";
 
         // Load -> place Json
-        PlaceManager.currentPlaceIDList =
-            JsonLoad_L(json_filePath, json_PlaceFileName);
+        PlaceManager.currentPlaceID_Dict =
+            JsonLoad_D(json_filePath, json_PlaceFileName);
 
         // Load -> got PreliminarySurvey Json
         PreliminarySurveyManager.ExceptionPSSO_IDs =
@@ -187,6 +197,16 @@ public class JsonManager : MonoBehaviour
         string saveFilePath = jsonPath + jsonName;
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
+    }
+    public void JsonSave(string jsonPath, string jsonName,  Dictionary<string, int> Dict)
+    {
+        List<string> ListData = new List<string>();
+        foreach(KeyValuePair<string, int> KVP in Dict)
+        {
+            string Data = KVP.Key + "," + KVP.Value;
+            ListData.Add(Data);
+        }
+        JsonSave(jsonPath, jsonName, ListData);
     }
     public void JsonSave(string jsonPath, string jsonName, List<Dictionary<string, object>> Datas)
     {
@@ -242,7 +262,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
 
         // Save -> Place Json
-        JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceIDList);
+        JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
 
         // Save -> Got PreliminarySurvey Json
         JsonSave(json_filePath, json_PSFileName, PreliminarySurveyManager.ExceptionPSSO_IDs);
@@ -259,10 +279,10 @@ public class JsonManager : MonoBehaviour
         SetPath();
 
         JsonSave(json_filePath, json_mainInfoFileName, new MainInfo());
-        JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001", "W004" });
+        JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001" });
         JsonSave(json_filePath, json_wordActionFileName, new List<string>() { "WA01", "WA02" });
-        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
-        JsonSave(json_filePath, json_PlaceFileName, new List<string>() { "P03" });
+        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S02", "S03", "S04" });
+        JsonSave(json_filePath, json_PlaceFileName, new Dictionary<string, int>() { { "P00", 0 }, { "P03", 0 } });
         JsonSave(json_filePath, json_PSFileName, new List<string>() { });
 
         Set_StartSentence(); // Sentence IDs

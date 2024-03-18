@@ -77,7 +77,7 @@ public class CheckGetAllDatas : MonoBehaviour
         {
             if (child.TryGetComponent(out InteractObject interactObject))
             {
-                if (interactObject.getWordID != "" || interactObject.getWordActionID != "")
+                if (interactObject.getWordID != "" || interactObject.getWordActionID != "" || interactObject.getPlaceID != "")
                 {
                     _remain++;
                     //Debug.Log("아직 존재");

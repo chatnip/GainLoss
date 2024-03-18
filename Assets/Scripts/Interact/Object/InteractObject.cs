@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,7 +11,7 @@ public class InteractObject : InteractCore
     #region Value
 
     [Header("*IDs")]
-    [SerializeField] string objectID;
+    [SerializeField] public string objectID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getWordID;
     [Tooltip("if this Object can't get something, you have to this string empty!")]
@@ -135,7 +136,7 @@ public class InteractObject : InteractCore
     }
     protected void GetPlaceID()
     {
-        List<string> PlaceIDs = PlaceManager.currentPlaceIDList;
+        List<string> PlaceIDs = PlaceManager.currentPlaceID_Dict.Keys.ToList();
         foreach (string PlaceID in PlaceIDs)
         {
             if (PlaceID == getPlaceID)
@@ -161,7 +162,7 @@ public class InteractObject : InteractCore
         bool canGettingWord = true, canGettingWordAction = true, canGettingPlace = true;
         if (WordManager.currentWordIDList.Contains(getWordID)) { canGettingWord = false; }
         if (WordManager.currentWordActionIDList.Contains(getWordActionID)) { canGettingWordAction = false; }
-        if (PlaceManager.currentPlaceIDList.Contains(getPlaceID)) {  canGettingPlace = false; }
+        if (PlaceManager.currentPlaceID_Dict.Keys.ToList().Contains(getPlaceID)) {  canGettingPlace = false; }
 
         if(canGettingWord || canGettingWordAction || canGettingPlace)
         {

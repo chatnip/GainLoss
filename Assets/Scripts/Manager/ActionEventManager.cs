@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UniRx;
 using TMPro;
 
 public class ActionEventManager : Manager<ActionEventManager>
@@ -228,8 +227,8 @@ public class ActionEventManager : Manager<ActionEventManager>
     {
         DOTween.Kill(SavingPrograssText);
 
-        PreliminarySurveyManager.ft_setAPSSOs();
         JsonManager.SaveAllGameDatas();
+        PreliminarySurveyManager.ft_setAPSSOs();
 
         GameSystem.SetPlayerTransform();
 

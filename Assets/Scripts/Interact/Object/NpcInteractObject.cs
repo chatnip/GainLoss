@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NpcInteractObject : InteractObject
 {
+    [Header("*Description")]
     [SerializeField] protected ConversationBase ConversationBase_SO;
 
     public override void Interact()

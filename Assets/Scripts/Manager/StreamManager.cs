@@ -2,14 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class StreamManager : Manager<StreamManager>
 {
     [SerializeField] GameManager GameManager;
     [SerializeField] DialogManager DialogManager;
     [SerializeField] DataManager DataManager;
-    
+    [SerializeField] ScheduleManager ScheduleManager;
 
     [HideInInspector] public string currentStreamEventID;
     [HideInInspector] public StreamEvent currentStreamEvent;
@@ -25,6 +24,8 @@ public class StreamManager : Manager<StreamManager>
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
         ApplyGage();
+        if (GameManager.currentMainInfo.overloadGage >= 30 && ScheduleManager.currentHaveScheduleID.Contains("S01")) // 과부하 게이지 일정 수치 이상 시 사전조사 추가
+        { ScheduleManager.currentHaveScheduleID.Add("S01"); Debug.Log("사전 조사 획득!"); }
 
         SetNumberOfUses(id);
 

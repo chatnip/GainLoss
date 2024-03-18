@@ -39,7 +39,7 @@ public class GetDataWithID : MonoBehaviour
         else if (c_id[0] == 'P')
         {
             setUI((string)DataManager.PlaceDatas[1][id], "(Place)");
-            PlaceManager.currentPlaceIDList.Add(id);
+            PlaceManager.currentPlaceID_Dict.Add(id, 0);
         }
     }
 

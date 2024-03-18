@@ -26,8 +26,8 @@ public class ComputerInteract : InteractObject
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] GameObject PhoneOpenBtns;
 
-    [TextArea]
-    [SerializeField] public string description;
+    [Header("*Description")]
+    [TextArea] [SerializeField] public string description;
 
     #endregion
 

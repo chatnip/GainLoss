@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlacePadSpawner : IDBtnSpawner
@@ -11,9 +12,9 @@ public class PlacePadSpawner : IDBtnSpawner
 
     protected override void SpawnIDBtn()
     {
-        for (int i = 0; i < PlaceManager.currentPlaceIDList.Count; i++)
+        for (int i = 0; i < PlaceManager.currentPlaceID_Dict.Count; i++)
         {
-            IDBtn PlaceBtn = CreateIDBtn(new ButtonValue(PlaceManager.currentPlaceIDList[i], DataManager.PlaceDatas[1][PlaceManager.currentPlaceIDList[i]].ToString()));
+            IDBtn PlaceBtn = CreateIDBtn(new ButtonValue(PlaceManager.currentPlaceID_Dict.Keys.ToList()[i], DataManager.PlaceDatas[1][PlaceManager.currentPlaceID_Dict.Keys.ToList()[i]].ToString()));
             PlaceBtn.transform.SetParent(PlaceParentObject);
             PlaceBtn.buttonType = ButtonType.WordPadType;
             if (PlaceBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }

@@ -6,7 +6,6 @@ public class PreliminarySurveySO : ScriptableObject
 {
     [SerializeField] public string answerNum;
     [SerializeField] public GameObject[] clues = new GameObject[8];
-    [SerializeField] public List<Sprite> cutsceneSprites = new List<Sprite>();
-    [TextArea] [SerializeField] public List<string> cutsceneDialogs = new List<string>();
+    [SerializeField] public cutsceneSO cutsceneSO;
     [SerializeField] public string getID;
 }
