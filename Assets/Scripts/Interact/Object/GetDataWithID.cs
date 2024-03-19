@@ -21,6 +21,7 @@ public class GetDataWithID : MonoBehaviour
 
     public void SetData(string _id)
     {
+        if (_id == "" || _id == null) { return; }
         id = _id;
         char[] c_id = id.ToCharArray();
         if (c_id[0] == 'W')
@@ -45,7 +46,6 @@ public class GetDataWithID : MonoBehaviour
 
     private void setUI(string name, string type)
     {
-        clearCurrentGetID();
         DOTween.Kill(this.gameObject.GetComponent<RectTransform>());
         Name.text = name;
         Extension.text = type;

@@ -496,6 +496,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
+        foreach(GameObject pad in Pads)
+        { if (pad.gameObject.activeSelf) { return; } }
+
         if(SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -528,6 +531,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
+        foreach (GameObject pad in Pads)
+        { if (pad.gameObject.activeSelf) { return; } }
+
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();

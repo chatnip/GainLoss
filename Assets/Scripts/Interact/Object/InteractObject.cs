@@ -33,7 +33,7 @@ public class InteractObject : InteractCore
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
     WordManager WordManager;
-    PlaceManager PlaceManager;
+    protected PlaceManager PlaceManager;
 
     #endregion
 
@@ -81,9 +81,9 @@ public class InteractObject : InteractCore
 
     public override void Interact()
     {
-        if (this.getWordID != "") { GetWordID(); }
-        if (this.getWordActionID != "") { GetWordActionID(); }
-        if (this.getPlaceID != "") { GetPlaceID(); }
+        if (this.getWordID != "" && this.getWordID != null) { GetWordID(); }
+        if (this.getWordActionID != "" && this.getWordActionID != null) { GetWordActionID(); }
+        if (this.getPlaceID != "" && this.getPlaceID != null) { GetPlaceID(); }
 
         if (GameObject.Find("TerminatePart") != null)
         {
@@ -117,8 +117,12 @@ public class InteractObject : InteractCore
                 return;
             }
         }
-        getSomethingWithID.SetData(getWordID);
-        getWordID = "";
+        if(getWordID != null && getWordID != "")
+        {
+            getSomethingWithID.SetData(getWordID);
+            getWordID = "";
+        }
+        
     }
     protected void GetWordActionID()
     {

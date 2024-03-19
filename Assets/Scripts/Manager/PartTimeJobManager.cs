@@ -66,6 +66,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_StartBtn.gameObject.SetActive(false);
         partTimeJob_LoadingCG.gameObject.SetActive(true);
         partTimeJob_LoadingCG.DOFade(1.0f, 0.5f);
+        PlayerInputController.CanMove = false;
         yield return new WaitForSeconds(0.5f);
 
         DOTween.To(() => partTimeJob_Slider.value, x => partTimeJob_Slider.value = x, 1, 5)
@@ -95,6 +96,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
             {
                 PlayerInputController.SetSectionBtns(null, null);
                 ResetPartTimeJobUI();
+                PlayerInputController.CanMove = true;
             });
     }
     private void GetMoney(int money)

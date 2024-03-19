@@ -1341,7 +1341,7 @@ MonoBehaviour:
   m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 6
+    m_Style: 0
     m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
@@ -11582,14 +11582,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 452139880}
   objectID: 
-  getWordID: W006
+  getWordID: W002
   getWordActionID: 
   getPlaceID: 
   CurrentNorificationObject: {fileID: 0}
   NOP_Scale: {x: 0.07, y: 0.07, z: 1}
   NOP_Distance: 0.2
   CanInteract: 1
-  description: "DVD\uAE30\uAE30... ... ... \uC548\uB155 DVD\uAE30\uAE30..."
+  description:
+  - 1 DVD
+  - 2 DVD
+  basicDescroption: "DVD\uAE30\uAE30."
   cutsceneSO: {fileID: 11400000, guid: c98f77fa465cb57428bfc60d555ac252, type: 2}
 --- !u!64 &452139885
 MeshCollider:
@@ -18262,8 +18265,66 @@ MonoBehaviour:
   NOP_Scale: {x: 0.08, y: 0.08, z: 1}
   NOP_Distance: 0.2
   CanInteract: 1
-  description: "\uC637\uAC78\uC774\uB2E4. \uB531\uD788 \uC9C0\uAE08 \uAC78\uC5B4\uB450\uC9C4
-    \uC54A\uC744 \uAC83\uC774\uB2E4."
+  description:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  basicDescroption: 
   cutsceneSO: {fileID: 0}
 --- !u!64 &674609017
 MeshCollider:
@@ -25611,8 +25672,59 @@ MonoBehaviour:
   NOP_Scale: {x: 0.07, y: 0.07, z: 1}
   NOP_Distance: 0.4
   CanInteract: 1
-  description: "\uC720\uB9AC\uBCD1, \uC548\uC5D0\uB294 \uAE68\uB057\uD55C \uBB3C\uC774
-    \uB4E4\uC5B4\uC788\uB2E4."
+  description:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  basicDescroption: 
   cutsceneSO: {fileID: 0}
 --- !u!114 &972444521
 MonoBehaviour:
@@ -26130,7 +26242,10 @@ MonoBehaviour:
   NOP_Scale: {x: 0, y: 0, z: 0}
   NOP_Distance: 0
   CanInteract: 1
-  description: "\uB2E4\uC591\uD55C \uD310\uB9E4 \uC0C1\uD488\uB4E4\uC758 \uD3EC\uC2A4\uD130\uB4E4\uC774\uB2E4."
+  description:
+  - "\uCCAB\uB0A0 \uD3EC\uC2A4\uD130"
+  - "\uB458\uC9F8\uB0A0 \uD3EC\uC2A4\uD130"
+  basicDescroption: "\uADF8\uB0E5 \uD3EC\uC2A4\uD130\uB2E4"
   cutsceneSO: {fileID: 0}
 --- !u!114 &978780894
 MonoBehaviour:
@@ -26150,6 +26265,28 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!64 &978780898
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978780889}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2406241424141499932, guid: 6eb68045191b6db44ab4ba40c110f3db, type: 3}
 --- !u!1 &979036955
 GameObject:
   m_ObjectHideFlags: 0
@@ -51132,6 +51269,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1123150004108570827, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123150004108570827, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uC2DC\uACC4."
+      objectReference: {fileID: 0}
     - target: {fileID: 1466588645579808403, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: outlineMode
       value: 1
@@ -51196,9 +51341,26 @@ PrefabInstance:
       propertyPath: ObjectInteractionButtonGenerator
       value: 
       objectReference: {fileID: 1637006480}
+    - target: {fileID: 6576300770701407549, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6576300770701407549, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uC4F0\uB808\uAE30\uD1B5\uC744 \uC0B4\uD3B4 \uBCFC \uD544\uC694\uB294
+        \uC5C6\uB2E4."
+      objectReference: {fileID: 0}
     - target: {fileID: 6838843156517453593, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838843156517453593, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838843156517453593, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uD2F0\uBE44."
       objectReference: {fileID: 0}
     - target: {fileID: 7301527841427860910, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_Enabled
@@ -51207,6 +51369,14 @@ PrefabInstance:
     - target: {fileID: 7691411508649899360, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691411508649899360, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691411508649899360, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uBC15\uC2A4\uC2A4"
       objectReference: {fileID: 0}
     - target: {fileID: 8111387001780349877, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: screenCamera
@@ -51224,6 +51394,15 @@ PrefabInstance:
       propertyPath: getWordActionID
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8271108660699089285, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8271108660699089285, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uC6B0\uB9AC \uC9D1 \uCE68\uB300. \uC544\uC9C1 \uC798 \uC2DC\uAC04\uC740
+        \uC544\uB2C8\uB2E4."
+      objectReference: {fileID: 0}
     - target: {fileID: 8718268570711053128, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -51235,6 +51414,14 @@ PrefabInstance:
     - target: {fileID: 9054743920601405825, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: getWordActionID
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9054743920601405825, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9054743920601405825, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: description.Array.data[0]
+      value: "\uB9C8\uB9B0. \uC5ED\uC2DC\uB098 \uC798 \uB098\uC654\uAD70."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54891,10 +55078,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4296880827781716605, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
+      propertyPath: m_Name
+      value: Posters
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4296880827781716605, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 978780898}
     - targetCorrespondingSourceObject: {fileID: 4296880827781716605, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
       insertIndex: -1
       addedObject: {fileID: 978780894}
@@ -54975,8 +55169,63 @@ MonoBehaviour:
   NOP_Scale: {x: 0.07, y: 0.07, z: 1}
   NOP_Distance: 0.2
   CanInteract: 1
-  description: "\uCEF4\uD4E8\uD130, \uD68C\uC804 \uBAA8\uB2C8\uD130\uB77C\uB2C8...
-    \uBE44\uC300 \uAC83 \uAC19\uB2E4."
+  description:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  basicDescroption: 
   cutsceneSO: {fileID: 0}
 --- !u!114 &1937633650
 MonoBehaviour:
@@ -57011,8 +57260,90 @@ MonoBehaviour:
   NOP_Scale: {x: 0.1, y: 0.1, z: 1}
   NOP_Distance: 0.6
   CanInteract: 1
-  description: "\uC11C\uBE44\uC2A4\uB85C \uB193\uC5EC\uC788\uB294 \uAC83\uC77C\uAE4C?
-    \uCF5C\uB77C\uB294 \uADF8\uB807\uAC8C \uC88B\uC544\uD558\uC9C0 \uC54A\uB294\uB370..."
+  description:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  basicDescroption: 
   cutsceneSO: {fileID: 0}
 --- !u!114 &1991894050
 MonoBehaviour:
@@ -58778,7 +59109,9 @@ MonoBehaviour:
   NOP_Scale: {x: 0, y: 0, z: 0}
   NOP_Distance: 0
   CanInteract: 1
-  description: "\uCE74\uD3AB. \uADF8\uC800 \uCE74\uD3AB\uC774\uB2E4."
+  description:
+  - "\uADF8\uB0E5\uCE74\uD3AB\uD2B8"
+  basicDescroption: 
   cutsceneSO: {fileID: 0}
 --- !u!1 &2040969275
 GameObject:
