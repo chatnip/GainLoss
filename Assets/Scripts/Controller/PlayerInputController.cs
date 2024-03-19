@@ -365,7 +365,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (PartTimeJobLoadingBtn.gameObject.activeSelf)
         {
-            StartCoroutine(PartTimeJobManager.StartPartTimeJob());
+            StartCoroutine(PartTimeJobManager.StartPartTimeJob(5.0f, PartTimeJobManager.selectCSSO()));
         }
         if (CheckGetAllDatas.TerminateBtn.gameObject.activeSelf)
         {
@@ -655,16 +655,33 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         foreach (Button SectionBtn in allSectionList)
         {
-            if(SectionBtn == btn)
+            if (PreliminarySurveyWindow.gameObject.activeSelf)
             {
-                if(SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                { outline.enabled = true; }
+                if (SectionBtn == btn)
+                {
+                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
+                    { outline.effectColor = Color.cyan; outline.effectDistance = new Vector2(10, 10); }
+                }
+                else
+                {
+                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
+                    { outline.effectColor = Color.gray; outline.effectDistance = new Vector2(5, 5); }
+                }
             }
             else
             {
-                if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                { outline.enabled = false; }
+                if (SectionBtn == btn)
+                {
+                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
+                    { outline.enabled = true; }
+                }
+                else
+                {
+                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
+                    { outline.enabled = false; }
+                }
             }
+            
         }
     }
 

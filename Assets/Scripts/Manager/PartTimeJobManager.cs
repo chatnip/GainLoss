@@ -15,12 +15,16 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] GameManager GameManager;
+    [SerializeField] GameSystem GameSystem;
 
     [Header("*PartTimeJob")]
     [SerializeField] CanvasGroup partTimeJob_LoadingCG;
     [SerializeField] Button partTimeJob_StartBtn;
     [SerializeField] Button partTimeJob_EndBtn;
     [SerializeField] Slider partTimeJob_Slider;
+
+    [Header("*Cutscenc")]
+    [SerializeField] List<cutsceneSO> allCutSceneSOs;
 
     [Header("*Other")]
     [SerializeField] TMP_Text moneyTMP;
@@ -35,7 +39,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_StartBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                StartCoroutine(StartPartTimeJob());
+                StartCoroutine(StartPartTimeJob(5.0f, selectCSSO()));
             });
     }
 
@@ -60,16 +64,23 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         }
             
     }
-    public IEnumerator StartPartTimeJob()
+
+    public cutsceneSO selectCSSO()
+    {
+        return allCutSceneSOs[0];
+    }
+    public IEnumerator StartPartTimeJob(float time, cutsceneSO selectCSSO)
     {
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { partTimeJob_EndBtn } }, this);
+        partTimeJob_LoadingCG.TryGetComponent(out Image image);
         partTimeJob_StartBtn.gameObject.SetActive(false);
         partTimeJob_LoadingCG.gameObject.SetActive(true);
         partTimeJob_LoadingCG.DOFade(1.0f, 0.5f);
+        Sequence seq = cutsceneSO.justImgCutscene(image, selectCSSO.cutsceneSprites, time);
         PlayerInputController.CanMove = false;
         yield return new WaitForSeconds(0.5f);
 
-        DOTween.To(() => partTimeJob_Slider.value, x => partTimeJob_Slider.value = x, 1, 5)
+        DOTween.To(() => partTimeJob_Slider.value, x => partTimeJob_Slider.value = x, 1, time - 0.5f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
@@ -78,9 +89,6 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_Slider.handleRect.DOScale(Vector3.one * 2, 0.5f)
             .SetLoops(10, LoopType.Yoyo)
             .SetEase(Ease.Linear);
-
-
-
     }
 
     public void EndPartTimeJob()

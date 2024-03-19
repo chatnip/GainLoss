@@ -49,6 +49,32 @@ public class cutsceneSO : ScriptableObject
 
         return thisSequence;
     }
+
+    public static Sequence justImgCutscene(Image cutsceneImg, List<Sprite> cutsceneSprites, float time)
+    {
+        cutsceneImg.color = new Color(0, 0, 0, 0);
+        cutsceneImg.gameObject.SetActive(true);
+
+        Sequence seq = DOTween.Sequence();
+        float eachTime = time/cutsceneSprites.Count;
+        cutsceneImg.sprite = cutsceneSprites[0];
+
+        for (int i = 0; i < cutsceneSprites.Count; i++)
+        {
+            seq.Append(cutsceneImg.DOColor(Color.white, eachTime * 1/6));
+            seq.AppendInterval(eachTime* 4/6);
+            seq.Append(cutsceneImg.DOColor(Color.black, eachTime * 1/6)
+                .OnComplete(() =>
+                {
+                    int amount = cutsceneSprites.IndexOf(cutsceneImg.sprite);
+                    if(amount < cutsceneSprites.Count - 1)
+                    {
+                        cutsceneImg.sprite = cutsceneSprites[amount + 1];
+                    }
+                }));
+        }
+        return seq;
+    }
     public static void skipOrCompleteSeq(Image cutsceneImg)
     {
         if (cutsceneIsPlaying)

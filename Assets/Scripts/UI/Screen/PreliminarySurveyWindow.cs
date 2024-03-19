@@ -63,9 +63,15 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     private void OnEnable()
     {
         ft_setData(); // Set Clue Reduction Img
-        ft_setPadSection(new List<List<Button>> { 
-            new List<Button> { clueReductionBtns[0], clueReductionBtns[1], clueReductionBtns[2], clueReductionBtns[3] },
-            new List<Button> { clueReductionBtns[4], clueReductionBtns[5], clueReductionBtns[6], clueReductionBtns[7] }});
+        ft_setPadSection(new List<List<Button>> {
+            new List<Button> { clueReductionBtns[0] },
+            new List<Button> { clueReductionBtns[1] },
+            new List<Button> { clueReductionBtns[2] },
+            new List<Button> { clueReductionBtns[3] },
+            new List<Button> { clueReductionBtns[4] },
+            new List<Button> { clueReductionBtns[5] },
+            new List<Button> { clueReductionBtns[6] },
+            new List<Button> { clueReductionBtns[7] }});
     }
 
     private void LateUpdate()
