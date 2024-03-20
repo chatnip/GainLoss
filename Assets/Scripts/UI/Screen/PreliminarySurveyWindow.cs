@@ -224,7 +224,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         else if (currentClueData != null)
         {
             float range = Vector3.Distance(currentClueData.ClueSpotBtn.transform.position, targetPointer.transform.position);
-            if (range < 0.5f) { currentClueData.ft_showInfo(); }
+            if (range < 2.0f) { currentClueData.ft_showInfo(); }
         }
     }
 

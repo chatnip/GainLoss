@@ -125,7 +125,7 @@ public class PlaceManager : Manager<PlaceManager>
             }
             placeGOList[0].SetActive(true);
 
-            placeGOList[0].transform.position = Vector3.zero;
+            placeGOList[0].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
 
             SetInteractionObjects.OnInteractiveOB();
 
@@ -145,7 +145,7 @@ public class PlaceManager : Manager<PlaceManager>
             }
             placeGOList[s].SetActive(true);
 
-            placeGOList[s].transform.position = Vector3.zero;
+            placeGOList[s].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
 
             int visitAmount = 0; // 방문한 횟수 구하기
             foreach(string ID in currentPlaceID_Dict.Keys)

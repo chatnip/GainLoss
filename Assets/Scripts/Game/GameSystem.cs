@@ -25,6 +25,7 @@ public class GameSystem : MonoBehaviour
     [Header("*Npc Panel")]
     [SerializeField] public GameObject NpcPanel;
     [SerializeField] public Button NpcPanelBtn_toSkip;
+    [SerializeField] public TMP_Text NpcName;
     [SerializeField] public TMP_Text NpcText;
     [SerializeField] public Image NpcImg;
     [SerializeField] public Button NpcPanelExitBtn;
@@ -167,6 +168,7 @@ public class GameSystem : MonoBehaviour
                      {
                          conversationTweeningNow = true;
                          NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
+                         NpcName.text = conversations.NpcConversations[i].talkerName;
                      })
                      .OnComplete(() =>
                      {

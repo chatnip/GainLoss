@@ -149,7 +149,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
             sectionIsThis = true;
 
             SchedulePrograss.SetByScheduleBtnOwnTxt();
-            SetOn(PhoneOnBtn, new Vector2(0, 0));
+            SetOn(PhoneOnBtn, new Vector2(PhoneOnBtn.GetComponent<RectTransform>().rect.width * 1.1f, PhoneOnBtn.GetComponent<RectTransform>().anchoredPosition.y));
             PlayerInputController.SetSectionBtns(SetPhoneOnButtons(), this);
             foreach (string DoNotNeedBtn in DoNotNeedBtns)
             {
@@ -160,7 +160,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
             }
             if (DoNotNeedBtns_ExceptionSituation) { return; }
 
-            SetOn(PhoneOnByScheduleBtn, new Vector2(0, -50));
+            SetOn(PhoneOnByScheduleBtn, new Vector2(PhoneOnByScheduleBtn.GetComponent<RectTransform>().rect.width * 1.1f, PhoneOnByScheduleBtn.GetComponent<RectTransform>().anchoredPosition.y));
             PlayerInputController.SetSectionBtns(SetPhoneOnButtons(), this);
             
         }
@@ -169,7 +169,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
             sectionIsThis = false;
 
-            SetOff(PhoneOnBtn, new Vector2(0, 75));
+            SetOff(PhoneOnBtn, new Vector2(0.0f, PhoneOnBtn.GetComponent<RectTransform>().anchoredPosition.y));
             PlayerInputController.SetSectionBtns(null, null);
             foreach (string DoNotNeedBtn in DoNotNeedBtns)
             {
@@ -180,7 +180,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
                 }
             }
             if (DoNotNeedBtns_ExceptionSituation) { return; }
-            SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
+            SetOff(PhoneOnByScheduleBtn, new Vector2(0.0f, PhoneOnByScheduleBtn.GetComponent<RectTransform>().anchoredPosition.y));
 
             PlayerInputController.SetSectionBtns(null, null);
             PlayerInputController.interact = null;

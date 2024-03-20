@@ -22,6 +22,7 @@ public class ConversationBase : ScriptableObject
 public class NpcConversation
 {
     [SerializeField] public Sprite talkerSprite;
+    [SerializeField] public string talkerName;
     [SerializeField][TextArea] public string conversation;
     [SerializeField] public float conversationDurTime;
 

@@ -1,0 +1,79 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class MainSceneUIManager : Manager<MainSceneUIManager>
+{
+    [Header("*In Game GOs or Components")]
+    [SerializeField] InGameHUD InGameHUD;
+    [SerializeField] InGamePhoneUI InGamePhoneUI;
+    [SerializeField] InGameComputerUI InGameComputerUI;
+
+    [Header("*Source Collections (each condition)")]
+    [SerializeField] ModuleUISO BaseUI_collection;
+    [SerializeField] ModuleUISO angerUI_collection;
+
+
+    private void OnEnable()
+    {
+        InGameHUD.setAllImgs();
+        InGamePhoneUI.setAllImgs();
+        InGameComputerUI.setAllImgs();
+    }
+}
+
+[Serializable]
+public class InGameHUD
+{
+    public Image placeInfo;
+    public Image dayInfo;
+    public Image moneyInfo;
+    public Image phoneImg;
+    public Image phoneBtnImg;
+    public Image phoneScheduleBtnImg;
+    public Image scheduleImg_0;
+    public Image scheduleImg_1;
+    public Image scheduleImg_2;
+    public Image scheduleImg_3;
+    public Image npcPanelImg;
+    public Image objPanelImg;
+
+    [HideInInspector] public List<Image> allImgs = new List<Image>();
+    public void setAllImgs()
+    {
+        allImgs = new List<Image>
+        {
+            placeInfo, dayInfo, moneyInfo, phoneImg, phoneBtnImg, phoneScheduleBtnImg,
+            scheduleImg_0, scheduleImg_1, scheduleImg_2, scheduleImg_3,
+            npcPanelImg, objPanelImg
+        };
+    }
+}
+[Serializable]
+public class InGamePhoneUI
+{
+    [HideInInspector] public List<Image> allImgs = new List<Image>();
+    public void setAllImgs()
+    {
+        allImgs = new List<Image>
+        {
+            
+        };
+    }
+}
+[Serializable]
+public class InGameComputerUI
+{
+    [HideInInspector] public List<Image> allImgs = new List<Image>();
+    public void setAllImgs()
+    {
+        allImgs = new List<Image>
+        {
+
+        };
+    }
+}
+
+
