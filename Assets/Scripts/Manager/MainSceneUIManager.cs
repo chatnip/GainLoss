@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +20,31 @@ public class MainSceneUIManager : Manager<MainSceneUIManager>
         InGameHUD.setAllImgs();
         InGamePhoneUI.setAllImgs();
         InGameComputerUI.setAllImgs();
+    }
+
+    public void changeUICollection(ModuleUISO targetUiCollection)
+    {
+        if(InGameHUD.allImgs != null && InGameHUD.allImgs.Count > 0)
+        {
+            for (int i = 0; i < InGameHUD.allImgs.Count; i++)
+            {
+                InGameHUD.allImgs[i].sprite = targetUiCollection.HUD_SourceSprites[i];
+            }
+        }
+        if (InGamePhoneUI.allImgs != null && InGamePhoneUI.allImgs.Count > 0)
+        {
+            for (int i = 0; i < InGamePhoneUI.allImgs.Count; i++)
+            {
+                InGamePhoneUI.allImgs[i].sprite = targetUiCollection.Phone_SourceSprites[i];
+            }
+        }
+        if (InGameComputerUI.allImgs != null && InGameComputerUI.allImgs.Count > 0)
+        {
+            for (int i = 0; i < InGameComputerUI.allImgs.Count; i++)
+            {
+                InGameComputerUI.allImgs[i].sprite = targetUiCollection.Computer_SourceSprites[i];
+            }
+        }
     }
 }
 
