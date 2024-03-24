@@ -123,8 +123,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     public void ResetPhoneBtns()
     {
-        SetOff(PhoneOnBtn, new Vector2(0, 75));
-        SetOff(PhoneOnByScheduleBtn, new Vector2(0, 75));
+        SetOff(PhoneOnBtn, new Vector2(0, 45));
+        SetOff(PhoneOnByScheduleBtn, new Vector2(0, -45));
 
         void SetOff(Button btn, Vector2 endPos)
         {
