@@ -256,10 +256,6 @@ public class WordManager : Manager<WordManager>
     public void InitWord()
     {
         currentWordList.Clear(); // 초기화
-        foreach (string id in currentWordIDList)
-        {
-            Debug.Log(id);
-        }
         foreach (string id in currentWordIDList) // ID 순회
         {
             ButtonValue word = new(id, (string)DataManager.WordDatas[5][id]);

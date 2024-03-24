@@ -165,8 +165,6 @@ public class PlaceManager : Manager<PlaceManager>
             CheckGetAllDatas.gameObject.SetActive(true);
         }
 
-        Debug.Log("플레이어 위치 초기화");
-
         //PlayerController.ResetPlayerSpot();
     }
     //시트에 따라 (몇 번 방문했는냐에 따른) 오브젝트 배치
@@ -224,8 +222,6 @@ public class PlaceManager : Manager<PlaceManager>
                     InitBehaviorActionID(currentPlace.ID);
                     placeBtnSpawner.SpawnBehaviorActionBtn();*/
                 });
-
-            Debug.Log(placeBtn.buttonValue.ID + placeBtn.gameObject.name);
         }
     }
 

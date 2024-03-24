@@ -11331,11 +11331,11 @@ RectTransform:
   - {fileID: 1125391783}
   m_Father: {fileID: 1197241156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 787.5, y: 0}
   m_SizeDelta: {x: 295, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &416519482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12056,6 +12056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectInteractionButtonGenerator: {fileID: 1637006480}
+  PlayerInputController: {fileID: 1955638128}
   loading: {fileID: 844579173}
   objPanel: {fileID: 1084193113}
   objPanelBtn_toSkip: {fileID: 1084193117}
@@ -32946,6 +32947,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentClueData: {fileID: 0}
+  clueReduction: {fileID: 416519481}
   clueReductionBtns:
   - {fileID: 1960104861}
   - {fileID: 741665978}
@@ -51839,6 +51841,10 @@ PrefabInstance:
       propertyPath: ObjectInteractionButtonGenerator
       value: 
       objectReference: {fileID: 1637006480}
+    - target: {fileID: 6167385655449554492, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 91955f6d2f0cbbc4b9ee09d517f8acd2, type: 2}
     - target: {fileID: 6576300770701407549, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: description.Array.size
       value: 1
@@ -55581,6 +55587,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Posters
       objectReference: {fileID: 0}
+    - target: {fileID: 8128203440385503039, guid: 53ece7eecd9af7a4e999a35a8ded0029, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 91955f6d2f0cbbc4b9ee09d517f8acd2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

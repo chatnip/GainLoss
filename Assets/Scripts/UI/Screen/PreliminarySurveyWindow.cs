@@ -24,6 +24,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [SerializeField] ClueData currentClueData;
 
     [Header("*Btn")]
+    [SerializeField] RectTransform clueReduction;
     [SerializeField] Button[] clueReductionBtns = new Button[8];
     [SerializeField] Button resetBtn;
     [SerializeField] Button tryToCombineBtn;
@@ -63,6 +64,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     private void OnEnable()
     {
         ft_setData(); // Set Clue Reduction Img
+
         ft_setPadSection(new List<List<Button>> {
             new List<Button> { clueReductionBtns[0] },
             new List<Button> { clueReductionBtns[1] },
@@ -72,6 +74,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             new List<Button> { clueReductionBtns[5] },
             new List<Button> { clueReductionBtns[6] },
             new List<Button> { clueReductionBtns[7] }});
+
+        clueReduction.anchoredPosition = new Vector2(clueReduction.anchoredPosition.x, clueReduction.rect.height * -1);
+        clueReduction.DOAnchorPos(new Vector2(clueReduction.anchoredPosition.x, 0), 0.5f); // 필름 나오게하는 연출
     }
 
     private void LateUpdate()

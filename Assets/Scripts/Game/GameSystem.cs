@@ -12,6 +12,7 @@ public class GameSystem : MonoBehaviour
     #region Value
 
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
+    [SerializeField] public PlayerInputController PlayerInputController;
 
     [Header("*Popular UI")]
     [SerializeField] public CanvasGroup loading;
