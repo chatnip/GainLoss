@@ -60,7 +60,7 @@ public class PlaceManager : Manager<PlaceManager>
     [HideInInspector] public List<ButtonValue> currentBehaviorActionList = new();*/
 
     // 선택한 장소 및 장소의 액션
-    [HideInInspector] public ButtonValue currentPlace = null;
+    public ButtonValue currentPlace = null;
     //private ButtonValue currentBehaviorAction;
 
     #region Main

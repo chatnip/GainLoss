@@ -222,13 +222,16 @@ public class PlayerController : MonoBehaviour
     public void setOnNpcInteractCamera(GameObject targetGO)
     {
         _npcInteractCamera.gameObject.SetActive(true);
-        _npcInteractCamera.rotation = targetGO.transform.rotation;
+        this.transform.LookAt(new Vector3(targetGO.transform.position.x, this.transform.position.y, targetGO.transform.position.z));
+        targetGO.transform.LookAt(new Vector3(this.transform.position.x, targetGO.transform.position.y, this.transform.position.z));
+        _npcInteractCamera.LookAt(targetGO.transform.position + new Vector3(0, 1.6f, 0));
+        /*_npcInteractCamera.rotation = targetGO.transform.rotation;
         _npcInteractCamera.transform.position = targetGO.transform.position + 
             (Vector3.up * 1.6f) +
             (_npcInteractCamera.transform.forward * 1) + 
             (_npcInteractCamera.transform.right * (-0.3f));
 
-        _npcInteractCamera.Rotate(0, 180, 0);
+        _npcInteractCamera.Rotate(0, 180, 0);*/
     }
     public void setOffNpcInteractCamera()
     {

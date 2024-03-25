@@ -141,7 +141,7 @@ public class GameSystem : MonoBehaviour
     public void NpcDescriptionOn(ConversationBase conversationBase, Animator animator) // NPC 설명 패널 켜기
     {
         PlayerController.resetAnime();
-
+        PlayerController.setOnNpcInteractCamera(animator.gameObject);
         PlayerInputController.CanMove = false;
         PlayerController.isTalking = true;
         AnotherAnimator = animator;
@@ -210,12 +210,10 @@ public class GameSystem : MonoBehaviour
                          if(conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
                          {
                              PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             PlayerController.setOnNpcInteractCamera(PlayerController.gameObject);
                          }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
                          {
                              AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             PlayerController.setOnNpcInteractCamera(AnotherAnimator.gameObject);
                          }
                      })
                      .OnComplete(() =>
