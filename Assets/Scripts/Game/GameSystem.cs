@@ -6,13 +6,17 @@ using DG.Tweening;
 using TMPro;
 using UniRx;
 using System;
+using Spine;
 
 public class GameSystem : MonoBehaviour
 {
     #region Value
 
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
+    [SerializeField] PlayerController PlayerController;
     [SerializeField] public PlayerInputController PlayerInputController;
+    [SerializeField] Animator PlayerAnimator;
+    [SerializeField] Animator AnotherAnimator;
 
     [Header("*Popular UI")]
     [SerializeField] public CanvasGroup loading;
@@ -105,6 +109,9 @@ public class GameSystem : MonoBehaviour
 
     public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
     {
+        PlayerController.resetAnime();
+
+        PlayerInputController.CanMove = false;
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
 
         objText.text = "";
@@ -119,6 +126,7 @@ public class GameSystem : MonoBehaviour
     
     public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
     {
+        PlayerInputController.CanMove = true;
         DOTween.Complete("Obj_Description");
         objPanel.SetActive(false);
         objText.text = null;
@@ -130,8 +138,13 @@ public class GameSystem : MonoBehaviour
 
     #region Npc Panel
 
-    public void NpcDescriptionOn(ConversationBase conversationBase) // NPC 설명 패널 켜기
+    public void NpcDescriptionOn(ConversationBase conversationBase, Animator animator) // NPC 설명 패널 켜기
     {
+        PlayerController.resetAnime();
+
+        PlayerInputController.CanMove = false;
+        PlayerController.isTalking = true;
+        AnotherAnimator = animator;
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
         this.conversations = conversationBase;
         SetTween(0);
@@ -147,6 +160,20 @@ public class GameSystem : MonoBehaviour
         }
         else if (!conversationTweeningNow && (conversations.NpcConversations.Count > currentOrder))
         {
+            if(!PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+            {
+                PlayerAnimator.SetTrigger("Return");
+            }
+            if (AnotherAnimator != null)
+            {
+                if (!AnotherAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                {
+                    AnotherAnimator.SetTrigger("Return");
+                }
+
+            }
+
+            DOTween.Kill(NpcText);
             NpcText.text = null;
             SetTween(currentOrder);
         }
@@ -154,11 +181,21 @@ public class GameSystem : MonoBehaviour
 
     public void NpcDescriptionOff() // NPC 설명 패널 끄기
     {
+        PlayerInputController.CanMove = true;
+        PlayerController.setOffNpcInteractCamera();
+        PlayerController.isTalking = false;
         NpcPanel.SetActive(false);
+        DOTween.Kill(NpcText);
         NpcText.text = null;
         conversationTweeningNow = false;
         currentOrder = 0;
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(true);
+
+        PlayerAnimator.SetTrigger("Return");
+        AnotherAnimator.SetTrigger("Return");
+
+
+        AnotherAnimator = PlayerAnimator;
     }
 
     private Tween SetTween(int i)
@@ -168,8 +205,18 @@ public class GameSystem : MonoBehaviour
                      .OnStart(() =>
                      {
                          conversationTweeningNow = true;
-                         NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
+                         //NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
                          NpcName.text = conversations.NpcConversations[i].talkerName;
+                         if(conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
+                         {
+                             PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
+                             PlayerController.setOnNpcInteractCamera(PlayerController.gameObject);
+                         }
+                         else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
+                         {
+                             AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
+                             PlayerController.setOnNpcInteractCamera(AnotherAnimator.gameObject);
+                         }
                      })
                      .OnComplete(() =>
                      {

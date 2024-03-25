@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CharacterController _controller;
     [SerializeField] PlayerInputController _input;
     [SerializeField] Transform _mainCamera;
+    [SerializeField] Transform _npcInteractCamera;
+    [SerializeField] public bool isTalking = false;
     [SerializeField] Animator _animator;
 
     // [SerializeField] GameObject interactCanvas;
@@ -108,7 +111,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         GroundedCheck();
-        Move();
+        if(PlayerInputController.CanMove) Move();
+        if(isTalking) setOriginalAnimation();
     }
 
     #endregion
@@ -199,7 +203,37 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat(_animIDSpeed, _animationBlend);
         _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
+    public void resetAnime()
+    {
+        _animator.SetFloat(_animIDSpeed, 0);
+    }
 
+    private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
+    {
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+        {
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            {
+                _animator.SetTrigger("Return");
+            }
+        }
+    }
+
+    public void setOnNpcInteractCamera(GameObject targetGO)
+    {
+        _npcInteractCamera.gameObject.SetActive(true);
+        _npcInteractCamera.rotation = targetGO.transform.rotation;
+        _npcInteractCamera.transform.position = targetGO.transform.position + 
+            (Vector3.up * 1.6f) +
+            (_npcInteractCamera.transform.forward * 1) + 
+            (_npcInteractCamera.transform.right * (-0.3f));
+
+        _npcInteractCamera.Rotate(0, 180, 0);
+    }
+    public void setOffNpcInteractCamera()
+    {
+        _npcInteractCamera.gameObject.SetActive(false);
+    }
     /*
     private void CameraRotation()
     {

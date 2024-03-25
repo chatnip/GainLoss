@@ -144,6 +144,8 @@ public class DialogManager : Manager<DialogManager>, IInteract
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "Äà¼ö¿° ible", loop: true);
                 break;
         }
+
+        
     }
 
     public enum SpineAniState
