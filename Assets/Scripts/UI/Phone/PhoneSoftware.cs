@@ -41,6 +41,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     [Header("*Site Survey")]
     [SerializeField] List<Button> PlaceBtns;
+    [SerializeField] GameObject map;
 
     [Header("*Everytime Set Text")]
     [SerializeField] List<TMP_Text> DayText;
@@ -48,9 +49,11 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     [Header("*Software")]
     [SerializeField] Button lockScreen;
-    //[SerializeField] public Button map_Btn;
-    //[SerializeField] public Button map_backBtn;
-    [SerializeField] GameObject map;
+
+    [Header("*AppEffecful")]
+    [SerializeField] Image appOpenBackgroundImg;
+    [SerializeField] Image appIconImg;
+
     [Header("*ail")]
     [SerializeField] Button AIL_pad_Btn;
     [SerializeField] Button AIL_pad_backBtn;
@@ -83,7 +86,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                AIL_pad.SetActive(true);
+                AIL_pad_Btn.TryGetComponent(out Image img);
+                openApp(AIL_pad, img);
+                //AIL_pad.SetActive(true);
             });
         AIL_pad_backBtn
             .OnClickAsObservable()
@@ -97,7 +102,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                EXE_pad.SetActive(true);
+                EXE_pad_Btn.TryGetComponent(out Image img);
+                openApp(EXE_pad, img);
+                //EXE_pad.SetActive(true);
             });
         EXE_pad_backBtn
             .OnClickAsObservable()
@@ -110,7 +117,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                Place_pad.SetActive(true);
+                Place_pad_Btn.TryGetComponent(out Image img);
+                openApp(Place_pad, img);
+                //Place_pad.SetActive(true);
             });
         Place_pad_backBtn
             .OnClickAsObservable()
@@ -176,9 +185,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             });*/
 
         #endregion
-
-        
     }
+
     private void OnEnable()
     {
         PlayerInputController.interact = this;
@@ -190,11 +198,23 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         #region base
 
         if (PlayerInputController.SelectBtn == AIL_pad_Btn) 
-        { AIL_pad.SetActive(true); return; }
+        {
+            AIL_pad_Btn.TryGetComponent(out Image img);
+            openApp(AIL_pad, img);
+            return; 
+        }
         else if (PlayerInputController.SelectBtn == EXE_pad_Btn) 
-        { EXE_pad.SetActive(true); return; }
+        {
+            EXE_pad_Btn.TryGetComponent(out Image img);
+            openApp(EXE_pad, img);
+            return; 
+        }
         else if (PlayerInputController.SelectBtn == Place_pad_Btn) 
-        { Place_pad.SetActive(true); return; }
+        {
+            Place_pad_Btn.TryGetComponent(out Image img);
+            openApp(Place_pad, img);
+            return; 
+        }
 
         #endregion Set Create Schedule Btn
 
@@ -227,6 +247,51 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         #endregion
     }
 
+    #endregion
+
+    #region About Create Schedule
+
+    private void InputSchedule(Button ScheduleBtn, TMP_Text tmp)
+    {
+        string ScheduleText = tmp.text;
+        if (Turn == 0)
+        {
+            SelectedScheduleTexts[0].text = ScheduleText;
+            Turn++;
+        }
+        else if (Turn == 1)
+        {
+            if (SelectedScheduleTexts[0].text != ScheduleText)
+            {
+                SelectedScheduleTexts[1].text = ScheduleText;
+                Turn++;
+            }
+        }
+        if (Turn >= 2)
+        {
+            SetOrdering(SelectedScheduleTexts[0].text, SelectedScheduleTexts[1].text);
+        }
+    }
+    private void SetOrdering(string firstText, string secondText)
+    {
+        string firstKey = "";
+        string SecondKey = "";
+        foreach (string Kor in DataManager.ScheduleDatas[3].Values)
+        {
+            if (firstText == Kor)
+            { firstKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
+            if (secondText == Kor)
+            { SecondKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
+        }
+        if (Convert.ToInt32(DataManager.ScheduleDatas[1][firstKey]) > Convert.ToInt32(DataManager.ScheduleDatas[1][SecondKey]))
+        {
+            string temp = SelectedScheduleTexts[0].text;
+            SelectedScheduleTexts[0].text = SelectedScheduleTexts[1].text;
+            SelectedScheduleTexts[1].text = temp;
+        }
+
+
+    }
     private void ClearSelectedScheduleFirstBtns()
     {
         if (SelectedScheduleTexts[0].text != "" && SelectedScheduleTexts[0].text != null)
@@ -280,52 +345,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             DecisionWarningText.color = Color.white;
             DecisionWarningText.DOFade(0, 1);
         }
-    }
-
-    #endregion
-
-    #region About Create Schedule
-
-    private void InputSchedule(Button ScheduleBtn, TMP_Text tmp)
-    {
-        string ScheduleText = tmp.text;
-        if (Turn == 0)
-        {
-            SelectedScheduleTexts[0].text = ScheduleText;
-            Turn++;
-        }
-        else if (Turn == 1)
-        {
-            if (SelectedScheduleTexts[0].text != ScheduleText)
-            {
-                SelectedScheduleTexts[1].text = ScheduleText;
-                Turn++;
-            }
-        }
-        if (Turn >= 2)
-        {
-            SetOrdering(SelectedScheduleTexts[0].text, SelectedScheduleTexts[1].text);
-        }
-    }
-    private void SetOrdering(string firstText, string secondText)
-    {
-        string firstKey = "";
-        string SecondKey = "";
-        foreach (string Kor in DataManager.ScheduleDatas[3].Values)
-        {
-            if (firstText == Kor)
-            { firstKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
-            if (secondText == Kor)
-            { SecondKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
-        }
-        if (Convert.ToInt32(DataManager.ScheduleDatas[1][firstKey]) > Convert.ToInt32(DataManager.ScheduleDatas[1][SecondKey]))
-        {
-            string temp = SelectedScheduleTexts[0].text;
-            SelectedScheduleTexts[0].text = SelectedScheduleTexts[1].text;
-            SelectedScheduleTexts[1].text = temp;
-        }
-
-
     }
 
     #endregion
@@ -453,5 +472,52 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     }
 
     #endregion
+
+    #region Effectful ( App Open )
+
+    private void openApp(GameObject App, Image ClickImg)
+    {
+        appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT);
+        Sequence seq = DOTween.Sequence();
+
+        // BG 초기 설정
+        DOTween.Kill(appOpenBackgroundImg.gameObject);
+        BGRT.localScale = Vector3.zero;
+        appOpenBackgroundImg.DOFade(0, 0);
+
+        // Icon 초기 설정
+        appIconImg.DOFade(0, 0);
+        appIconImg.sprite = ClickImg.sprite;
+
+        // Dotween 애니메이션
+        appOpenBackgroundImg.gameObject.SetActive(true);
+        appIconImg.gameObject.SetActive(true);
+
+        seq.Append(BGRT.DOScale(Vector3.one, 0.2f)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+            {
+                App.gameObject.SetActive(true);
+            }));
+        seq.Join(appOpenBackgroundImg.DOFade(1, 0.2f));
+        seq.Join(appIconImg.DOFade(1, 0.1f));
+
+        seq.AppendInterval(0.2f);
+
+        seq.Append(appOpenBackgroundImg.DOFade(0, 0.15f)
+            .OnComplete(() =>
+            {
+                appOpenBackgroundImg.gameObject.SetActive(false);
+            }));
+        seq.Join(appIconImg.DOFade(0, 0.15f)
+            .OnComplete(() =>
+            {
+                appIconImg.gameObject.SetActive(false);
+            }));
+
+
+    }
+
+    #endregion  
 
 }
