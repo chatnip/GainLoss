@@ -7,12 +7,13 @@ using TMPro;
 
 public class ActionEventManager : Manager<ActionEventManager>
 {
-    [Header("*Manager")]
+    [Header("*Property")]
     [SerializeField] GameManager GameManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] JsonManager JsonManager;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
+    [SerializeField] SchedulePrograss SchedulePrograss;
 
     [Header("*Input")]
     [SerializeField] PlayerInputController PlayerInputController;
@@ -130,6 +131,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         yield return new WaitForSeconds(time);
 
+        SchedulePrograss.SetExplanation("S00");
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
         string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";

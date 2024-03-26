@@ -17,6 +17,7 @@ public class SchedulePrograss : MonoBehaviour
     [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("Txts")]
+    [SerializeField] CanvasGroup currentSchedule;
     [SerializeField] TMP_Text ScheduleAM;
     [SerializeField] TMP_Text SchedulePM;
     [SerializeField] TMP_Text ExplanationTxt;
@@ -48,7 +49,7 @@ public class SchedulePrograss : MonoBehaviour
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                OnOffExlanation();
+                OnOffVisibleSchedule();
             });
     }
 
@@ -56,28 +57,28 @@ public class SchedulePrograss : MonoBehaviour
 
     #region Progress UI
 
-    public void OnOffExlanation()
+    public void OnOffVisibleSchedule()
     {
-        if (OnExplanation)
+        if (OnExplanation) // 표 끄기
         {
             DOTween.Kill(ExplanationTxt);
-            DOTween.Kill(ExplanationBtn);
+            DOTween.Kill(currentSchedule);
 
-            ExplanationTxt.DOFade(1, 0);
-            ExplanationTxt.DOFade(0, 0.5f)
-                .OnComplete(() =>
-                {
-                    ExplanationTxt.gameObject.SetActive(false);
-                });
-            ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 100), 0.5f);
+            // 텍스트 보이기
+            ExplanationTxt.gameObject.SetActive(true);
+            ExplanationTxt.DOFade(1, 0.5f);
 
+            // 스케쥴 표 올리기
+            currentSchedule.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 150), 0.5f);
+            currentSchedule.DOFade(0, 0.5f);
+
+            // 패드 키 안내 명도 조절
             DOTween.Kill(padControllerCG);
-
             padControllerCG.DOFade(0.3f, 0.5f);
 
             OnExplanation = false;
         }
-        else
+        else // 표 키기
         {
             if (ScheduleManager.currentPrograssScheduleID != null)
             {
@@ -85,15 +86,21 @@ public class SchedulePrograss : MonoBehaviour
             }
 
             DOTween.Kill(ExplanationTxt);
-            DOTween.Kill(ExplanationBtn);
+            DOTween.Kill(currentSchedule);
 
-            ExplanationTxt.DOFade(0, 0);
-            ExplanationTxt.gameObject.SetActive(true);
-            ExplanationTxt.DOFade(1, 0.5f);
-            ExplanationBtn.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 25), 0.5f);
+            // 텍스트 안보이게 하기
+            ExplanationTxt.DOFade(0, 0.5f)
+                .OnComplete(() =>
+                {
+                    ExplanationTxt.gameObject.SetActive(false);
+                });
 
+            // 스케쥴 표 내리기
+            currentSchedule.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 0), 0.5f);
+            currentSchedule.DOFade(1, 0.5f);
+
+            // 패드 키 안내 명도 조절
             DOTween.Kill(padControllerCG);
-
             padControllerCG.DOFade(1, 0.5f);
 
             OnExplanation = true;
@@ -103,10 +110,11 @@ public class SchedulePrograss : MonoBehaviour
     public void ResetExlanation()
     {
         DOTween.Kill(ExplanationTxt);
-        DOTween.Kill(ExplanationBtn);
+        DOTween.Kill(currentSchedule);
 
-        ExplanationBtn.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 100);
-        ExplanationTxt.gameObject.SetActive(false);
+        currentSchedule.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 150);
+        ExplanationTxt.gameObject.SetActive(true);
+        ExplanationTxt.alpha = 1.0f;
         OnExplanation = false;
     }
 
@@ -171,7 +179,7 @@ public class SchedulePrograss : MonoBehaviour
     }
 
 
-    private void SetExplanation(string id)
+    public void SetExplanation(string id)
     {
         ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
     }

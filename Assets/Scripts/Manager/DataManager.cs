@@ -29,6 +29,7 @@ public class DataManager : Manager<DataManager>
     public static List<Dictionary<string, object>> ScheduleDatas = new();
     public static List<Dictionary<string, object>> ObjectEventData = new();
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -60,7 +61,7 @@ public class DataManager : Manager<DataManager>
         PlaceDatas = CSVReader.Read(this.PlaceFile);
         // [0]:PlaceName | [1]:PlaceNameKor
 
-        ScheduleDatas = CSVReader.Read(this.ScheduleFile);
+        ScheduleDatas = CSVReader.Read(this.ScheduleFile); 
         // [0]:Name | [1]:firstOfAll | [2]:ScheduleExplanation | [3]:KorName | [4]ScheduleExplanationKor
 
         ObjectEventData = CSVReader.Read(this.ObjectEventFile);

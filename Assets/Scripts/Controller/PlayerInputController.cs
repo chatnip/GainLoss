@@ -294,6 +294,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
     }
 
+    //폰 끄고 키기
     private void OnOffPhone(InputAction.CallbackContext obj)
     {
         if(isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
@@ -306,11 +307,12 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
         if (SchedulePrograss.OnExplanation) 
-        { SchedulePrograss.OnOffExlanation(); }
+        { SchedulePrograss.OnOffVisibleSchedule(); }
 
         PhoneHardware.SetOnOffPhoneBtn();
     }
 
+    // 상호작용 오브젝트 UI 활성화 / 비활성화
     private void OnOffInteractObject(InputAction.CallbackContext obj)
     {
         if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
@@ -323,12 +325,13 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
         if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffExlanation(); }
+        { SchedulePrograss.OnOffVisibleSchedule(); }
 
         ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
 
     }
 
+    // 스케쥴 표 보이기
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
@@ -338,17 +341,19 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
 
-        SchedulePrograss.OnOffExlanation();
+        SchedulePrograss.OnOffVisibleSchedule();
     }
 
+    // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
-
     {
         if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
         {
             PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
         }
     }
+
+    // 파트 넘기기 (Y키)
     private void TerminatePart(InputAction.CallbackContext context)
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
@@ -361,7 +366,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
         if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffExlanation(); }
+        { SchedulePrograss.OnOffVisibleSchedule(); }
 
         if (PartTimeJobLoadingBtn.gameObject.activeSelf)
         {
@@ -377,6 +382,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
     }
 
+    // 뒤로가기(B키)
     private void BackBtn(InputAction.CallbackContext obj)
     {
         //Pause
@@ -450,6 +456,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     }
 
+    // 포인트 이동 (L Stick)
     private void OnPointerMove(InputAction.CallbackContext obj)
     {
         PointerMoveInput(obj.ReadValue<Vector2>());

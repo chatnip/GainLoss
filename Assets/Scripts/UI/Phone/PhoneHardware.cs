@@ -1,9 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +13,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] GameSystem GameSystem;
 
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
@@ -28,6 +27,12 @@ public class PhoneHardware : MonoBehaviour, IInteract
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] GameObject Schedules;
     [SerializeField] GameObject ScheduleUIs;
+
+
+    [Header("*Effectful Phone")]
+    [SerializeField] RectTransform circleEffectRT;
+    [SerializeField] RectTransform bellRT;
+    [SerializeField] RectTransform waveRT;
 
     [Header("*On/Off Btns")]
     [SerializeField] Button PhoneListOpenBtn;
@@ -68,22 +73,25 @@ public class PhoneHardware : MonoBehaviour, IInteract
         PhoneOnBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                SchedulePrograss.ResetExlanation();
+                phoneEffectfulCor(false);
+
+                /*SchedulePrograss.ResetExlanation();
                 ResetPhoneBtns();
                 PhoneOn();
 
-                phoneSoftware.SetCurrentScheduleUI(false);
+                phoneSoftware.SetCurrentScheduleUI(false);*/
             });
         PhoneOnByScheduleBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                SchedulePrograss.ResetExlanation();
+                phoneEffectfulCor(true);
+
+                /*SchedulePrograss.ResetExlanation();
                 ResetPhoneBtns();
                 PhoneOn();
 
-                phoneSoftware.SetCurrentScheduleUI(true);
+                phoneSoftware.SetCurrentScheduleUI(true);*/
             });
-
     }
     
 
@@ -101,19 +109,23 @@ public class PhoneHardware : MonoBehaviour, IInteract
     {
         if (PlayerInputController.SelectBtn == PhoneOnBtn) 
         {
-            SchedulePrograss.ResetExlanation();
+            phoneEffectfulCor(false);
+
+            /*SchedulePrograss.ResetExlanation();
             ResetPhoneBtns();
             PhoneOn();
 
-            phoneSoftware.SetCurrentScheduleUI(false);
+            phoneSoftware.SetCurrentScheduleUI(false);*/
         }
         else if (PlayerInputController.SelectBtn == PhoneOnByScheduleBtn) 
         {
-            SchedulePrograss.ResetExlanation();
+            phoneEffectfulCor(true);
+
+            /*SchedulePrograss.ResetExlanation();
             ResetPhoneBtns();
             PhoneOn();
 
-            phoneSoftware.SetCurrentScheduleUI(true);
+            phoneSoftware.SetCurrentScheduleUI(true);*/
         }
     }
 
@@ -139,6 +151,76 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     #region Effectful
 
+    public void phoneEffectfulCor(bool setCurrentScheduleUI)
+    {
+        PlayerInputController.SetSectionBtns(null, null);
+
+        Sequence seq = DOTween.Sequence();
+
+        circleEffectRT.anchoredPosition = PhoneListOpenBtn.GetComponent<RectTransform>().anchoredPosition;
+        circleEffectRT.sizeDelta = Vector2.zero;
+        circleEffectRT.gameObject.SetActive(true); 
+        circleEffectRT.TryGetComponent(out Image CEImg);
+        waveRT.TryGetComponent(out Image WImg);
+
+        CEImg.DOFade(1, 0);
+        WImg.DOFade(1, 0);
+
+        bellRT.sizeDelta = Vector2.zero;
+        bellRT.gameObject.SetActive(true);
+
+        seq.Append(circleEffectRT.DOSizeDelta(Vector2.one * 4000f, 0.8f));
+        seq.Append(bellRT.DOSizeDelta(Vector2.one * 100, 0.1f));
+        for (int i = 0; i < 4; i++)
+        {
+            if (i % 2 == 0)
+            { seq.Append(bellRT.DOShakeRotation(0.1f, 50, 20, 10)
+                    .OnUpdate(() =>
+                    {
+                        bellRT.rotation.SetLookRotation(Vector3.back);
+                        //float z = bellRT.rotation.z;
+                        //bellRT.rotation = Quaternion.Euler(new Vector3(0, 0, z));
+                    })); }
+            else
+            { seq.Append(bellRT.DOShakeRotation(0.1f, 50, 20, 10))
+                    .OnUpdate(() =>
+                    {
+                        bellRT.rotation.SetLookRotation(Vector3.back);
+                        //float z = bellRT.rotation.z;
+                        //bellRT.rotation = Quaternion.Euler(new Vector3(0, 0, z));
+                    }); 
+            }
+        }
+        seq.AppendInterval(0.5f);
+        seq.Append(bellRT.DOSizeDelta(Vector2.zero, 0.1f)
+            .OnComplete(() =>
+            {
+                SchedulePrograss.ResetExlanation();
+                ResetPhoneBtns();
+                PhoneOn();
+                phoneSoftware.SetCurrentScheduleUI(setCurrentScheduleUI);
+
+                waveRT.gameObject.SetActive(true);
+                waveRT.sizeDelta = Vector2.zero;
+
+                bellRT.gameObject.SetActive(false);
+            }));
+        
+        seq.Append(waveRT.DOSizeDelta(Vector2.one * 200, 0.5f).SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+            {
+                waveRT.gameObject.SetActive(false);
+            }));
+        seq.Join(WImg.DOFade(0, 0.5f)).SetEase(Ease.OutCubic);
+
+
+
+        seq.Append(CEImg.DOFade(0, 0.5f)
+            .OnComplete(() =>
+            {
+                circleEffectRT.gameObject.SetActive(false);
+            }));
+    }
     public void SetOnOffPhoneBtn()
     {
         DOTween.Kill(PhoneOnBtn);
