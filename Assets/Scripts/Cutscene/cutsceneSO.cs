@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,6 +39,7 @@ public class cutsceneSO : ScriptableObject
                 .OnComplete(() =>
                 {
                     thisSequence.Pause();
+                    
                 }));
             thisSequence.Append(cutsceneImg.DOColor(Color.black, 0.25f)
                 .OnStart(() =>
@@ -94,8 +96,6 @@ public class cutsceneSO : ScriptableObject
                 cutsceneSeq.timeScale = 25.0f;
             }
         }
-
-
     }
     // 성공 시 연출 (컷씬 보여주기)
     public static void setImg(List<Sprite> spriteList, Sprite currentSprite, Image cutsceneImg)
@@ -103,5 +103,7 @@ public class cutsceneSO : ScriptableObject
         //yield return new WaitForSeconds(0.25f);
         Sprite s = spriteList[spriteList.IndexOf(currentSprite) + 1];
         cutsceneImg.sprite = s;
+
+        
     }
 }

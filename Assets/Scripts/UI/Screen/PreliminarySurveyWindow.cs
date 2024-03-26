@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PreliminarySurveyWindow : MonoBehaviour, IInteract
@@ -26,6 +28,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     [Header("*Btn")]
     [SerializeField] RectTransform clueReduction;
     [SerializeField] Button[] clueReductionBtns = new Button[8];
+    [SerializeField] Button initNumBtn;
     [SerializeField] Button resetBtn;
     [SerializeField] Button tryToCombineBtn;
 
@@ -60,6 +63,57 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
     #endregion
 
     #region Main
+
+    private void Awake()
+    {
+        initNumBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ft_setChooseClue(PlayerInputController.SelectBtn);
+            });
+
+        tryToCombineBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ft_tryToCombine();
+            });
+
+        resetBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ft_clearChooseClue();
+            });
+
+        foreach(Button btn in clueReductionBtns)
+        {
+            btn.OnClickAsObservable()
+                .Subscribe(_ =>
+                {
+                    PlayerInputController.SelectBtn = btn;
+                    PlayerInputController.OnOffSelectedBtn(PlayerInputController.SelectBtn);
+                    ft_setClueImg(PlayerInputController.SelectBtn);
+                });
+        }
+
+        /*cutsceneBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                if (GameSystem.cutsceneImg.gameObject.activeSelf)
+                { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg); return; }
+            });*/
+
+        endBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                Desktop.EndScheduleThis();
+                PlayerInputController.SetSectionBtns(null, null);
+                resultWindowParentGO.SetActive(false);
+                foreach (Transform child in clueImg)
+                { Destroy(child.gameObject); }
+                this.gameObject.SetActive(false);
+            });
+
+    }
 
     private void OnEnable()
     {
@@ -248,6 +302,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
 
             cutsceneSO.currentCSSO = SelectedPreliminarySurveySO.cutsceneSO;
             cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
+           
             cutsceneSO.cutsceneSeq.OnComplete(() =>
             {
                 showResult();
@@ -256,7 +311,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
                 GameSystem.cutsceneImg.gameObject.SetActive(false);
                 GameSystem.cutsceneTxt.text = "";
                 cutsceneSO.currentCSSO = null;
-            });
+            }); 
+
+
         }
         else if (tryNum.Length < 4)
         { ft_setAnnouncementText("모두 선택하지 않았습니다."); }
@@ -364,6 +421,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
         if (targetPointer.anchoredPosition.x < - clueImg.rect.width / 2) { targetPointer.anchoredPosition = new Vector2(- clueImg.rect.width / 2, targetPointer.anchoredPosition.y); }
         if (targetPointer.anchoredPosition.y > clueImg.rect.height / 2) { targetPointer.anchoredPosition = new Vector2(targetPointer.anchoredPosition.x, clueImg.rect.height / 2); }
         if (targetPointer.anchoredPosition.y < - clueImg.rect.height / 2) { targetPointer.anchoredPosition = new Vector2(targetPointer.anchoredPosition.x, - clueImg.rect.height / 2); }
+
 
     }
 

@@ -194,6 +194,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             WordManager.enableWordBtnList.Clear();
         }
+
     }
 
     public void PickWordActionBtn()
@@ -206,6 +207,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             WordManager.enableWordActionBtnList.Clear();
         }
+        
     }
 
     #endregion

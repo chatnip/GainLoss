@@ -78,6 +78,16 @@ public class GameSystem : MonoBehaviour
                 NpcDescriptionSkip();
             });
 
+        
+    }
+
+    private void LateUpdate()
+    {
+        if (Input.GetMouseButtonDown(0) && cutsceneImg.gameObject.activeSelf)
+        {
+            cutsceneSO.skipOrCompleteSeq(cutsceneImg);
+            return;
+        }
     }
 
     public void SetPlayerTransform()

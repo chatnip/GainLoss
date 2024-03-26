@@ -85,6 +85,12 @@ public class Desktop : MonoBehaviour, IInteract
                 ConfirmPopupSetting();
             });
         */
+        PSOpenBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
+                ConfirmPopupSetting();
+            });
 
         streamOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>

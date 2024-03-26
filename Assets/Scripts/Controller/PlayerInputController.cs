@@ -468,7 +468,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     #region Selected Btns
 
-    private void ApplySeleteBtn(InputAction.CallbackContext obj)
+    public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
         if (GameSystem.cutsceneImg.gameObject.activeSelf)
         { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg); return; }
