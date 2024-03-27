@@ -336,7 +336,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             SchedulePrograss.Set_InAMScheduleUI();
             CreateScheduleGO.SetActive(false);
             PhoneHardware.PhoneOff();
-
+            SchedulePrograss.SetExplanation(ScheduleManager.currentPrograssScheduleID);
             PartTimeJobManager.distinctionPartTimeJob();
         }
         else
@@ -465,6 +465,45 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     map.SetActive(true);
                     btns = new List<List<Button>>() { PlaceBtns };
                     PlayerInputController.SetSectionBtns(btns, this);
+
+                    /*foreach(Button btn in PlaceBtns)
+                    {
+                        if(btn.TryGetComponent(out BasicInteractBtn BIB))
+                        {
+                            BIB.enabled = false;
+                        }
+                    }*/
+                    
+                    Sequence sequence = DOTween.Sequence();
+                    sequence.AppendInterval(2f);
+                    for(int i = 0; i < PlaceBtns.Count; i++)
+                    {
+                        PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
+                        PlaceBtns[i].transform.GetChild(0).TryGetComponent(out TMP_Text Txt);
+
+                        BtnRT.sizeDelta = Vector2.zero;
+                        DOTween.Kill(BtnRT.localScale);
+
+                        Color tempColor = Txt.color;
+                        tempColor.a = 0f;
+                        Txt.color = tempColor;
+                        
+                        sequence.Append(BtnRT.DOSizeDelta(Vector2.one * 300, 0.2f)
+                            .SetEase(Ease.OutBack));
+                        sequence.Join(Txt.DOFade(1, 0.2f));
+                    }
+
+                    /*sequence.OnComplete(() =>
+                    {
+                        foreach (Button btn in PlaceBtns)
+                        {
+                            if (btn.TryGetComponent(out BasicInteractBtn BIB))
+                            {
+                                BIB.enabled = true;
+                            }
+                        }
+                    });*/
+
                     break;
             }
         }

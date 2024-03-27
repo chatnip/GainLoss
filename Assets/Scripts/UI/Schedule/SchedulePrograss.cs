@@ -15,6 +15,7 @@ public class SchedulePrograss : MonoBehaviour
     
     [Header("*Manger")]
     [SerializeField] ScheduleManager ScheduleManager;
+    [SerializeField] PlayerInputController PlayerInputController;
 
     [Header("Txts")]
     [SerializeField] CanvasGroup currentSchedule;
@@ -43,13 +44,14 @@ public class SchedulePrograss : MonoBehaviour
 
     private void Awake()
     {
-        ScheduleManager.PassNextSchedule();
+        //ScheduleManager.PassNextSchedule();
         //Set_InStartScheduleUI();
 
         ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                OnOffVisibleSchedule();
+                PlayerInputController.OnOffShowScheduleDetailBtn();
+                //OnOffVisibleSchedule();
             });
     }
 

@@ -316,7 +316,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3721994486443029666}
   - {fileID: 979974949916046201}
@@ -436,6 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 0}
   GameSystem: {fileID: 0}
+  PlayerInputController: {fileID: 0}
   txt_name_left: {fileID: 4795438889252486224}
   txt_name_right: {fileID: 0}
   TargetGO: {fileID: 0}

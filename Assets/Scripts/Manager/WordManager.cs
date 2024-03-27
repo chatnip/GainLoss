@@ -14,7 +14,9 @@ public class WordManager : Manager<WordManager>
     [SerializeField] StreamManager StreamManager;
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] DialogManager DialogManager;
-    
+    [SerializeField] Desktop Desktop;
+    [SerializeField] PlayerInputController PlayerInputController;
+
     [Space(10)]
     [SerializeField] TodoSpawner todoWordBtnSpawner;
      
@@ -61,10 +63,13 @@ public class WordManager : Manager<WordManager>
             .Subscribe(x =>
             {
                 TodoReset();
+                todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordParentObject);
             });
     }
     public void TodoReset()
     {
+        resetBtn.TryGetComponent(out Outline OL);
+        OL.enabled = false;
         todoWordBtnSpawner.PickWordActionBtn();
         currentWord = null;
         currentWordAction = null;
@@ -73,6 +78,7 @@ public class WordManager : Manager<WordManager>
         // currentWordActionIDList.Clear();
         currentWordActionList.Clear();
         currentWordActiionStr.Value = "아무것도 하지 않는다";
+        todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordParentObject);
     }
 
     #endregion
@@ -97,6 +103,7 @@ public class WordManager : Manager<WordManager>
                 .Subscribe(word =>
                 {
                     WordBtnApply(word);
+                    todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordActionParentObject);
                 });
         }
     }
@@ -125,6 +132,7 @@ public class WordManager : Manager<WordManager>
                 .Subscribe(action =>
                 {
                     WordActionBtnApply(action);
+                    PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { resetBtn, Desktop.streamStartBtn } }, todoWordBtnSpawner);
                 });
         }
     }

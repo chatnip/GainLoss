@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
+using UniRx;
 
 public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
 {
@@ -24,12 +25,26 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     [Header("*Btn")]
     [SerializeField] Button InteractionBtn;
     [SerializeField] GameObject parentGO;
+    [SerializeField] Button activityBtn;
 
     List<GameObject> allInteractionBtns = new List<GameObject>();
     List<GameObject> activeInteractionBtns = new List<GameObject>();
 
     [HideInInspector] public bool SectionIsThis = false;
-    
+
+
+    #endregion
+
+    #region Main
+
+    private void Awake()
+    {
+        activityBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                PlayerInputController.OnOffInteractObject();
+            });
+    }
 
     #endregion
 
@@ -89,6 +104,9 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
             }
         }
 
+        activityBtn.TryGetComponent(out RectTransform RT);
+        RT.sizeDelta = new Vector2(RT.rect.width, activeInteractionBtns.Count * InteractionBtn.GetComponent<RectTransform>().rect.height);
+
         Vector3 v3_pos;
         for (int i = 0; i <= activeInteractionBtns.Count; i++)
         {
@@ -96,11 +114,13 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
             if (i == activeInteractionBtns.Count)
             { 
                 pad_start.GetComponent<RectTransform>().anchoredPosition = v3_pos + new Vector3( -10, 10, 0);
+                RT.SetAsLastSibling();
                 return; 
             }
             activeInteractionBtns[activeInteractionBtns.Count - i - 1].GetComponent<RectTransform>().anchoredPosition = v3_pos;
             activeInteractionBtns[activeInteractionBtns.Count - i - 1].SetActive(true);
         }
+        
 
     }
 
@@ -135,6 +155,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
                 PlayerInputController.SetSectionBtns(SetSectionBtns(), this);
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(1920, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
+                activityBtn.gameObject.SetActive(false);
             }
             // 오브젝트 상호작용에서 벗어나기
             else
@@ -149,7 +170,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
                     {
                         SetOffAllOutline();
                     });
-
+                activityBtn.gameObject.SetActive(true);
 
             }
         }

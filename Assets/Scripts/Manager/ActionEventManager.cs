@@ -131,7 +131,9 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         yield return new WaitForSeconds(time);
 
-        SchedulePrograss.SetExplanation("S00");
+        //SchedulePrograss.SetExplanation("S00");
+        ScheduleManager.ResetDay();
+        ScheduleManager.PassNextSchedule();
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
         string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
@@ -222,7 +224,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         SavingPrograssText.text = "< Saving... >";
         SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
-        ScheduleManager.ResetDay();
+        
     }
 
     private void SaveDatas()

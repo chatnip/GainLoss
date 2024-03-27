@@ -66,7 +66,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
         PhoneListOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                SetOnOffPhoneBtn();
+                PlayerInputController.OnOffPhone();
+                //SetOnOffPhoneBtn();
             });
 
 

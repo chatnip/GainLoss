@@ -274,7 +274,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     #region Unique Func
 
-    //일시정지
+    // 일시정지
     private void OnPause(InputAction.CallbackContext obj)
     {
         if (pause.gameObject.activeSelf)
@@ -294,10 +294,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
     }
 
-    //폰 끄고 키기
+    // 폰 끄고 키기
     private void OnOffPhone(InputAction.CallbackContext obj)
     {
-        if(isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+        OnOffPhone();
+        /*if(isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         foreach(GameObject Go in Panels)
         {
@@ -309,11 +310,44 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (SchedulePrograss.OnExplanation) 
         { SchedulePrograss.OnOffVisibleSchedule(); }
 
+        PhoneHardware.SetOnOffPhoneBtn();*/
+    }
+    public void OnOffPhone()
+    {
+        if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+
+        foreach (GameObject Go in Panels)
+        {
+            if (Go.activeSelf) { return; }
+        }
+
+        if (ObjectInteractionButtonGenerator.SectionIsThis)
+        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+        if (SchedulePrograss.OnExplanation)
+        { SchedulePrograss.OnOffVisibleSchedule(); }
+
         PhoneHardware.SetOnOffPhoneBtn();
     }
 
     // 상호작용 오브젝트 UI 활성화 / 비활성화
     private void OnOffInteractObject(InputAction.CallbackContext obj)
+    {
+        OnOffInteractObject();
+        /*if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+
+        foreach (GameObject Go in Panels)
+        {
+            if (Go.activeSelf) { return; }
+        }
+
+        if (PhoneHardware.sectionIsThis)
+        { PhoneHardware.SetOnOffPhoneBtn(); }
+        if (SchedulePrograss.OnExplanation)
+        { SchedulePrograss.OnOffVisibleSchedule(); }
+
+        ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();*/
+    }
+    public void OnOffInteractObject()
     {
         if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
@@ -328,11 +362,22 @@ public class PlayerInputController : Manager<PlayerInputController>
         { SchedulePrograss.OnOffVisibleSchedule(); }
 
         ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
-
     }
 
     // 스케쥴 표 보이기
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
+    {
+        OnOffShowScheduleDetailBtn();
+       /* if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+
+        if (PhoneHardware.sectionIsThis)
+        { PhoneHardware.SetOnOffPhoneBtn(); }
+        if (ObjectInteractionButtonGenerator.SectionIsThis)
+        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
+
+        SchedulePrograss.OnOffVisibleSchedule();*/
+    }
+    public void OnOffShowScheduleDetailBtn()
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
@@ -662,33 +707,29 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         foreach (Button SectionBtn in allSectionList)
         {
-            if (PreliminarySurveyWindow.gameObject.activeSelf)
+
+            if (SectionBtn == btn) // 선택 버튼
             {
-                if (SectionBtn == btn)
+                if (SectionBtn.gameObject.TryGetComponent(out Outline outline))
+                { outline.enabled = true; }
+                if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
                 {
-                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                    { outline.effectColor = Color.cyan; outline.effectDistance = new Vector2(10, 10); }
+                    DOTween.Kill(RT.localScale);
+                    RT.DOScale(Vector3.one * 1.1f, 0.1f);
                 }
-                else
+                    
+                
+            }
+            else // 비선택 버튼들
+            {
+                if (SectionBtn.gameObject.TryGetComponent(out Outline outline))
+                { outline.enabled = false; }
+                if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
                 {
-                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                    { outline.effectColor = Color.gray; outline.effectDistance = new Vector2(5, 5); }
+                    DOTween.Kill(RT.localScale);
+                    RT.DOScale(Vector3.one * 1.0f, 0.1f);
                 }
             }
-            else
-            {
-                if (SectionBtn == btn)
-                {
-                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                    { outline.enabled = true; }
-                }
-                else
-                {
-                    if (SectionBtn.gameObject.TryGetComponent(out UnityEngine.UI.Outline outline))
-                    { outline.enabled = false; }
-                }
-            }
-            
         }
     }
 

@@ -24,7 +24,7 @@ public class InteractObject : InteractCore
     [SerializeField] public GameObject CurrentNorificationObject;
     [SerializeField] public Vector3 NOP_Scale;
     [SerializeField] private float NOP_Distance;
-
+    
     [HideInInspector] public bool CanInteract = true;
 
     protected GameSystem GameSystem;

@@ -42,7 +42,7 @@ public class ScheduleManager : Manager<ScheduleManager>
             if (currentSelectedScheduleID.Count == 0)
             {
                 SchedulePrograss.Set_InStartScheduleUI();
-
+                SchedulePrograss.SetExplanation("S00");
                 return;
             }
         }
@@ -54,8 +54,8 @@ public class ScheduleManager : Manager<ScheduleManager>
             {
                 currentPrograssScheduleID = currentSelectedScheduleID[1];
                 SchedulePrograss.Set_InPMScheduleUI();
-
                 PartTimeJobManager.distinctionPartTimeJob();
+                SchedulePrograss.SetExplanation(currentPrograssScheduleID);
 
                 return;
             }
@@ -63,6 +63,7 @@ public class ScheduleManager : Manager<ScheduleManager>
             {
                 currentPrograssScheduleID = "S99";
                 SchedulePrograss.Set_InEndScheduleUI();
+                SchedulePrograss.SetExplanation(currentPrograssScheduleID);
                 EndDayBtn.gameObject.SetActive(true);
 
                 return;

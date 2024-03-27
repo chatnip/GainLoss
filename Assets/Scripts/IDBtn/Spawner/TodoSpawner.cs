@@ -17,8 +17,8 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     [SerializeField] DialogManager DialogManager;
 
     [Header("*WordParentObj")]
-    [SerializeField] RectTransform wordParentObject;
-    [SerializeField] RectTransform wordActionParentObject;
+    [SerializeField] public RectTransform wordParentObject;
+    [SerializeField] public RectTransform wordActionParentObject;
 
     #endregion
 
@@ -36,7 +36,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         PickWordActionBtn();
     }
 
-    private void SetThisSectionBtns(RectTransform parentRT)
+    public void SetThisSectionBtns(RectTransform parentRT)
     {
         Button[] allChildren = parentRT.GetComponentsInChildren<Button>();
         List<List<Button>> allBtnsList = new List<List<Button>>();
@@ -70,8 +70,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         else if(PlayerInputController.SelectBtn == WordManager.resetBtn)
         {
             WordManager.TodoReset();
-            WordManager.resetBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
-            outilne.enabled = false;
             SetThisSectionBtns(wordParentObject);
         }
         else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn)
@@ -181,7 +179,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
 
     protected override void PickIDBtn()
     {
-        PickWordBtn();
+        PickWordBtn(); 
     }
 
     public void PickWordBtn()
@@ -194,7 +192,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             WordManager.enableWordBtnList.Clear();
         }
-
     }
 
     public void PickWordActionBtn()
@@ -207,7 +204,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             WordManager.enableWordActionBtnList.Clear();
         }
-        
     }
 
     #endregion

@@ -122,6 +122,7 @@ public class PlaceManager : Manager<PlaceManager>
             foreach(GameObject go in placeGOList)
             {
                 go.SetActive(false);
+                go.transform.position = new Vector3(100, 0, 0);
             }
             placeGOList[0].SetActive(true);
 
@@ -142,6 +143,7 @@ public class PlaceManager : Manager<PlaceManager>
             foreach (GameObject go in placeGOList)
             {
                 go.SetActive(false);
+                go.transform.position = new Vector3(100, 0, 0);
             }
             placeGOList[s].SetActive(true);
 
