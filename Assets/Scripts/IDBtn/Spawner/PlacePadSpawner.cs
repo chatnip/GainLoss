@@ -15,10 +15,11 @@ public class PlacePadSpawner : IDBtnSpawner
         for (int i = 0; i < PlaceManager.currentPlaceID_Dict.Count; i++)
         {
             IDBtn PlaceBtn = CreateIDBtn(new ButtonValue(PlaceManager.currentPlaceID_Dict.Keys.ToList()[i], DataManager.PlaceDatas[1][PlaceManager.currentPlaceID_Dict.Keys.ToList()[i]].ToString()));
+            PlaceBtn.AddVisiableWordRate("");
             PlaceBtn.transform.SetParent(PlaceParentObject);
-            PlaceBtn.buttonType = ButtonType.WordPadType;
-            if (PlaceBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
-            PlaceBtn.text.fontSize = 90;
+            PlaceBtn.buttonType = ButtonType.PlacePadType;
+            //if (PlaceBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            //PlaceBtn.text.fontSize = 90;
             PlaceManager.enablePlaceBtnList.Add(PlaceBtn);
             PlaceBtn.gameObject.SetActive(true);
         }

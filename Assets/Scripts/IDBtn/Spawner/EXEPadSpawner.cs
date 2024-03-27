@@ -15,10 +15,11 @@ public class EXEpadSpawner : IDBtnSpawner
         {
             Debug.Log(WordManager.currentWordActionIDList[i]);
             IDBtn wordActionBtn = CreateIDBtn(new ButtonValue(WordManager.currentWordActionIDList[i], DataManager.WordActionDatas[3][WordManager.currentWordActionIDList[i]].ToString()));
+            wordActionBtn.AddVisiableWordRate((string)DataManager.WordActionDatas[1][WordManager.currentWordActionIDList[i]]); // 등급 표시
             wordActionBtn.transform.SetParent(wordActionParentObject);
-            wordActionBtn.buttonType = ButtonType.WordPadType;
-            if (wordActionBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
-            wordActionBtn.text.fontSize = 90;
+            wordActionBtn.buttonType = ButtonType.WordActionPadType;
+            //if (wordActionBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            //wordActionBtn.text.fontSize = 90;
             WordManager.enableWordActionBtnList.Add(wordActionBtn);
             wordActionBtn.gameObject.SetActive(true);
         }

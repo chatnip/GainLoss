@@ -15,10 +15,11 @@ public class AILpadSpawner : IDBtnSpawner
         {
             //IDBtn wordBtn = CreateIDBtn(WordManager.currentWordList[i]);
             IDBtn wordBtn = CreateIDBtn(new ButtonValue(WordManager.currentWordIDList[i], DataManager.WordDatas[5][WordManager.currentWordIDList[i]].ToString()));
+            wordBtn.AddVisiableWordRate((string)DataManager.WordDatas[1][WordManager.currentWordIDList[i]]); // 등급 표시
             wordBtn.transform.SetParent(wordParentObject);
             wordBtn.buttonType = ButtonType.WordPadType;
-            if (wordBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
-            wordBtn.text.fontSize = 90;
+            //if (wordBtn.TryGetComponent(out RectTransform RT)) { RT.sizeDelta = new Vector2(Screen.width, Screen.height * 0.3f); }
+            //wordBtn.text.fontSize = 90;
             WordManager.enableWordBtnList.Add(wordBtn);
             wordBtn.gameObject.SetActive(true);
         }
