@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 public class InteractObject : InteractCore
 {
     #region Value
+    [Header("*This Things")]
+    [SerializeField] public string thisName;
 
     [Header("*IDs")]
     [SerializeField] public string objectID;

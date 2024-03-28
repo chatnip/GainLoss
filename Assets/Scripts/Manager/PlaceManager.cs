@@ -19,6 +19,7 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] PhoneSoftware PhoneSoftware;
     [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
+    [SerializeField] Camera MainCamera;
 
     [Header("*Player")]
     [SerializeField] SetInteractionObjects SetInteractionObjects;
@@ -35,6 +36,7 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] public List<IDBtn> placeBtnList = new();
     [Tooltip("Must make sure to get the order right FOR CSV")]
     [SerializeField] List<GameObject> placeGOList = new();
+    [SerializeField] List<Color> placeColorList = new();
 
     /*[Header("*Behavior")]
     [SerializeField] GameObject behaviorPopup;
@@ -128,6 +130,8 @@ public class PlaceManager : Manager<PlaceManager>
 
             placeGOList[0].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
 
+            MainCamera.backgroundColor = placeColorList[0];
+
             SetInteractionObjects.OnInteractiveOB();
 
             foreach (Transform child in placeGOList[0].transform)
@@ -146,7 +150,7 @@ public class PlaceManager : Manager<PlaceManager>
                 go.transform.position = new Vector3(100, 0, 0);
             }
             placeGOList[s].SetActive(true);
-
+            MainCamera.backgroundColor = placeColorList[s];
             placeGOList[s].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
 
             int visitAmount = 0; // 방문한 횟수 구하기

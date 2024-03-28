@@ -11764,6 +11764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 439156888}
+  thisName: TV
   objectID: 
   getWordID: 
   getWordActionID: 
@@ -15230,7 +15231,7 @@ MonoBehaviour:
   text: {fileID: 2121065098}
   rate_text: {fileID: 0}
   rect: {fileID: 557732248}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}
@@ -16489,6 +16490,7 @@ MonoBehaviour:
   PhoneSoftware: {fileID: 919177753}
   CheckGetAllDatas: {fileID: 325235752}
   ObjectInteractionButtonGenerator: {fileID: 1637006480}
+  MainCamera: {fileID: 61803321}
   SetInteractionObjects: {fileID: 1438225784}
   GoingSomewhereloadingCG: {fileID: 144862818}
   CurrentPlaceTxt: {fileID: 432623449}
@@ -16508,6 +16510,14 @@ MonoBehaviour:
   - {fileID: 1208659701}
   - {fileID: 1875160940}
   - {fileID: 1429904869}
+  placeColorList:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.49803922, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0.111652054, g: 0, b: 0.4433962, a: 1}
+  - {r: 0.73240805, g: 0, b: 1, a: 1}
   enablePlaceBtnList: []
   currentPlaceList: []
   currentPlace:
@@ -29086,6 +29096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 1025210538}
+  thisName: "\uD14C\uC2A4\uD2B8\uC6A9NPC"
   objectID: 
   getWordID: 
   getWordActionID: 
@@ -38155,8 +38166,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 20, y: 0}
+  m_SizeDelta: {x: -40, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1322253633
 MonoBehaviour:
@@ -38187,7 +38198,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 10
     m_Right: 10
-    m_Top: 10
+    m_Top: 30
     m_Bottom: 10
   m_ChildAlignment: 1
   m_Spacing: 20
@@ -38597,7 +38608,7 @@ MonoBehaviour:
   text: {fileID: 2050125425}
   rate_text: {fileID: 0}
   rect: {fileID: 1334456100}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}
@@ -39696,7 +39707,7 @@ MonoBehaviour:
   text: {fileID: 2048091658}
   rate_text: {fileID: 0}
   rect: {fileID: 1355895144}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}
@@ -42122,7 +42133,7 @@ MonoBehaviour:
   text: {fileID: 503394422}
   rate_text: {fileID: 0}
   rect: {fileID: 1416614115}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}
@@ -53409,6 +53420,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1123150004108570827, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: thisName
+      value: "\uBCBD\uAC78\uC774 \uC2DC\uACC4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123150004108570827, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: description.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -53427,6 +53442,10 @@ PrefabInstance:
     - target: {fileID: 4017873210523286409, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: outlineMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: thisName
+      value: "\uCEF4\uD4E8\uD130"
       objectReference: {fileID: 0}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: Schedules
@@ -53858,7 +53877,7 @@ MonoBehaviour:
   text: {fileID: 121977539}
   rate_text: {fileID: 0}
   rect: {fileID: 1829126525}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}
@@ -54675,8 +54694,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 20, y: 0}
+  m_SizeDelta: {x: -40, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1869104372
 MonoBehaviour:
@@ -54707,7 +54726,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 10
     m_Right: 10
-    m_Top: 10
+    m_Top: 30
     m_Bottom: 10
   m_ChildAlignment: 0
   m_Spacing: 20
@@ -55171,7 +55190,7 @@ MonoBehaviour:
   text: {fileID: 389567394}
   rate_text: {fileID: 0}
   rect: {fileID: 1882376231}
-  buttonType: 3
+  buttonType: 4
   clr_Positive: {r: 0, g: 0, b: 0, a: 0}
   clr_Normal: {r: 0, g: 0, b: 0, a: 0}
   clr_Malicious: {r: 0, g: 0, b: 0, a: 0}

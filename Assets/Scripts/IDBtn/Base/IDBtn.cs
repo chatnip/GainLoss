@@ -59,7 +59,7 @@ public class IDBtn : MonoBehaviour
                 break;
 
             case ButtonType.PlaceType:
-                IDBtnSetup();
+                //IDBtnSetup();
                 break;
             case ButtonType.PlacePadType:
                 IDBtnSetup();

@@ -76,11 +76,12 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     {
         GameObject btn = Instantiate(InteractionBtn.gameObject, parentGO.transform);
         btn.SetActive(false);
+        targetGO.TryGetComponent(out InteractObject IO);
         btn.name = targetGO.name + "Btn";
         
         InteractObjectBtn interactionBtn = btn.GetComponent<InteractObjectBtn>();
         interactionBtn.TargetGO = targetGO;
-        interactionBtn.txt_name_left.text = targetGO.name;
+        interactionBtn.txt_name_left.text = IO.thisName;
 
         allInteractionBtns.Add(btn);
     }
