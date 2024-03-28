@@ -16,9 +16,11 @@ public class GameSystem : MonoBehaviour
     [SerializeField] public PlayerInputController PlayerInputController;
     [SerializeField] Animator PlayerAnimator;
     [SerializeField] Animator AnotherAnimator;
+    [SerializeField] Pause Pause;
 
     [Header("*Popular UI")]
     [SerializeField] public CanvasGroup loading;
+    [SerializeField] public Button PauseBtn;
 
     [Header("*Obj Panel")]
     [SerializeField] public GameObject objPanel;
@@ -53,6 +55,11 @@ public class GameSystem : MonoBehaviour
     {
         SetPlayerTransform();
 
+        PauseBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                PlayerInputController.OnPause();
+            });
 
         objPanelExitBtn.OnClickAsObservable()
             .Subscribe(btn =>

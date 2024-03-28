@@ -26,16 +26,20 @@ public class BasicInteractBtn : InteractCore
 
         // 이중 List -> List로 변경
         List<Button> Section = new List<Button>();
-        foreach(List<Button> BtnList in PlayerInputController.SectionBtns)
+        if (PlayerInputController.SectionBtns != null)
         {
-            Section.AddRange(BtnList);
+            foreach (List<Button> BtnList in PlayerInputController.SectionBtns)
+            {
+                Section.AddRange(BtnList);
+            }
+            if (Section.Contains(thisBtn)) // PlayerInputController 버튼 리스트에 포함되어있는지
+            {
+                PlayerInputController.SelectBtn = thisBtn;
+                PlayerInputController.OnOffSelectedBtn(PlayerInputController.SelectBtn);
+            }
         }
 
-        if (Section.Contains(thisBtn)) // PlayerInputController 버튼 리스트에 포함되어있는지
-        {
-            PlayerInputController.SelectBtn = thisBtn;
-            PlayerInputController.OnOffSelectedBtn(PlayerInputController.SelectBtn);
-        }
+        
 
         // Base
         thisBtn.TryGetComponent(out RectTransform RT);

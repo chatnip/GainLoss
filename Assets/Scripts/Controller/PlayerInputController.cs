@@ -277,6 +277,25 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 일시정지
     private void OnPause(InputAction.CallbackContext obj)
     {
+        OnPause();
+        /*if (pause.gameObject.activeSelf)
+        {
+            pause.ft_closePausePopup();
+
+            SetSectionBtns(TempSectionBtns, TempInteract);
+            OnOffSelectedBtn(TempSelectedBtn);
+        }
+        else
+        {
+            TempSectionBtns = this.SectionBtns;
+            TempInteract = this.interact;
+            TempSelectedBtn = this.SelectBtn;
+
+            pause.ft_openPausePopup();
+        }*/
+    }
+    public void OnPause()
+    {
         if (pause.gameObject.activeSelf)
         {
             pause.ft_closePausePopup();
@@ -323,8 +342,8 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-        if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffVisibleSchedule(); }
+        //if (SchedulePrograss.OnExplanation)
+        //{ SchedulePrograss.OnOffVisibleSchedule(); }
 
         PhoneHardware.SetOnOffPhoneBtn();
     }
@@ -358,8 +377,8 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
-        if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffVisibleSchedule(); }
+        //if (SchedulePrograss.OnExplanation)
+        //{ SchedulePrograss.OnOffVisibleSchedule(); }
 
         ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
     }
@@ -367,7 +386,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 스케쥴 표 보이기
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
-        OnOffShowScheduleDetailBtn();
+        //OnOffShowScheduleDetailBtn();
        /* if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
         if (PhoneHardware.sectionIsThis)
@@ -377,7 +396,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         SchedulePrograss.OnOffVisibleSchedule();*/
     }
-    public void OnOffShowScheduleDetailBtn()
+    /*public void OnOffShowScheduleDetailBtn()
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
@@ -387,7 +406,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
 
         SchedulePrograss.OnOffVisibleSchedule();
-    }
+    }*/
 
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
@@ -410,8 +429,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         { PhoneHardware.SetOnOffPhoneBtn(); }
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-        if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffVisibleSchedule(); }
+        //if (SchedulePrograss.OnExplanation)
+        //{ SchedulePrograss.OnOffVisibleSchedule(); }
 
         if (PartTimeJobLoadingBtn.gameObject.activeSelf)
         {

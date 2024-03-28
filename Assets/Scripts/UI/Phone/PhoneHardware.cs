@@ -136,8 +136,10 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     public void ResetPhoneBtns()
     {
-        SetOff(PhoneOnBtn, new Vector2(0, 45));
-        SetOff(PhoneOnByScheduleBtn, new Vector2(0, -45));
+        PhoneOnBtn.TryGetComponent(out RectTransform PhoneOnBtnRT);
+        PhoneOnByScheduleBtn.TryGetComponent(out RectTransform PhoneOnByScheduleBtnRT);
+        SetOff(PhoneOnBtn, new Vector2(0, PhoneOnBtnRT.anchoredPosition.y));
+        SetOff(PhoneOnByScheduleBtn, new Vector2(0, PhoneOnByScheduleBtnRT.anchoredPosition.y));
 
         void SetOff(Button btn, Vector2 endPos)
         {
@@ -196,7 +198,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
         seq.Append(bellRT.DOSizeDelta(Vector2.zero, 0.1f)
             .OnComplete(() =>
             {
-                SchedulePrograss.ResetExlanation();
+                //SchedulePrograss.ResetExlanation();
                 ResetPhoneBtns();
                 PhoneOn();
                 phoneSoftware.SetCurrentScheduleUI(setCurrentScheduleUI);

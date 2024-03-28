@@ -54,7 +54,7 @@ public class ComputerInteract : InteractObject
         screenViewCamera.SetActive(true);
 
         SchedulePrograss.gameObject.SetActive(false);
-        SchedulePrograss.ResetExlanation();
+        //SchedulePrograss.ResetExlanation();
         PhoneOpenBtns.SetActive(false);
         PhoneHardware.ResetPhoneBtns();
 

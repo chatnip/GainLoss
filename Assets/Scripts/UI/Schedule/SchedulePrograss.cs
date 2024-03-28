@@ -47,12 +47,12 @@ public class SchedulePrograss : MonoBehaviour
         //ScheduleManager.PassNextSchedule();
         //Set_InStartScheduleUI();
 
-        ExplanationBtn.OnClickAsObservable()
+        /*ExplanationBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 PlayerInputController.OnOffShowScheduleDetailBtn();
                 //OnOffVisibleSchedule();
-            });
+            });*/
     }
 
     #endregion

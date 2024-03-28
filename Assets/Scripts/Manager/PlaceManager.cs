@@ -27,6 +27,7 @@ public class PlaceManager : Manager<PlaceManager>
     [Header("*Going Somewhere loading")]
     [SerializeField] CanvasGroup GoingSomewhereloadingCG;
     [SerializeField] TMP_Text CurrentPlaceTxt;
+    [SerializeField] TMP_Text HUD_currentPlactTxt;
 
     /*[Space(10)]
     [SerializeField] PlacePadSpawner placeBtnSpawner;*/
@@ -124,13 +125,13 @@ public class PlaceManager : Manager<PlaceManager>
             foreach(GameObject go in placeGOList)
             {
                 go.SetActive(false);
-                go.transform.position = new Vector3(100, 0, 0);
+                go.transform.position =
+                    new Vector3(100, 0, 0);
             }
             placeGOList[0].SetActive(true);
-
             placeGOList[0].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
-
             MainCamera.backgroundColor = placeColorList[0];
+            
 
             SetInteractionObjects.OnInteractiveOB();
 
@@ -149,6 +150,7 @@ public class PlaceManager : Manager<PlaceManager>
                 go.SetActive(false);
                 go.transform.position = new Vector3(100, 0, 0);
             }
+
             placeGOList[s].SetActive(true);
             MainCamera.backgroundColor = placeColorList[s];
             placeGOList[s].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
@@ -278,7 +280,7 @@ public class PlaceManager : Manager<PlaceManager>
 
         SetInteractionObjects.OffInteractiveOB();
         SetCurrent3DMap(currentPlace);
-
+        HUD_currentPlactTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
 
         yield return new WaitForSeconds(delay);
 
