@@ -7,12 +7,17 @@ using UnityEngine.UI;
 
 public class BasicInteractBtn : InteractCore
 {
+    #region Value
+
     [Header("*Manager")]
     [SerializeField] PlayerInputController PlayerInputController;
 
     [Header("*Compnenet")]
     [SerializeField] public Button thisBtn;
 
+    #endregion
+
+    #region Main
 
     public void Awake()
     {
@@ -20,6 +25,11 @@ public class BasicInteractBtn : InteractCore
         PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>();
         thisBtn = this.gameObject.GetComponent<Button>();
     }
+
+    #endregion
+
+    #region Pointer
+
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
@@ -55,4 +65,6 @@ public class BasicInteractBtn : InteractCore
         DOTween.Kill(RT.localScale);
         RT.DOScale(Vector3.one * 1.0f, 0.1f);
     }
+
+    #endregion
 }

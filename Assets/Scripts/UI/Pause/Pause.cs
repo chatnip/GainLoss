@@ -195,9 +195,10 @@ public class Pause : MonoBehaviour, IInteract
         EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
         EffectfulWindow.DisappearEffectful(reconfirmWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
 
+        PlayerInputController.OffPause();
         PlayerInputController.CanMove = true;
 
-        PlayerInputController.ClearSeletedBtns();
+        //PlayerInputController.ClearSeletedBtns();
     }
 
     #endregion

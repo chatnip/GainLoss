@@ -58,7 +58,7 @@ public class CheckGetAllDatas : MonoBehaviour
     {
         if (checkGetAllDatas(CurrentMap) <= 0)
         {
-            Info.text = "조사\n종료";
+            Info.text = "";
             TerminateBtn.gameObject.SetActive(true);
         }
         else

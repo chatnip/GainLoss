@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 12
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,13 +37,13 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -52,9 +52,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -108,18 +108,832 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 2053
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62166af78411f6c429384640ae37f2bd
+      internalID: 1217683750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_1
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 2070
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cda7667a1b5c684f9b7ca042b227ec2
+      internalID: 352239446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_2
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 2053
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac1308723dcb7c94e9705d8d74340883
+      internalID: -997405792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_3
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 2070
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf22573dd966685449e92f215717f604
+      internalID: 1171743395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_4
+      rect:
+        serializedVersion: 2
+        x: 2064
+        y: 2053
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6257c5aca8c0fde429128ba8be0930f2
+      internalID: -1535505883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_5
+      rect:
+        serializedVersion: 2
+        x: 2950
+        y: 2070
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc829538cd199b6448242704448bc187
+      internalID: 1872774575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_6
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 2053
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a495028b5251420469cfcdf34d988e6b
+      internalID: 687960477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_7
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 2053
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d3d3c109e7451740a9bdd855ec666ea
+      internalID: 1432656432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_8
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 2053
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e109b6460f92df40b78e5165cf4a6f8
+      internalID: 666830795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_9
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 2053
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66cb656ff637dd44bb7cbc3d85c47b02
+      internalID: 60539046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_10
+      rect:
+        serializedVersion: 2
+        x: 2169
+        y: 2053
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32ac4bbb3b82beb41a29c07f3019af67
+      internalID: 1846278274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_11
+      rect:
+        serializedVersion: 2
+        x: 2953
+        y: 2053
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d99745338a46d9419e6391a770f083f
+      internalID: -1317431354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_12
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 1027
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db02beddcf05e664ba54a68541417440
+      internalID: 471779094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_13
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 1044
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a7fda2d8e6dc4b48a1ccdc1767e54ac
+      internalID: 701685885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_14
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 1027
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a19d3915ce5b910488d7404a378e5d54
+      internalID: 791373349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_15
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 1044
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b3e8d482cbc390479325d3c4a26d1dd
+      internalID: 1333630145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_16
+      rect:
+        serializedVersion: 2
+        x: 2064
+        y: 1027
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d042a5adf1446b54b9537910766eb487
+      internalID: 1466223878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_17
+      rect:
+        serializedVersion: 2
+        x: 2950
+        y: 1044
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada144f1e5b86c04398b18a2fa5b31f2
+      internalID: 782462764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_18
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1027
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a39669b88dd89ba49b9a9592276672e9
+      internalID: 1769077549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_19
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 1027
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99223765b9ac10d4883de9f78fee73f6
+      internalID: 1120511886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_20
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1027
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1ebbd3d4e8c26a4499b95bb86514e32
+      internalID: 243487073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_21
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 1027
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aec9838d70e87734994593be790affe8
+      internalID: -1664696113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_22
+      rect:
+        serializedVersion: 2
+        x: 2169
+        y: 1027
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e398b16f347caa4fb407f3418da2d8f
+      internalID: -1823258310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_23
+      rect:
+        serializedVersion: 2
+        x: 2953
+        y: 1027
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c6ddf49f718ea64eb4b62492eb17a9b
+      internalID: 1923928371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_24
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 1021
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a5938e41efecbf47b1cdc107794fc3d
+      internalID: 1153644352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_25
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 1
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e850bab25a16ff24386237c2fb64d462
+      internalID: -246649253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_26
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 18
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7842d98b169c4f743a8d75359ea26cc6
+      internalID: -1555985292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_27
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 1
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9a5dd3c39f8d574885edb23ae1adafe
+      internalID: 2044812885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_28
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 18
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40523c6c05afc9e4ba98c9ad64d3c974
+      internalID: 2071764085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_29
+      rect:
+        serializedVersion: 2
+        x: 2064
+        y: 1
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11e13599e8c270e43944b65c782d1e6f
+      internalID: -435049517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_30
+      rect:
+        serializedVersion: 2
+        x: 2950
+        y: 18
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41ff76e922476b646a6d3e04cd46b5b5
+      internalID: 699462004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_31
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b56be36e7bc52345a63ab6946df4c8e
+      internalID: 328939845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_32
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 1
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0940701750fc14e43971b55c2e044add
+      internalID: -258146632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_33
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41981667e9e3b7c4b9c283507a8ff4e4
+      internalID: 1907492242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_34
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 1
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73c8fabf67ca1e4478a9583dea5a56ef
+      internalID: -175214040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_35
+      rect:
+        serializedVersion: 2
+        x: 2169
+        y: 1
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5db09552600ded54cbf8d7c77f6b93fe
+      internalID: -1440621540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OoharuIyori_Normal_36
+      rect:
+        serializedVersion: 2
+        x: 2953
+        y: 1
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 215323b61808e92479bc707bd6912629
+      internalID: -2132023947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1f447ae62e81a854cbd79d5d3a10c22f
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      OoharuIyori_Normal_0: 1217683750
+      OoharuIyori_Normal_1: 352239446
+      OoharuIyori_Normal_10: 1846278274
+      OoharuIyori_Normal_11: -1317431354
+      OoharuIyori_Normal_12: 471779094
+      OoharuIyori_Normal_13: 701685885
+      OoharuIyori_Normal_14: 791373349
+      OoharuIyori_Normal_15: 1333630145
+      OoharuIyori_Normal_16: 1466223878
+      OoharuIyori_Normal_17: 782462764
+      OoharuIyori_Normal_18: 1769077549
+      OoharuIyori_Normal_19: 1120511886
+      OoharuIyori_Normal_2: -997405792
+      OoharuIyori_Normal_20: 243487073
+      OoharuIyori_Normal_21: -1664696113
+      OoharuIyori_Normal_22: -1823258310
+      OoharuIyori_Normal_23: 1923928371
+      OoharuIyori_Normal_24: 1153644352
+      OoharuIyori_Normal_25: -246649253
+      OoharuIyori_Normal_26: -1555985292
+      OoharuIyori_Normal_27: 2044812885
+      OoharuIyori_Normal_28: 2071764085
+      OoharuIyori_Normal_29: -435049517
+      OoharuIyori_Normal_3: 1171743395
+      OoharuIyori_Normal_30: 699462004
+      OoharuIyori_Normal_31: 328939845
+      OoharuIyori_Normal_32: -258146632
+      OoharuIyori_Normal_33: 1907492242
+      OoharuIyori_Normal_34: -175214040
+      OoharuIyori_Normal_35: -1440621540
+      OoharuIyori_Normal_36: -2132023947
+      OoharuIyori_Normal_4: -1535505883
+      OoharuIyori_Normal_5: 1872774575
+      OoharuIyori_Normal_6: 687960477
+      OoharuIyori_Normal_7: 1432656432
+      OoharuIyori_Normal_8: 666830795
+      OoharuIyori_Normal_9: 60539046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

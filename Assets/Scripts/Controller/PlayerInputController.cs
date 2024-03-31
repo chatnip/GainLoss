@@ -69,6 +69,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     // public BoolReactiveProperty interactMode = new BoolReactiveProperty();
 
     public IInteract interact;
+
     private List<List<Button>> TempSectionBtns;
     private Button TempSelectedBtn;
     private IInteract TempInteract;
@@ -136,7 +137,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         playerInput["Move"].performed += OnMove;
         playerInput["Move"].canceled += OnMoveStop;
         playerInput["Look"].performed += OnLook;
-        playerInput["Pause"].started += OnPause;
+        playerInput["Pause"].started += OnOffPause;
 
         playerInput["ChangeSeletedBtn_Right"].started += RightSelectedBtn;
         playerInput["ChangeSeletedBtn_Left"].started += LeftSelectedBtn;
@@ -167,7 +168,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         _input.actions["Move"].performed -= OnMove;
         _input.actions["Move"].canceled -= OnMoveStop;
         _input.actions["Look"].performed -= OnLook;
-        _input.actions["Pause"].started -= OnPause;
+        _input.actions["Pause"].started -= OnOffPause;
 
         _input.actions["ChangeSeletedBtn_Right"].started -= RightSelectedBtn;
         _input.actions["ChangeSeletedBtn_Left"].started -= LeftSelectedBtn;
@@ -275,9 +276,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     #region Unique Func
 
     // 일시정지
-    private void OnPause(InputAction.CallbackContext obj)
+    private void OnOffPause(InputAction.CallbackContext obj)
     {
-        OnPause();
+        OnOffPause();
         /*if (pause.gameObject.activeSelf)
         {
             pause.ft_closePausePopup();
@@ -294,23 +295,36 @@ public class PlayerInputController : Manager<PlayerInputController>
             pause.ft_openPausePopup();
         }*/
     }
-    public void OnPause()
+    public void OnOffPause()
     {
         if (pause.gameObject.activeSelf)
         {
-            pause.ft_closePausePopup();
+            Debug.Log("Pause 끄기");
+            OffPause();
 
-            SetSectionBtns(TempSectionBtns, TempInteract);
-            OnOffSelectedBtn(TempSelectedBtn);
+            pause.ft_closePausePopup();
         }
         else
         {
-            TempSectionBtns = this.SectionBtns;
-            TempInteract = this.interact;
-            TempSelectedBtn = this.SelectBtn;
+            Debug.Log("Pause 켜기");
+            OnPause();
 
             pause.ft_openPausePopup();
+
         }
+    }
+    public void OnPause()
+    {
+        TempSectionBtns = new List<List<Button>>(this.SectionBtns);
+        TempInteract = interact;
+        TempSelectedBtn = SelectBtn;
+
+    }
+    public void OffPause()
+    {
+        SetSectionBtns(TempSectionBtns, TempInteract);
+        OnOffSelectedBtn(TempSelectedBtn);
+
     }
 
     // 폰 끄고 키기

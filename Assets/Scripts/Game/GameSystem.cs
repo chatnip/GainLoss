@@ -58,7 +58,7 @@ public class GameSystem : MonoBehaviour
         PauseBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                PlayerInputController.OnPause();
+                PlayerInputController.OnOffPause();
             });
 
         objPanelExitBtn.OnClickAsObservable()
@@ -221,7 +221,7 @@ public class GameSystem : MonoBehaviour
                      .OnStart(() =>
                      {
                          conversationTweeningNow = true;
-                         //NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
+                         NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
                          NpcName.text = conversations.NpcConversations[i].talkerName;
                          if(conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
                          {
