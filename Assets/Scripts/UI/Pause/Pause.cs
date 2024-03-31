@@ -65,7 +65,7 @@ public class Pause : MonoBehaviour, IInteract
             {
                 chooseActionText.text = "[ Back To Title ]";
                 chooseBtn = backToTitleBtn;
-
+                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { yesBtn, noBtn } }, this);
                 EffectfulWindow.AppearEffectful(reconfirmWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
             });
         exitGameBtn.OnClickAsObservable()
@@ -73,12 +73,13 @@ public class Pause : MonoBehaviour, IInteract
             {
                 chooseActionText.text = "[ Exit Game ]";
                 chooseBtn = exitGameBtn;
-
+                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { yesBtn, noBtn } }, this);
                 EffectfulWindow.AppearEffectful(reconfirmWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
             });
         noBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                PlayerInputController.SetSectionBtns(pauseBtns, this);
                 EffectfulWindow.DisappearEffectful(reconfirmWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
             });
         yesBtn.OnClickAsObservable()
