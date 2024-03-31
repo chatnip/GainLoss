@@ -91,7 +91,7 @@ public class GameSystem : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && cutsceneImg.gameObject.activeSelf)
         {
-            cutsceneSO.skipOrCompleteSeq(cutsceneImg);
+            cutsceneSO.skipOrCompleteSeq(cutsceneImg, cutsceneTxt);
             return;
         }
     }

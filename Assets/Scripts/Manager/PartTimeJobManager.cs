@@ -21,7 +21,6 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
     [SerializeField] CanvasGroup partTimeJob_LoadingCG;
     [SerializeField] Button partTimeJob_StartBtn;
     [SerializeField] Button partTimeJob_EndBtn;
-    [SerializeField] Slider partTimeJob_Slider;
 
     [Header("*Cutscenc")]
     [SerializeField] List<cutsceneSO> allCutSceneSOs;
@@ -83,17 +82,12 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_LoadingCG.DOFade(1.0f, 0.5f);
         Sequence seq = cutsceneSO.justImgCutscene(image, selectCSSO.cutsceneSprites, time);
         PlayerInputController.CanMove = false;
-        yield return new WaitForSeconds(0.5f);
+        seq.OnComplete(() =>
+        {
+            partTimeJob_EndBtn.interactable = true;
 
-        DOTween.To(() => partTimeJob_Slider.value, x => partTimeJob_Slider.value = x, 1, time - 0.5f)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                partTimeJob_EndBtn.interactable = true;
-            });
-        partTimeJob_Slider.handleRect.DOScale(Vector3.one * 2, 0.5f)
-            .SetLoops(10, LoopType.Yoyo)
-            .SetEase(Ease.Linear);
+        });
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void EndPartTimeJob()
@@ -124,8 +118,6 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
 
     private void ResetPartTimeJobUI() 
     {
-        partTimeJob_Slider.value = 0;
-        partTimeJob_Slider.handleRect.DOKill();
         partTimeJob_EndBtn.interactable = false;
 
         partTimeJob_LoadingCG.alpha = 0;

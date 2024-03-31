@@ -24,8 +24,8 @@ public class InteractObject : InteractCore
     [Header("*Norification Object")]
     [Tooltip("It's a factor that changes every time.")]
     [SerializeField] public GameObject CurrentNorificationObject;
-    [SerializeField] public Vector3 NOP_Scale;
-    [SerializeField] private float NOP_Distance;
+    [SerializeField] private Vector3 NOP_Scale;
+    [SerializeField] private Vector3 NOP_Distance;
     
     [HideInInspector] public bool CanInteract = true;
 
@@ -175,7 +175,7 @@ public class InteractObject : InteractCore
             CurrentNorificationObject = ObjectPooling.ft_getUsableNOP();
             CurrentNorificationObject.SetActive(true);
             CurrentNorificationObject.transform.localScale = NOP_Scale;
-            CurrentNorificationObject.transform.position = this.gameObject.transform.position + (Vector3.up * NOP_Distance);
+            CurrentNorificationObject.transform.localPosition = NOP_Distance;
             CurrentNorificationObject.transform.DORotate(new Vector3(0, 360, 0), 2.5f, RotateMode.FastBeyond360)
                      .SetEase(Ease.Linear)
                      .SetLoops(-1);

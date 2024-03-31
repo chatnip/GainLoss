@@ -1308,6 +1308,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f97abf430b47b404ba2b8b6125565968, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6462537701780742144}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f97abf430b47b404ba2b8b6125565968, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2728405704800814025}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f97abf430b47b404ba2b8b6125565968, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8536947327924144249}
   m_SourcePrefab: {fileID: 100100000, guid: f97abf430b47b404ba2b8b6125565968, type: 3}
 --- !u!1 &4989325615652955668 stripped
 GameObject:
@@ -1336,6 +1342,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1596920071947849001, guid: f97abf430b47b404ba2b8b6125565968, type: 3}
+--- !u!114 &2728405704800814025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989325615652955668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13283115fa98ee5408cab7efb121d645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Outline: {fileID: 8536947327924144249}
+  thisName: DVD
+  objectID: 
+  getWordID: W002
+  getWordActionID: 
+  getPlaceID: 
+  CurrentNorificationObject: {fileID: 0}
+  NOP_Scale: {x: 0.1, y: 0.1, z: 0.1}
+  NOP_Distance: {x: -2, y: 1.1, z: 1.2}
+  CanInteract: 1
+  description:
+  - "\uCCAB\uC9F8\uB0A0 DVD"
+  - "\uB450\uC9F8\uB0A0 DVD"
+  basicDescroption: "\uAE30\uBCF8 DVD"
+--- !u!114 &8536947327924144249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989325615652955668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &5653835690378542254 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f97abf430b47b404ba2b8b6125565968, type: 3}

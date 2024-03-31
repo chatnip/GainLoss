@@ -542,7 +542,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
         if (GameSystem.cutsceneImg.gameObject.activeSelf)
-        { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg); return; }
+        { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg, GameSystem.cutsceneTxt); return; }
 
         if (Panel_Object.activeSelf)
         { GameSystem.ObjectDescriptionSkip(); return; }

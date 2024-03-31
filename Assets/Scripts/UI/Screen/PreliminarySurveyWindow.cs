@@ -300,9 +300,9 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             endBtn.interactable = false;
             PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 
+            if(cutsceneSO.currentCSSO != null) { return; }
             cutsceneSO.currentCSSO = SelectedPreliminarySurveySO.cutsceneSO;
             cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
-           
             cutsceneSO.cutsceneSeq.OnComplete(() =>
             {
                 showResult();
@@ -311,8 +311,8 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
                 GameSystem.cutsceneImg.gameObject.SetActive(false);
                 GameSystem.cutsceneTxt.text = "";
                 cutsceneSO.currentCSSO = null;
-            }); 
-
+            });
+            return;
 
         }
         else if (tryNum.Length < 4)

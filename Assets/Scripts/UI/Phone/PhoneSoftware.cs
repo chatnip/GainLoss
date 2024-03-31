@@ -485,18 +485,15 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     for(int i = 0; i < PlaceBtns.Count; i++)
                     {
                         PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
-                        PlaceBtns[i].transform.GetChild(0).TryGetComponent(out TMP_Text Txt);
+                        PlaceBtns[i].TryGetComponent(out CanvasGroup BtnCG);
 
                         BtnRT.sizeDelta = Vector2.zero;
                         DOTween.Kill(BtnRT.localScale);
+                        BtnCG.alpha = 0.0f;
 
-                        Color tempColor = Txt.color;
-                        tempColor.a = 0f;
-                        Txt.color = tempColor;
-                        
                         sequence.Append(BtnRT.DOSizeDelta(Vector2.one * 300, 0.2f)
                             .SetEase(Ease.OutBack));
-                        sequence.Join(Txt.DOFade(1, 0.2f));
+                        sequence.Join(BtnCG.DOFade(1, 0.2f));
                     }
 
                     /*sequence.OnComplete(() =>

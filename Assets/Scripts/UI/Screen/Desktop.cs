@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using UniRx;
 using TMPro;
 using DG.Tweening;
+using System;
 
 public class Desktop : MonoBehaviour, IInteract
 {
-
     #region Value
 
     [Header("*Manager")]
@@ -63,6 +63,8 @@ public class Desktop : MonoBehaviour, IInteract
 
     [SerializeField] float DisappearTime;
     [SerializeField] float DisappearLastSize;
+
+    IDisposable disposable;
 
     #endregion
 
@@ -214,7 +216,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void ConfirmPopupSetting()
     {
-        switch(desktopSoftwere)
+        switch (desktopSoftwere)
         {
             case DesktopSoftwere.SNS:
                 SNSConfirm();
@@ -234,37 +236,40 @@ public class Desktop : MonoBehaviour, IInteract
     private void SNSConfirm()
     {
         confirmPopup.SetActive(false);
-        confirmBtn.OnClickAsObservable()
+        disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 confirmPopup.SetActive(false);
+
+                disposable.Dispose();
             });
     }
 
     private void FanCafeConfirm()
     {
         confirmPopup.SetActive(false);
-        confirmBtn.OnClickAsObservable()
+        disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 confirmPopup.SetActive(false);
+                disposable.Dispose();
             });
+        
     }
 
     private void StreamConfirm()
-    {     
+    {
         //confirmPopup.SetActive(true);
-        confirmBtn.OnClickAsObservable()
+        disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 WordManager.TodoReset();
                 WordManager.InitWord();
-                // wordManager.WordBtnListSet();
-                // wordManager.WordActionBtnListSet();
 
                 confirmPopup.SetActive(false);
-                //todoWindow.SetActive(true);
                 EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+
+                disposable.Dispose();
             });
 
         EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
@@ -272,11 +277,13 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void PreliminarySurveyConfirm()
     {
-        confirmBtn.OnClickAsObservable()
+        disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 confirmPopup.SetActive(false);
                 EffectfulWindow.AppearEffectful(PSWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+
+                disposable.Dispose();
             });
         EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
     }

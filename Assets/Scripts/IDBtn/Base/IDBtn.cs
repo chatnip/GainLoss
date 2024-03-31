@@ -68,6 +68,7 @@ public class IDBtn : MonoBehaviour
             case ButtonType.BehaviorActionType:
                 IDBtnSetup();
                 break;
+
             case ButtonType.ClueSpotType:
                 break;
         }

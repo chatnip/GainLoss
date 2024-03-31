@@ -58,12 +58,12 @@ public class CheckGetAllDatas : MonoBehaviour
     {
         if (checkGetAllDatas(CurrentMap) <= 0)
         {
-            Info.text = "Complete";
+            Info.text = "조사\n종료";
             TerminateBtn.gameObject.SetActive(true);
         }
         else
         {
-            Info.text = checkGetAllDatas(CurrentMap) + " Remain(s)";
+            Info.text = checkGetAllDatas(CurrentMap) + "개\n남았음";
             TerminateBtn.gameObject.SetActive(false);
         }
     }

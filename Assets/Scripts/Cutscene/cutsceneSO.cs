@@ -18,14 +18,13 @@ public class cutsceneSO : ScriptableObject
     public static bool cutsceneIsPlaying = false;
     public static Sequence makeCutscene(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
-        cutsceneImg.color = new Color(0, 0, 0, 0);
+        cutsceneImg.color = Color.black;
         cutsceneImg.gameObject.SetActive(true);
         cutsceneTxt.text = "";
 
         Sequence thisSequence = DOTween.Sequence();
         thisSequence.timeScale = 1.0f;
         cutsceneImg.sprite = currentCSSO.cutsceneSprites[0];
-
         thisSequence.Append(cutsceneImg.DOFade(1.0f, 0.25f));
         for (int i = 0; i < currentCSSO.cutsceneSprites.Count; i++)
         {
@@ -34,16 +33,16 @@ public class cutsceneSO : ScriptableObject
                 .OnStart(() =>
                 {
                     cutsceneTxt.transform.parent.gameObject.SetActive(true);
-                    cutsceneIsPlaying = true;
                 })
                 .OnComplete(() =>
                 {
+                    cutsceneIsPlaying = true;
                     thisSequence.Pause();
-                    
                 }));
-            thisSequence.Append(cutsceneImg.DOColor(Color.black, 0.25f)
+            thisSequence.Append(cutsceneImg.DOColor(Color.white, 0.25f)
                 .OnStart(() =>
                 {
+                    cutsceneIsPlaying = true;
                     cutsceneTxt.text = "";
                     cutsceneTxt.transform.parent.gameObject.SetActive(false);
                 }));
@@ -54,7 +53,7 @@ public class cutsceneSO : ScriptableObject
 
     public static Sequence justImgCutscene(Image cutsceneImg, List<Sprite> cutsceneSprites, float time)
     {
-        cutsceneImg.color = new Color(0, 0, 0, 0);
+        cutsceneImg.color = Color.black;
         cutsceneImg.gameObject.SetActive(true);
 
         Sequence seq = DOTween.Sequence();
@@ -65,7 +64,7 @@ public class cutsceneSO : ScriptableObject
         {
             seq.Append(cutsceneImg.DOColor(Color.white, eachTime * 1/6));
             seq.AppendInterval(eachTime* 4/6);
-            seq.Append(cutsceneImg.DOColor(Color.black, eachTime * 1/6)
+            seq.Append(cutsceneImg.DOColor(Color.white, eachTime * 1/6)
                 .OnComplete(() =>
                 {
                     int amount = cutsceneSprites.IndexOf(cutsceneImg.sprite);
@@ -77,25 +76,27 @@ public class cutsceneSO : ScriptableObject
         }
         return seq;
     }
-    public static void skipOrCompleteSeq(Image cutsceneImg)
+    public static void skipOrCompleteSeq(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
-        if (cutsceneIsPlaying)
+        if (!cutsceneIsPlaying) { return; }
+
+        cutsceneSeq.timeScale = 1.0f;
+        if (!cutsceneSeq.IsPlaying())
         {
-            if (!cutsceneSeq.IsPlaying())
+            if (currentCSSO.cutsceneSprites.IndexOf(cutsceneImg.sprite) < currentCSSO.cutsceneSprites.Count - 1)
             {
-                if (currentCSSO.cutsceneSprites.IndexOf(cutsceneImg.sprite) < currentCSSO.cutsceneSprites.Count - 1)
-                {
-                    cutsceneSeq.timeScale = 1.0f;
-                    setImg(currentCSSO.cutsceneSprites, cutsceneImg.sprite, cutsceneImg);
-                }
-                cutsceneIsPlaying = false;
-                cutsceneSeq.Play();
+                cutsceneTxt.text = "";
+                setImg(currentCSSO.cutsceneSprites, cutsceneImg.sprite, cutsceneImg);
             }
-            else
-            {
-                cutsceneSeq.timeScale = 25.0f;
-            }
+            cutsceneSeq.Play();
         }
+        else
+        {
+            cutsceneSeq.timeScale = 100.0f;
+        }
+
+        cutsceneIsPlaying = false;
+        return;
     }
     // 성공 시 연출 (컷씬 보여주기)
     public static void setImg(List<Sprite> spriteList, Sprite currentSprite, Image cutsceneImg)
@@ -103,7 +104,5 @@ public class cutsceneSO : ScriptableObject
         //yield return new WaitForSeconds(0.25f);
         Sprite s = spriteList[spriteList.IndexOf(currentSprite) + 1];
         cutsceneImg.sprite = s;
-
-        
     }
 }
