@@ -460,10 +460,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     CreateScheduleGO.SetActive(true);
                     btns = new List<List<Button>>()
                     { 
-                        new List<Button>() { PreliminarySurveyBtn },
-                        new List<Button>() { SiteSurveyBtn },
-                        new List<Button>() { WatchingTheStreamingBtn },
-                        new List<Button>() { DoingPartTimeJobBtn },
+                        new List<Button>() { PreliminarySurveyBtn, SiteSurveyBtn, WatchingTheStreamingBtn, DoingPartTimeJobBtn },
                         new List<Button>() { SelectedScheduleBtns[0] },
                         new List<Button>() { SelectedScheduleBtns[1] },
                         new List<Button>() { DecisionBtn } 

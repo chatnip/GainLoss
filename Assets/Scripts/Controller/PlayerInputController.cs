@@ -652,11 +652,25 @@ public class PlayerInputController : Manager<PlayerInputController>
 
             if(lineIndex >= SectionBtns.Count - 1)
             {
-                SelectBtn = SectionBtns[0][index];
+                if(index > SectionBtns[0].Count - 1)
+                {
+                    SelectBtn = SectionBtns[0][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[0][index];
+                }
             }
             else
             {
-                SelectBtn = SectionBtns[lineIndex + 1][index];
+                if (index > SectionBtns[lineIndex + 1].Count - 1)
+                {
+                    SelectBtn = SectionBtns[lineIndex + 1][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[lineIndex + 1][index];
+                }
             }
             OnOffSelectedBtn(SelectBtn);
         }
