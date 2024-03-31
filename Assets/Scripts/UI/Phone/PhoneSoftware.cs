@@ -46,6 +46,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [Header("*Everytime Set Text")]
     [SerializeField] List<TMP_Text> DayText;
     [SerializeField] List<TMP_Text> DayOfWeekText;
+    [SerializeField] List<TMP_Text> realTimeText;
+    [SerializeField] TMP_Text EventText;
 
     [Header("*Software")]
     [SerializeField] Button lockScreen;
@@ -72,6 +74,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     #region Main
     private void Awake()
     {
+        ft_setEventText(EventText, "♡♥ 마린과의 첫만남 ♥♡");
+
         #region Base
 
         lockScreen
@@ -191,6 +195,11 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     {
         PlayerInputController.interact = this;
         ResetUI();
+    }
+
+    private void LateUpdate()
+    {
+        ft_setRealTime(realTimeText);
     }
 
     public void Interact()
@@ -557,6 +566,40 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     }
 
-    #endregion  
+    #endregion
 
+    #region Real Time
+
+    private void ft_setRealTime(List<TMP_Text> allTimeTmp)
+    {
+        foreach (TMP_Text timeTmp in allTimeTmp)
+        {
+            if(timeTmp.text != ft_getRealTimeString_H_M()) 
+            { timeTmp.text = ft_getRealTimeString_H_M(); }
+            
+        }
+    }
+    private string ft_getRealTimeString_H_M()
+    {
+        string AllRealTime = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss tt"));
+        string H = DateTime.Now.ToString(("HH"));
+        string m = DateTime.Now.ToString(("mm"));
+
+        return H + ":" + m;
+    }
+
+    #endregion
+
+    #region Event Text
+
+    private void ft_setEventText(TMP_Text targetComp, string Text)
+    {
+        string TextSet = "<size=50%>" + Text + "</size>\n";
+        string TextStaticDay = "<size=100%>" + "20XX.XX.XX" + "</size>";
+
+        targetComp.text = TextSet + TextStaticDay;       
+    }
+
+
+    #endregion
 }

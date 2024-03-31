@@ -176,8 +176,10 @@ public class PhoneHardware : MonoBehaviour, IInteract
         seq.Append(bellRT.DOSizeDelta(Vector2.one * 100, 0.1f));
         for (int i = 0; i < 4; i++)
         {
+            //bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 360.0f * i), 20.0f, RotateMode.FastBeyond360);
             if (i % 2 == 0)
-            { seq.Append(bellRT.DOShakeRotation(0.1f, 50, 20, 10)
+            { seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 15.0f), 0.1f, RotateMode.FastBeyond360)
+                .SetEase(Ease.OutBack)
                     .OnUpdate(() =>
                     {
                         bellRT.rotation.SetLookRotation(Vector3.back);
@@ -185,7 +187,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
                         //bellRT.rotation = Quaternion.Euler(new Vector3(0, 0, z));
                     })); }
             else
-            { seq.Append(bellRT.DOShakeRotation(0.1f, 50, 20, 10))
+            { seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, -15.0f), 0.1f, RotateMode.FastBeyond360))
+                    .SetEase(Ease.OutBack)
                     .OnUpdate(() =>
                     {
                         bellRT.rotation.SetLookRotation(Vector3.back);
@@ -194,6 +197,9 @@ public class PhoneHardware : MonoBehaviour, IInteract
                     }); 
             }
         }
+        seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 0.0f), 0.1f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutBack));
+
         seq.AppendInterval(0.5f);
         seq.Append(bellRT.DOSizeDelta(Vector2.zero, 0.1f)
             .OnComplete(() =>
