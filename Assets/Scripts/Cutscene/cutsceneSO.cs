@@ -40,7 +40,7 @@ public class cutsceneSO : ScriptableObject
                     thisSequence.Pause();
                 }));
             thisSequence.Append(cutsceneImg.DOColor(Color.white, 0.25f)
-                .OnStart(() =>
+                .OnPlay(() =>
                 {
                     cutsceneIsPlaying = true;
                     cutsceneTxt.text = "";

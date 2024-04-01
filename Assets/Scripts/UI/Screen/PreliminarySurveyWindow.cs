@@ -382,7 +382,7 @@ public class PreliminarySurveyWindow : MonoBehaviour, IInteract
             string nameTemp = "";
             if (!haveThings.Contains(id))
             {
-                nameTemp = Data[id].ToString() + ".EXE" + "\n¡Ú È¹µæ ¡Ú";
+                nameTemp = Data[id].ToString() + type + "\n¡Ú È¹µæ ¡Ú";
                 haveThings.Add(id);
             }
             else

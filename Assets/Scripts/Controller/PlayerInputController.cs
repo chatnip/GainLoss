@@ -315,9 +315,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnPause()
     {
-        TempSectionBtns = new List<List<Button>>(this.SectionBtns);
-        TempInteract = interact;
-        TempSelectedBtn = SelectBtn;
+        if (this.SectionBtns != null) { TempSectionBtns = new List<List<Button>>(this.SectionBtns); }
+        if (interact != null) { TempInteract = interact; }
+        if (SelectBtn != null) { TempSelectedBtn = SelectBtn; }
 
     }
     public void OffPause()
