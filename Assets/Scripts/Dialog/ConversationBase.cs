@@ -26,12 +26,12 @@ public class ConversationBase : ScriptableObject
 [System.Serializable]
 public class NpcConversation
 {
-    
     [SerializeField] public Sprite talkerSprite;
     [SerializeField] public string talkerName;
     [SerializeField][TextArea] public string conversation;
     [SerializeField] public float conversationDurTime;
     [SerializeField] public ConversationBase.targetGO targetGO;
+    [Tooltip("CameraPos = Npc Pos + this Value")] [SerializeField] public Vector3 CameraPos;
     [SerializeField] public string AnimationTriggerName;
 
     public NpcConversation(Sprite talkerSprite, string conversation, float conversationDurTime)

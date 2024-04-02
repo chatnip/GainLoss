@@ -21,11 +21,11 @@ public class InteractObject : InteractCore
     [Tooltip("if this Object can't get something, you have to this string empty!")]
     [SerializeField] public string getPlaceID;
 
-    [Header("*Norification Object")]
+    /*[Header("*Norification Object")]
     [Tooltip("It's a factor that changes every time.")]
     [SerializeField] public GameObject CurrentNorificationObject;
     [SerializeField] private Vector3 NOP_Scale;
-    [SerializeField] private Vector3 NOP_Distance;
+    [SerializeField] private Vector3 NOP_Distance;*/
     
     [HideInInspector] public bool CanInteract = true;
 
@@ -87,12 +87,14 @@ public class InteractObject : InteractCore
         if (this.getWordActionID != "" && this.getWordActionID != null) { GetWordActionID(); }
         if (this.getPlaceID != "" && this.getPlaceID != null) { GetPlaceID(); }
 
+        ft_setOff_colorAni();
+
         if (GameObject.Find("TerminatePart") != null)
         {
             CheckGetAllDatas = GameObject.Find("TerminatePart").GetComponent<CheckGetAllDatas>();
             CheckGetAllDatas.ApplyTerminateBtnAndText();
-            ft_setOffNOP();
         }
+
 
         //if(CanInteract) { CanInteract = false; }
 
@@ -157,9 +159,24 @@ public class InteractObject : InteractCore
 
     #endregion
 
-    #region Norification Object
+    #region OutLine Object
 
-    public void ft_setOnNOP()
+    public void ft_setOn_outlineAni()
+    {
+        Outline.enabled = true;
+        Outline.OutlineMode = OutlineObject.Mode.OutlineVisible;
+        Outline.OutlineWidth = 1.0f;
+        DOTween.To(() => Outline.OutlineWidth, x => Outline.OutlineWidth = x, 3f, 1f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetId(this.gameObject.name + "_OL_Width");
+    }
+    public void ft_setOff_outlineAni()
+    {
+        DOTween.Kill(this.gameObject.name + "_OL_Width");
+        Outline.OutlineWidth = 1.0f;
+        Outline.enabled = false;
+    }
+    public void ft_setOn_colorAni()
     {
         if ((getWordID == "" || getWordID == null) && 
             (getWordActionID == "" || getWordActionID == null) &&
@@ -170,26 +187,18 @@ public class InteractObject : InteractCore
         if (WordManager.currentWordActionIDList.Contains(getWordActionID)) { canGettingWordAction = false; }
         if (PlaceManager.currentPlaceID_Dict.Keys.ToList().Contains(getPlaceID)) {  canGettingPlace = false; }
 
-        if(canGettingWord || canGettingWordAction || canGettingPlace)
+        if(canGettingWord && canGettingWordAction && canGettingPlace)
         {
-            CurrentNorificationObject = ObjectPooling.ft_getUsableNOP();
-            CurrentNorificationObject.SetActive(true);
-            CurrentNorificationObject.transform.localScale = NOP_Scale;
-            CurrentNorificationObject.transform.localPosition = NOP_Distance;
-            CurrentNorificationObject.transform.DORotate(new Vector3(0, 360, 0), 2.5f, RotateMode.FastBeyond360)
-                     .SetEase(Ease.Linear)
-                     .SetLoops(-1);
+            Outline.OutlineColor = Color.white;
+            DOTween.To(() => Outline.OutlineColor, x => Outline.OutlineColor = x, new Color(1, 0.5f, 0.5f, 1), 1f)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetId(this.gameObject.name + "_OL_Color");
         }
     }
-    private void ft_setOffNOP()
+    public void ft_setOff_colorAni()
     {
-        if(CurrentNorificationObject != null)
-        {
-            CurrentNorificationObject.transform.DOKill();
-            CurrentNorificationObject.SetActive(false);
-            CurrentNorificationObject = null;
-        }
-        
+        DOTween.Kill(this.gameObject.name + "_OL_Color");
+        Outline.OutlineColor = Color.white;
     }
 
     #endregion

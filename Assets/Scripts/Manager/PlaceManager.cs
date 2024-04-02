@@ -77,16 +77,14 @@ public class PlaceManager : Manager<PlaceManager>
                 go.transform.position =
                     new Vector3(100, 0, 0);
             }
+
+            PlayerController.ft_resetPlayerSpot();
+
             placeGOList[0].SetActive(true);
-            placeGOList[0].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
+            placeGOList[0].transform.position = new Vector3(0, 0, 0);
             MainCamera.backgroundColor = placeColorList[0];
-            
 
             SetInteractionObjects.OnInteractiveOB();
-
-            foreach (Transform child in placeGOList[0].transform)
-            { if (child.TryGetComponent(out InteractObject IO)) { IO.ft_setOnNOP(); } }
-
 
             CheckGetAllDatas.CurrentMap = placeGOList[0];
             CheckGetAllDatas.gameObject.SetActive(false);
@@ -100,9 +98,11 @@ public class PlaceManager : Manager<PlaceManager>
                 go.transform.position = new Vector3(100, 0, 0);
             }
 
+            PlayerController.ft_resetPlayerSpot();
+
             placeGOList[s].SetActive(true);
             MainCamera.backgroundColor = placeColorList[s];
-            placeGOList[s].transform.position = new Vector3(PlayerController.transform.position.x, 0, PlayerController.transform.position.z);
+            placeGOList[s].transform.position = new Vector3(0, 0, 0);
 
             int visitAmount = 0; // 방문한 횟수 구하기
             foreach(string ID in currentPlaceID_Dict.Keys)
@@ -113,9 +113,6 @@ public class PlaceManager : Manager<PlaceManager>
             SetObjectByVisitAmount(placeGOList[s], buttonValue.ID, visitAmount);
 
             SetInteractionObjects.OnInteractiveOB();
-
-            foreach (Transform child in placeGOList[s].transform)
-            { if (child.TryGetComponent(out InteractObject IO) && child.gameObject.activeSelf) { IO.ft_setOnNOP(); } }
 
 
             CheckGetAllDatas.CurrentMap = placeGOList[s];

@@ -714,11 +714,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 613477788002419241}
     m_Modifications:
     - target: {fileID: 4832832603101875599, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: thisName
+      value: "\uCEF4\uD4E8\uD130"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832832603101875599, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: description
+      value: "\uC9C0\uAE08\uC740 \uC0AC\uC6A9\uD558\uC9C0 \uC54A\uC544\uB3C4 \uB420
+        \uB4EF \uD558\uB2E4."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832832603101875599, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
       propertyPath: screenViewCamera
       value: 
       objectReference: {fileID: 3553466924256584168}
     - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
       propertyPath: outlineMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: outlineWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: outlineColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: outlineColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
+      propertyPath: outlineColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7355569551872137479, guid: 34c88920fda0b144f95e7cd84e4e258d, type: 3}
@@ -1141,6 +1166,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 15fb3064fc289e64589e3adbaa915006, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4916447318209814565}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 15fb3064fc289e64589e3adbaa915006, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5073953064397846681}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 15fb3064fc289e64589e3adbaa915006, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 796694049741842313}
   m_SourcePrefab: {fileID: 100100000, guid: 15fb3064fc289e64589e3adbaa915006, type: 3}
 --- !u!4 &1273375345905423739 stripped
 Transform:
@@ -1174,6 +1205,45 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3379242817611357053, guid: 15fb3064fc289e64589e3adbaa915006, type: 3}
+--- !u!114 &5073953064397846681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936583633974235073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 1
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &796694049741842313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936583633974235073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13283115fa98ee5408cab7efb121d645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Outline: {fileID: 5073953064397846681}
+  thisName: TV
+  objectID: 
+  getWordID: 
+  getWordActionID: 
+  getPlaceID: 
+  CanInteract: 1
+  description: []
+  basicDescroption: "TV\uB2E4."
 --- !u!1001 &2176245574520321453
 PrefabInstance:
   m_ObjectHideFlags: 0

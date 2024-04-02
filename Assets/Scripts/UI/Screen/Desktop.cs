@@ -58,11 +58,11 @@ public class Desktop : MonoBehaviour, IInteract
     [SerializeField] public GameObject confirmPopup;
 
     [Header("*WindowFrame")]
-    [SerializeField] float AppearTime;
-    [SerializeField] float AppearStartSize;
+    [SerializeField] public float AppearTime;
+    [SerializeField] public float AppearStartSize;
 
-    [SerializeField] float DisappearTime;
-    [SerializeField] float DisappearLastSize;
+    [SerializeField] public float DisappearTime;
+    [SerializeField] public float DisappearLastSize;
 
     IDisposable disposable;
 
@@ -149,6 +149,15 @@ public class Desktop : MonoBehaviour, IInteract
     public void DisappearPopup(GameObject Popup)
     {
         EffectfulWindow.DisappearEffectful(Popup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
+        PlayerInputController.SetSectionBtns(new List<List<Button>>
+        {
+            new List<Button> { snsOpenBtn },
+            new List<Button> { fancafeOpenBtn },
+            new List<Button> { streamOpenBtn },
+            new List<Button> { PSOpenBtn }
+        }, this);
+
+        if(disposable != null) { disposable.Dispose(); }
     }
 
     private void OnEnable()
@@ -341,37 +350,6 @@ public class Desktop : MonoBehaviour, IInteract
     }
 
     #endregion
-
-    
-
-
-    /*public static void AppearEffectful(RectTransform RT, List<Button> btns, float time, float size)
-    {
-        foreach (Button btn in btns) { btn.interactable = false; }
-
-        RT.transform.localScale = Vector3.one * size;
-
-        RT.gameObject.SetActive(true);
-        RT.transform.DOScale(Vector3.one, time)
-            .OnComplete(() =>
-            {
-                foreach (Button btn in btns) { btn.interactable = true; }
-            });
-    }
-    public static void DisappearEffectful(RectTransform RT, List<Button> btns, float time, float size)
-    {
-        foreach (Button btn in btns) { btn.interactable = false; }
-
-        RT.transform.localScale = Vector3.one;
-
-        RT.transform.DOScale(Vector3.one * size, time)
-            .OnComplete(() =>
-            {
-                foreach (Button btn in btns) { btn.interactable = true; }
-                RT.gameObject.SetActive(false);
-            });
-    }*/
-    
 }
 
 

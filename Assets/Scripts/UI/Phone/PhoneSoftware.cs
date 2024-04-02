@@ -9,6 +9,8 @@ using System.Linq;
 
 public class PhoneSoftware : MonoBehaviour, IInteract
 {
+    #region Value
+
     [Header("*Manager")]
     [SerializeField] GameManager GameManager;
     [SerializeField] ScheduleManager ScheduleManager;
@@ -70,6 +72,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [SerializeField] GameObject Place_pad;
     [Header("*Allback")]
     [SerializeField] Button backBtn;
+
+    #endregion
 
     #region Main
     private void Awake()
@@ -393,8 +397,11 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     }
                 }
             }
-            if(PreliminarySurveyManager.AvailablePreliminarySurveySOs.Count == 0 ||
-                PreliminarySurveyManager.AvailablePreliminarySurveySOs == null)
+
+            Debug.Log("사전조사 남았는지 판별");
+            int remainPS = PreliminarySurveyManager.PSSOs_FindClue_Available.Count +
+                PreliminarySurveyManager.PSSOs_Extract_Available.Count;
+            if (remainPS == 0)
             {
                 PreliminarySurveyBtn.interactable = false;
             }

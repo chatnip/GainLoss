@@ -23,7 +23,6 @@ public class BasicInteractObject : InteractObject
 
             base.Interact();
 
-
         }
     }
 }

@@ -42,7 +42,9 @@ public class SetInteractionObjects : MonoBehaviour
         {
             if (interactObject.CanInteract)
             {
-                OB.gameObject.GetComponent<OutlineObject>().enabled = true;
+                interactObject.ft_setOn_outlineAni();
+                interactObject.ft_setOn_colorAni();
+                //OB.gameObject.GetComponent<OutlineObject>().enabled = true;
                 activeInteractionGOs.Add(OB.gameObject);
 
                 objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
@@ -56,7 +58,8 @@ public class SetInteractionObjects : MonoBehaviour
     {
         if (OB.TryGetComponent(out InteractObject interactObject))
         {
-            OB.gameObject.GetComponent<OutlineObject>().enabled = false;
+            interactObject.ft_setOff_outlineAni();
+            //OB.gameObject.GetComponent<OutlineObject>().enabled = false;
             activeInteractionGOs.Remove(OB.gameObject);
 
             objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
@@ -72,7 +75,8 @@ public class SetInteractionObjects : MonoBehaviour
         {
             if (!interactObject.CanInteract)
             {
-                OB.gameObject.GetComponent<OutlineObject>().enabled = false;
+                interactObject.ft_setOff_outlineAni();
+                //OB.gameObject.GetComponent<OutlineObject>().enabled = false;
                 activeInteractionGOs.Remove(OB.gameObject);
 
                 objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);

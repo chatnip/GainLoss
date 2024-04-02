@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         GroundedCheck();
-        if(PlayerInputController.CanMove) Move();
+        if(PlayerInputController.CanMove && _controller.enabled) Move();
         if(isTalking) setOriginalAnimation();
     }
 
@@ -124,10 +124,15 @@ public class PlayerController : MonoBehaviour
     }
     */
 
-
-    public void ResetPlayerSpot()
+    public void ft_setPlayerSpot(Vector3 pos)
     {
-        this.gameObject.transform.position = new Vector3(0, 0.2f, 0);
+        _controller.enabled = false;
+        this.gameObject.transform.position = pos;
+        _controller.enabled = true;
+    }
+    public void ft_resetPlayerSpot()
+    {
+        ft_setPlayerSpot(new Vector3(0, 0.2f, 0));
     }
     private void AssignAnimationIDs()
     {
@@ -223,15 +228,7 @@ public class PlayerController : MonoBehaviour
     {
         _npcInteractCamera.gameObject.SetActive(true);
         this.transform.LookAt(new Vector3(targetGO.transform.position.x, this.transform.position.y, targetGO.transform.position.z));
-        targetGO.transform.LookAt(new Vector3(this.transform.position.x, targetGO.transform.position.y, this.transform.position.z));
         _npcInteractCamera.LookAt(targetGO.transform.position + new Vector3(0, 1.6f, 0));
-        /*_npcInteractCamera.rotation = targetGO.transform.rotation;
-        _npcInteractCamera.transform.position = targetGO.transform.position + 
-            (Vector3.up * 1.6f) +
-            (_npcInteractCamera.transform.forward * 1) + 
-            (_npcInteractCamera.transform.right * (-0.3f));
-
-        _npcInteractCamera.Rotate(0, 180, 0);*/
     }
     public void setOffNpcInteractCamera()
     {

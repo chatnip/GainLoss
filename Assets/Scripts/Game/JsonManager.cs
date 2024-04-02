@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class JsonManager : MonoBehaviour
 {
+    #region Value
+
     [HideInInspector] public string json_filePath;
 
     [HideInInspector] public string json_mainInfoFileName;
@@ -22,6 +24,10 @@ public class JsonManager : MonoBehaviour
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
+
+    #endregion
+
+    #region Main
 
     private void Awake()
     {
@@ -46,6 +52,7 @@ public class JsonManager : MonoBehaviour
         json_PlaceFileName = "placeDatabase.json";
         json_PSFileName = "gotPSDatabase.json";
     }
+    #endregion
 
     #region Load Json
 
@@ -126,6 +133,19 @@ public class JsonManager : MonoBehaviour
 
         return FinalResult;
     }
+
+    public List<List<string>> JsonLoad_LL(string jsonPath, string jsonName)
+    {
+        if (!File.Exists(jsonPath + jsonName))
+        {
+            Debug.LogError("None File this Path");
+            return null;
+        }
+
+        string saveFile = File.ReadAllText(jsonPath + jsonName);
+        PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile);
+        return saveData.Data();
+    }
     
     // Load All
     public void LoadAllGameDatas()
@@ -156,9 +176,8 @@ public class JsonManager : MonoBehaviour
             JsonLoad_D(json_filePath, json_PlaceFileName);
 
         // Load -> got PreliminarySurvey Json
-        PreliminarySurveyManager.ExceptionPSSO_IDs =
-            JsonLoad_L(json_filePath, json_PSFileName);
-
+        PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[0];
+        PreliminarySurveyManager.PSSO_Extract_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[1];
 
     }
 
@@ -242,6 +261,18 @@ public class JsonManager : MonoBehaviour
 
         JsonSave(jsonPath, jsonName, Elements);
     }
+    public void JsonSave(string jsonPath, string jsonName, PSBase Data)
+    {
+        if (!Directory.Exists(jsonPath))
+        {
+            Directory.CreateDirectory(jsonPath);
+        }
+
+        string saveJson = JsonUtility.ToJson(Data, true);
+        string saveFilePath = jsonPath + jsonName;
+        File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log("Save Success: " + saveFilePath);
+    }
 
     // Save ALL
     public void SaveAllGameDatas()
@@ -265,7 +296,10 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
 
         // Save -> Got PreliminarySurvey Json
-        JsonSave(json_filePath, json_PSFileName, PreliminarySurveyManager.ExceptionPSSO_IDs);
+        JsonSave(json_filePath, json_PSFileName, new PSBase(
+            PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs,
+            PreliminarySurveyManager.PSSO_Extract_ExceptionIDs
+        ));
     }
 
     #endregion
@@ -281,9 +315,9 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_filePath, json_mainInfoFileName, new MainInfo());
         JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001" });
         JsonSave(json_filePath, json_wordActionFileName, new List<string>() { "WA01", "WA02" });
-        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S02", "S03", "S04" });
+        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
         JsonSave(json_filePath, json_PlaceFileName, new Dictionary<string, int>() { { "P00", 1 }, { "P03", 0 } });
-        JsonSave(json_filePath, json_PSFileName, new List<string>() { });
+        JsonSave(json_filePath, json_PSFileName, new PSBase(new List<string> { }, new List<string> { }));
 
         Set_StartSentence(); // Sentence IDs
     }
@@ -318,15 +352,21 @@ public class IDs
     public List<string> dataIDList = new();
 }
 
-
-
-/*
+//PS Base
 [Serializable]
-public class WordBase
+public class PSBase
 {
-    public int wordID;
-    public string wordName;
-    public bool isUsed;
+    public List<string> got_FindClue_ID;
+    public List<string> got_Extract_ID;
+
+    public PSBase(List<string> list_00, List<string> list_01)
+    {
+        got_FindClue_ID = list_00;
+        got_Extract_ID = list_01;
+    }
+    public List<List<string>> Data()
+    {
+        return new List<List<string>> { got_FindClue_ID, got_Extract_ID };
+    }
 }
 
-*/

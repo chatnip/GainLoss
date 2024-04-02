@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
+using System.Linq;
 
 public class CheckGetAllDatas : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class CheckGetAllDatas : MonoBehaviour
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SetInteractionObjects SetInteractionObjects;
     [SerializeField] PhoneHardware PhoneHardware;
+    [SerializeField] WordManager WordManager;
 
     #endregion
 
@@ -77,8 +79,12 @@ public class CheckGetAllDatas : MonoBehaviour
         {
             if (child.TryGetComponent(out InteractObject interactObject) && child.gameObject.activeSelf)
             {
-                if (interactObject.getWordID != "" || interactObject.getWordActionID != "" || interactObject.getPlaceID != "")
+                if ((interactObject.getWordID != "" || interactObject.getWordActionID != "" || interactObject.getPlaceID != "") &&
+                    (!WordManager.currentWordIDList.Contains(interactObject.getWordID) &&
+                    !WordManager.currentWordActionIDList.Contains(interactObject.getWordActionID) &&
+                    !PlaceManager.currentPlaceID_Dict.Keys.ToList().Contains(interactObject.getPlaceID)))
                 {
+                    
                     _remain++;
                     //Debug.Log("아직 존재");
                 }

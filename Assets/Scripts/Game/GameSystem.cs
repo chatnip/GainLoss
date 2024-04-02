@@ -12,7 +12,7 @@ public class GameSystem : MonoBehaviour
     #region Value
 
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] PlayerController PlayerController;
+    [SerializeField] public PlayerController PlayerController;
     [SerializeField] public PlayerInputController PlayerInputController;
     [SerializeField] Animator PlayerAnimator;
     [SerializeField] Animator AnotherAnimator;
@@ -35,6 +35,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] public TMP_Text NpcText;
     [SerializeField] public Image NpcImg;
     [SerializeField] public Button NpcPanelExitBtn;
+    [SerializeField] public GameObject NpcInteractCamera;
 
     [Header("*Cutscene")]
     [SerializeField] public Image cutsceneImg;
@@ -220,16 +221,24 @@ public class GameSystem : MonoBehaviour
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
+                         Debug.Log("NPC 상호작용의 데이터 적용");
                          conversationTweeningNow = true;
                          NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
                          NpcName.text = conversations.NpcConversations[i].talkerName;
-                         if(conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
+                         NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
+                        
+
+                         if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
                          {
                              PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
+                             NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
+                             NpcInteractCamera.transform.LookAt(PlayerController.gameObject.transform.position + new Vector3(0, 1.6f, 0));
                          }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
                          {
                              AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
+                             NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
+                             NpcInteractCamera.transform.LookAt(AnotherAnimator.gameObject.transform.position + new Vector3(0, 1.6f, 0));
                          }
                      })
                      .OnComplete(() =>

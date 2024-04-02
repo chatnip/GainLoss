@@ -26,7 +26,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     [Header("*Computer")]
     [SerializeField] ComputerInteract ComputerInteract;
     [SerializeField] Desktop Desktop;
-    [SerializeField] PreliminarySurveyWindow PreliminarySurveyWindow;
+    [SerializeField] GameObject PSWindow_choose;
+    [SerializeField] PreliminarySurveyWindow_FindClue PSWindow_FC;
     [SerializeField] GameObject ComputerCamera2D;
 
     [Header("*PartTimeJob")]
@@ -425,9 +426,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
     {
-        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
+        if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setChooseClue(SelectBtn);
+            PSWindow_FC.ft_setChooseClue(SelectBtn);
         }
     }
 
@@ -436,8 +437,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
 
-        if (Desktop.PSWindow.activeSelf && !PreliminarySurveyWindow.resultWindowParentGO.activeSelf) 
-        { PreliminarySurveyWindow.ft_tryToCombine(); }
+        if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
+        { PSWindow_FC.ft_tryToCombine(); }
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }
@@ -467,8 +468,8 @@ public class PlayerInputController : Manager<PlayerInputController>
         if (pause.gameObject.activeSelf) 
         { pause.ft_closePausePopup(); return; }
 
-        //Cutscene
-        if (GameSystem.cutsceneImg.gameObject.activeSelf)
+        // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
+        if (GameSystem.cutsceneImg.gameObject.activeSelf || Desktop.streamWindow.activeSelf)
         { return; }
 
         //Panels
@@ -478,20 +479,20 @@ public class PlayerInputController : Manager<PlayerInputController>
         { GameSystem.NpcDescriptionOff(); return; }
 
         //Computer
-        if (ComputerOffWindow(Desktop.confirmPopup)) 
+        if (ComputerOffWindow(Desktop.confirmPopup)) // Confirm 팝업창이 있다면 끄기
         { return; }
-        else if (ComputerOffWindow(Desktop.todoWindow)) 
+        else if (ComputerOffWindow(Desktop.todoWindow)) // Todo 팝업창이 있다면 끄기
         { return; }
-        else if (Desktop.PSWindow.activeSelf)
+        else if (ComputerOffWindow(PSWindow_choose)) // 사전 조사 결정창이 있다면 끄기
+        { return; }
+        else if (PSWindow_FC.gameObject.activeSelf)
         {
-            if (!PreliminarySurveyWindow.resultWindowParentGO.activeSelf)
+            if (!PSWindow_FC.resultWindowParentGO.activeSelf)
             {
-                PreliminarySurveyWindow.ft_clearChooseClue();
+                PSWindow_FC.ft_clearChooseClue(); // FindClue 상태일 때, 모든 선택 Num 제거
             }
             return;
         }
-        else if (Desktop.streamWindow.activeSelf) 
-        { return; }
         else if (ComputerCamera2D.activeSelf) //Computer Screen
         {
             StartCoroutine(ComputerInteract.ScreenZoomOut());
@@ -609,7 +610,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+            PSWindow_FC.ft_setClueImg(SelectBtn);
         }
 
     }
@@ -643,7 +644,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
         if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+            PSWindow_FC.ft_setClueImg(SelectBtn);
         }
     }
 
@@ -691,7 +692,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+            PSWindow_FC.ft_setClueImg(SelectBtn);
         }
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
@@ -722,7 +723,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
         if (Desktop.PSWindow.activeSelf)
         {
-            PreliminarySurveyWindow.ft_setClueImg(SelectBtn);
+            PSWindow_FC.ft_setClueImg(SelectBtn);
         }
     }
 

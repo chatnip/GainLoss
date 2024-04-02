@@ -232,7 +232,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         DOTween.Kill(SavingPrograssText);
 
         JsonManager.SaveAllGameDatas();
-        PreliminarySurveyManager.ft_setAPSSOs();
+        PreliminarySurveyManager.ft_setAPSSOs_FindClue();
 
         GameSystem.SetPlayerTransform();
 
