@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
@@ -232,7 +231,9 @@ public class ActionEventManager : Manager<ActionEventManager>
         DOTween.Kill(SavingPrograssText);
 
         JsonManager.SaveAllGameDatas();
-        PreliminarySurveyManager.ft_setAPSSOs_FindClue();
+
+        Debug.Log("사전 조사 데이터 세팅");
+        PreliminarySurveyManager.ft_setAPSSOs();
 
         GameSystem.SetPlayerTransform();
 

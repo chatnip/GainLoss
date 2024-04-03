@@ -5,7 +5,6 @@ using System.Linq;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract

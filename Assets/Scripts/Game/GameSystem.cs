@@ -1,11 +1,8 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UniRx;
-using System;
-using Spine;
 
 public class GameSystem : MonoBehaviour
 {

@@ -28,6 +28,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [SerializeField] Desktop Desktop;
     [SerializeField] GameObject PSWindow_choose;
     [SerializeField] PreliminarySurveyWindow_FindClue PSWindow_FC;
+    [SerializeField] PreliminarySurveyWindow_Extract PSWindow_E;
     [SerializeField] GameObject ComputerCamera2D;
 
     [Header("*PartTimeJob")]
@@ -257,7 +258,11 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     public void MoveInput(Vector2 newMoveDirection)
     {
-        if (CanMove) { move = newMoveDirection; }
+        if (PSWindow_E.gameObject.activeSelf)
+        { PSWindow_E.boardMoveDir = newMoveDirection;}
+
+        if (CanMove) 
+        { move = newMoveDirection; }
         
     }
 
@@ -469,7 +474,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         { pause.ft_closePausePopup(); return; }
 
         // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
-        if (GameSystem.cutsceneImg.gameObject.activeSelf || Desktop.streamWindow.activeSelf)
+        if (GameSystem.cutsceneImg.gameObject.activeSelf || Desktop.streamWindow.activeSelf || PSWindow_E.gameObject.activeSelf)
         { return; }
 
         //Panels
