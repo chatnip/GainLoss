@@ -88,7 +88,7 @@ public class BallController : MonoBehaviour
         RT.localScale = Vector3.one;
 
         seq.Append(Effectful.DOFade(0, 0.5f));
-        seq.Join(RT.DOScale(3f, 0.5f));
+        seq.Join(RT.DOScale(10f, 0.5f));
         seq.AppendInterval(0.5f);
 
         seq.OnComplete(() =>

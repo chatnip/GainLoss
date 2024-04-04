@@ -239,7 +239,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         {
             if (!Life_X_GO[i].gameObject.activeSelf)
             {
-                Life_X_GO[i].gameObject.SetActive(true);
+                XEffect(Life_X_GO[i]); ;
                 if (i == Life_X_GO.Count - 1)
                 {
                     ft_resultFail();
@@ -250,8 +250,17 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         }
         return true;
 
-    }
+    } 
+    // X 표시 효과
+    private void XEffect(GameObject XGO)
+    {
+        Sequence seq = DOTween.Sequence();
 
+        XGO.gameObject.SetActive(true);
+        XGO.TryGetComponent(out RectTransform RT);
+        seq.Append(RT.DOScale(1.5f, 0.15f).SetEase(Ease.OutBack));
+        seq.Append(RT.DOScale(1.0f, 0.35f).SetEase(Ease.OutBounce));
+    }
     // Result: 실패
     private void ft_resultFail()
     {
