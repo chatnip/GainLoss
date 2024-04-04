@@ -24,15 +24,23 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] TMP_Text megaBiteTxt;
     [SerializeField] public int currentGage;
 
-    [Header("*Block, Ball, Board")]
+    [Header("*Block")]
     [SerializeField] RectTransform blockParent;
     [Tooltip("Start: Lv1, Lv2 ~~ LvMax, Can'tBreakBlock")]
     [SerializeField] public List<Sprite> eachBlockSprite;
+    [SerializeField] public List<Sprite> eachBlockEffectfulSprite;
+    [SerializeField] public Vector2 blockSizeDelta;
+
+    [Header("*Ball")]
     [SerializeField] BallController BallController;
-    [SerializeField] TMP_Text CountAndAnnoTxt;
+
+    [Header("*Board")]
     [SerializeField] Rigidbody2D boardRb;
     [SerializeField] public Vector3 boardMoveDir;
     [SerializeField] float boardMoveSpeed;
+
+    [Header("Other")]
+    [SerializeField] TMP_Text CountAndAnnoTxt;
 
     [Header("*GOs")]
     [SerializeField] List<GameObject> Life_X_GO;
@@ -169,6 +177,10 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     public void ft_getGage()
     {
         currentGage += SelectedPreliminarySurveySO.GetPoint_OnceTime;
+        if(currentGage > SelectedPreliminarySurveySO.GoalPoint)
+        {
+            currentGage = SelectedPreliminarySurveySO.GoalPoint;
+        }
         ft_setGage();
     }
     private void ft_setGage()

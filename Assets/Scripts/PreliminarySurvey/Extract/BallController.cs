@@ -107,12 +107,13 @@ public class BallController : MonoBehaviour
             return;
         }
 
-        TC.tileHP--;
+        /*TC.tileHP--;
         if(TC.tileHP == 0)
         {
             PreliminarySurveyWindow_Extract.ft_getGage();
-        }
-        TC.ft_setSprite(PreliminarySurveyWindow_Extract.eachBlockSprite);
+        }*/
+
+        TC.ft_hitted(PreliminarySurveyWindow_Extract.eachBlockSprite, PreliminarySurveyWindow_Extract.eachBlockEffectfulSprite);
         PreliminarySurveyWindow_Extract.ft_checkClear();
     }
 
