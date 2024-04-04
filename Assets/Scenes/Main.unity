@@ -4650,7 +4650,7 @@ GameObject:
   - component: {fileID: 170028522}
   m_Layer: 5
   m_Name: Wall (1)
-  m_TagString: BounceBall
+  m_TagString: BreakBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9775,7 +9775,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC555\uCD95\uC744 \uD480\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4..."
+  m_text: "\uC815\uBCF4\uB97C \uC5BB\uB294\uAC83\uC5D0 \uC2E4\uD328\uD588\uB2E4..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5d385d784bf5d3948ae372a37a038ccd, type: 2}
   m_sharedMaterial: {fileID: -6715940960601057804, guid: 5d385d784bf5d3948ae372a37a038ccd, type: 2}
@@ -9802,8 +9802,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9956,7 +9956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &309503969
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15230,6 +15230,8 @@ MonoBehaviour:
   PlayerAnimator: {fileID: 729069141}
   AnotherAnimator: {fileID: 729069141}
   Pause: {fileID: 6693010971843178699}
+  WordManager: {fileID: 1775436664}
+  PlaceManager: {fileID: 581735053}
   loading: {fileID: 844579173}
   PauseBtn: {fileID: 1018738984}
   objPanel: {fileID: 1084193113}
@@ -15741,7 +15743,7 @@ MonoBehaviour:
   thisRT: {fileID: 455063993}
   thisCollider: {fileID: 455063996}
   thisRb: {fileID: 455063998}
-  shotSpeed: 500
+  ballSpeed: 10
   thisImg: {fileID: 455063994}
   Effectful: {fileID: 1701911547}
 --- !u!50 &455063998
@@ -42281,8 +42283,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -44486,8 +44488,6 @@ MonoBehaviour:
   GameSystem: {fileID: 445175857}
   PreliminarySurveyManager: {fileID: 1721644295}
   PlayerInputController: {fileID: 1955638128}
-  WordManager: {fileID: 1775436664}
-  PlaceManager: {fileID: 581735053}
   Desktop: {fileID: 1553190507}
   SelectedPreliminarySurveySO: {fileID: 0}
   genClueData:
@@ -56355,7 +56355,7 @@ RectTransform:
   m_GameObject: {fileID: 1441135510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000799, y: 1.0000799, z: 1.0000799}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2027196723}
@@ -85583,8 +85583,8 @@ RectTransform:
   - {fileID: 1461493173}
   - {fileID: 721633049}
   - {fileID: 156942173}
-  - {fileID: 1441135511}
   - {fileID: 1721206502}
+  - {fileID: 1441135511}
   m_Father: {fileID: 1496130345}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -85644,6 +85644,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PreliminarySurveyManager: {fileID: 1721644295}
   PlayerInputController: {fileID: 1955638128}
+  GameSystem: {fileID: 445175857}
+  Desktop: {fileID: 1553190507}
   SelectedPreliminarySurveySO: {fileID: 0}
   gageImg: {fileID: 1109786587}
   percentTxt: {fileID: 1957502554}
@@ -85660,6 +85662,19 @@ MonoBehaviour:
   boardRb: {fileID: 656645462}
   boardMoveDir: {x: 0, y: 0, z: 0}
   boardMoveSpeed: 10
+  Life_X_GO:
+  - {fileID: 2127896341}
+  - {fileID: 782620502}
+  - {fileID: 2130195514}
+  - {fileID: 264670515}
+  - {fileID: 1243453116}
+  resultWindowParentGO: {fileID: 1441135510}
+  resultWindowRT: {fileID: 1090658767}
+  OnlyFail: {fileID: 309503968}
+  OnlyComplete: {fileID: 712416555}
+  incomeData: {fileID: 1747783022}
+  endBtn: {fileID: 2063115515}
+  TempCutsceneSO: {fileID: 11400000, guid: 94c1fd3d6996cc340a862a21c80b448a, type: 2}
 --- !u!224 &2141652349 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3838911433918337832, guid: 02155a48bf139794ab958ef47b155786, type: 3}

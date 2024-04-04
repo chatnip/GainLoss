@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UniRx;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GameSystem : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class GameSystem : MonoBehaviour
     [SerializeField] Animator PlayerAnimator;
     [SerializeField] Animator AnotherAnimator;
     [SerializeField] Pause Pause;
+
+    [SerializeField] WordManager WordManager;
+    [SerializeField] PlaceManager PlaceManager;
 
     [Header("*Popular UI")]
     [SerializeField] public CanvasGroup loading;
@@ -246,5 +251,40 @@ public class GameSystem : MonoBehaviour
         return tw;
     }
 
+    #endregion
+
+    #region Get
+    public string ft_setTextGetData(string ID)
+    {
+        string name = "";
+        if (ID.Substring(0, 2) == "WA")
+        {
+            name = ft_setEachTextGetData(DataManager.WordActionDatas[3], WordManager.currentWordActionIDList, ID, ".EXE");
+        }
+        else if (ID.Substring(0, 1) == "W")
+        {
+            name = ft_setEachTextGetData(DataManager.WordDatas[5], WordManager.currentWordIDList, ID, ".AIL");
+        }
+        else if (ID.Substring(0, 1) == "P")
+        {
+            name = ft_setEachTextGetData(DataManager.PlaceDatas[1], PlaceManager.currentPlaceID_Dict.Keys.ToList(), ID, "(Place)");
+        }
+        return name;
+
+        string ft_setEachTextGetData(Dictionary<string, object> Data, List<string> haveThings, string id, string type)
+        {
+            string nameTemp = "";
+            if (!haveThings.Contains(id))
+            {
+                nameTemp = Data[id].ToString() + type + "\n★ 획득 ★";
+                haveThings.Add(id);
+            }
+            else
+            {
+                nameTemp = "※ 이미 가지고 있는 요소 ※";
+            }
+            return nameTemp;
+        }
+    }
     #endregion
 }

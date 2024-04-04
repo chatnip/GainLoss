@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] GameSystem GameSystem;
+    [SerializeField] Desktop Desktop;
 
     [Header("*What Value is Changing")]
     [SerializeField] public PreliminarySurveySO_Extract SelectedPreliminarySurveySO;
@@ -31,9 +34,35 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] public Vector3 boardMoveDir;
     [SerializeField] float boardMoveSpeed;
 
+    [Header("*GOs")]
+    [SerializeField] List<GameObject> Life_X_GO;
+
+    [Header("*Result")]
+    [SerializeField] public GameObject resultWindowParentGO;
+    [SerializeField] RectTransform resultWindowRT;
+    [SerializeField] GameObject OnlyFail;
+    [SerializeField] GameObject OnlyComplete;
+    [SerializeField] TMP_Text incomeData;
+    [SerializeField] Button endBtn;
+
+    [Header("Test")]
+    [SerializeField] cutsceneSO TempCutsceneSO;
+
     #endregion
 
     #region Main
+
+    private void Awake()
+    {
+        endBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                Desktop.EndScheduleThis();
+                PlayerInputController.SetSectionBtns(null, null);
+                resultWindowParentGO.SetActive(false);
+                this.gameObject.SetActive(false);
+            });
+    }
 
     private void OnEnable()
     {
@@ -48,7 +77,13 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     public void Interact()
     {
-
+        if (PlayerInputController.SelectBtn == endBtn && endBtn.interactable)
+        {
+            Desktop.EndScheduleThis();
+            PlayerInputController.SetSectionBtns(null, null);
+            resultWindowParentGO.SetActive(false);
+            this.gameObject.SetActive(false);
+        }
     }
 
     #endregion
@@ -76,8 +111,9 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
             { 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}
         };
         SelectedPreliminarySurveySO.GoalPoint = 230;
-        SelectedPreliminarySurveySO.GetPoint_OnceTime = 4;
-
+        SelectedPreliminarySurveySO.GetPoint_OnceTime = 20;
+        SelectedPreliminarySurveySO.getID = "WA03";
+        SelectedPreliminarySurveySO.cutsceneSO = TempCutsceneSO;
         #endregion
 
         #region Set Gage
@@ -115,6 +151,14 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
         #endregion
 
+        #region Set Life
+
+        foreach(GameObject X in Life_X_GO)
+        {
+            X.SetActive(false);
+        }
+
+        #endregion
 
     }
 
@@ -172,7 +216,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     #endregion
 
-
     #region Move Board
 
     private void ft_moveBoard(Vector3 Dir)
@@ -187,10 +230,85 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     #endregion
 
+    #region Fail & Clear
 
-    #region Life
+    // 체력 감소
+    public bool ft_minusTryAmount()
+    {
+        for (int i = 0; i < Life_X_GO.Count; i++)
+        {
+            if (!Life_X_GO[i].gameObject.activeSelf)
+            {
+                Life_X_GO[i].gameObject.SetActive(true);
+                if (i == Life_X_GO.Count - 1)
+                {
+                    ft_resultFail();
+                    return false;
+                }
+                return true;
+            }
+        }
+        return true;
 
+    }
 
+    // Result: 실패
+    private void ft_resultFail()
+    {
+        incomeData.text = "미획득";
+
+        OnlyFail.gameObject.SetActive(true);
+        OnlyComplete.gameObject.SetActive(false);
+
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+        resultWindowParentGO.SetActive(true);
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+    }
+
+    // Result: 성공
+
+    public void ft_checkClear()
+    {
+        if(currentGage >= SelectedPreliminarySurveySO.GoalPoint)
+        {
+            ft_showCutscene();
+            BallController.ft_resetPos();
+        }
+    }
+
+    private void ft_showCutscene()
+    {
+        endBtn.interactable = false;
+        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+
+        if (cutsceneSO.currentCSSO != null) { return; }
+        cutsceneSO.currentCSSO = SelectedPreliminarySurveySO.cutsceneSO;
+        cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
+        cutsceneSO.cutsceneSeq.OnComplete(() =>
+        {
+            showResult();
+            endBtn.interactable = true;
+            GameSystem.cutsceneImg.color = new Color(0, 0, 0, 0);
+            GameSystem.cutsceneImg.gameObject.SetActive(false);
+            GameSystem.cutsceneTxt.text = "";
+            cutsceneSO.currentCSSO = null;
+        });
+    }
+
+    private void showResult()
+    {
+        endBtn.interactable = true;
+        
+        incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+
+        OnlyFail.gameObject.SetActive(false);
+        OnlyComplete.gameObject.SetActive(true);
+
+        resultWindowParentGO.SetActive(true);
+        Debug.Log(SelectedPreliminarySurveySO.name);
+        PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
+        EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
+    }
 
     #endregion
 

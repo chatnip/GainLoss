@@ -15,8 +15,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     [SerializeField] GameSystem GameSystem;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] WordManager WordManager;
-    [SerializeField] PlaceManager PlaceManager;
     [SerializeField] Desktop Desktop;
 
     [Header("*What Value is Changing")]
@@ -348,7 +346,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             int index = ((int)Nums[i] - 49);
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
         }
-        incomeData.text = ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
 
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
@@ -358,44 +356,11 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
         PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
-    // 결과 Text 완성 및 획득 ID 삽입(적용)
-    private string ft_setTextGetData(string ID)
-    {
-        string name = "";
-        if(ID.Substring(0, 2) == "WA")
-        {
-            name = ft_setEachTextGetData(DataManager.WordActionDatas[3], WordManager.currentWordActionIDList, ID, ".EXE");
-        }
-        else if(ID.Substring(0, 1) == "W")
-        {
-            name = ft_setEachTextGetData(DataManager.WordDatas[5], WordManager.currentWordIDList, ID, ".AIL");
-        }
-        else if(ID.Substring(0, 1) == "P")
-        {
-            name = ft_setEachTextGetData(DataManager.PlaceDatas[1], PlaceManager.currentPlaceID_Dict.Keys.ToList(), ID, "(Place)");
-        }
-        return name;
-
-        string ft_setEachTextGetData(Dictionary<string, object> Data, List<string> haveThings, string id, string type)
-        {
-            string nameTemp = "";
-            if (!haveThings.Contains(id))
-            {
-                nameTemp = Data[id].ToString() + type + "\n★ 획득 ★";
-                haveThings.Add(id);
-            }
-            else
-            {
-                nameTemp = "※ 이미 가지고 있는 요소 ※";
-            }
-            return nameTemp;
-        }
-    }
     
     // 실패 시 ( = 결합 시도 가능 횟수 모두 소진 시 )
     private void ft_resultFail()
     {
-        incomeData.text = "아무것도 알아내지 못했습니다.";
+        incomeData.text = "미획득";
 
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
