@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,15 @@ using UnityEngine;
 [System.Serializable]
 public class PreliminarySurveySO_Extract : PreliminarySurveySO
 {
-    [SerializeField] public int[,] array = new int[8, 12];
+    [SerializeField] public int[,] tempArray = new int[8, 12];
+    [SerializeField] public TileLine[] tileArray;
     [SerializeField] public int GoalPoint;
     [SerializeField] public int GetPoint_OnceTime;
+
+    [Serializable]
+    public class TileLine
+    {
+        public int[] LineIndex = new int[12];
+    }
 }
+

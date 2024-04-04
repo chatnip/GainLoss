@@ -95,11 +95,11 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         PlayerInputController.SetSectionBtns(null, this);
 
         Debug.Log("세팅 -> 바꿔야함 임시임");
-        //SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS_Extract();
+        SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS_Extract();
         #region Temp
 
-        SelectedPreliminarySurveySO = new PreliminarySurveySO_Extract();
-        SelectedPreliminarySurveySO.array = new int[8, 12]
+        /*SelectedPreliminarySurveySO = new PreliminarySurveySO_Extract();
+        SelectedPreliminarySurveySO.tempArray = new int[8, 12]
         { 
             { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
             { 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4},
@@ -113,7 +113,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         SelectedPreliminarySurveySO.GoalPoint = 230;
         SelectedPreliminarySurveySO.GetPoint_OnceTime = 20;
         SelectedPreliminarySurveySO.getID = "WA03";
-        SelectedPreliminarySurveySO.cutsceneSO = TempCutsceneSO;
+        SelectedPreliminarySurveySO.cutsceneSO = TempCutsceneSO;*/
         #endregion
 
         #region Set Gage
@@ -136,12 +136,12 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         }
 
         // 타일별 Sprite 변경
-        for(int i = 0; i < SelectedPreliminarySurveySO.array.GetLength(0); i++)
+        for(int i = 0; i < SelectedPreliminarySurveySO.tileArray.Length; i++)
         {
-            for(int j = 0; j < SelectedPreliminarySurveySO.array.GetLength(1); j++)
+            for(int j = 0; j < SelectedPreliminarySurveySO.tileArray[i].LineIndex.Length; j++)
             {
-                int type = SelectedPreliminarySurveySO.array[i, j];
-                Image thisTile = allTile[(i * SelectedPreliminarySurveySO.array.GetLength(1)) + (j)];
+                int type = SelectedPreliminarySurveySO.tileArray[i].LineIndex[j];
+                Image thisTile = allTile[(i * SelectedPreliminarySurveySO.tileArray[i].LineIndex.Length) + (j)];
 
                 thisTile.TryGetComponent(out TileController TC);
                 TC.tileHP = type;

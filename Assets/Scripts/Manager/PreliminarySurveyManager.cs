@@ -35,14 +35,14 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         PSSOs_FindClue_Available = PSSOs_FindClue_All;
         PSSOs_FindClue_Available = ft_removeCPSSOs(PSSOs_FindClue_Available);
         PSSOs_FindClue_Available = ft_removeAlreadyPSSOs(PSSOs_FindClue_Available);
-        PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
+        //PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
     }
     private void ft_setAPSSOs_Extract()
     {
         PSSOs_Extract_Available = PSSOs_Extract_All;
         PSSOs_Extract_Available = ft_removeCPSSOs(PSSOs_Extract_Available);
         PSSOs_Extract_Available = ft_removeAlreadyPSSOs(PSSOs_Extract_Available);
-        PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
+        //PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
     }
 
     #endregion

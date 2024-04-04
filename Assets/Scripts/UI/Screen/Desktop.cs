@@ -244,7 +244,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void SNSConfirm()
     {
-        confirmPopup.SetActive(false);
+        confirmText.text = "";
         disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -256,7 +256,6 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void FanCafeConfirm()
     {
-        confirmPopup.SetActive(false);
         disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -268,7 +267,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void StreamConfirm()
     {
-        //confirmPopup.SetActive(true);
+        confirmText.text = "<size=150%>방송</size>을\n보시겠습니까?";
         disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -286,6 +285,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void PreliminarySurveyConfirm()
     {
+        confirmText.text = "<size=150%>사전 조사</size>를\n하시겠습니까?";
         disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
