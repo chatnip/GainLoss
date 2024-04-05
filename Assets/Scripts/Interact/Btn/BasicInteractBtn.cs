@@ -1,9 +1,9 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 
 public class BasicInteractBtn : InteractCore
 {
@@ -22,6 +22,7 @@ public class BasicInteractBtn : InteractCore
     public void Awake()
     {
         //InteractiveBtn_comp = GetComponent<Button>();
+
         PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>();
         thisBtn = this.gameObject.GetComponent<Button>();
     }

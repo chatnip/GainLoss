@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UniRx;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.IO;
 using System.Collections.Generic;
+using Spine.Unity;
 
 public class Title : MonoBehaviour, IInteract
 {
@@ -27,6 +27,8 @@ public class Title : MonoBehaviour, IInteract
     [SerializeField] Image BlackScreenImg;
     [SerializeField] CanvasGroup warningTextCG;
     [SerializeField] CanvasGroup teamLogoCG;
+    [SerializeField] Spine.Unity.SkeletonGraphic LogoSG;
+    [SerializeField] AnimationReferenceAsset LogoARA;
     [SerializeField] GameObject OptionWindow;
 
     #endregion
@@ -161,12 +163,13 @@ public class Title : MonoBehaviour, IInteract
         teamLogoCG.gameObject.SetActive(true);
 
         seq.Append(teamLogoCG.DOFade(1, 0.5f));
-        seq.AppendInterval(1f);
+
+        seq.AppendInterval(7.5f);
+        seq.Append(LogoSG.DOFade(0, 0.5f));
         seq.Append(teamLogoCG.DOFade(0, 0.5f)
             .OnComplete(() =>
             {
                 teamLogoCG.gameObject.SetActive(false);
-
                 TitleCanvasScaler.scaleFactor = 0.5f;
             }));
 
