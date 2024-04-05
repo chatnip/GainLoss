@@ -30,8 +30,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
     [Header("*Result")]
     [SerializeField] float showTime = 0.8f; //Dotween 시간값
     [SerializeField] GameObject resultWindow;
-    [SerializeField] GameObject resultWindowGage;
-    [SerializeField] GameObject resultWindowOverloadGage;
     [SerializeField] Color baseColor;
 
     [Header("*Gage")]
@@ -47,8 +45,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
     [SerializeField] TMP_Text riskText;
     [SerializeField] Color riskBarColor;
 
-
-    [Header("*Overload")]
     [SerializeField] Slider overloadSilder;
     [SerializeField] TMP_Text overloadText;
     [SerializeField] Color overloadBarColor;
@@ -116,33 +112,52 @@ public class DialogManager : Manager<DialogManager>, IInteract
         // 애니메이션 출력
         switch (state)
         {
-            case SpineAniState.A01: // 인사하고 Idle
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "안녕", loop: false);
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "ible", loop: true);
+            case SpineAniState.A01: // 인사 후, 기본
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "Konnichiwa", loop: false);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "idle", loop: true);
                 break;
-            case SpineAniState.A02: // Idle
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "ible", loop: true);
+            case SpineAniState.A02: // 기본
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "idle", loop: true);
                 break;
-            case SpineAniState.A03: // 깜찍한 표정
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "><", loop: true);
+            case SpineAniState.A03: // 화난 표정
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "angry look", loop: true);
                 break;
-            case SpineAniState.A04: // 웃는 표정
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "웃음!", loop: true);
+            case SpineAniState.A04: // 당황한 표정
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "bewildered look", loop: true);
                 break;
-            case SpineAniState.A05: // 화난 표정
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "음!", loop: false);
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "음! ible", loop: true);
+            case SpineAniState.A05: // 차분한 화남 A
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "calm anger_A", loop: true);
                 break;
-            case SpineAniState.A06: // 화난 표정 Idle
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "음! ible", loop: true);
+            case SpineAniState.A06: // 차분한 화남 B
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "calm anger_B", loop: true);
                 break;
-            case SpineAniState.A07: // 콧수염
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "콧수염", loop: false);
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "콧수염 ible", loop: true);
+            case SpineAniState.A07: // 눈 감기
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "closed_eyed", loop: true);
                 break;
-            case SpineAniState.A08: // 콧수염 Idle
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "콧수염 ible", loop: true);
+            case SpineAniState.A08: // 교활(?)
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "crafty", loop: true);
                 break;
+            case SpineAniState.A09: // 들뜬 표정
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "excited look", loop: true);
+                break;
+            case SpineAniState.A10: // 자신감 넘치는
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "full of confidence", loop: true);
+                break;
+
+            case SpineAniState.A11: // 행복한 표정
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "happy look", loop: true);
+                break;
+            case SpineAniState.A12: // 홤봑 움음
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "laugh", loop: true);
+                break;
+            case SpineAniState.A13: // 콧수염 기본
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "Mustache idle", loop: true);
+                break;
+            case SpineAniState.A14: // 콧수염 시작(뿅하면서 나타남)
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "Mustache start", loop: false);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "Mustache idle", loop: true);
+                break;
+
         }
 
         
@@ -150,14 +165,8 @@ public class DialogManager : Manager<DialogManager>, IInteract
 
     public enum SpineAniState
     {
-        A01,
-        A02,
-        A03,
-        A04,
-        A05,
-        A06,
-        A07,
-        A08
+        A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, 
+        A11, A12, A13, A14
     }
 
     #endregion
@@ -244,21 +253,13 @@ public class DialogManager : Manager<DialogManager>, IInteract
         EffectGage(stressSlider, GameManager.currentMainInfo.stressGage, showTime, stressBarColor);
         EffectGage(angerSlider, GameManager.currentMainInfo.angerGage, showTime, angerBarColor);
         EffectGage(riskSlider, GameManager.currentMainInfo.riskGage, showTime, riskBarColor);
+        EffectGage(overloadSilder, GameManager.currentMainInfo.overloadGage, showTime, overloadBarColor);
         yield return new WaitForSeconds(showTime);
 
         // 수치(text) 출력
         IncOpacityText(stressText, GameManager.currentMainInfo.stressGage, currentStreamEvent.stressValue, showTime);
         IncOpacityText(angerText, GameManager.currentMainInfo.angerGage, currentStreamEvent.angerValue, showTime);
         IncOpacityText(riskText, GameManager.currentMainInfo.riskGage, currentStreamEvent.riskValue, showTime);
-        yield return new WaitForSeconds(showTime);
-
-        // 과부하 출력
-        resultWindowOverloadGage.transform.DOLocalMoveY(-375f, showTime);
-        resultWindowGage.transform.DOLocalMoveY(60f, showTime);
-        yield return new WaitForSeconds(showTime);
-
-        EffectGage(overloadSilder, GameManager.currentMainInfo.overloadGage, showTime, overloadBarColor);
-        yield return new WaitForSeconds(showTime);
         IncOpacityText(overloadText, GameManager.currentMainInfo.overloadGage, currentStreamEvent.OverloadValue, showTime);
         yield return new WaitForSeconds(showTime);
 
@@ -275,8 +276,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
             angerText.alpha = 0;
             riskText.alpha = 0;
             overloadText.alpha = 0;
-            resultWindowGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            resultWindowOverloadGage.GetComponent<RectTransform>().localPosition = Vector3.zero;
             resultWindow.SetActive(true); //결과창
         }
         void EffectGage(Slider slider, int appliedGage, float time, Color color)
