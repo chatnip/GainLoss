@@ -232,13 +232,15 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         JsonManager.SaveAllGameDatas();
 
-        Debug.Log("사전 조사 데이터 세팅");
-        PreliminarySurveyManager.ft_setAPSSOs();
 
         GameSystem.SetPlayerTransform();
 
         SavingPrograssText.text = "< Saved >";
         SavingPrograssText.DOFade(1f, 1f);
+
+
+        Debug.Log("사전 조사 데이터 세팅");
+        PreliminarySurveyManager.ft_setAPSSOs();
     }
 
     #endregion

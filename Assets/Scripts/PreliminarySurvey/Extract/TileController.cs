@@ -40,7 +40,8 @@ public class TileController : MonoBehaviour
 
             Sequence seq = DOTween.Sequence();
             thisImg.sprite = EachBlockEffectfulSprite[tileHP];
-            seq.Append(thisRT.DOShakeRotation(0.25f, new Vector3(0f, 0f, 10f), 6));
+            int i = Random.Range(0, 2); if (i == 0) { i = -1; }
+            seq.Append(thisRT.DOShakeRotation(0.25f, new Vector3(0f, 0f, i * 10f), 10));
             seq.Join(thisRT.DOSizeDelta(PreliminarySurveyWindow_Extract.blockSizeDelta * 1.1f, 0.25f));
             seq.Join(thisImg.DOFade(0, 0.25f));
 
@@ -78,7 +79,8 @@ public class TileController : MonoBehaviour
 
             Sequence seq = DOTween.Sequence();
             thisImg.sprite = EachBlockEffectfulSprite[tileHP];
-            seq.Append(thisRT.DOShakeRotation(0.25f, new Vector3(0f, 0f, 10f), 6)
+            int i = Random.Range(0, 2); if (i == 0) { i = -1; }
+            seq.Append(thisRT.DOShakeRotation(0.25f, new Vector3(0f, 0f, i * 10f), 10)
                 .OnComplete(() =>
                 {
                     thisRT.rotation = Quaternion.Euler(Vector3.zero);

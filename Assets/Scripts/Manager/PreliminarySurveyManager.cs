@@ -10,6 +10,7 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
     [SerializeField] PreliminarySurveyWindow_FindClue PreliminarySurveyWindow;
     [SerializeField] WordManager WordManager;
     [SerializeField] PlaceManager PlaceManager;
+    [SerializeField] GameManager GameManager;
 
     [Header("*Find Clue")]
     [SerializeField] List<PreliminarySurveySO> PSSOs_FindClue_All; // 전체 FindClue
@@ -35,14 +36,14 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         PSSOs_FindClue_Available = PSSOs_FindClue_All;
         PSSOs_FindClue_Available = ft_removeCPSSOs(PSSOs_FindClue_Available);
         PSSOs_FindClue_Available = ft_removeAlreadyPSSOs(PSSOs_FindClue_Available);
-        //PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
+        PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
     }
     private void ft_setAPSSOs_Extract()
     {
         PSSOs_Extract_Available = PSSOs_Extract_All;
         PSSOs_Extract_Available = ft_removeCPSSOs(PSSOs_Extract_Available);
         PSSOs_Extract_Available = ft_removeAlreadyPSSOs(PSSOs_Extract_Available);
-        //PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
+        PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
     }
 
     #endregion
@@ -109,18 +110,15 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         return result;
     }
 
-    // 특별 케이스 제외
+    // 과부하 기준에 충족하는지
     private List<PreliminarySurveySO> ft_removeSpecialCase(List<PreliminarySurveySO> APSSOs)
     {
         List<PreliminarySurveySO> removeSOs = new List<PreliminarySurveySO>();
 
-        Debug.Log("조건(=이 사전조사가 발생할 수 있는 조건)을 판별할 장소");
         foreach (PreliminarySurveySO SO in APSSOs)
         {
-            // Example
-            if (SO.name == "PSSO_03" && !WordManager.currentWordIDList.Contains("W005"))
+            if (GameManager.currentMainInfo.overloadGage < SO.conditionToOverload)
             {
-                Debug.Log("사전 조사 판별 예시");
                 removeSOs.Add(SO);
             }
         }

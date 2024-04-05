@@ -9,8 +9,11 @@ using System.Collections.Generic;
 
 public class Title : MonoBehaviour, IInteract
 {
+    #region Value
+
     [Header("*Property")]
     [SerializeField] TitleInputController TitleInputController;
+    [SerializeField] CanvasScaler TitleCanvasScaler;
 
     [Header("*TitleBtn")]
     [SerializeField] Button newGameBtn;
@@ -22,8 +25,13 @@ public class Title : MonoBehaviour, IInteract
 
     [Header("*Window")]
     [SerializeField] Image BlackScreenImg;
+    [SerializeField] CanvasGroup warningTextCG;
+    [SerializeField] CanvasGroup teamLogoCG;
     [SerializeField] GameObject OptionWindow;
 
+    #endregion
+
+    #region Main
 
     private void Awake()
     {
@@ -83,15 +91,7 @@ public class Title : MonoBehaviour, IInteract
     }
     private void OnEnable()
     {
-        TitleInputController.SetSectionBtns(btns, this);
-        BlackScreenImg.gameObject.SetActive(true);
-        EffectfulWindow.AppearEffectful(this.GetComponent<RectTransform>(), 1f, 0.5f, Ease.InOutBack);
-        BlackScreenImg.DOFade(0.0f, 0.5f)
-            .SetEase(Ease.InOutBack)
-            .OnComplete(() =>
-            {
-                BlackScreenImg.gameObject.SetActive(false);
-            });
+        ft_StartTitle();
     }
     
     public void Interact()
@@ -132,7 +132,63 @@ public class Title : MonoBehaviour, IInteract
 
     }
 
+    #endregion
 
+    #region Start
+
+
+    private void ft_StartTitle()
+    {
+        TitleInputController.SetSectionBtns(btns, this);
+
+        Sequence seq = DOTween.Sequence();
+
+
+        // 경고문
+        warningTextCG.alpha = 0.0f;
+        warningTextCG.gameObject.SetActive(true);
+
+        seq.Append(warningTextCG.DOFade(1, 0.5f));
+        seq.AppendInterval(1f);
+        seq.Append(warningTextCG.DOFade(0, 0.5f)
+            .OnComplete(() =>
+            {
+                warningTextCG.gameObject.SetActive(false);
+            }));
+
+        // 팀 로고
+        teamLogoCG.alpha = 0.0f;
+        teamLogoCG.gameObject.SetActive(true);
+
+        seq.Append(teamLogoCG.DOFade(1, 0.5f));
+        seq.AppendInterval(1f);
+        seq.Append(teamLogoCG.DOFade(0, 0.5f)
+            .OnComplete(() =>
+            {
+                teamLogoCG.gameObject.SetActive(false);
+
+                TitleCanvasScaler.scaleFactor = 0.5f;
+            }));
+
+        seq.AppendInterval(0.25f);
+
+        // 메인 타이틀 씬
+        seq.Append(DOTween.To(() => TitleCanvasScaler.scaleFactor, x => TitleCanvasScaler.scaleFactor = x, 1f, 0.5f));
+
+        
+        // +(동시) 블랙스크린 없애기
+        BlackScreenImg.gameObject.SetActive(true);
+        seq.Join(BlackScreenImg.DOFade(0.0f, 0.5f)
+            .SetEase(Ease.InOutBack)
+            .OnComplete(() =>
+            {
+                BlackScreenImg.gameObject.SetActive(false);
+            }));
+    }
+
+    #endregion
+
+    #region Data
     private void JsonSave(MainInfo mainDatas)
     {
         if (!Directory.Exists("Assets/Resources/Json/"))
@@ -162,4 +218,5 @@ public class Title : MonoBehaviour, IInteract
         return mainInfo;
     }
 
+    #endregion
 }

@@ -20,6 +20,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     [Header("*Gage")]
     [SerializeField] Image gageImg;
+    [SerializeField] RectTransform gageEffectfulRT;
     [SerializeField] TMP_Text percentTxt;
     [SerializeField] TMP_Text megaBiteTxt;
     [SerializeField] public int currentGage;
@@ -52,9 +53,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] GameObject OnlyComplete;
     [SerializeField] TMP_Text incomeData;
     [SerializeField] Button endBtn;
-
-    [Header("Test")]
-    [SerializeField] cutsceneSO TempCutsceneSO;
 
     #endregion
 
@@ -104,30 +102,18 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
         Debug.Log("세팅 -> 바꿔야함 임시임");
         SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS_Extract();
-        #region Temp
-
-        /*SelectedPreliminarySurveySO = new PreliminarySurveySO_Extract();
-        SelectedPreliminarySurveySO.tempArray = new int[8, 12]
-        { 
-            { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
-            { 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4},
-            { 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4},
-            { 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4},
-            { 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4},
-            { 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4},
-            { 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4},
-            { 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}
-        };
-        SelectedPreliminarySurveySO.GoalPoint = 230;
-        SelectedPreliminarySurveySO.GetPoint_OnceTime = 20;
-        SelectedPreliminarySurveySO.getID = "WA03";
-        SelectedPreliminarySurveySO.cutsceneSO = TempCutsceneSO;*/
-        #endregion
-
+       
         #region Set Gage
 
+        // 게이지 초기화
         currentGage = 0;
         ft_setGage();
+
+        // 게이지 효과 시작
+        gageImg.TryGetComponent(out RectTransform RT);
+        gageEffectfulRT.anchoredPosition = new Vector2(-RT.rect.width, 0);
+        gageEffectfulRT.DOAnchorPos(new Vector2(RT.rect.width, 0), 3f).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+
 
         #endregion
 
@@ -283,6 +269,8 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
         resultWindowParentGO.SetActive(true);
+
+        DOTween.Kill(gageEffectfulRT);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
 
@@ -328,6 +316,9 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         resultWindowParentGO.SetActive(true);
         Debug.Log(SelectedPreliminarySurveySO.name);
         PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
+
+        DOTween.Kill(gageEffectfulRT);
+
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
 
