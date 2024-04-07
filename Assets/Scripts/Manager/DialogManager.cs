@@ -7,11 +7,14 @@ using DG.Tweening;
 using UniRx;
 using TMPro;
 using Spine.Unity;
+using System;
+using System.Globalization;
 
 public class DialogManager : Manager<DialogManager>, IInteract
 {
     #region Value
 
+    [Header("Property")]
     [SerializeField] GameManager GameManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] PlayerInputController PlayerInputController;
@@ -23,6 +26,9 @@ public class DialogManager : Manager<DialogManager>, IInteract
     [SerializeField] public Button dialogNextBtn;
     [SerializeField] InputAction click;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
+
+    [Header("*UI Component")]
+    [SerializeField] public Button allSkipBtn;
 
     [Header("*Animation")]
     [SerializeField] SkeletonGraphic skeletonGraphic;
@@ -55,6 +61,8 @@ public class DialogManager : Manager<DialogManager>, IInteract
 
     [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
+
+
     #endregion
 
     #region Main
@@ -78,6 +86,12 @@ public class DialogManager : Manager<DialogManager>, IInteract
                 StartCoroutine(DialogTexting(texting));
             });
 
+        allSkipBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    ft_allSkip();
+                });
+
 
         /*
         ScenarioBase
@@ -87,6 +101,11 @@ public class DialogManager : Manager<DialogManager>, IInteract
                 // 여긴 예외처리 안해도 될듯
             });
         */
+    }
+    public void ft_allSkip()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ResultWindowOn());
     }
 
     public void Interact()
@@ -231,7 +250,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
         // 다이얼로그가 끝나면 게이지 결과값 보여주고 다음 날 시작
 
         turnOver = false;
-        PlayerInputController.SetSectionBtns(null, null);
 
         StartCoroutine(ResultWindowOn());
     }
@@ -242,6 +260,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
 
     IEnumerator ResultWindowOn()
     {
+        PlayerInputController.SetSectionBtns(null, null);
         ClearGageAndText();
 
         CanvasGroup CG = resultWindow.GetComponent<CanvasGroup>();

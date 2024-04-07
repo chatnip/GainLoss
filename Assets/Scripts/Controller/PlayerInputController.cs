@@ -14,6 +14,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
+    [SerializeField] DialogManager DialogManager;
     [SerializeField] Pause pause;
     [HideInInspector] public bool isPause = false;
 
@@ -441,6 +442,9 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void TerminatePart(InputAction.CallbackContext context)
     {
         if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+
+        if(Desktop.streamWindow.activeSelf) 
+        { DialogManager.ft_allSkip(); }
 
         if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
         { PSWindow_FC.ft_tryToCombine(); }
