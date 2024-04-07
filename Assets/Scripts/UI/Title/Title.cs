@@ -21,7 +21,7 @@ public class Title : MonoBehaviour, IInteract
     [SerializeField] GameObject cannotUseContinue;
     [SerializeField] Button OptionBtn;
     [SerializeField] Button QuitBtn;
-    List<Button> btns;
+    List<List<Button>> btns;
 
     [Header("*Window")]
     [SerializeField] Image BlackScreenImg;
@@ -37,9 +37,12 @@ public class Title : MonoBehaviour, IInteract
 
     private void Awake()
     {
-        btns = new List<Button>()
+        btns = new List<List<Button>>()
         {
-            newGameBtn, continueBtn, OptionBtn, QuitBtn
+            new List<Button> { newGameBtn },
+            new List<Button> { continueBtn },
+            new List<Button> { OptionBtn },
+            new List<Button> { QuitBtn }
         };
 
         MainInfo SavedMainInfo = JsonLoad_MI();

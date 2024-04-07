@@ -11,7 +11,7 @@ public class TitleInputController : Manager<TitleInputController>
 
     [Header("*Input Setting")]
     [SerializeField] public PlayerInput _input;
-    [SerializeField] public List<Button> SectionBtns;
+    [SerializeField] public List<List<Button>> SectionBtns;
     [SerializeField] public Button SelectBtn;
 
     public IInteract interact;
@@ -63,14 +63,25 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
-            int index = SectionBtns.IndexOf(SelectBtn);
-            if (index <= 0)
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
             {
-                SelectBtn = SectionBtns[SectionBtns.Count - 1];
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int lineIndex = SectionBtns.IndexOf(currentBtnList);
+            int index = currentBtnList.IndexOf(SelectBtn);
+
+            if (lineIndex <= 0)
+            {
+                SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
             }
             else
             {
-                SelectBtn = SectionBtns[(index - 1)];
+                SelectBtn = SectionBtns[lineIndex - 1][index];
             }
             OnOffSelectedBtn(SelectBtn);
         }
@@ -79,14 +90,39 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
-            int index = SectionBtns.IndexOf(SelectBtn);
-            if (index >= SectionBtns.Count - 1)
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
             {
-                SelectBtn = SectionBtns[0];
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int lineIndex = SectionBtns.IndexOf(currentBtnList);
+            int index = currentBtnList.IndexOf(SelectBtn);
+
+            if (lineIndex >= SectionBtns.Count - 1)
+            {
+                if (index > SectionBtns[0].Count - 1)
+                {
+                    SelectBtn = SectionBtns[0][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[0][index];
+                }
             }
             else
             {
-                SelectBtn = SectionBtns[(index + 1)];
+                if (index > SectionBtns[lineIndex + 1].Count - 1)
+                {
+                    SelectBtn = SectionBtns[lineIndex + 1][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[lineIndex + 1][index];
+                }
             }
             OnOffSelectedBtn(SelectBtn);
         }
@@ -104,7 +140,7 @@ public class TitleInputController : Manager<TitleInputController>
     }
 
 
-    public void SetSectionBtns(List<Button> btns, IInteract inter)
+    public void SetSectionBtns(List<List<Button>> btns, IInteract inter)
     {
         if (btns == null || inter == null)
         {
@@ -113,7 +149,7 @@ public class TitleInputController : Manager<TitleInputController>
         else
         {
             SectionBtns = btns;
-            SelectBtn = btns[0];
+            SelectBtn = btns[0][0];
             OnOffSelectedBtn(SelectBtn);
             this.interact = inter;
         }
@@ -123,7 +159,15 @@ public class TitleInputController : Manager<TitleInputController>
     public void OnOffSelectedBtn(Button btn)
     {
         if (SectionBtns == null || btn == null) { return; }
-        foreach (Button SectionBtn in SectionBtns)
+
+        List<Button> allBtn = new List<Button>();
+        foreach(List<Button> SectionBtn in SectionBtns)
+        {
+            allBtn.AddRange(SectionBtn);
+        }
+
+
+        foreach (Button SectionBtn in allBtn)
         {
             if (SectionBtn == btn)
             {
