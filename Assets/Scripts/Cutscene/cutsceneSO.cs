@@ -81,6 +81,7 @@ public class cutsceneSO : ScriptableObject
         if (!cutsceneIsPlaying) { return; }
 
         cutsceneSeq.timeScale = 1.0f;
+
         if (!cutsceneSeq.IsPlaying())
         {
             if (currentCSSO.cutsceneSprites.IndexOf(cutsceneImg.sprite) < currentCSSO.cutsceneSprites.Count - 1)
@@ -89,13 +90,16 @@ public class cutsceneSO : ScriptableObject
                 setImg(currentCSSO.cutsceneSprites, cutsceneImg.sprite, cutsceneImg);
             }
             cutsceneSeq.Play();
+
+            cutsceneIsPlaying = false;
         }
         else
         {
             cutsceneSeq.timeScale = 100.0f;
+
+            cutsceneIsPlaying = false;
         }
 
-        cutsceneIsPlaying = false;
         return;
     }
     // 성공 시 연출 (컷씬 보여주기)

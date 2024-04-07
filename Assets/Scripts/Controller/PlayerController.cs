@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         AssignAnimationIDs();
-        
+        ft_resetPlayerSpot();
     }
 
     private void FixedUpdate()
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ft_resetPlayerSpot()
     {
-        ft_setPlayerSpot(new Vector3(0, 0.2f, 0));
+        ft_setPlayerSpot(Vector3.zero);
     }
     private void AssignAnimationIDs()
     {
