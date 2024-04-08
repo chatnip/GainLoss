@@ -162,7 +162,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
             case SpineAniState.A10: // 자신감 넘치는
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "full of confidence", loop: true);
                 break;
-
             case SpineAniState.A11: // 행복한 표정
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "happy look", loop: true);
                 break;

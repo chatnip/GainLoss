@@ -6,11 +6,11 @@ using UniRx;
 
 public class EditorTestManager : Manager<EditorTestManager>
 {
-    [Header("*Camera")]
-    [Tooltip("카메라 변경 치트키")]
-    [SerializeField] InputAction switchCamera;
-    [SerializeField] GameObject shoulderViewCamera;
-    [SerializeField] GameObject quaterViewCamera;
+    [Header("*Input")]
+    [SerializeField] InputAction TestInput;
+
+    [Header("*Test")]
+    [SerializeField] WordManager WordManager;
 
 #if UNITY_EDITOR
     protected override void Awake()
@@ -20,34 +20,29 @@ public class EditorTestManager : Manager<EditorTestManager>
 
     private void OnEnable()
     {
-        switchCamera.Enable();
-        switchCamera.started += _ =>
+        TestInput.Enable();
+        TestInput.started += _ =>
         {
-            CameraMode();
+            Test_Function();
         };
     }
 
     private void OnDisable()
     {
-        switchCamera.Disable();
-        switchCamera.started -= _ =>
+        TestInput.Disable();
+        TestInput.started -= _ =>
         {
-            CameraMode();
+            Test_Function();
         };
     }
 
-    private void CameraMode()
+    private void Test_Function()
     {
-        if (shoulderViewCamera.activeSelf == true)
+        foreach (string s in WordManager.currentWordIDList)
         {
-            shoulderViewCamera.SetActive(false);
-            quaterViewCamera.SetActive(true);
+            Debug.Log(DataManager.WordDatas[0][s]);
         }
-        else
-        {
-            shoulderViewCamera.SetActive(true);
-            quaterViewCamera.SetActive(false);
-        }
+
     }
 
 #endif

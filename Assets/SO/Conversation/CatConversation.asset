@@ -10,27 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 312e77ca1189c9e4facd15ff88216c2e, type: 3}
-  m_Name: TestConversation
+  m_Name: CatConversation
   m_EditorClassIdentifier: 
   npcConversations:
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
-    talkerName: "1\uBC88\uC9F8 \uC774\uB984"
-    conversation: "\u314E\u3147\u314E\u3147\u314E\u3147 \uC778\uC0AC"
+    talkerName: "\uAE38\uACE0\uC591\uC774"
+    conversation: "\uC57C\uC639!"
     conversationDurTime: 0.5
     targetGO: 1
     CameraPos: {x: 0.275, y: 1.75, z: 1}
     AnimationTriggerName: Test_00
   - talkerSprite: {fileID: -1535505883, guid: 16a51553e3b9a664993b0eea370117ce, type: 3}
-    talkerName: "2\uBC88\uC9F8 \uC774\uB984"
-    conversation: "\uD750\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC73C\uC74C"
+    talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
+    conversation: "\uADC0\uC5FD\uB2E4\u2026 \uB9CC\uC838\uBD10\uB3C4 \uB418\uB098\u2026"
     conversationDurTime: 0.5
     targetGO: 0
     CameraPos: {x: -0.275, y: 1.75, z: 0.5}
     AnimationTriggerName: Nod
   - talkerSprite: {fileID: -1959629508, guid: b6c027325aaad5b46b649cdedbe719ec, type: 3}
-    talkerName: "\uB9C8\uC9C0\uB9C9 \uC774\uB984"
-    conversation: "\uAE09\uBC1C\uC9C4~~~~~~~~~~!!!"
+    talkerName: "\uAE38\uACE0\uC591\uC774"
+    conversation: "\uBB75."
     conversationDurTime: 0.5
     targetGO: 1
+    CameraPos: {x: 0.275, y: 1.75, z: 1}
+    AnimationTriggerName: Test_00
+  - talkerSprite: {fileID: -1959629508, guid: b6c027325aaad5b46b649cdedbe719ec, type: 3}
+    talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
+    conversation: "(\uC4F0\uB2F4\uC4F0\uB2F4)"
+    conversationDurTime: 0.5
+    targetGO: 0
     CameraPos: {x: 0.275, y: 1.75, z: 1}
     AnimationTriggerName: Test_00

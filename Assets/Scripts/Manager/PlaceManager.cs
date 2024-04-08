@@ -125,6 +125,18 @@ public class PlaceManager : Manager<PlaceManager>
     //시트에 따라 (몇 번 방문했는냐에 따른) 오브젝트 배치
     private void SetObjectByVisitAmount(GameObject MapGO, string ID, int visitAmount)
     {
+        // 방문 횟수 코드데이터 +1 삽입
+        foreach (string placeID in currentPlaceID_Dict.Keys)
+        {
+            if (placeID == ID)
+            {
+                int currentVisitAmout = Convert.ToInt32(currentPlaceID_Dict[placeID]);
+                currentVisitAmout++;
+                currentPlaceID_Dict[placeID] = currentVisitAmout;
+                return;
+            }
+        }
+
         // 장소, 방문 횟수로 켜야할 오브젝트의 ID 가져오기
         List<string> setOnObjectIDs = new List<string>();
         foreach(string DataID in new List<string>(DataManager.ObjectEventData[0].Keys.ToList()))
@@ -143,17 +155,7 @@ public class PlaceManager : Manager<PlaceManager>
             }
         }
 
-        // 방문 횟수 코드데이터 +1 삽입
-        foreach(string placeID in currentPlaceID_Dict.Keys)
-        {
-            if (placeID == ID) 
-            {
-                int currentVisitAmout = Convert.ToInt32(currentPlaceID_Dict[placeID]);
-                currentVisitAmout++;
-                currentPlaceID_Dict[placeID] = currentVisitAmout;
-                return;
-            }
-        }
+        
     }
 
     #endregion
