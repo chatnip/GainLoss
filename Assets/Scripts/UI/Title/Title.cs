@@ -45,25 +45,22 @@ public class Title : MonoBehaviour, IInteract
             new List<Button> { QuitBtn }
         };
 
-        MainInfo SavedMainInfo = JsonLoad_MI();
-        if(SavedMainInfo.day == 1 )
-        {
-            continueBtn.interactable = false;
-            cannotUseContinue.SetActive(true);
-        }
+       
 
 
         newGameBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                MainInfo newMainInfo = new MainInfo();
+                newMainInfo.NewGame = true;
+                JsonSave(newMainInfo);
+
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
                     .SetEase(Ease.InOutBack)
                     .OnComplete(() =>
                     {
-                        MainInfo newMainInfo = new MainInfo();
-                        newMainInfo.NewGame = true;
-                        JsonSave(newMainInfo);
+                        
                         DOTween.KillAll();
                         SceneManager.LoadScene("Main");
                     });
@@ -93,24 +90,37 @@ public class Title : MonoBehaviour, IInteract
 
         ft_StartTitle();
 
+        
     }
     private void OnEnable()
     {
-        
+        MainInfo SavedMainInfo = JsonLoad_MI();
+        if (SavedMainInfo.NewGame)
+        {
+            continueBtn.interactable = false;
+            cannotUseContinue.SetActive(true);
+        }
+        else
+        {
+            continueBtn.interactable = true;
+            cannotUseContinue.SetActive(false);
+        }
     }
     
     public void Interact()
     {
         if(TitleInputController.SelectBtn == newGameBtn)
         {
+            MainInfo newMainInfo = new MainInfo();
+            newMainInfo.NewGame = true;
+            JsonSave(newMainInfo);
+
             BlackScreenImg.gameObject.SetActive(true);
             BlackScreenImg.DOFade(1.0f, 0.7f)
                 .SetEase(Ease.InOutBack)
                 .OnComplete(() =>
                 {
-                    MainInfo newMainInfo = new MainInfo();
-                    newMainInfo.NewGame = true;
-                    JsonSave(newMainInfo);
+                    
                     DOTween.KillAll();
                     SceneManager.LoadScene("Main");
                 });
@@ -197,30 +207,27 @@ public class Title : MonoBehaviour, IInteract
     #region Data
     private void JsonSave(MainInfo mainDatas)
     {
-        if (!Directory.Exists("Assets/Resources/Json/"))
+        /*if (!Directory.Exists("Assets/Resources/Json/"))
         {
             Directory.CreateDirectory("Assets/Resources/Json/");
-        }
+        }*/
 
         string saveJson = JsonUtility.ToJson(mainDatas, true);
-
-        string saveFilePath = "Assets/Resources/Json/" + "mainInfoDatabase.json";
+        string saveFilePath = Application.persistentDataPath + "/mainInfoDatabase.json";
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
 
     private MainInfo JsonLoad_MI()
     {
-        if (!File.Exists("Assets/Resources/Json/" + "mainInfoDatabase.json"))
+        /*if (!File.Exists("Assets/Resources/Json/" + "mainInfoDatabase.json"))
         {
             Debug.LogError("None File this Path");
             return null;
-        }
+        }*/
 
-        string path = "Assets/Resources/Json/" + "mainInfoDatabase.json";
-        string loadJson = File.ReadAllText(path);
-        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson);
-
+        var path = Resources.Load<TextAsset>("Json/mainInfoDatabase");
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(path.ToString());
         return mainInfo;
     }
 

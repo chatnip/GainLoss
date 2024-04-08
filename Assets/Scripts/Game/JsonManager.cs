@@ -42,15 +42,15 @@ public class JsonManager : MonoBehaviour
 
     private void SetPath()
     {
-        json_filePath = "Assets/Resources/Json/";
+        json_filePath = "Json/";
 
-        json_mainInfoFileName = "mainInfoDatabase.json";
-        json_wordFileName = "wordDatabase.json";
-        json_wordActionFileName = "wordActionDatabase.json";
-        json_sentenceFileName = "sentenceDatabase.json";
-        json_ScheduleFileName = "scheduleDatabase.json";
-        json_PlaceFileName = "placeDatabase.json";
-        json_PSFileName = "gotPSDatabase.json";
+        json_mainInfoFileName = "mainInfoDatabase";
+        json_wordFileName = "wordDatabase";
+        json_wordActionFileName = "wordActionDatabase";
+        json_sentenceFileName = "sentenceDatabase";
+        json_ScheduleFileName = "scheduleDatabase";
+        json_PlaceFileName = "placeDatabase";
+        json_PSFileName = "gotPSDatabase";
     }
     #endregion
 
@@ -58,15 +58,16 @@ public class JsonManager : MonoBehaviour
 
     public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
-        if (!File.Exists(jsonPath + jsonName))
+        /*if (!File.Exists(jsonPath + jsonName))
         {
             Debug.LogError("None File this Path");
             return null;
-        }
+        }*/
 
         string path = jsonPath + jsonName;
-        string loadJson = File.ReadAllText(path);
-        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson);
+        var loadJson = Resources.Load<TextAsset>(path);
+        //string loadJson = File.ReadAllText(path);
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson.ToString());
 
         return mainInfo;
     }
@@ -77,14 +78,14 @@ public class JsonManager : MonoBehaviour
         WordIDs wordIDs = JsonUtility.FromJson<WordIDs>(loadJson.ToString());
         WordManager.currentWordIDList = wordIDs.wordIDList;*/
 
-        if (!File.Exists(jsonPath + jsonName))
+        /*if (!File.Exists(jsonPath + jsonName))
         {
             Debug.LogError("None File this Path");
             return null;
-        }
+        }*/
 
-        string saveFile = File.ReadAllText(jsonPath + jsonName);
-        IDs saveData = JsonUtility.FromJson<IDs>(saveFile);
+        var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
+        IDs saveData = JsonUtility.FromJson<IDs>(saveFile.ToString());
         return saveData.dataIDList;
     }
     public Dictionary<string, int> JsonLoad_D(string jsonPath, string jsonName)
@@ -136,14 +137,14 @@ public class JsonManager : MonoBehaviour
 
     public List<List<string>> JsonLoad_LL(string jsonPath, string jsonName)
     {
-        if (!File.Exists(jsonPath + jsonName))
+        /*if (!File.Exists(jsonPath + jsonName))
         {
             Debug.LogError("None File this Path");
             return null;
-        }
+        }*/
 
-        string saveFile = File.ReadAllText(jsonPath + jsonName);
-        PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile);
+        var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
+        PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile.ToString());
         return saveData.Data();
     }
     
@@ -185,20 +186,20 @@ public class JsonManager : MonoBehaviour
 
     #region Save Json
 
-    public void JsonSave(string jsonPath, string jsonName, MainInfo mainDatas)
+    public void JsonSave(string jsonName, MainInfo mainDatas)
     {
-        if (!Directory.Exists(jsonPath))
+        /*if (!Directory.Exists(jsonPath))
         {
             Directory.CreateDirectory(jsonPath);
-        }
-
+        }*/
+       
         string saveJson = JsonUtility.ToJson(mainDatas, true);
 
-        string saveFilePath = jsonPath + jsonName;
+        string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
-    public void JsonSave(string jsonPath, string jsonName, List<string> currentWordIDs)
+    public void JsonSave(string jsonName, List<string> currentWordIDs)
     {
         IDs wordIDs = new IDs();
         foreach (string currentWordID in currentWordIDs)
@@ -206,18 +207,18 @@ public class JsonManager : MonoBehaviour
             wordIDs.dataIDList.Add(currentWordID);
         }
 
-        if (!Directory.Exists(jsonPath))
+        /*if (!Directory.Exists(jsonPath))
         {
             Directory.CreateDirectory(jsonPath);
-        }
+        }*/
 
         string saveJson = JsonUtility.ToJson(wordIDs, true);
 
-        string saveFilePath = jsonPath + jsonName;
+        string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
-    public void JsonSave(string jsonPath, string jsonName,  Dictionary<string, int> Dict)
+    public void JsonSave(string jsonName,  Dictionary<string, int> Dict)
     {
         List<string> ListData = new List<string>();
         foreach(KeyValuePair<string, int> KVP in Dict)
@@ -225,9 +226,9 @@ public class JsonManager : MonoBehaviour
             string Data = KVP.Key + "," + KVP.Value;
             ListData.Add(Data);
         }
-        JsonSave(jsonPath, jsonName, ListData);
+        JsonSave(jsonName, ListData);
     }
-    public void JsonSave(string jsonPath, string jsonName, List<Dictionary<string, object>> Datas)
+    public void JsonSave(string jsonName, List<Dictionary<string, object>> Datas)
     {
         List<string> Elements = new List<string>();
         
@@ -259,17 +260,17 @@ public class JsonManager : MonoBehaviour
             Elements.Add(s);
         }
 
-        JsonSave(jsonPath, jsonName, Elements);
+        JsonSave(jsonName, Elements);
     }
-    public void JsonSave(string jsonPath, string jsonName, PSBase Data)
+    public void JsonSave(string jsonName, PSBase Data)
     {
-        if (!Directory.Exists(jsonPath))
+        /*if (!Directory.Exists(jsonPath))
         {
             Directory.CreateDirectory(jsonPath);
-        }
+        }*/
 
         string saveJson = JsonUtility.ToJson(Data, true);
-        string saveFilePath = jsonPath + jsonName;
+        string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
@@ -278,25 +279,25 @@ public class JsonManager : MonoBehaviour
     public void SaveAllGameDatas()
     {
         // Save -> MainInfo Json
-        JsonSave(json_filePath, json_mainInfoFileName, GameManager.currentMainInfo);
+        JsonSave(json_mainInfoFileName, GameManager.currentMainInfo);
 
         // Save -> Word Json
-        JsonSave(json_filePath, json_wordFileName, WordManager.currentWordIDList);
+        JsonSave(json_wordFileName, WordManager.currentWordIDList);
 
         // Save -> WordAction Json
-        JsonSave(json_filePath, json_wordActionFileName, WordManager.currentWordActionIDList);
+        JsonSave(json_wordActionFileName, WordManager.currentWordActionIDList);
 
         // Save -> Sentence Json
-        JsonSave(json_filePath, json_sentenceFileName, StreamManager.currentStreamEventDatas);
+        JsonSave(json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
         // Save -> Schedule Json
-        JsonSave(json_filePath, json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
+        JsonSave(json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
 
         // Save -> Place Json
-        JsonSave(json_filePath, json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
+        JsonSave(json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
 
         // Save -> Got PreliminarySurvey Json
-        JsonSave(json_filePath, json_PSFileName, new PSBase(
+        JsonSave(json_PSFileName, new PSBase(
             PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs,
             PreliminarySurveyManager.PSSO_Extract_ExceptionIDs
         ));
@@ -312,12 +313,12 @@ public class JsonManager : MonoBehaviour
     {
         SetPath();
 
-        JsonSave(json_filePath, json_mainInfoFileName, new MainInfo());
-        JsonSave(json_filePath, json_wordFileName, new List<string>() { "W001" });
-        JsonSave(json_filePath, json_wordActionFileName, new List<string>() { "WA01", "WA02" });
-        JsonSave(json_filePath, json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
-        JsonSave(json_filePath, json_PlaceFileName, new Dictionary<string, int>() { { "P00", 1 }, { "P01", 0 } });
-        JsonSave(json_filePath, json_PSFileName, new PSBase(new List<string> { }, new List<string> { }));
+        JsonSave(json_mainInfoFileName, new MainInfo());
+        JsonSave(json_wordFileName, new List<string>() { "W001" });
+        JsonSave(json_wordActionFileName, new List<string>() { "WA01", "WA02" });
+        JsonSave(json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
+        JsonSave(json_PlaceFileName, new Dictionary<string, int>() { { "P00", 1 }, { "P01", 0 } });
+        JsonSave(json_PSFileName, new PSBase(new List<string> { }, new List<string> { }));
         
 
         Set_StartSentence(); // Sentence IDs
@@ -325,8 +326,8 @@ public class JsonManager : MonoBehaviour
 
     void Set_StartSentence()
     {
-        string path = "Assets/Resources/Sheet/SentenceSheet.csv";
-        string[] saveFiles = File.ReadAllText(path).Split('\n');
+        string path = "Sheet/SentenceSheet.csv";
+        string[] saveFiles = Resources.Load<TextAsset>(path).ToString().Split('\n');
         string[] a = saveFiles[0].Replace("\r", "").Split(",");
         string[] b = saveFiles[1].Replace("\r", "").Split(",");
         string[] c = saveFiles[2].Replace("\r", "").Split(",");
@@ -340,7 +341,7 @@ public class JsonManager : MonoBehaviour
         }
         result.RemoveAt(0);
 
-        JsonSave(json_filePath, json_sentenceFileName, result);
+        JsonSave(json_sentenceFileName, result);
     }
 
     #endregion
