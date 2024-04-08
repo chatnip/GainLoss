@@ -108,7 +108,7 @@ public class PlaceManager : Manager<PlaceManager>
             int visitAmount = 0; // 방문한 횟수 구하기
             foreach(string ID in currentPlaceID_Dict.Keys)
             {
-                if (ID == buttonValue.ID) { visitAmount = Convert.ToInt32(currentPlaceID_Dict[ID]); }
+                if (ID == buttonValue.ID) { visitAmount = currentPlaceID_Dict[ID]; }
             }
 
             SetObjectByVisitAmount(placeGOList[s], buttonValue.ID, visitAmount);
@@ -126,23 +126,27 @@ public class PlaceManager : Manager<PlaceManager>
     private void SetObjectByVisitAmount(GameObject MapGO, string ID, int visitAmount)
     {
         // 방문 횟수 코드데이터 +1 삽입
-        foreach (string placeID in currentPlaceID_Dict.Keys)
+        int currentVisitAmout = 0;
+        foreach (KeyValuePair<string, int> placeID in currentPlaceID_Dict)
         {
-            if (placeID == ID)
+            if (placeID.Key == ID)
             {
-                int currentVisitAmout = Convert.ToInt32(currentPlaceID_Dict[placeID]);
+                currentVisitAmout = currentPlaceID_Dict[placeID.Key];
                 currentVisitAmout++;
-                currentPlaceID_Dict[placeID] = currentVisitAmout;
-                return;
             }
         }
+        currentPlaceID_Dict[ID] = currentVisitAmout;
 
         // 장소, 방문 횟수로 켜야할 오브젝트의 ID 가져오기
         List<string> setOnObjectIDs = new List<string>();
         foreach(string DataID in new List<string>(DataManager.ObjectEventData[0].Keys.ToList()))
         {
-            string[] ID_Values = DataID.Split('P', 'V', 'O');
-            if (ID_Values[0] == ID && Convert.ToInt32(ID_Values[1]) == visitAmount) { setOnObjectIDs.Add(ID_Values[2]); }
+            string tempPlaceID = DataID.Substring(0, 3);
+            string tempVisitTime = DataID.Substring(4, 2);
+            string tempObjectID = DataID.Substring(6, 4);
+
+            if (tempPlaceID == ID && Convert.ToInt32(tempVisitTime) == currentVisitAmout)
+            { setOnObjectIDs.Add(tempObjectID); }
         }
 
         // 위 구한 IDs로 오브젝트 활성화 및 비활성화

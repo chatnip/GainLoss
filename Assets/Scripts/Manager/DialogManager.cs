@@ -151,7 +151,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "calm anger_B", loop: true);
                 break;
             case SpineAniState.A07: // ´« °¨±â
-                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "closed_eyed", loop: true);
+                skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "closed-eyed", loop: true);
                 break;
             case SpineAniState.A08: // ±³È°(?)
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "crafty", loop: true);

@@ -201,8 +201,13 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
+        if (!Grounded)
+        { targetDirection.y += -9.81f * Time.deltaTime; }
+
         // 플레이어 이동
         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+        
 
         // 애니메이터 업데이트
         _animator.SetFloat(_animIDSpeed, _animationBlend);

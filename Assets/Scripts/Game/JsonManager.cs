@@ -326,7 +326,7 @@ public class JsonManager : MonoBehaviour
 
     void Set_StartSentence()
     {
-        string path = "Sheet/SentenceSheet.csv";
+        string path = "Sheet/SentenceSheet";
         string[] saveFiles = Resources.Load<TextAsset>(path).ToString().Split('\n');
         string[] a = saveFiles[0].Replace("\r", "").Split(",");
         string[] b = saveFiles[1].Replace("\r", "").Split(",");
