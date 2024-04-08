@@ -91,12 +91,12 @@ public class Title : MonoBehaviour, IInteract
                 Application.Quit();
             });
 
-        
+        ft_StartTitle();
 
     }
     private void OnEnable()
     {
-        ft_StartTitle();
+        
     }
     
     public void Interact()
