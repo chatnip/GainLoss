@@ -12,6 +12,7 @@ public class PlaceManager : Manager<PlaceManager>
 {
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] GameSystem GameSystem;
     [SerializeField] PlayerController PlayerController;
     [SerializeField] ObjectPooling ObjectPooling;
     [SerializeField] ActionEventManager ActionEventManager;
@@ -203,6 +204,8 @@ public class PlaceManager : Manager<PlaceManager>
         yield return new WaitForSeconds(delay);
 
         SetInteractionObjects.OffInteractiveOB();
+        GameSystem.NpcDescriptionOff();
+        GameSystem.ObjectDescriptionOff();
         SetCurrent3DMap(currentPlace);
         HUD_currentPlactTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
 

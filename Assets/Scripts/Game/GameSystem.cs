@@ -140,7 +140,10 @@ public class GameSystem : MonoBehaviour
     
     public void ObjectDescriptionSkip()
     {
-        DOTween.Complete("Obj_Description");
+        if (DOTween.IsTweening("Obj_Description"))
+        { DOTween.Complete("Obj_Description"); }
+        else 
+        { ObjectDescriptionOff(); }
     }
     
     public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
@@ -195,6 +198,10 @@ public class GameSystem : MonoBehaviour
             DOTween.Kill(NpcText);
             NpcText.text = null;
             SetTween(currentOrder);
+        }
+        else if (!conversationTweeningNow)
+        {
+            NpcDescriptionOff();
         }
     }
 

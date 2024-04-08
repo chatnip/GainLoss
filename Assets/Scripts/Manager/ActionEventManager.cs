@@ -19,7 +19,6 @@ public class ActionEventManager : Manager<ActionEventManager>
 
 
     [Header("*LoadingWindow")]
-    [SerializeField] TMP_Text CurrentChapterText;
     [SerializeField] TMP_Text PassDayExplanationText;
     [SerializeField] TMP_Text SavingPrograssText;
     [SerializeField] CanvasGroup loading;
@@ -27,6 +26,12 @@ public class ActionEventManager : Manager<ActionEventManager>
     [Header("*UI")]
     [SerializeField] TMP_Text moneyText;
     [SerializeField] TMP_Text dayText;
+
+    [Header("*")]
+    [SerializeField] CanvasGroup EndBlackScreenCG;
+    [SerializeField] TMP_Text EndTitleTxt;
+    [SerializeField] TMP_Text EndContentTxt;
+    [SerializeField] TMP_Text EndCreditText;
 
 
     /*[Header("*Place")]
@@ -46,62 +51,20 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     protected override void Awake()
     {
-        //base.Awake();
-        SetChapterText();
-        AppearTextObject(1f);
         loading.gameObject.SetActive(true);
         loading.alpha = 1.0f;
         StartCoroutine(Post_ShowNextDayText(1f));
 
-        /*placeData
-            .Where(data => data != null)
-            .Subscribe(data =>
-            {
-                StartCoroutine(ParsePlace(data));
-            });*/
-    }
-/*
-    #region Place
-
-    public IEnumerator PlaceSetting()
-    {
-        GameSystem.TurnOnLoading();
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine(ChangePlacePerData(FindPlace()));
+        
     }
 
-    private PlaceDataBase FindPlace() // 장소를 리소스에서 찾기
-    {
-        var allPlace = ResourceData<PlaceDataBase>.GetDatas("Place/PlaceData");
-        return Array.Find(allPlace, x => x.placeID == currentActionEventID.Substring(0, 3));
-    }
-
-    private IEnumerator ParsePlace(PlaceDataBase data) // 장소 세팅하기
-    {
-        yield return new WaitForEndOfFrame();
-        home.gameObject.SetActive(false);
-        yield return new WaitForEndOfFrame();
-        currentPlace = Instantiate(data.place, placeParent);
-        GameSystem.playerPos.position = data.spawnPos;
-    }
-
-    public IEnumerator ChangePlacePerData(PlaceDataBase placeData) // UniRX 데이터에 찾은 장소 넣기
-    {
-        this.placeData.Value = null;
-        yield return new WaitForEndOfFrame();
-        this.placeData.Value = placeData;
-    }
-
-    #endregion
-*/
     #region PassDay Loading
 
     public void TurnOnLoading()
     {
-        SetChapterText();
-        AppearTextObject(1f);
         StartCoroutine(Past_ShowNextDayText(1f));
     }
+
     private IEnumerator Past_ShowNextDayText(float time)
     {
         BeforeSaveDatas();
@@ -120,9 +83,16 @@ public class ActionEventManager : Manager<ActionEventManager>
         SetDayText();
         StartCoroutine(Post_ShowNextDayText(1f));
     }
+
     private IEnumerator Post_ShowNextDayText(float time)
     {
         SaveDatas();
+
+        #region Test Version
+        Debug.Log("30게이지 넘는지 판별하는 구간 (언리엑세스 버젼)");
+        if(GameManager.currentMainInfo.overloadGage >= 30) 
+        { ft_EndGameForBetaVersion(); }
+        #endregion
 
         setMainUI();
 
@@ -143,6 +113,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         EndLoading();
     }
+
     private void StartLoading()
     {
         Sequence loadingSequence = DOTween.Sequence();
@@ -154,6 +125,7 @@ public class ActionEventManager : Manager<ActionEventManager>
             SavingPrograssText.text = "Saving...";
         });
     }
+
     private void SetDayText()
     {
         //Day++
@@ -173,6 +145,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         { tmpText.text = GameManager.currentMainInfo.TodayOfTheWeek; }*/
 
     }
+
     private void EndLoading()
     {
         Sequence loadingSequence = DOTween.Sequence();
@@ -185,33 +158,10 @@ public class ActionEventManager : Manager<ActionEventManager>
         });
     }
 
-
     private void setMainUI()
     {
         moneyText.text = GameManager.currentMainInfo.money.ToString();
         dayText.text = GameManager.currentMainInfo.day.ToString();
-    }
-    #endregion
-
-    #region Set Chapter
-
-    private void SetChapterText()
-    {
-        int currentChapter = GameManager.currentMainInfo.chapter;
-        CurrentChapterText.text = "CHAPTER [ " + currentChapter.ToString() + " ]";
-    }
-    private void AppearTextObject(float durTime)
-    {
-        //Color Set
-        CurrentChapterText.color = new Color(255, 255, 255, 0);
-
-        //Pos Set
-        RectTransform rectTransform = CurrentChapterText.gameObject.GetComponent<RectTransform>();
-        Vector2 offset = rectTransform.anchoredPosition;
-        rectTransform.anchoredPosition = new Vector2(offset.x + rectTransform.rect.width, offset.y);
-
-        CurrentChapterText.DOFade(1f, durTime);
-        rectTransform.DOAnchorPos(offset, durTime);
     }
 
     #endregion
@@ -244,4 +194,32 @@ public class ActionEventManager : Manager<ActionEventManager>
     }
 
     #endregion
+
+    private void ft_EndGameForBetaVersion()
+    {
+        StopAllCoroutines();
+
+        Sequence seq = DOTween.Sequence();
+
+        EndBlackScreenCG.gameObject.SetActive(true);
+        EndBlackScreenCG.alpha = 0f;
+        seq.Append(EndBlackScreenCG.DOFade(1f, 1f));
+
+        seq.AppendInterval(3f);
+
+        seq.Append(EndContentTxt.DOFade(0f, 1f));
+        seq.Join(EndTitleTxt.DOFade(0f, 1f));
+
+        EndCreditText.TryGetComponent(out RectTransform CRT);
+        CRT.anchoredPosition = new Vector2(0f, -1250f);
+        seq.Append(CRT.DOAnchorPos(new Vector2(0f, 1250f), 10f));
+
+        seq.AppendInterval(3f);
+
+        seq.OnComplete(() =>
+        {
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+        });
+    }
 }

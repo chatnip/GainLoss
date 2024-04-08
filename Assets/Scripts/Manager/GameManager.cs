@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
 public class MainInfo
 {
     public bool NewGame = false;
-    public int chapter = 1;
     public int day = 1;
     public string TodayOfTheWeek = "Monday";
     public int money = 100;
