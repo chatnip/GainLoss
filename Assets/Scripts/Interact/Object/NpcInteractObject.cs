@@ -2,14 +2,21 @@ using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class NpcInteractObject : InteractObject
 {
+    #region Value
+
     [Header("*Description")]
     [SerializeField] protected ConversationBase ConversationBase_SO;
     [SerializeField] public Animator Animator;
     [Tooltip("playerCharacter will place that this NPC Postion + this Value")]
     [SerializeField] private Transform setPlayerPos;
+
+    #endregion
+
+    #region Interact
 
     public override void Interact()
     {
@@ -31,4 +38,5 @@ public class NpcInteractObject : InteractObject
             }
         }
     }
+    #endregion
 }

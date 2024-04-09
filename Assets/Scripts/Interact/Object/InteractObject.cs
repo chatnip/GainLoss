@@ -65,6 +65,9 @@ public class InteractObject : InteractCore
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
+        if(Outline.enabled)
+        { Interact(); }
+        
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

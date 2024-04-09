@@ -81,7 +81,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_LoadingCG.gameObject.SetActive(true);
         partTimeJob_LoadingCG.DOFade(1.0f, 0.5f);
         Sequence seq = cutsceneSO.justImgCutscene(image, selectCSSO.cutsceneSprites, time);
-        PlayerInputController.CanMove = false;
+        PlayerInputController.StopMove();
         seq.OnComplete(() =>
         {
             partTimeJob_EndBtn.interactable = true;

@@ -130,7 +130,7 @@ public class GameSystem : MonoBehaviour
     {
         PlayerController.resetAnime();
 
-        PlayerInputController.CanMove = false;
+        PlayerInputController.StopMove();
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
 
         objText.text = "";
@@ -164,7 +164,7 @@ public class GameSystem : MonoBehaviour
     {
         PlayerController.resetAnime();
         PlayerController.setOnNpcInteractCamera(animator.gameObject);
-        PlayerInputController.CanMove = false;
+        PlayerInputController.StopMove();
         PlayerController.isTalking = true;
         AnotherAnimator = animator;
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
