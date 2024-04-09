@@ -234,20 +234,19 @@ public class GameSystem : MonoBehaviour
                          conversationTweeningNow = true;
                          NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
                          NpcName.text = conversations.NpcConversations[i].talkerName;
-                         NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
                         
 
                          if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
                          {
                              PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
-                             NpcInteractCamera.transform.LookAt(PlayerController.gameObject.transform.position + new Vector3(0, 1.6f, 0));
+                             NpcInteractCamera.transform.position = conversations.playerCameraPos;
+                             NpcInteractCamera.transform.LookAt(PlayerController.gameObject.transform.position + new Vector3(0, conversations.playerHeight, 0));
                          }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
                          {
                              AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             NpcInteractCamera.transform.position = AnotherAnimator.gameObject.transform.position + conversations.NpcConversations[i].CameraPos;
-                             NpcInteractCamera.transform.LookAt(AnotherAnimator.gameObject.transform.position + new Vector3(0, 1.6f, 0));
+                             NpcInteractCamera.transform.position = conversations.anotherCameraPos;
+                             NpcInteractCamera.transform.LookAt(AnotherAnimator.gameObject.transform.position + new Vector3(0, conversations.anotherHeight, 0));
                          }
                      })
                      .OnComplete(() =>

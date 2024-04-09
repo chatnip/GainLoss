@@ -4,6 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Conversation Base", menuName = "Scriptable Object/Conversation Base", order = int.MaxValue)]
 public class ConversationBase : ScriptableObject
 {
+    [SerializeField] public Vector3 playerCameraPos;
+    [SerializeField] public float playerHeight;
+    [SerializeField] public Vector3 anotherCameraPos;
+    [SerializeField] public float anotherHeight;
+
     public enum targetGO
     {
         player, another
@@ -30,7 +35,6 @@ public class NpcConversation
     [SerializeField][TextArea] public string conversation;
     [SerializeField] public float conversationDurTime;
     [SerializeField] public ConversationBase.targetGO targetGO;
-    [Tooltip("CameraPos = Npc Pos + this Value")] [SerializeField] public Vector3 CameraPos;
     [SerializeField] public string AnimationTriggerName;
 
     public NpcConversation(Sprite talkerSprite, string conversation, float conversationDurTime)

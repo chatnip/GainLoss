@@ -12,20 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312e77ca1189c9e4facd15ff88216c2e, type: 3}
   m_Name: SenpaiConversation
   m_EditorClassIdentifier: 
+  playerCameraPos: {x: -3.3, y: 1.5, z: 2}
+  playerHeight: 0.8
+  anotherCameraPos: {x: -3.3, y: 1.5, z: 2}
+  anotherHeight: 0.8
   npcConversations:
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
     conversation: "\uCFE0\uB85C\uAC00\uB124\uAD70, \uC5EC\uAE30\uC57C!"
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HandShake
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uC544, \uC120\uBC30\uB2D8..."
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
@@ -33,28 +35,24 @@ MonoBehaviour:
       \uC5B4\uB5BB\uAC8C \uD560\uC9C0 \uC0DD\uAC01\uD574\uBD24\uC5B4?"
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HeadShake
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uAE00\uC384\uC694... \uD558..."
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
     conversation: "\uC74C... \uC544! \uC774\uAC70 \uC904\uAC8C."
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: Worry
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uC774\uAC8C \uBB54\uB370\uC694...?"
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
@@ -62,14 +60,12 @@ MonoBehaviour:
       \uBAB0\uB798 \uB4E4\uC5B4\uAC08 \uC218 \uC788\uC744\uAEBC\uC57C."
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HandShake
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\u2026! \uADF8\uB798\uB3C4 \uB418\uB294 \uAC70 \uB9DE\uC544\uC694\u2026?"
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
@@ -77,36 +73,31 @@ MonoBehaviour:
       \uC5B8\uC81C\uAE4C\uC9C0 \uADF8\uB7EC\uACE0 \uC0B4 \uC218\uB294 \uC5C6\uC9C0."
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HandShake
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
     conversation: "\uC800\uB141\uC5D0 \uD68C\uC0AC\uC5D0 \uC544\uBB34\uB3C4 \uC5C6\uC744
       \uB54C \uBAB0\uB798 \uB4E4\uC5B4\uAC00\uC11C"
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HandShake
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
     conversation: "\uD655\uC778\uD558\uBA74 \uADF8 \uB204\uAD6C\uB3C4 \uBAA8\uB97C\uAC70\uC57C."
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: HandShake
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uC9C4\uC9DC\u2026 \uAC10\uC0AC\uD569\uB2C8\uB2E4, \uC120\uBC30."
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uC120\uBC30\uB294 \uC81C \uC740\uC778\uC785\uB2C8\uB2E4\u2026!"
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
   - talkerSprite: {fileID: 1960432262, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     talkerName: "\uC57C\uB9C8\uBAA8\uD1A0 \uC2E0\uC2A4\uCF00"
@@ -114,12 +105,10 @@ MonoBehaviour:
       \uC0C8 \uC2DC\uC791\uC744 \uC704\uD558\uC5EC!"
     conversationDurTime: 0.5
     targetGO: 1
-    CameraPos: {x: 0, y: 0, z: 0}
-    AnimationTriggerName: 
+    AnimationTriggerName: Kanpai
   - talkerSprite: {fileID: 668530532, guid: 3ab46889b4d548b479578c87dc3f11e0, type: 3}
     talkerName: "\uCFE0\uB85C\uAC00\uB124 \uC544\uC774\uC870"
     conversation: "\uC704\uD558\uC5EC! (\uC9E0)"
     conversationDurTime: 0.5
     targetGO: 0
-    CameraPos: {x: 0, y: 0, z: 0}
     AnimationTriggerName: 
