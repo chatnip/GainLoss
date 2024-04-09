@@ -26191,7 +26191,7 @@ CharacterController:
   m_Height: 1.2
   m_Radius: 0.14
   m_SlopeLimit: 20
-  m_StepOffset: 0.001
+  m_StepOffset: 0.01
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.59, z: 0}
@@ -26846,14 +26846,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89faa17df15aab418298d39f4c454e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  json_filePath: Assets/Resources/Json/
-  json_mainInfoFileName: mainInfoDatabase.json
-  json_wordFileName: wordDatabase.json
-  json_wordActionFileName: wordActionDatabase.json
-  json_sentenceFileName: sentenceDatabase.json
-  json_ScheduleFileName: scheduleDatabase.json
-  json_PlaceFileName: placeDatabase.json
-  json_PSFileName: gotPSDatabase.json
+  json_filePath: Json/
+  json_mainInfoFileName: mainInfoDatabase
+  json_wordFileName: wordDatabase
+  json_wordActionFileName: wordActionDatabase
+  json_sentenceFileName: sentenceDatabase
+  json_ScheduleFileName: scheduleDatabase
+  json_PlaceFileName: placeDatabase
+  json_PSFileName: gotPSDatabase
   WordManager: {fileID: 1775436664}
   StreamManager: {fileID: 746527783}
   GameManager: {fileID: 1799882741}
@@ -63333,6 +63333,7 @@ MonoBehaviour:
   ScheduleManager: {fileID: 1944875640}
   PreliminarySurveyManager: {fileID: 1721644295}
   SchedulePrograss: {fileID: 227287644}
+  PlaceManager: {fileID: 581735053}
   PlayerInputController: {fileID: 1955638128}
   PassDayExplanationText: {fileID: 618912631}
   SavingPrograssText: {fileID: 224789418}
@@ -73080,7 +73081,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

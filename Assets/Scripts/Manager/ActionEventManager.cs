@@ -13,6 +13,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] SchedulePrograss SchedulePrograss;
+    [SerializeField] PlaceManager PlaceManager;
 
     [Header("*Input")]
     [SerializeField] PlayerInputController PlayerInputController;
@@ -95,6 +96,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         #endregion
 
         setMainUI();
+        PlaceManager.InitPlace();
 
         PassDayExplanationText.color = Color.white;
 

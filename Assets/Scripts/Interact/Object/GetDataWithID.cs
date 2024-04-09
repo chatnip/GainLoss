@@ -46,9 +46,11 @@ public class GetDataWithID : MonoBehaviour
 
     private void setUI(string name, string type)
     {
+        Popup.gameObject.SetActive(false);
         DOTween.Kill(this.gameObject.GetComponent<RectTransform>());
         Name.text = name;
         Extension.text = type;
+        Popup.gameObject.SetActive(true);
         DOTween.To(() => Popup.GetComponent<RectTransform>().anchoredPosition, x => Popup.GetComponent<RectTransform>().anchoredPosition = x, new Vector2(-20, Popup.GetComponent<RectTransform>().anchoredPosition.y), 1)
             .OnComplete(() =>
             {

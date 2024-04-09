@@ -35,6 +35,7 @@ public class JsonManager : MonoBehaviour
         LoadAllGameDatas();
         if (GameManager.currentMainInfo.NewGame)
         {
+            Debug.Log("Reset!!!");
             ResetJson();
             LoadAllGameDatas();
         }
@@ -52,6 +53,7 @@ public class JsonManager : MonoBehaviour
         json_PlaceFileName = "placeDatabase";
         json_PSFileName = "gotPSDatabase";
     }
+
     #endregion
 
     #region Load Json
@@ -182,20 +184,16 @@ public class JsonManager : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
     #region Save Json
 
     public void JsonSave(string jsonName, MainInfo mainDatas)
     {
-        /*if (!Directory.Exists(jsonPath))
-        {
-            Directory.CreateDirectory(jsonPath);
-        }*/
        
         string saveJson = JsonUtility.ToJson(mainDatas, true);
-
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
@@ -207,14 +205,9 @@ public class JsonManager : MonoBehaviour
             wordIDs.dataIDList.Add(currentWordID);
         }
 
-        /*if (!Directory.Exists(jsonPath))
-        {
-            Directory.CreateDirectory(jsonPath);
-        }*/
-
         string saveJson = JsonUtility.ToJson(wordIDs, true);
-
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
@@ -264,13 +257,9 @@ public class JsonManager : MonoBehaviour
     }
     public void JsonSave(string jsonName, PSBase Data)
     {
-        /*if (!Directory.Exists(jsonPath))
-        {
-            Directory.CreateDirectory(jsonPath);
-        }*/
-
         string saveJson = JsonUtility.ToJson(Data, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
@@ -301,9 +290,10 @@ public class JsonManager : MonoBehaviour
             PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs,
             PreliminarySurveyManager.PSSO_Extract_ExceptionIDs
         ));
+
     }
 
-    #endregion
+#endregion
 
     #region StartSet (Reset)
 
@@ -328,6 +318,7 @@ public class JsonManager : MonoBehaviour
     {
         string path = "Sheet/SentenceSheet";
         string[] saveFiles = Resources.Load<TextAsset>(path).ToString().Split('\n');
+
         string[] a = saveFiles[0].Replace("\r", "").Split(",");
         string[] b = saveFiles[1].Replace("\r", "").Split(",");
         string[] c = saveFiles[2].Replace("\r", "").Split(",");

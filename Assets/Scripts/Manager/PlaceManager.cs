@@ -61,7 +61,8 @@ public class PlaceManager : Manager<PlaceManager>
 
     private void Start()
     {
-        InitPlace();
+        PlaceBtnListSet();
+        //InitPlace();
     }
 
     #endregion
@@ -239,8 +240,10 @@ public class PlaceManager : Manager<PlaceManager>
         foreach (KeyValuePair<string, int> keyValuePair in currentPlaceID_Dict) // ID ¼øÈ¸
         {
             string id = keyValuePair.Key;
+            Debug.Log(id);
             foreach(IDBtn idBtn in placeBtnList)
             {
+                //Debug.Log(idBtn.buttonValue.ID);
                 if(idBtn.buttonValue.ID == id)
                 {
                     idBtn.button.interactable = true;
@@ -248,7 +251,7 @@ public class PlaceManager : Manager<PlaceManager>
                 }
             }
         }
-        PlaceBtnListSet();
+        
     }
 
     

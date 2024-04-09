@@ -52,7 +52,7 @@ public class Title : MonoBehaviour, IInteract
             .Subscribe(btn =>
             {
                 MainInfo newMainInfo = new MainInfo();
-                newMainInfo.NewGame = true;
+                newMainInfo.NewGame = false;
                 JsonSave(newMainInfo);
 
                 BlackScreenImg.gameObject.SetActive(true);
@@ -214,6 +214,11 @@ public class Title : MonoBehaviour, IInteract
 
         string saveJson = JsonUtility.ToJson(mainDatas, true);
         string saveFilePath = Application.persistentDataPath + "/mainInfoDatabase.json";
+
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/mainInfoDatabase.json";
+#endif
+
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
