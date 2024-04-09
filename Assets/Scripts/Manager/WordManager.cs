@@ -64,6 +64,7 @@ public class WordManager : Manager<WordManager>
             {
                 TodoReset();
                 todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordParentObject);
+                todoWordBtnSpawner.setOnLine();
             });
     }
     public void TodoReset()
@@ -104,6 +105,7 @@ public class WordManager : Manager<WordManager>
                 {
                     WordBtnApply(word);
                     todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordActionParentObject);
+                    todoWordBtnSpawner.setOnLine();
                 });
         }
     }
@@ -133,6 +135,7 @@ public class WordManager : Manager<WordManager>
                 {
                     WordActionBtnApply(action);
                     PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { resetBtn, Desktop.streamStartBtn } }, todoWordBtnSpawner);
+                    todoWordBtnSpawner.setOnLine();
                 });
         }
     }

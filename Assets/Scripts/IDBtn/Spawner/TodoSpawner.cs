@@ -19,6 +19,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     [Header("*WordParentObj")]
     [SerializeField] public RectTransform wordParentObject;
     [SerializeField] public RectTransform wordActionParentObject;
+    [SerializeField] public List<Button> finalBtns;
 
     #endregion
 
@@ -203,6 +204,31 @@ public class TodoSpawner : IDBtnSpawner, IInteract
                 ObjectPooling.WordObjectPick(WordManager.enableWordActionBtnList[i]);
             }
             WordManager.enableWordActionBtnList.Clear();
+        }
+    }
+
+    public void setOnLine()
+    {
+        // 모든 버튼
+        List<Button> allBtns = new List<Button>();
+        foreach (Transform Ob in wordParentObject)
+        { Ob.TryGetComponent(out Button btn); allBtns.Add(btn); }
+        foreach (Transform Ob in wordActionParentObject)
+        { Ob.TryGetComponent(out Button btn); allBtns.Add(btn); }
+        allBtns.AddRange(finalBtns);
+
+        // 활성화 버튼 찾기
+        List<Button> OnBtnsList = new List<Button>();
+        foreach(List<Button> OnBtns in PlayerInputController.SectionBtns) 
+        { OnBtnsList.AddRange(OnBtns); }
+
+        foreach (Button OffBtn in allBtns)
+        {
+            OffBtn.interactable = false;
+        }
+        foreach (Button OnBtn in OnBtnsList)
+        {
+            OnBtn.interactable = true;
         }
     }
 
