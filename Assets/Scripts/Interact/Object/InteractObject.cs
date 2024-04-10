@@ -98,6 +98,7 @@ public class InteractObject : InteractCore
             CheckGetAllDatas.ApplyTerminateBtnAndText();
         }
 
+        
 
         //if(CanInteract) { CanInteract = false; }
 

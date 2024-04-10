@@ -84,7 +84,7 @@ public class CheckGetAllDatas : MonoBehaviour
                     !WordManager.currentWordActionIDList.Contains(interactObject.getWordActionID) &&
                     !PlaceManager.currentPlaceID_Dict.Keys.ToList().Contains(interactObject.getPlaceID)))
                 {
-                    
+                    Debug.Log(child.name);
                     _remain++;
                     //Debug.Log("아직 존재");
                 }

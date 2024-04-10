@@ -147,7 +147,9 @@ public class PlaceManager : Manager<PlaceManager>
             string tempObjectID = DataID.Substring(6, 4);
 
             if (tempPlaceID == ID && Convert.ToInt32(tempVisitTime) == currentVisitAmout)
-            { setOnObjectIDs.Add(tempObjectID); }
+            { 
+                setOnObjectIDs.Add(tempObjectID);
+            }
         }
 
         // 위 구한 IDs로 오브젝트 활성화 및 비활성화
@@ -240,7 +242,6 @@ public class PlaceManager : Manager<PlaceManager>
         foreach (KeyValuePair<string, int> keyValuePair in currentPlaceID_Dict) // ID 순회
         {
             string id = keyValuePair.Key;
-            Debug.Log(id);
             foreach(IDBtn idBtn in placeBtnList)
             {
                 //Debug.Log(idBtn.buttonValue.ID);

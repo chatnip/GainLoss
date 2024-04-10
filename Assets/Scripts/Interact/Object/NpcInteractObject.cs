@@ -22,6 +22,9 @@ public class NpcInteractObject : InteractObject
     {
         if (base.CanInteract)
         {
+            if (GameSystem.objPanel.gameObject.activeSelf) { GameSystem.objPanel.gameObject.SetActive(false); }
+            if (GameSystem.NpcPanel.gameObject.activeSelf) { GameSystem.NpcPanel.gameObject.SetActive(false); }
+
             GameSystem.PlayerController.ft_setPlayerSpot(setPlayerPos.transform.position);
             GameSystem.NpcDescriptionOn(ConversationBase_SO, Animator);
 

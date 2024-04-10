@@ -24,11 +24,8 @@ public class StreamManager : Manager<StreamManager>
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
         ApplyGage();
-        if (GameManager.currentMainInfo.overloadGage >= 30 && ScheduleManager.currentHaveScheduleID.Contains("S01")) // 과부하 게이지 일정 수치 이상 시 사전조사 추가
-        { ScheduleManager.currentHaveScheduleID.Add("S01"); Debug.Log("사전 조사 획득!"); }
-
         SetNumberOfUses(id);
-
+        DialogManager.SetUpdateSubscriberAmountText();
 
         //CSVWriter.SaveCSV("Assets/Resources/Sheet/", "SentenceSheet.csv", "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
         //DataManager.StreamEventDatas = CSVWriter.SaveCSV_StreamEventDatas(id, "Assets/Resources/Sheet/SaveDatas/", "SentenceSave.txt");
@@ -48,7 +45,7 @@ public class StreamManager : Manager<StreamManager>
         int rand = UnityEngine.Random.Range(1, 3);
         string addID = "T0" + rand.ToString();
         Debug.Log(addID);
-        DialogManager.streamTitleText.text = (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID];
+        DialogManager.streamURLText.text = "https:/" + "/www.stream." + (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID] + ".com/";
 
         foreach (var data in basicDatas) // 베이직 T 데이터 순회
         {

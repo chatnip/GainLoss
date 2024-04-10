@@ -8,7 +8,6 @@ using UniRx;
 using TMPro;
 using Spine.Unity;
 using System;
-using System.Globalization;
 
 public class DialogManager : Manager<DialogManager>, IInteract
 {
@@ -21,7 +20,8 @@ public class DialogManager : Manager<DialogManager>, IInteract
     [SerializeField] Desktop Desktop;
 
     [Header("*Dialog")]
-    [SerializeField] public TMP_Text streamTitleText;
+    [SerializeField] public TMP_Text streamURLText;
+    [SerializeField] TMP_Text subscriberAmountText;
     [SerializeField] TMP_Text streamScriptText;
     [SerializeField] public Button dialogNextBtn;
     [SerializeField] InputAction click;
@@ -259,6 +259,8 @@ public class DialogManager : Manager<DialogManager>, IInteract
 
     IEnumerator ResultWindowOn()
     {
+        DOTween.Kill("UpdateSubscriberAmountText");
+
         PlayerInputController.SetSectionBtns(null, null);
         ClearGageAndText();
 
@@ -319,7 +321,33 @@ public class DialogManager : Manager<DialogManager>, IInteract
 
     #endregion
 
+    #region Other
 
-    
+    public void SetUpdateSubscriberAmountText()
+    {
+        Sequence seq = DOTween.Sequence();
+        int i = UnityEngine.Random.Range(4000, 5000 + 1);
+        subscriberAmountText.text = i.ToString();
 
+        seq.Append(subscriberAmountText.DOFade(1f, 1f)
+            .OnComplete(() =>
+            {
+                int j = UnityEngine.Random.Range(-10, 10 + 1);
+                int currentAmount = Convert.ToInt32(subscriberAmountText.text); 
+                Debug.Log(currentAmount);
+                int result = currentAmount + j;
+
+                if (result < 4000) { result = 4000; }
+                else if (result > 5000) { result = 5000; }
+
+                subscriberAmountText.text = result.ToString();
+            }));
+        seq.AppendInterval(1f);
+
+        seq.SetLoops(-1, LoopType.Restart)
+            .SetId("UpdateSubscriberAmountText");
+    }
+
+
+    #endregion
 }

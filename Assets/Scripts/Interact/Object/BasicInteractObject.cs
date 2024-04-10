@@ -19,6 +19,9 @@ public class BasicInteractObject : InteractObject
     {
         if(base.CanInteract)
         {
+            if (GameSystem.objPanel.gameObject.activeSelf) { GameSystem.objPanel.gameObject.SetActive(false); }
+            if (GameSystem.NpcPanel.gameObject.activeSelf) { GameSystem.NpcPanel.gameObject.SetActive(false); }
+
             if (description.Count > 0 &&
                 description[Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]) - 1] != null &&
                 description[Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]) - 1] != "" &&

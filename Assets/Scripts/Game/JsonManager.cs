@@ -194,6 +194,11 @@ public class JsonManager : MonoBehaviour
         string saveJson = JsonUtility.ToJson(mainDatas, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
 
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+#endif
+
+
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
@@ -207,6 +212,10 @@ public class JsonManager : MonoBehaviour
 
         string saveJson = JsonUtility.ToJson(wordIDs, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+#endif
 
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
@@ -259,6 +268,10 @@ public class JsonManager : MonoBehaviour
     {
         string saveJson = JsonUtility.ToJson(Data, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+#endif
 
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);

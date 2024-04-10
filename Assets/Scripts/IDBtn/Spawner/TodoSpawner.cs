@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,10 +102,29 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         SpawnWordBtn();
     }
 
+    // 이 AIL 파일과 같이 사용할 수 있는 EXE 판별 후 반환
+    private List<string> GetThisAILCanCombine(string AIL_ID)
+    {
+        List<string> AILCanCombineExe = new List<string>();
+
+        foreach (string all_id in DataManager.DialogDatas[0].Keys)
+        {
+            if (all_id.Substring(0, 4) == AIL_ID)
+            {
+                AILCanCombineExe.Add(all_id.Substring(4, 4));
+            }
+        }
+        AILCanCombineExe = AILCanCombineExe.Distinct().ToList();
+        foreach (string id in AILCanCombineExe) { Debug.Log(id); }
+
+        return AILCanCombineExe;
+    }
+
     #region AIL Btns
 
     private void SpawnWordBtn()
     {
+        Debug.Log("Spawn AIL Btn");
         WordManager.enableWordBtnList.Clear();
         for (int i = 0; i < WordManager.currentWordList.Count; i++)
         {
@@ -115,13 +135,31 @@ public class TodoSpawner : IDBtnSpawner, IInteract
                 (string)DataManager.WordDatas[1][WordManager.currentWordList[i].ID],
                 WordManager.currentWordIDList[i]); // Malicious계급 ail파일을 사용했는지 판단
             if (!checkCanUseMalicious)
-            { wordBtn.CannotUse(false, "Use up to the maximum(1)"); }
+            { wordBtn.CannotUse(false, "최대 사용 횟수(1) 초과"); }
             else
             { wordBtn.CannotUse(true, ""); }
             wordBtn.buttonType = ButtonType.WordType; // 정렬
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             // WordManager.WordBtnListSet(); // 데이터 삽입
             wordBtn.gameObject.SetActive(true); // 활성화
+
+            List<string> canCombineEXEs = GetThisAILCanCombine(wordBtn.buttonValue.ID);
+            bool canMakeSentence = false;
+            foreach (string canCombineEXE in canCombineEXEs)
+            {
+                foreach(string currentWordActionID in WordManager.currentWordActionIDList)
+                {
+                    if(canCombineEXE == currentWordActionID)
+                    {
+                        canMakeSentence = true;
+                    }
+                }
+            }
+            if(!canMakeSentence)
+            {
+                wordBtn.button.interactable = false;
+                wordBtn.CannotUse(false, "자연스러운 문장 조합 불가");
+            }
         }
         WordManager.WordBtnListSet(); // 데이터 삽입
     }
@@ -151,25 +189,33 @@ public class TodoSpawner : IDBtnSpawner, IInteract
 
     #region EXE Btns
 
+    
     public void SpawnWordActionBtn()
     {
+        Debug.Log("Spawn EXE Btn");
         PickWordActionBtn(); // 버튼 초기화
         WordManager.enableWordActionBtnList.Clear();
 
+        // 이 AIL 파일과 같이 사용할 수 있는 EXE
+        List<string> canCombineEXE = GetThisAILCanCombine(WordManager.currentWord.ID);
+
         for (int i = 0; i < WordManager.currentWordActionList.Count; i++)
         {
-            IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
-            actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
-            if (Convert.ToInt32(StreamManager.currentStreamEventDatas[1][WordManager.currentWord.ID + WordManager.currentWordActionList[i].ID]) >= 3)
-            { actionBtn.CannotUse(false, "Use up to the maximum(3)"); }
-            else 
-            { actionBtn.CannotUse(true, ""); }
-            actionBtn.AddVisiableWordRate((string)DataManager.WordActionDatas[1][WordManager.currentWordActionList[i].ID]); // 등급 표시
-            actionBtn.buttonType = ButtonType.WordActionType; // 정렬
-            WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
-            // WordManager.WordActionBtnListSet(); // 데이터 삽입
-            actionBtn.gameObject.SetActive(true); // 활성화
-
+            // 이 AIL 파일과 같이 사용할 수 있는 EXE 판별
+            if (canCombineEXE.Contains(WordManager.currentWordActionList[i].ID))
+            {
+                IDBtn actionBtn = CreateIDBtn(WordManager.currentWordActionList[i]); // 생성
+                actionBtn.transform.SetParent(wordActionParentObject); // 부모 설정
+                if (Convert.ToInt32(StreamManager.currentStreamEventDatas[1][WordManager.currentWord.ID + WordManager.currentWordActionList[i].ID]) >= 3)
+                { actionBtn.CannotUse(false, "최대 사용 횟수(3) 초과"); }
+                else
+                { actionBtn.CannotUse(true, ""); }
+                actionBtn.AddVisiableWordRate((string)DataManager.WordActionDatas[1][WordManager.currentWordActionList[i].ID]); // 등급 표시
+                actionBtn.buttonType = ButtonType.WordActionType; // 정렬
+                WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
+                                                                    // WordManager.WordActionBtnListSet(); // 데이터 삽입
+                actionBtn.gameObject.SetActive(true); // 활성화
+            }
         }
         WordManager.WordActionBtnListSet(); // 데이터 삽입
     }

@@ -25,7 +25,7 @@ public class WordManager : Manager<WordManager>
     [SerializeField] public Button resetBtn;
     [SerializeField] TMP_Text ResultPreview_NumberOfUsed;
     [SerializeField] TMP_Text ResultPreview_Gage;
-    StringReactiveProperty currentWordActiionStr = new();
+    StringReactiveProperty currentWordActionStr = new();
     [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
 
@@ -52,7 +52,7 @@ public class WordManager : Manager<WordManager>
         TodoReset();
         InitWord();
 
-        currentWordActiionStr
+        currentWordActionStr
             .Subscribe(x =>
             {
                 viewWordAction.text = x;
@@ -78,8 +78,11 @@ public class WordManager : Manager<WordManager>
         currentWordList.Clear();
         // currentWordActionIDList.Clear();
         currentWordActionList.Clear();
-        currentWordActiionStr.Value = "아무것도 하지 않는다";
+        currentWordActionStr.Value = "아무것도 하지 않는다";
         todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordParentObject);
+
+        ResultPreview_NumberOfUsed.text = "";
+        ResultPreview_Gage.text = "";
     }
 
     #endregion
@@ -143,8 +146,8 @@ public class WordManager : Manager<WordManager>
     {
         currentWordAction = BV;
         Debug.Log("currentWordAction : " + currentWordAction.Name);
-        string text = string.Format("<#D40047><b>{0}</b></color> 에 대한 <#D40047><b>{1}</b></color> 을(를) 한다.", currentWord.Name, currentWordAction.Name);
-        currentWordActiionStr.Value = text;
+        string text = string.Format("<size=150%><#D40047><b>{0}</b></color></size>에 대한 <size=150%><#D40047><b>{1}</b></color></size>을(를) 한다.", currentWord.Name, currentWordAction.Name);
+        currentWordActionStr.Value = text;
         StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
 
         currentStreamEvent = SetStreamEvent(
@@ -173,6 +176,7 @@ public class WordManager : Manager<WordManager>
         streamEvent.angerValue = SetGage((int)DataManager.WordDatas[3][wordID],isCreated, NumberOfUsed, wordRate, wordActionRate);
         streamEvent.riskValue = SetGage((int)DataManager.WordDatas[4][wordID],isCreated, NumberOfUsed, wordRate, wordActionRate);
         streamEvent.OverloadValue = SetOverloadGage((int)DataManager.WordActionDatas[2][wordActionID], isCreated, NumberOfUsed);
+        if (streamEvent.OverloadValue < 1) { streamEvent.OverloadValue = 1; }
         Debug.Log(streamEvent.stressValue + " / " +
             streamEvent.angerValue + " / " +
             streamEvent.riskValue + " / " +
@@ -229,7 +233,7 @@ public class WordManager : Manager<WordManager>
         string[] info = new string[2];
         if(isCreated)
         {
-            info[0] = String.Format($"--- Used [ {NumberOfUsed} / 3 ] ---");
+            info[0] = String.Format($"사용량 [ <#320C0C>{NumberOfUsed} / 3</color> ]");
             info[1] = "";
             caculGage(streamEvent.OverloadValue, "Overload");
             caculGage(streamEvent.stressValue, "Stress");
@@ -240,15 +244,15 @@ public class WordManager : Manager<WordManager>
             {
                 if (value != 0)
                 {
-                    if (value > 0) { info[1] += String.Format($"{gageType} [ +{value} ]\n"); }
-                    else { info[1] += String.Format($"{gageType} [ {value} ]\n"); }
+                    if (value > 0) { info[1] += String.Format($"{gageType} [ <#7F0000><size=125%><b>+{value}</b></size></color> ]\n"); }
+                    else { info[1] += String.Format($"{gageType} [ <#00007F><size=125%><b>{value}</b></size></color> ]\n"); }
                 }
             }
         }
         else
         {
-            info[0] = "--- First time ---";
-            info[1] = String.Format($"Overload [ + {streamEvent.OverloadValue} ]");
+            info[0] = "<#320C0C>최초 시도</color>";
+            info[1] = String.Format($"Overload [ <#7F0000><size=125%><b>+{streamEvent.OverloadValue}</b></size></color> ]");
         }
 
         ResultPreview_NumberOfUsed.text = info[0];

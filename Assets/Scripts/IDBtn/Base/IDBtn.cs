@@ -26,7 +26,7 @@ public class IDBtn : MonoBehaviour
 
     [Header("*Canno Label")]
     [SerializeField] GameObject CannotUseLabal;
-    [SerializeField] TMP_Text reason;
+    [SerializeField] public TMP_Text reason;
 
 
     [HideInInspector] public bool isButton;
