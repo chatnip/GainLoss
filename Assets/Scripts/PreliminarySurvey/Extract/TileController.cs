@@ -48,6 +48,7 @@ public class TileController : MonoBehaviour
             seq.OnComplete(() =>
             {
                 PreliminarySurveyWindow_Extract.ft_getGage();
+                PreliminarySurveyWindow_Extract.ft_checkClear();
 
                 GameObject Effectful = this.transform.GetChild(0).gameObject;
                 Effectful.SetActive(true);

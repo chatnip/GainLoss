@@ -175,9 +175,9 @@ public class Title : MonoBehaviour, IInteract
         teamLogoCG.alpha = 0.0f;
         teamLogoCG.gameObject.SetActive(true);
 
-        seq.Append(teamLogoCG.DOFade(1, 0.5f));
+        seq.Append(teamLogoCG.DOFade(1, 0.2f));
 
-        seq.AppendInterval(5.5f);
+        seq.AppendInterval(3.2f);
         seq.Append(LogoSG.DOFade(0, 0.5f));
         seq.Append(teamLogoCG.DOFade(0, 0.5f)
             .OnComplete(() =>

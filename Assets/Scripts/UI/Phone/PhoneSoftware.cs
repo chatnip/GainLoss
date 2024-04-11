@@ -347,6 +347,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             ScheduleManager.currentSelectedScheduleID = Ids;
             ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
             SchedulePrograss.Set_InAMScheduleUI();
+            ScheduleManager.SetDotweenGuide();
             CreateScheduleGO.SetActive(false);
             PhoneHardware.PhoneOff();
             SchedulePrograss.SetExplanation(ScheduleManager.currentPrograssScheduleID);

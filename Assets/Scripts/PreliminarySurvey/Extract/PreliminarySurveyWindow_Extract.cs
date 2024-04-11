@@ -163,7 +163,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     public void ft_getGage()
     {
         currentGage += SelectedPreliminarySurveySO.GetPoint_OnceTime;
-        if(currentGage > SelectedPreliminarySurveySO.GoalPoint)
+        if(currentGage >= SelectedPreliminarySurveySO.GoalPoint)
         {
             currentGage = SelectedPreliminarySurveySO.GoalPoint;
         }

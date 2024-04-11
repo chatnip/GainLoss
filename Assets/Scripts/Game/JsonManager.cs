@@ -9,6 +9,7 @@ public class JsonManager : MonoBehaviour
 
     [HideInInspector] public string json_filePath;
 
+    [HideInInspector] public string json_tutorialFileName;
     [HideInInspector] public string json_mainInfoFileName;
     [HideInInspector] public string json_wordFileName;
     [HideInInspector] public string json_wordActionFileName;
@@ -45,6 +46,7 @@ public class JsonManager : MonoBehaviour
     {
         json_filePath = "Json/";
 
+        json_tutorialFileName = "tutorialInfoDatabase";
         json_mainInfoFileName = "mainInfoDatabase";
         json_wordFileName = "wordDatabase";
         json_wordActionFileName = "wordActionDatabase";
@@ -57,18 +59,19 @@ public class JsonManager : MonoBehaviour
     #endregion
 
     #region Load Json
-
-    public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
+    
+    public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
     {
-        /*if (!File.Exists(jsonPath + jsonName))
-        {
-            Debug.LogError("None File this Path");
-            return null;
-        }*/
-
         string path = jsonPath + jsonName;
         var loadJson = Resources.Load<TextAsset>(path);
-        //string loadJson = File.ReadAllText(path);
+        TutorialInfo tutorialInfo = JsonUtility.FromJson<TutorialInfo>(loadJson.ToString());
+
+        return tutorialInfo;
+    }
+    public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
+    {
+        string path = jsonPath + jsonName;
+        var loadJson = Resources.Load<TextAsset>(path);
         MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson.ToString());
 
         return mainInfo;
@@ -153,6 +156,10 @@ public class JsonManager : MonoBehaviour
     // Load All
     public void LoadAllGameDatas()
     {
+        // Load -> TutorialInfo Json
+        GameManager.currentTutorialInfo =
+            JsonLoad_TR(json_filePath, json_tutorialFileName);
+
         // Load -> MainInfo Json
         GameManager.currentMainInfo =
             JsonLoad_MI(json_filePath, json_mainInfoFileName);
@@ -187,6 +194,20 @@ public class JsonManager : MonoBehaviour
 #endregion
 
     #region Save Json
+
+    public void JsonSave(string jsonName, TutorialInfo tutorialInfo)
+    {
+        string saveJson = JsonUtility.ToJson(tutorialInfo, true);
+        string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+#endif
+
+
+        File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log("Save Success: " + saveFilePath);
+    }
 
     public void JsonSave(string jsonName, MainInfo mainDatas)
     {
@@ -280,6 +301,9 @@ public class JsonManager : MonoBehaviour
     // Save ALL
     public void SaveAllGameDatas()
     {
+        // Save -> Tutorial Json
+        JsonSave(json_tutorialFileName, GameManager.currentTutorialInfo);
+
         // Save -> MainInfo Json
         JsonSave(json_mainInfoFileName, GameManager.currentMainInfo);
 
@@ -316,6 +340,7 @@ public class JsonManager : MonoBehaviour
     {
         SetPath();
 
+        JsonSave(json_tutorialFileName, new TutorialInfo());
         JsonSave(json_mainInfoFileName, new MainInfo());
         JsonSave(json_wordFileName, new List<string>() { "W001" });
         JsonSave(json_wordActionFileName, new List<string>() { "WA01", "WA02" });

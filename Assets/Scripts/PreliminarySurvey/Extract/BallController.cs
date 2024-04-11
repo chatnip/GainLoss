@@ -46,7 +46,7 @@ public class BallController : MonoBehaviour
         if(thisRb.velocity == Vector2.zero) { return; }
 
         // 좌우로만 움직이는 경우 새로운 (위로) 좌표로 발사
-        float yVel = this.thisRb.velocity.y; Debug.Log(yVel);
+        float yVel = this.thisRb.velocity.y; 
         if (yVel < 0) { yVel *= -1; }
         if (yVel < 0.01f * ballSpeed) { thisRb.velocity = Vector3.zero; ft_shotBall(); }
 
@@ -107,14 +107,8 @@ public class BallController : MonoBehaviour
             return;
         }
 
-        /*TC.tileHP--;
-        if(TC.tileHP == 0)
-        {
-            PreliminarySurveyWindow_Extract.ft_getGage();
-        }*/
-
         TC.ft_hitted(PreliminarySurveyWindow_Extract.eachBlockSprite, PreliminarySurveyWindow_Extract.eachBlockEffectfulSprite);
-        PreliminarySurveyWindow_Extract.ft_checkClear();
+        
     }
 
     #endregion

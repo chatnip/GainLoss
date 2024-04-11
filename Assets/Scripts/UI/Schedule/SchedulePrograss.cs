@@ -129,7 +129,6 @@ public class SchedulePrograss : MonoBehaviour
         SetNotProgressingUI(AMImg);
         SetNotProgressingUI(PMImg);
         SetNotProgressingUI(EndImg);
-
     }
 
     public void Set_InAMScheduleUI()

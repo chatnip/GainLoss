@@ -104,7 +104,6 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         //SchedulePrograss.SetExplanation("S00");
         ScheduleManager.ResetDay();
-        ScheduleManager.PassNextSchedule();
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
         string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
