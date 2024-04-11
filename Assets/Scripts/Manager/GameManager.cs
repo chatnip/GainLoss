@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
 
 
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
-    [HideInInspector] public TutorialInfo currentTutorialInfo = new TutorialInfo();
 
     private void Start()
     {
@@ -48,9 +47,4 @@ public class MainInfo
     public int overloadGage = 0;
 }
 
-[Serializable]
-public class TutorialInfo
-{
-    
-}
 

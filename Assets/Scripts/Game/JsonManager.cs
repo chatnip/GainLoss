@@ -25,6 +25,7 @@ public class JsonManager : MonoBehaviour
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
+    [SerializeField] TutorialManager TutorialManager;
 
     #endregion
 
@@ -157,7 +158,7 @@ public class JsonManager : MonoBehaviour
     public void LoadAllGameDatas()
     {
         // Load -> TutorialInfo Json
-        GameManager.currentTutorialInfo =
+        TutorialManager.currentTutorialInfo =
             JsonLoad_TR(json_filePath, json_tutorialFileName);
 
         // Load -> MainInfo Json
@@ -302,7 +303,7 @@ public class JsonManager : MonoBehaviour
     public void SaveAllGameDatas()
     {
         // Save -> Tutorial Json
-        JsonSave(json_tutorialFileName, GameManager.currentTutorialInfo);
+        JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
 
         // Save -> MainInfo Json
         JsonSave(json_mainInfoFileName, GameManager.currentMainInfo);

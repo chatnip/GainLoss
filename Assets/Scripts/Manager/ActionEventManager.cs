@@ -14,6 +14,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PlaceManager PlaceManager;
+    [SerializeField] TutorialManager TutorialManager;
 
     [Header("*Input")]
     [SerializeField] PlayerInputController PlayerInputController;
@@ -154,7 +155,8 @@ public class ActionEventManager : Manager<ActionEventManager>
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
-            PlayerInputController.CanMove = true;
+            if( !TutorialManager.tutorial_ScreenCG.gameObject.activeSelf ) { PlayerInputController.CanMove = true; }
+            
             //GameSystem.GameStart();
         });
     }

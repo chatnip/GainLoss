@@ -12,11 +12,16 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     [Header("*Property")]
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] public PlayerController PlayerController;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] DialogManager DialogManager;
     [SerializeField] Pause pause;
     [HideInInspector] public bool isPause = false;
+    [SerializeField] GameObject allLoadingGO;
+
+    [Header("*Tutorial")]
+    [SerializeField] GameObject TutorialScreenGO;
 
     [Header("*Phone")]
     [SerializeField] PhoneHardware PhoneHardware;
@@ -47,8 +52,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("*Camera")]
-    [SerializeField] GameObject QuarterViewCamera; 
-    
+    [SerializeField] GameObject QuarterViewCamera;
+
     [Header("*Input Setting")]
     [SerializeField] public PlayerInput _input;
     [SerializeField] public List<List<Button>> SectionBtns;
@@ -164,7 +169,7 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     }
 
-    
+
 
     public void DisablePlayerInput()
     {
@@ -260,11 +265,11 @@ public class PlayerInputController : Manager<PlayerInputController>
     public void MoveInput(Vector2 newMoveDirection)
     {
         if (PSWindow_E.gameObject.activeSelf)
-        { PSWindow_E.boardMoveDir = newMoveDirection;}
+        { PSWindow_E.boardMoveDir = newMoveDirection; }
 
-        if (CanMove) 
+        if (CanMove)
         { move = newMoveDirection; }
-        
+
     }
 
     public void LookInput(Vector2 newLookDirection)
@@ -276,6 +281,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     {
         CanMove = false;
         move = Vector2.zero;
+        PlayerController.resetAnime();
     }
 
     #endregion
@@ -354,7 +360,12 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnOffPhone()
     {
-        if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+        if (isPause ||
+            !QuarterViewCamera.activeSelf ||
+            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            TutorialScreenGO.activeSelf ||
+            allLoadingGO.activeSelf) 
+        { return; }
 
         foreach (GameObject Go in Panels)
         {
@@ -389,7 +400,12 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnOffInteractObject()
     {
-        if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+        if (isPause || 
+            !QuarterViewCamera.activeSelf || 
+            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            TutorialScreenGO.activeSelf ||
+            allLoadingGO.activeSelf) 
+        { return; }
 
         foreach (GameObject Go in Panels)
         {
@@ -441,7 +457,10 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 파트 넘기기 (Y키)
     private void TerminatePart(InputAction.CallbackContext context)
     {
-        if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
+        if (isPause || 
+            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            allLoadingGO.activeSelf) 
+        { return; }
 
         if(Desktop.streamWindow.activeSelf) 
         { DialogManager.ft_allSkip(); }
@@ -478,7 +497,11 @@ public class PlayerInputController : Manager<PlayerInputController>
         { pause.ft_closePausePopup(); return; }
 
         // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
-        if (GameSystem.cutsceneImg.gameObject.activeSelf || Desktop.streamWindow.activeSelf || PSWindow_E.gameObject.activeSelf)
+        if (GameSystem.cutsceneImg.gameObject.activeSelf ||
+            Desktop.streamWindow.activeSelf || 
+            PSWindow_E.gameObject.activeSelf ||
+            TutorialScreenGO.activeSelf ||
+            allLoadingGO.activeSelf)
         { return; }
 
         //Panels

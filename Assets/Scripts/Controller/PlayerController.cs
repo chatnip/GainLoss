@@ -215,6 +215,7 @@ public class PlayerController : MonoBehaviour
     }
     public void resetAnime()
     {
+        if (_animIDSpeed == 0) { AssignAnimationIDs(); }
         _animator.SetFloat(_animIDSpeed, 0);
     }
 

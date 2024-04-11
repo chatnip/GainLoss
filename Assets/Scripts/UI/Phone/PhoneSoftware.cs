@@ -20,6 +20,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
+    [SerializeField] TutorialManager TutorialManager;
 
     [Header("*Create Schedule")]
     [SerializeField] GameObject CreateScheduleGO;
@@ -347,6 +348,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             ScheduleManager.currentSelectedScheduleID = Ids;
             ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
             SchedulePrograss.Set_InAMScheduleUI();
+            TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
             ScheduleManager.SetDotweenGuide();
             CreateScheduleGO.SetActive(false);
             PhoneHardware.PhoneOff();

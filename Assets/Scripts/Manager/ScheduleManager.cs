@@ -14,6 +14,7 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
+    [SerializeField] TutorialManager TutorialManager;
 
     [HideInInspector] public List<string> currentHaveScheduleID = new List<string>();
     [HideInInspector] public List<string> currentSelectedScheduleID = new List<string>();
@@ -76,7 +77,7 @@ public class ScheduleManager : Manager<ScheduleManager>
                 EndDayBtn.gameObject.SetActive(true);
             }
         }
-
+        TutorialManager.OpenTutorialWindow(currentPrograssScheduleID);
         SetDotweenGuide();
     }
 
