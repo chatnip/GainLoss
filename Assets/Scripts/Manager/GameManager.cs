@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using DG.Tweening;
 
 [Serializable]
 public class GameManager : MonoBehaviour
 {
-    /*[Header("*Gage")]
-    [ProgressBar("StressGage", 100, EColor.Red)]
-    public int stressGage = 0;
-    [ProgressBar("AngerGage", 100, EColor.Green)]
-    public int angerGage = 0;
-    [ProgressBar("RiskGage", 100, EColor.Blue)]
-    public int riskGage = 0;
-    [ProgressBar("OverloadGage", 100, EColor.Gray)]
-    public int OverloadGage = 0;
-
-    [Header("*Day")]
-    public int CurrentDay = 1;*/
-
-
-
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
+    [SerializeField] public cutsceneSO TestCutsceneSO;
+    [SerializeField] GameSystem GameSystem;
 
     private void Awake()
     {
-        currentMainInfo.NewGame = false;
+        if(currentMainInfo.NewGame == true)
+        {
+            currentMainInfo.NewGame = false;
+        }
     }
 
+    public Sequence playMainCutscene(cutsceneSO playCutsceneSO)
+    {
 
+        if (cutsceneSO.currentCSSO != null) { return null; }
+        else
+        {
+            cutsceneSO.currentCSSO = playCutsceneSO;
+            return cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
+        }
+    }
 
 }
 

@@ -53,11 +53,22 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     protected override void Awake()
     {
-        loading.gameObject.SetActive(true);
-        loading.alpha = 1.0f;
-        StartCoroutine(Post_ShowNextDayText(1f));
+        ScheduleManager.SAM_Frame.gameObject.SetActive(false);
+        GameManager.playMainCutscene(GameManager.TestCutsceneSO)
+            .OnComplete(() =>
+            {
+                GameSystem.cutsceneImg.color = new Color(0, 0, 0, 0);
+                GameSystem.cutsceneImg.gameObject.SetActive(false);
+                GameSystem.cutsceneTxt.text = "";
+                cutsceneSO.currentCSSO = null;
 
-        
+                ScheduleManager.SAM_Frame.gameObject.SetActive(true);
+                loading.gameObject.SetActive(true);
+                loading.alpha = 1.0f;
+                StartCoroutine(Post_ShowNextDayText(1f));
+            });
+
+
     }
 
     #region PassDay Loading

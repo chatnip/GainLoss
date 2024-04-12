@@ -35,7 +35,7 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] RectTransform inUIEffectRT;
 
     [Header("*Sun And Moon")]
-    [SerializeField] RectTransform SAM_Frame;
+    [SerializeField] public RectTransform SAM_Frame;
     [SerializeField] SkeletonGraphic SAM_SkeletonGraphic;
 
     #endregion

@@ -15,7 +15,7 @@ public class cutsceneSO : ScriptableObject
 
     public static cutsceneSO currentCSSO = null;
     public static Sequence cutsceneSeq = null;
-    public static bool cutsceneIsPlaying = false;
+    //public static bool cutsceneIsPlaying = false;
     public static Sequence makeCutscene(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
         cutsceneImg.color = Color.black;
@@ -36,13 +36,13 @@ public class cutsceneSO : ScriptableObject
                 })
                 .OnComplete(() =>
                 {
-                    cutsceneIsPlaying = true;
+                    //cutsceneIsPlaying = true;
                     thisSequence.Pause();
                 }));
             thisSequence.Append(cutsceneImg.DOColor(Color.white, 0.25f)
                 .OnPlay(() =>
                 {
-                    cutsceneIsPlaying = true;
+                    //cutsceneIsPlaying = true;
                     cutsceneTxt.text = "";
                     cutsceneTxt.transform.parent.gameObject.SetActive(false);
                 }));
@@ -78,7 +78,7 @@ public class cutsceneSO : ScriptableObject
     }
     public static void skipOrCompleteSeq(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
-        if (!cutsceneIsPlaying) { return; }
+        if (currentCSSO == null) { return; }
 
         cutsceneSeq.timeScale = 1.0f;
 
@@ -91,13 +91,13 @@ public class cutsceneSO : ScriptableObject
             }
             cutsceneSeq.Play();
 
-            cutsceneIsPlaying = false;
+            //cutsceneIsPlaying = false;
         }
         else
         {
             cutsceneSeq.timeScale = 100.0f;
 
-            cutsceneIsPlaying = false;
+            //cutsceneIsPlaying = false;
         }
 
         return;
