@@ -329,8 +329,6 @@ public class PhoneHardware : MonoBehaviour, IInteract
         phoneViewCamera.SetActive(true);
         quarterViewCamera.SetActive(false);
 
-        phoneSoftware.ResetUI();
-
         InteractionUI3D.SetActive(false);
 
         Schedules.gameObject.SetActive(false);

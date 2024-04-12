@@ -69,11 +69,11 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     private IEnumerator Past_ShowNextDayText(float time)
     {
+        ScheduleManager.ShowSAM_Effectful("S99");
         BeforeSaveDatas();
 
         PassDayExplanationText.color = Color.white;
-        string TextTemp = "";
-        TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
+        string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
 
         StartLoading();
 
@@ -103,8 +103,9 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         yield return new WaitForSeconds(time);
 
+        ScheduleManager.ShowSAM_Effectful("S00");
+
         //SchedulePrograss.SetExplanation("S00");
-        ScheduleManager.ResetDay();
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
         string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
@@ -150,6 +151,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     private void EndLoading()
     {
+        ScheduleManager.ResetDay();
         Sequence loadingSequence = DOTween.Sequence();
         loadingSequence.Append(loading.DOFade(0f, 1f))
         .OnComplete(() =>

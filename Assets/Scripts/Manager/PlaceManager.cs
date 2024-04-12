@@ -7,6 +7,7 @@ using TMPro;
 using UniRx;
 using DG.Tweening;
 using System.Linq;
+using Spine.Unity;
 
 public class PlaceManager : Manager<PlaceManager>
 {
@@ -22,14 +23,17 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
     [SerializeField] Camera MainCamera;
     [SerializeField] ScheduleManager ScheduleManager;
+    
 
     [Header("*Player")]
     [SerializeField] SetInteractionObjects SetInteractionObjects;
+
 
     [Header("*Going Somewhere loading")]
     [SerializeField] CanvasGroup GoingSomewhereloadingCG;
     [SerializeField] TMP_Text CurrentPlaceTxt;
     [SerializeField] TMP_Text HUD_currentPlactTxt;
+    [SerializeField] SkeletonGraphic Step_SG;
 
     [Header("*Place")]
     [SerializeField] Button homeBtn;
@@ -211,6 +215,9 @@ public class PlaceManager : Manager<PlaceManager>
         GoingSomewhereloadingCG.DOFade(1, delay);
         GoingSomewhereloadingCG.gameObject.SetActive(true);
 
+        Step_SG.AnimationState.SetEmptyAnimations(0);
+        Step_SG.AnimationState.SetAnimation(trackIndex: 0, "animation", loop: false);
+
         yield return new WaitForSeconds(delay);
 
         SetInteractionObjects.OffInteractiveOB();
@@ -219,9 +226,11 @@ public class PlaceManager : Manager<PlaceManager>
         SetCurrent3DMap(currentPlace);
         HUD_currentPlactTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
 
+        if (currentPlace.ID == "P00")
+        { ScheduleManager.PassBtnOn(); }
+
         yield return new WaitForSeconds(delay);
 
-        ScheduleManager.PassBtnOn();
         GoingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>
             {

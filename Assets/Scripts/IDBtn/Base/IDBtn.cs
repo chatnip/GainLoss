@@ -25,7 +25,7 @@ public class IDBtn : MonoBehaviour
     [SerializeField] Color clr_Malicious;
 
     [Header("*Canno Label")]
-    [SerializeField] GameObject CannotUseLabal;
+    [SerializeField] public GameObject CannotUseLabal;
     [SerializeField] public TMP_Text reason;
 
 
@@ -155,13 +155,11 @@ public class IDBtn : MonoBehaviour
     {
         if(can)
         {
-            button.interactable = true;
             CannotUseLabal.SetActive(false);
         }
         else
         {
             reason.text = Reason;
-            button.interactable = false;
             CannotUseLabal.SetActive(true);
         }
         

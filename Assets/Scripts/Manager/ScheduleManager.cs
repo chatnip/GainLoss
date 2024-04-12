@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -32,6 +33,10 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] public RectTransform computerArrowRT;
     [SerializeField] public RectTransform partTimeJobBtnRT;
 
+    [Header("*Sun And Moon")]
+    [SerializeField] RectTransform SAM_Frame;
+    [SerializeField] SkeletonGraphic SAM_SkeletonGraphic;
+
     #endregion
 
     #region Main
@@ -63,7 +68,7 @@ public class ScheduleManager : Manager<ScheduleManager>
         int prograssing = currentSelectedScheduleID.IndexOf(currentPrograssScheduleID);
 
         string Schedule = "";
-        string Current = "";
+        string Current = "처음";
         if(currentPrograssScheduleID == "S00")
         {
             // 오전 업무 보여주기
@@ -86,6 +91,7 @@ public class ScheduleManager : Manager<ScheduleManager>
         }
         PassNextScheduleBtnText.text =
             "<size=150%><b><#161616>[" + Current + "]\r\n<size=120%><#7F0000>[" + Schedule + "]</b><size=100%><#000000>\r\n(으)로 넘어가기";
+    
     }
 
     public void PassBtnOn()
@@ -99,6 +105,29 @@ public class ScheduleManager : Manager<ScheduleManager>
     {
         PassNextScheduleBtn.gameObject.SetActive(false);
         currentPrograssScheduleComplete = false;
+    }
+
+    public void ShowSAM_Effectful(string ID)
+    {
+        Sequence seq = DOTween.Sequence();
+        SAM_Frame.TryGetComponent(out CanvasGroup CG);
+        if (ID == "S00")
+        {
+            SAM_SkeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "evening_morning", loop: false);
+            seq.AppendInterval(1f);
+            seq.Append(CG.DOFade(0f, 1f));
+            seq.Join(SAM_Frame.DOScale(Vector2.one, 1));
+            
+        }
+        else
+        {
+            seq.Append(CG.DOFade(1f, 1f));
+            seq.Join(SAM_Frame.DOScale(Vector2.one * 2, 1)
+                .OnComplete(() =>
+                {
+                    SAM_SkeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "morning_evening", loop: false);
+                }));
+        }
     }
 
     public void PassNextSchedule()
@@ -130,7 +159,12 @@ public class ScheduleManager : Manager<ScheduleManager>
             EndDayBtn.gameObject.SetActive(true);
         }
 
-        TutorialManager.OpenTutorialWindow(currentPrograssScheduleID);
+        // 튜토리얼 보여주기
+        if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
+        {
+            TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID);
+        }
+
         SetDotweenGuide();
     }
 
@@ -202,7 +236,13 @@ public class ScheduleManager : Manager<ScheduleManager>
         PassBtnOff();
         currentPrograssScheduleComplete = false;
         currentPrograssScheduleID = "S00";
-        TutorialManager.OpenTutorialWindow(currentPrograssScheduleID);
+
+        // 튜토리얼 보여주기
+        if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
+        {
+            TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID);
+        }
+
         SchedulePrograss.Set_InStartScheduleUI();
         SchedulePrograss.SetExplanation(currentPrograssScheduleID);
         EndDayBtn.gameObject.SetActive(false);

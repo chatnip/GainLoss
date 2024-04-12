@@ -11,6 +11,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
     #region Value
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
+    [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("*Data")]
     [SerializeField] public TutorialInfo currentTutorialInfo;
@@ -76,18 +77,18 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
 
     #region Open
 
-    public void OpenTutorialWindow(string scheduleID)
+    public bool OpenTutorialWindow(string scheduleID)
     {
-        GameObject CheckWindow = tutorialsDict[scheduleID];
-
         Dictionary<string, bool> Dict = currentTutorialInfo.ID_Bool_Dict();
-        if (Dict[scheduleID]) { return; }
-
-        OpenTutorialWindow(CheckWindow);
+        if (Dict[scheduleID]) 
+        { return false; }
+        else 
+        { return true; }
     }
 
-    private void OpenTutorialWindow(GameObject tutorialWindow_type)
+    public void OpenTutorialWindow_On(string scheduleID)
     {
+        GameObject tutorialWindow_type = tutorialsDict[scheduleID];
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
 

@@ -66,6 +66,8 @@ public class Desktop : MonoBehaviour, IInteract
 
     IDisposable disposable;
 
+    public bool CanUseThisSentence = true;
+
     #endregion
 
     #region Main

@@ -22,6 +22,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     [SerializeField] public RectTransform wordActionParentObject;
     [SerializeField] public List<Button> finalBtns;
 
+
     #endregion
 
     #region Main
@@ -56,6 +57,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         {
             if(iDBtn.buttonType == ButtonType.WordType)
             {
+                if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
                 WordManager.WordBtnApply(iDBtn.buttonValue);
                 SetThisSectionBtns(wordActionParentObject);
 
@@ -63,18 +65,21 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             else if (iDBtn.buttonType == ButtonType.WordActionType)
             {
+                if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
                 WordManager.WordActionBtnApply(iDBtn.buttonValue);
                 PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
 
                 return;
             }
         }
-        else if(PlayerInputController.SelectBtn == WordManager.resetBtn)
+        else if(PlayerInputController.SelectBtn == WordManager.resetBtn && WordManager.resetBtn.interactable)
         {
             WordManager.TodoReset();
+            Desktop.streamStartBtn.interactable = true;
             SetThisSectionBtns(wordParentObject);
+            setOnLine();
         }
-        else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn)
+        else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn && Desktop.streamStartBtn.interactable)
         {
             Desktop.streamStartBtn.TryGetComponent(out UnityEngine.UI.Outline outilne);
             outilne.enabled = false;
@@ -141,7 +146,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             wordBtn.buttonType = ButtonType.WordType; // 정렬
             WordManager.enableWordBtnList.Add(wordBtn); // 활성화 리스트에 삽입
             // WordManager.WordBtnListSet(); // 데이터 삽입
-            wordBtn.gameObject.SetActive(true); // 활성화
+            wordBtn.gameObject.SetActive(true);
 
             List<string> canCombineEXEs = GetThisAILCanCombine(wordBtn.buttonValue.ID);
             bool canMakeSentence = false;
@@ -157,10 +162,12 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             if(!canMakeSentence)
             {
-                wordBtn.button.interactable = false;
                 wordBtn.CannotUse(false, "자연스러운 문장 조합 불가");
             }
+
+
         }
+
         WordManager.WordBtnListSet(); // 데이터 삽입
     }
     private bool CheckCanUseMalicious(string rate, string wordID)
@@ -215,7 +222,10 @@ public class TodoSpawner : IDBtnSpawner, IInteract
                 WordManager.enableWordActionBtnList.Add(actionBtn); // 활성화 리스트에 삽입
                                                                     // WordManager.WordActionBtnListSet(); // 데이터 삽입
                 actionBtn.gameObject.SetActive(true); // 활성화
+
             }
+
+            
         }
         WordManager.WordActionBtnListSet(); // 데이터 삽입
     }
@@ -270,10 +280,12 @@ public class TodoSpawner : IDBtnSpawner, IInteract
 
         foreach (Button OffBtn in allBtns)
         {
+            if (OffBtn != Desktop.streamStartBtn)
             OffBtn.interactable = false;
         }
         foreach (Button OnBtn in OnBtnsList)
         {
+            if(OnBtn != Desktop.streamStartBtn)
             OnBtn.interactable = true;
         }
     }

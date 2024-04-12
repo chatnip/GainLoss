@@ -379,7 +379,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         #region Schedule
 
         //Create
-        if (ScheduleManager.currentSelectedScheduleID.Count <= 0)
+        if (ScheduleManager.currentPrograssScheduleID == "S00")
         {
             Turn = 0;
             //CreateScheduleGO.SetActive(true);

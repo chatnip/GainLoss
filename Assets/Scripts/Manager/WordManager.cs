@@ -69,6 +69,7 @@ public class WordManager : Manager<WordManager>
     }
     public void TodoReset()
     {
+        Desktop.CanUseThisSentence = true;
         resetBtn.TryGetComponent(out Outline OL);
         OL.enabled = false;
         todoWordBtnSpawner.PickWordActionBtn();
@@ -106,9 +107,13 @@ public class WordManager : Manager<WordManager>
                 .RepeatUntilDisable(wordBtn)
                 .Subscribe(word =>
                 {
+                    if (wordBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
+
                     WordBtnApply(word);
+
                     todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordActionParentObject);
                     todoWordBtnSpawner.setOnLine();
+
                 });
         }
     }
@@ -136,9 +141,13 @@ public class WordManager : Manager<WordManager>
                 .RepeatUntilDisable(wordActionBtn)
                 .Subscribe(action =>
                 {
+                    if (wordActionBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
+
                     WordActionBtnApply(action);
+
                     PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { resetBtn, Desktop.streamStartBtn } }, todoWordBtnSpawner);
                     todoWordBtnSpawner.setOnLine();
+
                 });
         }
     }
@@ -230,6 +239,15 @@ public class WordManager : Manager<WordManager>
     }
     private void SetResultPreview(StreamEvent streamEvent, bool isCreated, int NumberOfUsed)
     {
+        if (!Desktop.CanUseThisSentence)
+        {
+            Desktop.streamStartBtn.interactable = false;
+            ResultPreview_NumberOfUsed.text = "사용 불가";
+            ResultPreview_Gage.text = "";
+            return;
+        }
+
+        Desktop.streamStartBtn.interactable = true;
         string[] info = new string[2];
         if(isCreated)
         {
@@ -259,9 +277,9 @@ public class WordManager : Manager<WordManager>
         ResultPreview_Gage.text = info[1];
     }
 
-    #endregion
+#endregion
 
-    #endregion
+#endregion
 
     #region Init
 
