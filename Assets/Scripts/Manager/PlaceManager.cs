@@ -21,6 +21,7 @@ public class PlaceManager : Manager<PlaceManager>
     [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
     [SerializeField] Camera MainCamera;
+    [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("*Player")]
     [SerializeField] SetInteractionObjects SetInteractionObjects;
@@ -220,6 +221,7 @@ public class PlaceManager : Manager<PlaceManager>
 
         yield return new WaitForSeconds(delay);
 
+        ScheduleManager.PassBtnOn();
         GoingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>
             {

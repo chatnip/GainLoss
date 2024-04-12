@@ -95,8 +95,8 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_LoadingCG.DOFade(0.0f, 0.5f)
             .OnStart(() =>
             {
+                ScheduleManager.PassBtnOn();
                 partTimeJob_EndBtn.interactable = false;
-                ScheduleManager.PassNextSchedule();
                 GetMoney(100);
             })
             .OnComplete(() =>

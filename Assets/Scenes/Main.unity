@@ -13567,6 +13567,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &347329402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 347329403}
+  m_Layer: 5
+  m_Name: SunAndMoonIcon_Effect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &347329403
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347329402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1398762632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &348141758
 GameObject:
   m_ObjectHideFlags: 0
@@ -25933,6 +25968,7 @@ MonoBehaviour:
   CheckGetAllDatas: {fileID: 325235752}
   ObjectInteractionButtonGenerator: {fileID: 1637006480}
   MainCamera: {fileID: 61803321}
+  ScheduleManager: {fileID: 1944875640}
   SetInteractionObjects: {fileID: 1438225784}
   GoingSomewhereloadingCG: {fileID: 144862818}
   CurrentPlaceTxt: {fileID: 432623449}
@@ -27114,7 +27150,7 @@ GameObject:
   - component: {fileID: 606783130}
   - component: {fileID: 606783129}
   m_Layer: 0
-  m_Name: New SkeletonGraphic
+  m_Name: Step_SpineSG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65971,6 +66007,7 @@ RectTransform:
   - {fileID: 702716023}
   - {fileID: 1207284027}
   - {fileID: 1018738981}
+  - {fileID: 347329403}
   m_Father: {fileID: 1585059682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -83136,7 +83173,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB2E4\uC74C\n<size=150%><b>[\uC2A4\uCF00\uC904\u314E]</b></size>\n\uC2A4\uCF00\uC904\uB85C\n\uB118\uC5B4\uAC00\uAE30"
+  m_text: "<size=150%><b>[\uC624\uC804]</b></size>\n<size=120%><b>[\uC7A5\uC18C \uC870\uC0AC\uD558\uAE30]</b></size>\n(\uC73C)\uB85C
+    \uB118\uC5B4\uAC00\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
   m_sharedMaterial: {fileID: 4555158195946992440, guid: 25bc1af611abb7d4c90012ac06b95270, type: 2}
@@ -94767,8 +94805,11 @@ MonoBehaviour:
   TutorialManager: {fileID: 207660234}
   currentHaveScheduleID: []
   currentSelectedScheduleID: []
+  currentPrograssScheduleComplete: 0
   currentPrograssScheduleID: 
   EndDayBtn: {fileID: 668940975}
+  PassNextScheduleBtn: {fileID: 167064448}
+  PassNextScheduleBtnText: {fileID: 1760384496}
   phoneOnOpenBtnRT: {fileID: 568514506}
   computerArrowRT: {fileID: 1822003710}
   partTimeJobBtnRT: {fileID: 1777923608}

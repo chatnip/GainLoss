@@ -144,7 +144,7 @@ public class Desktop : MonoBehaviour, IInteract
         TurnOff();
         //ActionEventManager.TurnOnLoading();
         computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
-        ScheduleManager.PassNextSchedule();
+        ScheduleManager.PassBtnOn();
     }
     public void DisappearPopup(GameObject Popup)
     {

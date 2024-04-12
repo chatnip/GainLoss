@@ -50,6 +50,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     [Header("*Schedule")]
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] ScheduleManager ScheduleManager;
+    
 
     [Header("*Camera")]
     [SerializeField] GameObject QuarterViewCamera;
@@ -467,6 +468,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
         { PSWindow_FC.ft_tryToCombine(); }
+
+        if (ScheduleManager.PassNextScheduleBtn.gameObject.activeSelf)
+        { ScheduleManager.PassNextSchedule(); }
 
         if (PhoneHardware.sectionIsThis)
         { PhoneHardware.SetOnOffPhoneBtn(); }

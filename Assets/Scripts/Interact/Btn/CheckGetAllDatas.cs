@@ -39,7 +39,7 @@ public class CheckGetAllDatas : MonoBehaviour
     
     public void TerminatePlaceAndGoHome()
     {
-        ScheduleManager.PassNextSchedule();
+        
         PlaceManager.currentPlace = new ButtonValue("P00", (string)DataManager.PlaceDatas[1]["P00"]);
         PlaceManager.StartGoingSomewhereLoading(1.5f);
         PhoneHardware.DoNotNeedBtns_ExceptionSituation = false;

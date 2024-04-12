@@ -249,7 +249,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
                     return; 
                 }
             }
-            if (DoNotNeedBtns_ExceptionSituation) { return; }
+            if (DoNotNeedBtns_ExceptionSituation || ScheduleManager.currentPrograssScheduleComplete) { return; }
 
             SetOn(PhoneOnByScheduleBtn, new Vector2(PhoneOnByScheduleBtn.GetComponent<RectTransform>().rect.width * 1.1f, PhoneOnByScheduleBtn.GetComponent<RectTransform>().anchoredPosition.y));
             PlayerInputController.SetSectionBtns(SetPhoneOnButtons(), this);
@@ -270,7 +270,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
                     return; 
                 }
             }
-            if (DoNotNeedBtns_ExceptionSituation) { return; }
+            if (DoNotNeedBtns_ExceptionSituation || ScheduleManager.currentPrograssScheduleComplete) { return; }
             SetOff(PhoneOnByScheduleBtn, new Vector2(0.0f, PhoneOnByScheduleBtn.GetComponent<RectTransform>().anchoredPosition.y));
 
             PlayerInputController.SetSectionBtns(null, null);

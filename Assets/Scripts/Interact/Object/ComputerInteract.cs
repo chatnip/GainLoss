@@ -108,8 +108,9 @@ public class ComputerInteract : InteractObject
 
     public override void Interact()
     {
-        if (ScheduleManager.currentPrograssScheduleID == "S01" ||
-            ScheduleManager.currentPrograssScheduleID == "S03") // S01: 사전 조사 | S03: 방송
+        if ((ScheduleManager.currentPrograssScheduleID == "S01" ||
+            ScheduleManager.currentPrograssScheduleID == "S03") &&
+            !ScheduleManager.currentPrograssScheduleComplete) // S01: 사전 조사 | S03: 방송 | 아직 끝내지 못한 상황
         { StartCoroutine(ScreenZoomIn()); }
         else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
         //StartCoroutine(ScreenZoomIn());

@@ -346,15 +346,15 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             }
 
             ScheduleManager.currentSelectedScheduleID = Ids;
-            ScheduleManager.PassBtnOn();
+            ScheduleManager.PassBtnOn(); 
             //ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
-            SchedulePrograss.Set_InAMScheduleUI();
-            TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
-            ScheduleManager.SetDotweenGuide();
+            //SchedulePrograss.Set_InAMScheduleUI();
+            //TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
+            //ScheduleManager.SetDotweenGuide();
             CreateScheduleGO.SetActive(false);
             PhoneHardware.PhoneOff();
-            SchedulePrograss.SetExplanation(ScheduleManager.currentPrograssScheduleID);
-            PartTimeJobManager.distinctionPartTimeJob();
+            //SchedulePrograss.SetExplanation(ScheduleManager.currentPrograssScheduleID);
+            //PartTimeJobManager.distinctionPartTimeJob();
         }
         else
         {

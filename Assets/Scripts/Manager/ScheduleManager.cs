@@ -17,13 +17,15 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] TutorialManager TutorialManager;
 
     [HideInInspector] public List<string> currentHaveScheduleID = new List<string>();
-    [HideInInspector] public List<string> currentSelectedScheduleID = new List<string>();
+    [SerializeField] public List<string> currentSelectedScheduleID = new List<string>();
+    [SerializeField] public bool currentPrograssScheduleComplete = false;
 
     [HideInInspector] public string currentPrograssScheduleID;
 
     [Header("*Btn")]
     [SerializeField] public Button EndDayBtn;
     [SerializeField] public Button PassNextScheduleBtn;
+    [SerializeField] public TMP_Text PassNextScheduleBtnText;
 
     [Header("*Guide")]
     [SerializeField] public RectTransform phoneOnOpenBtnRT;
@@ -53,53 +55,94 @@ public class ScheduleManager : Manager<ScheduleManager>
 
     #region Schedule
 
+    private void ButtonSet()
+    {
+        // 할 일
+
+        // 시간대
+        int prograssing = currentSelectedScheduleID.IndexOf(currentPrograssScheduleID);
+
+        string Schedule = "";
+        string Current = "";
+        if(currentPrograssScheduleID == "S00")
+        {
+            // 오전 업무 보여주기
+            Current = "오전"; 
+            Schedule = DataManager.ScheduleDatas[3][currentSelectedScheduleID[0]].ToString(); }
+        else
+        {
+            // 오후 업무 보여주기
+            if (prograssing == 0) 
+            { 
+                Current = "오후"; 
+                Schedule = DataManager.ScheduleDatas[3][currentSelectedScheduleID[1]].ToString(); 
+            }
+            // 야간 하루 종료 보여주기
+            else if (prograssing == 1) 
+            { 
+                Current = "야간"; 
+                Schedule = DataManager.ScheduleDatas[3]["S99"].ToString(); 
+            }
+        }
+        PassNextScheduleBtnText.text =
+            "<size=150%><b><#161616>[" + Current + "]\r\n<size=120%><#7F0000>[" + Schedule + "]</b><size=100%><#000000>\r\n(으)로 넘어가기";
+    }
 
     public void PassBtnOn()
     {
+        ButtonSet();
         PassNextScheduleBtn.gameObject.SetActive(true);
+        currentPrograssScheduleComplete = true;
+        ResetDotweenGuide();
+    }
+    public void PassBtnOff()
+    {
+        PassNextScheduleBtn.gameObject.SetActive(false);
+        currentPrograssScheduleComplete = false;
     }
 
     public void PassNextSchedule()
     {
-        if (currentPrograssScheduleID == "" || currentPrograssScheduleID == null || currentPrograssScheduleID == "S00")
+        PassBtnOff();
+
+        // 스케쥴 짜기 -> 첫 번째
+        if (currentPrograssScheduleID == "S00")
         {
-            // 스케쥴 짜기
-            currentPrograssScheduleID = "S00";
-            if (currentSelectedScheduleID.Count == 0)
-            {
-                SchedulePrograss.Set_InStartScheduleUI();
-                SchedulePrograss.SetExplanation(currentPrograssScheduleID);
-            }
+            currentPrograssScheduleID = currentSelectedScheduleID[0];
+            SchedulePrograss.Set_InAMScheduleUI();
+            PartTimeJobManager.distinctionPartTimeJob();
+            SchedulePrograss.SetExplanation(currentPrograssScheduleID);
         }
-        else
+        // 첫 번째 -> 두 번째로
+        else if (currentPrograssScheduleID == currentSelectedScheduleID[0])
         {
-            // 첫 번째 -> 두 번째로
-            if (currentPrograssScheduleID == currentSelectedScheduleID[0])
-            {
-                currentPrograssScheduleID = currentSelectedScheduleID[1];
-                SchedulePrograss.Set_InPMScheduleUI();
-                PartTimeJobManager.distinctionPartTimeJob();
-                SchedulePrograss.SetExplanation(currentPrograssScheduleID);
-            }
-            // 두 번째 -> 하루 종료하기로
-            else if (currentPrograssScheduleID == currentSelectedScheduleID[1])
-            {
-                currentPrograssScheduleID = "S99";
-                SchedulePrograss.Set_InEndScheduleUI();
-                SchedulePrograss.SetExplanation(currentPrograssScheduleID);
-                EndDayBtn.gameObject.SetActive(true);
-            }
+            currentPrograssScheduleID = currentSelectedScheduleID[1];
+            SchedulePrograss.Set_InPMScheduleUI();
+            PartTimeJobManager.distinctionPartTimeJob();
+            SchedulePrograss.SetExplanation(currentPrograssScheduleID);
         }
+        // 두 번째 -> 하루 종료하기로
+        else if (currentPrograssScheduleID == currentSelectedScheduleID[1])
+        {
+            currentPrograssScheduleID = "S99";
+            SchedulePrograss.Set_InEndScheduleUI();
+            SchedulePrograss.SetExplanation(currentPrograssScheduleID);
+            EndDayBtn.gameObject.SetActive(true);
+        }
+
         TutorialManager.OpenTutorialWindow(currentPrograssScheduleID);
         SetDotweenGuide();
     }
 
-    public void SetDotweenGuide()
+    public void ResetDotweenGuide()
     {
         DOTween.Kill("ScheduleGuide_Dotween");
         computerArrowRT.gameObject.SetActive(false);
         computerArrowRT.anchoredPosition = new Vector2(0, 9);
-
+    }
+    public void SetDotweenGuide()
+    {
+        ResetDotweenGuide();
         Debug.Log(currentPrograssScheduleID);
 
         Sequence seq = DOTween.Sequence();
@@ -156,10 +199,14 @@ public class ScheduleManager : Manager<ScheduleManager>
 
     public void ResetDay()
     {
-        currentSelectedScheduleID.Clear();
+        PassBtnOff();
+        currentPrograssScheduleComplete = false;
         currentPrograssScheduleID = "S00";
+        TutorialManager.OpenTutorialWindow(currentPrograssScheduleID);
+        SchedulePrograss.Set_InStartScheduleUI();
+        SchedulePrograss.SetExplanation(currentPrograssScheduleID);
         EndDayBtn.gameObject.SetActive(false);
-        PassNextSchedule();
+        SetDotweenGuide();
     }
 
     #endregion
