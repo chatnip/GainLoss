@@ -173,7 +173,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
         bellRT.gameObject.SetActive(true);
 
         seq.Append(circleEffectRT.DOSizeDelta(Vector2.one * 4000f, 0.8f));
-        seq.Append(bellRT.DOSizeDelta(Vector2.one * 100, 0.1f));
+        seq.Append(bellRT.DOSizeDelta(new Vector2(0.75f, 1f)* 100, 0.1f));
         for (int i = 0; i < 4; i++)
         {
             //bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 360.0f * i), 20.0f, RotateMode.FastBeyond360);

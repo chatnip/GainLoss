@@ -14,12 +14,14 @@ public class Title : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] TitleInputController TitleInputController;
     [SerializeField] CanvasScaler TitleCanvasScaler;
+    [SerializeField] Camera MainCamera;
 
     [Header("*TitleBtn")]
     [SerializeField] Button newGameBtn;
     [SerializeField] Button continueBtn;
     [SerializeField] GameObject cannotUseContinue;
     [SerializeField] Button OptionBtn;
+    [SerializeField] GameObject cannotUseOption;
     [SerializeField] Button QuitBtn;
     List<List<Button>> btns;
 
@@ -31,6 +33,11 @@ public class Title : MonoBehaviour, IInteract
     [SerializeField] AnimationReferenceAsset LogoARA;
     [SerializeField] GameObject OptionWindow;
 
+    [Header("*Move Effect By Pointer RTs")]
+    [SerializeField] RectTransform TitleLogoRT;
+    [SerializeField] List<RectTransform> MoveEffectRTList;
+    [Tooltip("Dont change this - only Check")][SerializeField] List<Vector3> OffsetRotationList;
+
     #endregion
 
     #region Main
@@ -39,13 +46,16 @@ public class Title : MonoBehaviour, IInteract
     {
         btns = new List<List<Button>>()
         {
-            new List<Button> { newGameBtn },
-            new List<Button> { continueBtn },
-            new List<Button> { OptionBtn },
-            new List<Button> { QuitBtn }
+            new List<Button> { newGameBtn, OptionBtn },
+            new List<Button> { continueBtn, QuitBtn }
         };
 
-       
+        OffsetRotationList = new List<Vector3>();
+        for (int i = 0; i < MoveEffectRTList.Count; i++)
+        {
+            Vector3 v = MoveEffectRTList[i].rotation.eulerAngles;
+            OffsetRotationList.Add(v);
+        }
 
 
         newGameBtn.OnClickAsObservable()
@@ -89,8 +99,9 @@ public class Title : MonoBehaviour, IInteract
             });
 
         ft_StartTitle();
+        setEfectful_TitleLogo();
 
-        
+
     }
     private void OnEnable()
     {
@@ -105,8 +116,18 @@ public class Title : MonoBehaviour, IInteract
             continueBtn.interactable = true;
             cannotUseContinue.SetActive(false);
         }
+
+
+        Debug.Log("TestVersion_InteractFalse");
+        OptionBtn.interactable = false;
+        cannotUseOption.SetActive(true);
     }
-    
+
+    private void LateUpdate()
+    {
+        setEffectful_RotateByPointer(getMousePos());
+    }
+
     public void Interact()
     {
         if(TitleInputController.SelectBtn == newGameBtn)
@@ -154,7 +175,6 @@ public class Title : MonoBehaviour, IInteract
 
     private void ft_StartTitle()
     {
-        TitleInputController.SetSectionBtns(btns, this);
 
         Sequence seq = DOTween.Sequence();
 
@@ -189,15 +209,16 @@ public class Title : MonoBehaviour, IInteract
         seq.AppendInterval(0.25f);
 
         // 메인 타이틀 씬
-        seq.Append(DOTween.To(() => TitleCanvasScaler.scaleFactor, x => TitleCanvasScaler.scaleFactor = x, 1f, 0.5f));
+        seq.Append(setEffectful_ComeinScreen());
+        //seq.Append(DOTween.To(() => TitleCanvasScaler.scaleFactor, x => TitleCanvasScaler.scaleFactor = x, 1f, 0.5f));
 
-        
         // +(동시) 블랙스크린 없애기
         BlackScreenImg.gameObject.SetActive(true);
         seq.Join(BlackScreenImg.DOFade(0.0f, 0.5f)
             .SetEase(Ease.InOutBack)
             .OnComplete(() =>
             {
+                TitleInputController.SetSectionBtns(btns, this);
                 BlackScreenImg.gameObject.SetActive(false);
             }));
     }
@@ -234,6 +255,72 @@ public class Title : MonoBehaviour, IInteract
         var path = Resources.Load<TextAsset>("Json/mainInfoDatabase");
         MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(path.ToString());
         return mainInfo;
+    }
+
+    #endregion
+
+    #region Effectful
+
+    // 마우스 좌표값 받아오기
+    private Vector2 getMousePos()
+    {
+        Vector3 point = Input.mousePosition;
+        point.z = MainCamera.farClipPlane;
+        point = MainCamera.ScreenToWorldPoint(point);
+        return (Vector2)point;
+    }
+
+    // 처음 시작 시 멀리서 날라오는 느낌
+    private Sequence setEffectful_ComeinScreen()
+    {
+        for (int i = 0; i < MoveEffectRTList.Count; i++)
+        {
+            Vector3 RTPos = MoveEffectRTList[i].anchoredPosition3D;
+            RTPos.z = 5000;
+            MoveEffectRTList[i].anchoredPosition3D = RTPos;
+
+            if (MoveEffectRTList[i].TryGetComponent(out CanvasGroup CG))
+            { CG.DOFade(0f, 0f); }
+            else if (MoveEffectRTList[i].TryGetComponent(out Image img))
+            { img.DOFade(0f, 0f); }
+        }
+
+        Sequence seq = DOTween.Sequence();
+        for (int i = 0; i < MoveEffectRTList.Count; i++)
+        {
+            Vector3 RTPos = MoveEffectRTList[i].anchoredPosition3D;
+            RTPos.z = 0;
+            seq.Insert(i * 0.1f, MoveEffectRTList[i].DOAnchorPos3D(RTPos, 0.3f));
+
+            if (MoveEffectRTList[i].TryGetComponent(out CanvasGroup CG))
+            { seq.Join(CG.DOFade(1f, 0.3f)); }
+            else if (MoveEffectRTList[i].TryGetComponent(out Image img))
+            { seq.Join(img.DOFade(1f, 0.3f)); }
+        }
+
+        return seq;
+    }
+
+    // 좌표값에 따라 RT Rotation 값 자체 변경
+    private void setEffectful_RotateByPointer(Vector2 MousePos)
+    {
+        for (int i = 0; i < MoveEffectRTList.Count; i++)
+        {
+            Vector3 mousePosForRot = new Vector3(MousePos.y * 0.1f, -MousePos.x * 0.1f, 0);
+            Vector3 totalRot = OffsetRotationList[i] + mousePosForRot;
+            MoveEffectRTList[i].rotation = Quaternion.Euler(totalRot);
+        }
+
+        
+    }
+
+    // 타이틀 로고 움직임
+    private void setEfectful_TitleLogo()
+    {
+        Sequence Seq = DOTween.Sequence();
+        Seq.Append(TitleLogoRT.DOScale(Vector3.one * 1.1f, 1f).SetEase(Ease.InOutCubic));
+        Seq.Append(TitleLogoRT.DOScale(Vector3.one, 1f).SetEase(Ease.InOutCubic));
+        Seq.SetLoops(-1, LoopType.Restart);
     }
 
     #endregion

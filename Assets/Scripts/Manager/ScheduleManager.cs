@@ -23,6 +23,7 @@ public class ScheduleManager : Manager<ScheduleManager>
 
     [Header("*Btn")]
     [SerializeField] public Button EndDayBtn;
+    [SerializeField] public Button PassNextScheduleBtn;
 
     [Header("*Guide")]
     [SerializeField] public RectTransform phoneOnOpenBtnRT;
@@ -40,11 +41,23 @@ public class ScheduleManager : Manager<ScheduleManager>
             {
                 ActionEventManager.TurnOnLoading();
             });
+
+        PassNextScheduleBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                PassNextSchedule();
+            });
     }
 
     #endregion
 
     #region Schedule
+
+
+    public void PassBtnOn()
+    {
+        PassNextScheduleBtn.gameObject.SetActive(true);
+    }
 
     public void PassNextSchedule()
     {

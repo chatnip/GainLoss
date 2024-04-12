@@ -24,19 +24,19 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
 
-    private void Start()
+    private void Awake()
     {
-        // wordDatas = WordCSVReader.Parse("TestCVSFile2");
+        currentMainInfo.NewGame = false;
     }
 
-   
+
 
 }
 
 [Serializable]
 public class MainInfo
 {
-    public bool NewGame = false;
+    public bool NewGame = true;
     public int day = 1;
     public string TodayOfTheWeek = "Monday";
     public int money = 100;

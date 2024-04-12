@@ -346,7 +346,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             }
 
             ScheduleManager.currentSelectedScheduleID = Ids;
-            ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
+            ScheduleManager.PassBtnOn();
+            //ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
             SchedulePrograss.Set_InAMScheduleUI();
             TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
             ScheduleManager.SetDotweenGuide();
