@@ -35,7 +35,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
     [SerializeField] RectTransform waveRT;
 
     [Header("*On/Off Btns")]
-    [SerializeField] Button PhoneListOpenBtn;
+    [SerializeField] public Button PhoneListOpenBtn;
     [SerializeField] Button PhoneOnBtn;
     [SerializeField] Button PhoneOnByScheduleBtn;
     [HideInInspector] public List<Button> PhoneOnButtons;
@@ -336,6 +336,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
         PhoneListOpenBtn.gameObject.SetActive(false);
 
         PlayerInputController.StopMove();
+
+        ScheduleManager.ResetDotweenGuide();
     }
 
     public void PhoneOff()
@@ -354,7 +356,8 @@ public class PhoneHardware : MonoBehaviour, IInteract
         sectionIsThis = false;
 
         PlayerInputController.CanMove = true;
-        
+
+        ScheduleManager.SetDotweenGuide(); 
     }
 
     #endregion

@@ -16,6 +16,7 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] TutorialManager TutorialManager;
+    [SerializeField] PhoneHardware PhoneHardware;
 
     [HideInInspector] public List<string> currentHaveScheduleID = new List<string>();
     [SerializeField] public List<string> currentSelectedScheduleID = new List<string>();
@@ -27,11 +28,11 @@ public class ScheduleManager : Manager<ScheduleManager>
     [SerializeField] public Button EndDayBtn;
     [SerializeField] public Button PassNextScheduleBtn;
     [SerializeField] public TMP_Text PassNextScheduleBtnText;
+    [SerializeField] public RectTransform TerminatedPart;
 
     [Header("*Guide")]
-    [SerializeField] public RectTransform phoneOnOpenBtnRT;
-    [SerializeField] public RectTransform computerArrowRT;
-    [SerializeField] public RectTransform partTimeJobBtnRT;
+    [SerializeField] RectTransform computerArrowRT;
+    [SerializeField] RectTransform inUIEffectRT;
 
     [Header("*Sun And Moon")]
     [SerializeField] RectTransform SAM_Frame;
@@ -99,7 +100,6 @@ public class ScheduleManager : Manager<ScheduleManager>
         ButtonSet();
         PassNextScheduleBtn.gameObject.SetActive(true);
         currentPrograssScheduleComplete = true;
-        ResetDotweenGuide();
     }
     public void PassBtnOff()
     {
@@ -166,65 +166,109 @@ public class ScheduleManager : Manager<ScheduleManager>
         }
 
         SetDotweenGuide();
+        
     }
 
     public void ResetDotweenGuide()
     {
+        if(DOTween.IsTweening("ScheduleGuide_Dotween"))
         DOTween.Kill("ScheduleGuide_Dotween");
+
         computerArrowRT.gameObject.SetActive(false);
         computerArrowRT.anchoredPosition = new Vector2(0, 9);
+
+        inUIEffectRT.gameObject.SetActive(false);
+        inUIEffectRT.localScale = Vector2.one;
+
+        inUIEffectRT.TryGetComponent(out Image img);
+        img.color = Color.white;
+
     }
     public void SetDotweenGuide()
     {
         ResetDotweenGuide();
         Debug.Log(currentPrograssScheduleID);
 
+        inUIEffectRT.TryGetComponent(out Image img);
+
         Sequence seq = DOTween.Sequence();
 
-        switch (currentPrograssScheduleID)
+        
+
+        if (PassNextScheduleBtn.gameObject.activeSelf)
+        { seq.Append(InCanvasUI(PassNextScheduleBtn.gameObject, 1f)); }
+        else
         {
-            case "S00": // 스케쥴 짜기
-                seq.Append(phoneOnOpenBtnRT.DOScale(Vector3.one * 1.1f, 0.25f)
-                    .SetLoops(4, LoopType.Yoyo));
-                seq.AppendInterval(2.5f);
-                break;
+            // S00: 스케쥴 짜기
+            if (currentPrograssScheduleID == "S00") 
+            {
+                seq.Append(InCanvasUI(PhoneHardware.PhoneListOpenBtn.gameObject, 1f)); 
+            }
 
-            case "S01": // 사전 조사
+            // S01: 사전 조사하기
+            else if (currentPrograssScheduleID == "S01") 
+            {
                 computerArrowRT.gameObject.SetActive(true);
                 seq.Append(computerArrowRT.DOAnchorPos(computerArrowRT.anchoredPosition + new Vector2(0f, 1f), 0.5f)
                     .SetLoops(2, LoopType.Yoyo));
-                break;
+            }
 
-            case "S02": // 장소 방문
-                seq.Append(phoneOnOpenBtnRT.DOScale(Vector3.one * 1.1f, 0.25f)
-                    .SetLoops(4, LoopType.Yoyo));
-                seq.AppendInterval(2.5f);
-                break;
+            // S02: 장소 방문하기
+            else if (currentPrograssScheduleID == "S02") 
+            {
+                if (PlaceManager.currentPlace.ID == "P00")
+                { seq.Append(InCanvasUI(PhoneHardware.PhoneListOpenBtn.gameObject, 1f)); }
+                else
+                { seq.Append(InCanvasUI(TerminatedPart.gameObject, 1f)); }
+            }
 
-            case "S03": // 방송 시청
+            // S03: 방송 시청하기
+            else if (currentPrograssScheduleID == "S03") 
+            {
                 computerArrowRT.gameObject.SetActive(true);
                 seq.Append(computerArrowRT.DOAnchorPos(computerArrowRT.anchoredPosition + new Vector2(0f, 1f), 0.5f)
                     .SetLoops(2, LoopType.Yoyo));
-                break;
+            }
 
-            case "S04": // 아르바이트
-                seq.Append(partTimeJobBtnRT.DOScale(Vector3.one * 1.1f, 0.25f)
-                   .SetLoops(4, LoopType.Yoyo));
-                seq.AppendInterval(2.5f);
-                break;
+            // S04: 알바 하기
+            else if (currentPrograssScheduleID == "S04") 
+            { 
+                seq.Append(InCanvasUI(PartTimeJobManager.partTimeJob_StartBtn.gameObject, 1f)); 
+            }
 
-            case "S99": // 하루 종료
-                EndDayBtn.TryGetComponent(out RectTransform EndDayBtnRT);
-                seq.Append(EndDayBtnRT.DOScale(Vector3.one * 1.1f, 0.25f)
-                   .SetLoops(4, LoopType.Yoyo));
-                seq.AppendInterval(2.5f);
-                break;
-
-            default: break;
+            // S99: 하루 종료하기
+            else if (currentPrograssScheduleID == "S99") 
+            { 
+                seq.Append(InCanvasUI(EndDayBtn.gameObject, 1f));
+            }
         }
 
         seq.SetLoops(-1, LoopType.Restart);
         seq.SetId("ScheduleGuide_Dotween");
+        return;
+
+        Sequence InCanvasUI(GameObject targetGO, float time)
+        {
+            Sequence seq2 = DOTween.Sequence();
+            targetGO.TryGetComponent(out RectTransform targetRT);
+            targetGO.TryGetComponent(out Image targetImg);
+
+            inUIEffectRT.gameObject.SetActive(true);
+            inUIEffectRT.anchoredPosition = targetRT.anchoredPosition;
+            inUIEffectRT.sizeDelta = targetRT.sizeDelta;
+            img.sprite = targetImg.sprite;
+            seq2.Append(inUIEffectRT.DOScale(Vector2.one * 1.5f, time));
+            seq2.Join(img.DOFade(0f, time));
+            seq2.AppendInterval(time);
+            seq2.OnStart(() =>
+            {
+                inUIEffectRT.localScale = Vector2.one;
+                img.color = Color.white;
+            });
+
+
+            return seq2;
+        }
     }
 
     #endregion

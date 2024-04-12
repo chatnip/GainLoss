@@ -32,20 +32,6 @@ public class ComputerInteract : InteractObject
 
     #endregion
 
-    /*
-    [HideInInspector] public bool CanInter = true;
-    
-    private void OnEnable()
-    {
-        string id = ScheduleManager.currentPrograssScheduleID;
-        if(id == null || id == "") { return; }
-        else if("S03" == id) // 스케쥴 아이디가 방송 시청하라면...
-        {
-            CanInteract = false;
-        }
-    }
-    */
-
     #region Screen
 
     private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
@@ -55,11 +41,9 @@ public class ComputerInteract : InteractObject
         screenViewCamera.SetActive(true);
 
         SchedulePrograss.gameObject.SetActive(false);
-        //SchedulePrograss.ResetExlanation();
         PhoneOpenBtns.SetActive(false);
         PhoneHardware.ResetPhoneBtns();
 
-        //yield return new WaitForSeconds(1f);
 
         ScreenOn();
 
@@ -74,11 +58,6 @@ public class ComputerInteract : InteractObject
 
         PhoneOpenBtns.SetActive(true);
         SchedulePrograss.gameObject.SetActive(true);
-
-        //yield return new WaitForSeconds(1f);
-
-        //quarterViewCamera.SetActive(true);
-        //screenViewCamera.SetActive(false);
         screenObject.SetActive(false);
 
         yield break;
@@ -92,6 +71,9 @@ public class ComputerInteract : InteractObject
         InteractionUI3D.SetActive(false);
 
         PlayerInputController.StopMove();
+
+
+        ScheduleManager.ResetDotweenGuide();
     }
 
     private void ScreenOff()
@@ -100,6 +82,9 @@ public class ComputerInteract : InteractObject
         InteractionUI3D.SetActive(true);
 
         PlayerInputController.CanMove = true;
+
+
+        ScheduleManager.SetDotweenGuide();
     }
 
     #endregion
@@ -118,19 +103,4 @@ public class ComputerInteract : InteractObject
 
     #endregion
 
-    /*    public override void OnPointerDown(PointerEventData eventData)
-        {
-            base.OnPointerDown(eventData);
-            StartCoroutine(ScreenZoomIn());
-        }
-
-        public override void OnPointerEnter(PointerEventData eventData)
-        {
-            base.OnPointerEnter(eventData);
-        }
-
-        public override void OnPointerExit(PointerEventData eventData)
-        {
-            base.OnPointerExit(eventData);
-        }*/
 }

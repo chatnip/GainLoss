@@ -226,10 +226,11 @@ public class PlaceManager : Manager<PlaceManager>
         SetCurrent3DMap(currentPlace);
         HUD_currentPlactTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
 
+        yield return new WaitForSeconds(delay);
+
         if (currentPlace.ID == "P00")
         { ScheduleManager.PassBtnOn(); }
-
-        yield return new WaitForSeconds(delay);
+        ScheduleManager.SetDotweenGuide();
 
         GoingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>

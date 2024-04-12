@@ -19,7 +19,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
 
     [Header("*PartTimeJob")]
     [SerializeField] CanvasGroup partTimeJob_LoadingCG;
-    [SerializeField] Button partTimeJob_StartBtn;
+    [SerializeField] public Button partTimeJob_StartBtn;
     [SerializeField] Button partTimeJob_EndBtn;
 
     [Header("*Cutscenc")]
@@ -75,6 +75,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
     }
     public IEnumerator StartPartTimeJob(float time, cutsceneSO selectCSSO)
     {
+        ScheduleManager.ResetDotweenGuide();
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { partTimeJob_EndBtn } }, this);
         partTimeJob_LoadingCG.TryGetComponent(out Image image);
         partTimeJob_StartBtn.gameObject.SetActive(false);
@@ -96,6 +97,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
             .OnStart(() =>
             {
                 ScheduleManager.PassBtnOn();
+                ScheduleManager.SetDotweenGuide();
                 partTimeJob_EndBtn.interactable = false;
                 GetMoney(100);
             })

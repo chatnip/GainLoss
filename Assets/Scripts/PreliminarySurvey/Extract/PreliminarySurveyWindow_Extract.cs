@@ -51,6 +51,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] RectTransform resultWindowRT;
     [SerializeField] GameObject OnlyFail;
     [SerializeField] GameObject OnlyComplete;
+    [SerializeField] TMP_Text PrograssBarDataTxt;
     [SerializeField] TMP_Text incomeData;
     [SerializeField] Button endBtn;
 
@@ -264,6 +265,8 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     {
         incomeData.text = "πÃ»πµÊ";
 
+        BallController.ft_resetPos();
+        PrograssBarDataTxt.text = currentGage + "MB / " + SelectedPreliminarySurveySO.GoalPoint + "MB";
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
 
@@ -309,6 +312,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         endBtn.interactable = true;
         
         incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        PrograssBarDataTxt.text = currentGage + "MB / " + SelectedPreliminarySurveySO.GoalPoint + "MB";
 
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
@@ -318,7 +322,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
 
         DOTween.Kill(gageEffectfulRT);
-
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
 
