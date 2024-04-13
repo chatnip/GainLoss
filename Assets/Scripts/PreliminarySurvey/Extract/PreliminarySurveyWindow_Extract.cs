@@ -53,6 +53,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] GameObject OnlyComplete;
     [SerializeField] TMP_Text PrograssBarDataTxt;
     [SerializeField] TMP_Text incomeData;
+    [SerializeField] TMP_Text incomeDataAnno;
     [SerializeField] Button endBtn;
 
     #endregion
@@ -264,6 +265,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     private void ft_resultFail()
     {
         incomeData.text = "πÃ»πµÊ";
+        incomeDataAnno.text = "";
 
         BallController.ft_resetPos();
         PrograssBarDataTxt.text = currentGage + "MB / " + SelectedPreliminarySurveySO.GoalPoint + "MB";
@@ -312,6 +314,8 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         endBtn.interactable = true;
         
         incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        incomeDataAnno.text = SelectedPreliminarySurveySO.getID_Anno;
+
         PrograssBarDataTxt.text = currentGage + "MB / " + SelectedPreliminarySurveySO.GoalPoint + "MB";
 
         OnlyFail.gameObject.SetActive(false);

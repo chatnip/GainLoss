@@ -282,7 +282,7 @@ public class GameSystem : MonoBehaviour
             string nameTemp = "";
             if (!haveThings.Contains(id))
             {
-                nameTemp = Data[id].ToString() + type + "\n¡Ú È¹µæ ¡Ú";
+                nameTemp = Data[id].ToString() + type + " È¹µæ";
                 haveThings.Add(id);
             }
             else

@@ -7,5 +7,6 @@ public class PreliminarySurveySO : ScriptableObject
 {
     [SerializeField] public cutsceneSO cutsceneSO;
     [SerializeField] public string getID;
+    [SerializeField] public string getID_Anno;
     [SerializeField] public int conditionToOverload;
 }

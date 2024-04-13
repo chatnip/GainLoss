@@ -51,6 +51,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     [SerializeField] GameObject OnlyComplete;
     [SerializeField] Image[] CompleteImgs = new Image[4];
     [SerializeField] TMP_Text incomeData;
+    [SerializeField] TMP_Text incomeDataAnno;
     [SerializeField] Button endBtn;
 
 
@@ -355,6 +356,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
         }
         incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        incomeDataAnno.text = SelectedPreliminarySurveySO.getID_Anno;
 
         OnlyFail.gameObject.SetActive(false);
         OnlyComplete.gameObject.SetActive(true);
@@ -369,7 +371,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     private void ft_resultFail()
     {
         incomeData.text = "πÃ»πµÊ";
-
+        incomeDataAnno.text = "";
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
 
