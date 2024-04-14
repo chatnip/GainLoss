@@ -370,11 +370,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     public void ResetUI()
     {
-        #region LockScreen
-
-        //lockScreen.gameObject.SetActive(true);
-
-        #endregion
 
         #region Schedule
 
@@ -382,8 +377,8 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         if (ScheduleManager.currentPrograssScheduleID == "S00")
         {
             Turn = 0;
-            //CreateScheduleGO.SetActive(true);
 
+            //CreateScheduleGO.SetActive(true);
             //SchedulePrograss.Set_InStartScheduleUI();
 
             for (int i = 0; i < ScheculeBtnGO.transform.childCount; i++)
@@ -402,12 +397,14 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                 }
             }
 
-            Debug.Log("사전조사 남았는지 판별");
-            int remainPS = PreliminarySurveyManager.PSSOs_FindClue_Available.Count +
-                PreliminarySurveyManager.PSSOs_Extract_Available.Count;
-            if (remainPS == 0)
+            if ((PreliminarySurveyManager.PSSOs_FindClue_Available.Count + 
+                PreliminarySurveyManager.PSSOs_Extract_Available.Count) == 0)
             {
                 PreliminarySurveyBtn.interactable = false;
+            }
+            else
+            {
+                PreliminarySurveyBtn.interactable = true;
             }
 
             foreach (TMP_Text text in SelectedScheduleTexts)
@@ -483,14 +480,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                     btns = new List<List<Button>>() { PlaceBtns };
                     PlayerInputController.SetSectionBtns(btns, this);
 
-                    /*foreach(Button btn in PlaceBtns)
-                    {
-                        if(btn.TryGetComponent(out BasicInteractBtn BIB))
-                        {
-                            BIB.enabled = false;
-                        }
-                    }*/
-                    
                     Sequence sequence = DOTween.Sequence();
                     sequence.AppendInterval(2f);
                     for(int i = 0; i < PlaceBtns.Count; i++)
@@ -506,17 +495,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                             .SetEase(Ease.OutBack));
                         sequence.Join(BtnCG.DOFade(1, 0.2f));
                     }
-
-                    /*sequence.OnComplete(() =>
-                    {
-                        foreach (Button btn in PlaceBtns)
-                        {
-                            if (btn.TryGetComponent(out BasicInteractBtn BIB))
-                            {
-                                BIB.enabled = true;
-                            }
-                        }
-                    });*/
 
                     break;
             }
