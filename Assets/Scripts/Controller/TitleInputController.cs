@@ -46,6 +46,7 @@ public class TitleInputController : Manager<TitleInputController>
         TitleInput["SelectUp"].started += selectUp;
         TitleInput["SelectDown"].started += selectDown;
         TitleInput["Select"].started += select;
+        TitleInput["Back"].started += back;
     }
 
     private void DisableTitleInput()
@@ -53,6 +54,7 @@ public class TitleInputController : Manager<TitleInputController>
         _input.actions["SelectUp"].started -= selectUp;
         _input.actions["SelectDown"].started -= selectDown;
         _input.actions["Select"].started -= select;
+        _input.actions["Back"].started -= back;
     }
 
     #endregion
@@ -137,6 +139,10 @@ public class TitleInputController : Manager<TitleInputController>
                 interact.Interact();
             }
         }
+    }
+    private void back(InputAction.CallbackContext obj)
+    {
+
     }
 
 

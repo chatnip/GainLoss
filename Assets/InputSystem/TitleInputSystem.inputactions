@@ -1,5 +1,5 @@
 {
-    "name": "InputSystem 1",
+    "name": "TitleInputSystem",
     "maps": [
         {
             "name": "Title",
@@ -27,6 +27,15 @@
                     "name": "Select",
                     "type": "Button",
                     "id": "fc55e338-ec3b-4770-b0e8-dbbbf357a70d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "6fd791dc-3d2d-4c1b-847d-e63b9ffac8d2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -64,6 +73,17 @@
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3e0198a-1554-4b4d-997b-2e2df00a77f3",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

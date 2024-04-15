@@ -12,7 +12,7 @@ public class Title : MonoBehaviour, IInteract
     #region Value
 
     [Header("*Property")]
-    [SerializeField] TitleInputController TitleInputController;
+    [SerializeField] public TitleInputController TitleInputController;
     [SerializeField] CanvasScaler TitleCanvasScaler;
     [SerializeField] Camera MainCamera;
 
@@ -61,10 +61,6 @@ public class Title : MonoBehaviour, IInteract
         newGameBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                MainInfo newMainInfo = new MainInfo();
-                newMainInfo.NewGame = false;
-                JsonSave(newMainInfo);
-
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
                     .SetEase(Ease.InOutBack)
@@ -90,7 +86,8 @@ public class Title : MonoBehaviour, IInteract
         OptionBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                EffectfulWindow.AppearEffectful(OptionWindow.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
+                OptionWindow.TryGetComponent(out RectTransform rectTransform);
+                EffectfulWindow.AppearEffectful(rectTransform, 0.2f, 0.0f, Ease.InOutBack);
             });
         QuitBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -119,8 +116,8 @@ public class Title : MonoBehaviour, IInteract
 
 
         Debug.Log("TestVersion_InteractFalse");
-        OptionBtn.interactable = false;
-        cannotUseOption.SetActive(true);
+        //OptionBtn.interactable = false;
+        //cannotUseOption.SetActive(true);
     }
 
     private void LateUpdate()
@@ -130,12 +127,8 @@ public class Title : MonoBehaviour, IInteract
 
     public void Interact()
     {
-        if(TitleInputController.SelectBtn == newGameBtn)
+        if(TitleInputController.SelectBtn == newGameBtn && newGameBtn.interactable)
         {
-            MainInfo newMainInfo = new MainInfo();
-            newMainInfo.NewGame = true;
-            JsonSave(newMainInfo);
-
             BlackScreenImg.gameObject.SetActive(true);
             BlackScreenImg.DOFade(1.0f, 0.7f)
                 .SetEase(Ease.InOutBack)
@@ -146,7 +139,7 @@ public class Title : MonoBehaviour, IInteract
                     SceneManager.LoadScene("Main");
                 });
         }
-        if (TitleInputController.SelectBtn == continueBtn)
+        if (TitleInputController.SelectBtn == continueBtn && continueBtn.interactable)
         {
             BlackScreenImg.gameObject.SetActive(true);
             BlackScreenImg.DOFade(1.0f, 0.7f)
@@ -218,9 +211,14 @@ public class Title : MonoBehaviour, IInteract
             .SetEase(Ease.InOutBack)
             .OnComplete(() =>
             {
-                TitleInputController.SetSectionBtns(btns, this);
+                SetButtonThisTitle();
                 BlackScreenImg.gameObject.SetActive(false);
             }));
+    }
+
+    public void SetButtonThisTitle()
+    {
+        TitleInputController.SetSectionBtns(btns, this);
     }
 
     #endregion
