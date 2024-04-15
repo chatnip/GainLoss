@@ -32,7 +32,7 @@ public class ScheduleManager : Manager<ScheduleManager>
 
     [Header("*Guide")]
     [SerializeField] RectTransform computerArrowRT;
-    [SerializeField] RectTransform inUIEffectRT;
+    [SerializeField] public RectTransform inUIEffectRT;
 
     [Header("*Sun And Moon")]
     [SerializeField] public RectTransform SAM_Frame;

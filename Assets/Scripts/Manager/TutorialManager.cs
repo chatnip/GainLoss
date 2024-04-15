@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
     [Header("*UI")]
     [SerializeField] public CanvasGroup tutorial_ScreenCG;
     [SerializeField] Button closeTutorialBtn;
+    [SerializeField] TMP_Text TutorialNameTxt;
 
     [SerializeField] public GameObject tutotial_MakeSchedule;
     [SerializeField] public GameObject tutotial_PS;
@@ -92,6 +94,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
 
+        TutorialNameTxt.text = "<size=80%>" + DataManager.ScheduleDatas[3][scheduleID].ToString() + "</size> <#323232>TUTORIAL</color>";
         closeTutorialBtn.interactable = false;
         tutorialWindow_type.SetActive(true);
         tutorial_ScreenCG.gameObject.SetActive(true);
@@ -114,7 +117,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
     {
         if (ID == "S00") { currentTutorialInfo.HasDone_MakeSchedule = true; }
         else if (ID == "S01") { currentTutorialInfo.HasDone_PS = true; }
-        else if (ID == "S02") { currentTutorialInfo.HasDone_VisitStream = true; }
+        else if (ID == "S02") { currentTutorialInfo.HasDone_VisitPlace = true; }
         else if (ID == "S03") { currentTutorialInfo.HasDone_WatchStream = true; }
         else if (ID == "S04") { currentTutorialInfo.HasDone_PartTimeJob = true; }
         else if (ID == "S99") { currentTutorialInfo.HasDone_EndDay = true; }
@@ -140,7 +143,7 @@ public class TutorialInfo
     public bool HasDone_MakeSchedule = false;
 
     public bool HasDone_PS = false;
-    public bool HasDone_VisitStream = false;
+    public bool HasDone_VisitPlace = false;
     public bool HasDone_WatchStream = false;
     public bool HasDone_PartTimeJob = false;
     public bool HasDone_EndDay = false;
@@ -151,7 +154,7 @@ public class TutorialInfo
         {
             { "S00", HasDone_MakeSchedule},
             { "S01", HasDone_PS},
-            { "S02", HasDone_VisitStream},
+            { "S02", HasDone_VisitPlace},
             { "S03", HasDone_WatchStream},
             { "S04", HasDone_PartTimeJob},
             { "S99", HasDone_EndDay},

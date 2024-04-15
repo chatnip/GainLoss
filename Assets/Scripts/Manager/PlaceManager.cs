@@ -210,13 +210,39 @@ public class PlaceManager : Manager<PlaceManager>
 
     private IEnumerator GoingSomewhereLoading(float delay)
     {
+        ScheduleManager.inUIEffectRT.TryGetComponent(out Image img);
+        img.enabled = false;
         CurrentPlaceTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID] + "(으)로 이동합니다.";
         GoingSomewhereloadingCG.alpha = 0f;
         GoingSomewhereloadingCG.DOFade(1, delay);
         GoingSomewhereloadingCG.gameObject.SetActive(true);
 
+        if(currentPlace.ID == "P00")
+        {
+            Step_SG.TryGetComponent(out RectTransform rectTransform);
+            if (rectTransform.localScale.x > 0)
+            {
+                Vector3 v3 = rectTransform.localScale;
+                v3.x *= -1;
+                rectTransform.localScale = v3;
+            }
+            rectTransform.anchoredPosition = new Vector2(400f, 0f);
+        }
+        else
+        {
+            Step_SG.TryGetComponent(out RectTransform rectTransform);
+            if (rectTransform.localScale.x < 0)
+            {
+                Vector3 v3 = rectTransform.localScale;
+                v3.x *= -1;
+                rectTransform.localScale = v3;
+            }
+            rectTransform.anchoredPosition = new Vector2(-400f, 0f);
+        }
+
         Step_SG.AnimationState.SetEmptyAnimations(0);
         Step_SG.AnimationState.SetAnimation(trackIndex: 0, "animation", loop: false);
+
 
         yield return new WaitForSeconds(delay);
 
@@ -231,6 +257,7 @@ public class PlaceManager : Manager<PlaceManager>
         if (currentPlace.ID == "P00")
         { ScheduleManager.PassBtnOn(); }
         ScheduleManager.SetDotweenGuide();
+        img.enabled = true;
 
         GoingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>
