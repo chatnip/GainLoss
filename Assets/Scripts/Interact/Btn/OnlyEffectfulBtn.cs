@@ -3,20 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OnlyEffectfulBtn : InteractCore
 {
-    [Header("*Manager")]
-    [SerializeField] PlayerInputController PlayerInputController;
-
     [Header("*Compnenet")]
     [SerializeField] public Button thisBtn;
 
     public void Awake()
     {
-        //InteractiveBtn_comp = GetComponent<Button>();
-        PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>();
         thisBtn = this.gameObject.GetComponent<Button>();
     }
 

@@ -650,7 +650,6 @@ public class PlayerInputController : Manager<PlayerInputController>
         }
 
     }
-
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
         foreach (GameObject pad in Pads)
@@ -683,8 +682,6 @@ public class PlayerInputController : Manager<PlayerInputController>
             PSWindow_FC.ft_setClueImg(SelectBtn);
         }
     }
-
-
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
         if (SectionBtns != null && SectionBtns.Count > 1)

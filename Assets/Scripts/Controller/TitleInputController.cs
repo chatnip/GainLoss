@@ -4,10 +4,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEditor.ShaderData;
 
 public class TitleInputController : Manager<TitleInputController>
 {
     #region Value
+
+    [Header("*Property")]
+    [SerializeField] Title Title;
+    [SerializeField] Option Option;
 
     [Header("*Input Setting")]
     [SerializeField] public PlayerInput _input;
@@ -43,16 +48,20 @@ public class TitleInputController : Manager<TitleInputController>
     private void EnableTitleInput()
     {
         var TitleInput = _input.actions.FindActionMap("Title");
-        TitleInput["SelectUp"].started += selectUp;
-        TitleInput["SelectDown"].started += selectDown;
+        TitleInput["SelectUp"].started += UpSelectedBtn;
+        TitleInput["SelectDown"].started += DownSelectedBtn;
+        TitleInput["SelectLeft"].started += LeftSelectedBtn;
+        TitleInput["SelectRight"].started += RightSelectedBtn;
         TitleInput["Select"].started += select;
         TitleInput["Back"].started += back;
     }
 
     private void DisableTitleInput()
     {
-        _input.actions["SelectUp"].started -= selectUp;
-        _input.actions["SelectDown"].started -= selectDown;
+        _input.actions["SelectUp"].started -= UpSelectedBtn;
+        _input.actions["SelectDown"].started -= DownSelectedBtn;
+        _input.actions["SelectLeft"].started -= LeftSelectedBtn;
+        _input.actions["SelectRight"].started -= RightSelectedBtn;
         _input.actions["Select"].started -= select;
         _input.actions["Back"].started -= back;
     }
@@ -61,9 +70,9 @@ public class TitleInputController : Manager<TitleInputController>
 
     #region Section
 
-    private void selectUp(InputAction.CallbackContext obj)
+    private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (SectionBtns != null && SectionBtns.Count > 1)
+        if (SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();
             foreach (List<Button> BtnList in SectionBtns)
@@ -74,21 +83,45 @@ public class TitleInputController : Manager<TitleInputController>
                 }
             }
 
-            int lineIndex = SectionBtns.IndexOf(currentBtnList);
             int index = currentBtnList.IndexOf(SelectBtn);
-
-            if (lineIndex <= 0)
+            if (index >= currentBtnList.Count - 1)
             {
-                SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
+                SelectBtn = currentBtnList[0];
             }
             else
             {
-                SelectBtn = SectionBtns[lineIndex - 1][index];
+                SelectBtn = currentBtnList[(index + 1)];
+            }
+            OnOffSelectedBtn(SelectBtn);
+        }
+
+    }
+    private void LeftSelectedBtn(InputAction.CallbackContext obj)
+    {
+        if (SectionBtns != null && SectionBtns.Count >= 1)
+        {
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
+            {
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int index = currentBtnList.IndexOf(SelectBtn);
+            if (index <= 0)
+            {
+                SelectBtn = currentBtnList[currentBtnList.Count - 1];
+            }
+            else
+            {
+                SelectBtn = currentBtnList[(index - 1)];
             }
             OnOffSelectedBtn(SelectBtn);
         }
     }
-    private void selectDown(InputAction.CallbackContext obj)
+    private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
@@ -129,6 +162,35 @@ public class TitleInputController : Manager<TitleInputController>
             OnOffSelectedBtn(SelectBtn);
         }
     }
+    private void UpSelectedBtn(InputAction.CallbackContext obj)
+    {
+        if (SectionBtns != null && SectionBtns.Count > 1)
+        {
+            List<Button> currentBtnList = new List<Button>();
+            foreach (List<Button> BtnList in SectionBtns)
+            {
+                if (BtnList.Contains(SelectBtn))
+                {
+                    currentBtnList = BtnList;
+                }
+            }
+
+            int lineIndex = SectionBtns.IndexOf(currentBtnList);
+            int index = currentBtnList.IndexOf(SelectBtn);
+
+            if (lineIndex <= 0)
+            {
+                SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
+            }
+            else
+            {
+                SelectBtn = SectionBtns[lineIndex - 1][index];
+            }
+            OnOffSelectedBtn(SelectBtn);
+        }
+    }
+
+
     private void select(InputAction.CallbackContext obj)
     {
         if (SelectBtn != null)
@@ -142,7 +204,11 @@ public class TitleInputController : Manager<TitleInputController>
     }
     private void back(InputAction.CallbackContext obj)
     {
-
+        if(!Option.SetOffOptionDetail())
+        { return; }
+         
+        if(Option.gameObject.activeSelf)
+        { Option.SetOffOption(); }
     }
 
 

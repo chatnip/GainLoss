@@ -33,7 +33,7 @@ public class Option : MonoBehaviour, IInteract
     [SerializeField] Button ApplyBtn;
 
 
-    Dictionary<Button, GameObject> ButtonByGODict;
+    [HideInInspector] public Dictionary<Button, GameObject> ButtonByGODict;
 
     
 
@@ -65,21 +65,20 @@ public class Option : MonoBehaviour, IInteract
                     ButtonByGODict[SettingBtn].gameObject.SetActive(true);
                     CancelBtn.interactable = true;
                     ApplyBtn.interactable = true;
-                    Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { CancelBtn, ApplyBtn } }, this);
+                    //Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { CancelBtn, ApplyBtn } }, this);
                 });
         }
         BackBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
-                Title.SetButtonThisTitle();
+                SetOffOption();
             });
 
         // ¿À¸¥ÂÊ Cancel, Apply
         CancelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-
+                SetOffOptionDetail();
             });
         ApplyBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -96,7 +95,7 @@ public class Option : MonoBehaviour, IInteract
 
         if (Title.TitleInputController.SelectBtn == BackBtn && BackBtn.interactable)
         {
-            EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
+            SetOffOption();
             Title.SetButtonThisTitle();
         }
 
@@ -114,11 +113,28 @@ public class Option : MonoBehaviour, IInteract
                 ButtonByGODict[selected].gameObject.SetActive(true);
                 CancelBtn.interactable = true;
                 ApplyBtn.interactable = true;
-                Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { CancelBtn, ApplyBtn } }, this);
             }
         }
     }
 
+    public void SetOffOption()
+    {
+        EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
+        Title.SetButtonThisTitle();
+    }
+    public bool SetOffOptionDetail()
+    {
+        foreach (KeyValuePair<Button, GameObject> BtnByGo in ButtonByGODict)
+        {
+            if (BtnByGo.Value.gameObject.activeSelf)
+            {
+                BtnByGo.Value.gameObject.SetActive(false);
+                OnEnable();
+                return false;
+            }
+        }
+        return true;
+    }
     private void setOffBtns(List<List<Button>> setOffBtns)
     {
         foreach(List<Button> btnList in setOffBtns)
@@ -149,8 +165,7 @@ public class Option : MonoBehaviour, IInteract
             new List<Button> { GameBtn },
             new List<Button> { AudioBtn },
             new List<Button> { VideoBtn },
-            new List<Button> { CreditBtn },
-            new List<Button> { BackBtn }
+            new List<Button> { CreditBtn }
         }, this);
     }
 
