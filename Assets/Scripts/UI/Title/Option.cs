@@ -121,6 +121,8 @@ public class Option : MonoBehaviour, IInteract
     {
         EffectfulWindow.DisappearEffectful(this.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
         Title.SetButtonThisTitle();
+        Title.TitleInputController.SelectBtn = Title.OptionBtn;
+        Title.TitleInputController.OnOffSelectedBtn(Title.OptionBtn);
     }
     public bool SetOffOptionDetail()
     {

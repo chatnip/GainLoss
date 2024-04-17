@@ -20,7 +20,7 @@ public class Title : MonoBehaviour, IInteract
     [SerializeField] Button newGameBtn;
     [SerializeField] Button continueBtn;
     [SerializeField] GameObject cannotUseContinue;
-    [SerializeField] Button OptionBtn;
+    [SerializeField] public Button OptionBtn;
     [SerializeField] GameObject cannotUseOption;
     [SerializeField] Button QuitBtn;
     List<List<Button>> btns;
