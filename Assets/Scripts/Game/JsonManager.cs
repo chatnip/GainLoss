@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class JsonManager : MonoBehaviour
 {
@@ -18,7 +19,11 @@ public class JsonManager : MonoBehaviour
     [HideInInspector] public string json_PlaceFileName;
     [HideInInspector] public string json_PSFileName;
 
+    [HideInInspector] public string json_SettingFileName;
+
     // public List<WordBase> myWords = new List<WordBase>();
+
+    [Header("*MainGame")]
     [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameManager GameManager;
@@ -27,23 +32,41 @@ public class JsonManager : MonoBehaviour
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] TutorialManager TutorialManager;
 
+    [Header("*Setting")]
+    [SerializeField] GameSettingManager GameSettingManager;
+
     #endregion
 
     #region Main
 
     private void Awake()
     {
-        SetPath();
-        LoadAllGameDatas();
-        if (GameManager.currentMainInfo.NewGame)
+        if(SceneManager.GetActiveScene().name == "Title")
         {
-            Debug.Log("Reset!!!");
-            ResetJson();
-            LoadAllGameDatas();
+            SetSettingJsonPath();
         }
+        else if(SceneManager.GetActiveScene().name == "Main")
+        {
+            SetAllJsonPath();
+            LoadAllGameDatas();
+            if (GameManager.currentMainInfo.NewGame)
+            {
+                Debug.Log("Reset!!!");
+                ResetMainJson();
+                LoadAllGameDatas();
+            }
+        }
+       
     }
 
-    private void SetPath()
+    private void SetSettingJsonPath()
+    {
+        json_filePath = "Json/";
+
+        json_SettingFileName = "SettingDatabase";
+    }
+
+    private void SetAllJsonPath()
     {
         json_filePath = "Json/";
 
@@ -55,12 +78,14 @@ public class JsonManager : MonoBehaviour
         json_ScheduleFileName = "scheduleDatabase";
         json_PlaceFileName = "placeDatabase";
         json_PSFileName = "gotPSDatabase";
+        SetSettingJsonPath();
     }
 
     #endregion
 
     #region Load Json
     
+    // Main
     public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
     {
         string path = jsonPath + jsonName;
@@ -140,7 +165,6 @@ public class JsonManager : MonoBehaviour
 
         return FinalResult;
     }
-
     public List<List<string>> JsonLoad_LL(string jsonPath, string jsonName)
     {
         /*if (!File.Exists(jsonPath + jsonName))
@@ -152,6 +176,17 @@ public class JsonManager : MonoBehaviour
         var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
         PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile.ToString());
         return saveData.Data();
+    }
+
+    // Setting
+    private GameSetting JsonLoad_S(string jsonPath, string jsonName)
+    {
+        string path = jsonPath + jsonName;
+        var loadJson = Resources.Load<TextAsset>(path);
+        GameSetting settingInfo = JsonUtility.FromJson<GameSetting>(loadJson.ToString());
+
+        return settingInfo;
+
     }
     
     // Load All
@@ -189,6 +224,9 @@ public class JsonManager : MonoBehaviour
         // Load -> got PreliminarySurvey Json
         PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[0];
         PreliminarySurveyManager.PSSO_Extract_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[1];
+
+        // Load -> Setting
+        GameSettingManager.GameSetting = JsonLoad_S(json_filePath, json_SettingFileName);
 
     }
 
@@ -298,9 +336,21 @@ public class JsonManager : MonoBehaviour
         File.WriteAllText(saveFilePath, saveJson);
         Debug.Log("Save Success: " + saveFilePath);
     }
+    public void JsonSave(string jsonName, GameSetting gameSetting)
+    {
+        string saveJson = JsonUtility.ToJson(gameSetting, true);
+        string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+
+#if UNITY_EDITOR
+        saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+#endif
+
+        File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log("Save Success: " + saveFilePath);
+    }
 
     // Save ALL
-    public void SaveAllGameDatas()
+    public void SaveAllMainGameDatas()
     {
         // Save -> Tutorial Json
         JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
@@ -329,6 +379,9 @@ public class JsonManager : MonoBehaviour
             PreliminarySurveyManager.PSSO_Extract_ExceptionIDs
         ));
 
+        // Save -> Setting
+        JsonSave(json_SettingFileName, GameSettingManager.GameSetting);
+
     }
 
 #endregion
@@ -336,10 +389,10 @@ public class JsonManager : MonoBehaviour
     #region StartSet (Reset)
 
     // Reset SentenceSheet - Json
-    [ContextMenu("ResetJson")]
-    public void ResetJson()
+    [ContextMenu("ResetJson_MainData")]
+    public void ResetMainJson()
     {
-        SetPath();
+        SetAllJsonPath();
 
         JsonSave(json_tutorialFileName, new TutorialInfo());
         JsonSave(json_mainInfoFileName, new MainInfo());
@@ -372,6 +425,13 @@ public class JsonManager : MonoBehaviour
         result.RemoveAt(0);
 
         JsonSave(json_sentenceFileName, result);
+    }
+
+    [ContextMenu("ResetJson_SettingData")]
+    public void ResetSettingJson()
+    {
+        SetSettingJsonPath();
+        JsonSave(json_SettingFileName, new GameSetting());
     }
 
     #endregion

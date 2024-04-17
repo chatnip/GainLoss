@@ -141,7 +141,6 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
 public class TutorialInfo
 {
     public bool HasDone_MakeSchedule = false;
-
     public bool HasDone_PS = false;
     public bool HasDone_VisitPlace = false;
     public bool HasDone_WatchStream = false;

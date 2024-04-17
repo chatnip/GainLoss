@@ -203,7 +203,7 @@ public class ActionEventManager : Manager<ActionEventManager>
     {
         DOTween.Kill(SavingPrograssText);
 
-        JsonManager.SaveAllGameDatas();
+        JsonManager.SaveAllMainGameDatas();
 
 
         GameSystem.SetPlayerTransform();
