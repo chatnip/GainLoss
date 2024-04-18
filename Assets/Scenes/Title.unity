@@ -7477,12 +7477,14 @@ MonoBehaviour:
   GameSetting:
     GameSetting_Game:
       ShowGuidePadUI: 1
+      MainUIScale: 5
     GameSetting_Video:
       FullScreen: 1
       display_Resolution: 2
       display_FPSLimit: 1
       ShowFPS: 0
-  testFPS: {fileID: 2014003972}
+  FPSText: {fileID: 2014003972}
+  MainCanvas: {fileID: 0}
 --- !u!1 &2054551433
 GameObject:
   m_ObjectHideFlags: 0
@@ -9117,6 +9119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Title: {fileID: 1475849331}
+  GameSettingManager: {fileID: 2053332141}
   GameSetting: {fileID: 1660506246}
   AudioSetting: {fileID: 317018126}
   VideoSetting: {fileID: 2122087506}

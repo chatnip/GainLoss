@@ -24,10 +24,6 @@ public class ObjectPooling : MonoBehaviour
             WordBtnObjectsQueue.Enqueue(WordBtnObjectPrefabs[i]);
             WordBtnObjectPrefabs[i].gameObject.SetActive(false);
         }
-        /*for (int i = 0; i < NorificationObjectPrefabs.Count; i++)
-        {
-            NorificationObjectPrefabs[i].gameObject.SetActive(false);
-        }*/
     }
 
     public IDBtn WordBtnObjectPool()
@@ -42,16 +38,4 @@ public class ObjectPooling : MonoBehaviour
         wordBtnObject.transform.SetParent(wordPool);
         wordBtnObject.gameObject.SetActive(false);
     }
-
-   /* public GameObject ft_getUsableNOP()
-    {
-        for(int i = 0; i < NorificationObjectPrefabs.Count; i++)
-        {
-            if (!NorificationObjectPrefabs[i].gameObject.activeSelf)
-            {
-                return NorificationObjectPrefabs[i];
-            }
-        }
-        return null;
-    }*/
 }

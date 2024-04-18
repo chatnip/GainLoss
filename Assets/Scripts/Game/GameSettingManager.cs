@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,21 +7,81 @@ using UnityEngine;
 
 public class GameSettingManager : Manager<GameSettingManager>
 {
-    public GameSetting GameSetting;
-    [SerializeField] TMP_Text testFPS;
+    [Header("*Property")]
+    [SerializeField] public GameSetting GameSetting;
+
+    [Header("*UI")]
+    [SerializeField] TMP_Text FPSText;
+    [SerializeField] List<GameObject> PadUIs;
+    [SerializeField] Canvas MainCanvas;
 
     protected override void Awake()
     {
-        Application.targetFrameRate = 60;
-        StartCoroutine(Test());
+        SetAllSetting();
     }
 
-
-    IEnumerator Test()
+    public void SetAllSetting()
     {
-        testFPS.text = "FPS: " + Application.targetFrameRate;
+        SetGameSetting();
+        SetAudioSetting();
+        SetVedioSetting();
+    }
+
+    public void SetGameSetting()
+    {
+
+    }
+
+    public void SetAudioSetting()
+    {
+        // Pad UI
+        if (GameSetting.GameSetting_Game.ShowGuidePadUI)
+        {
+            foreach (GameObject PadUI in PadUIs) { PadUI.gameObject.SetActive(true); }
+        }
+        else
+        {
+            foreach (GameObject PadUI in PadUIs) { PadUI.gameObject.SetActive(false); }
+        }
+
+        // UI Scale
+        if(MainCanvas != null)
+        {
+
+        }
+    }
+
+    public void SetVedioSetting()
+    {
+        // FPS Show
+        if (GameSetting.GameSetting_Video.ShowFPS)
+        {
+            FPSText.gameObject.SetActive(true);
+            StartCoroutine(SetFPS()); 
+        }
+        else
+        {
+            FPSText.gameObject.SetActive(false);
+            StopCoroutine(SetFPS());
+        }
+
+        // FullScreen, Resolution
+        List<int> Width_Height = GameSetting.GameSetting_Video.GetDisplayValueByEnum(GameSetting.GameSetting_Video.display_Resolution);
+        Screen.SetResolution(Width_Height[0], Width_Height[1], GameSetting.GameSetting_Video.FullScreen);
+
+        // FPS
+        Application.targetFrameRate = GameSetting.GameSetting_Video.GetDisplayValueByEnum(GameSetting.GameSetting_Video.display_FPSLimit);
+    }
+    public void SetCreditSetting()
+    {
+
+    }
+
+    IEnumerator SetFPS()
+    {
+        FPSText.text = "FPS: " + Application.targetFrameRate;
         yield return new WaitForSeconds(1f);
-        StartCoroutine(Test());
+        StartCoroutine(SetFPS());
     }
 
 }
@@ -42,6 +103,8 @@ public class GameSetting
 public class GameSetting_Game
 {
     public bool ShowGuidePadUI = true;
+    public int MainUIScale = 5;
+
 
 }
 [System.Serializable]

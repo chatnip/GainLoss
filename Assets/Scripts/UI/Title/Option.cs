@@ -14,6 +14,7 @@ public class Option : MonoBehaviour, IInteract
 
     [Header("*Property")]
     [SerializeField] Title Title;
+    [SerializeField] GameSettingManager GameSettingManager;
 
     [Header("*Window")]
     [SerializeField] GameObject GameSetting;
@@ -32,9 +33,9 @@ public class Option : MonoBehaviour, IInteract
     [SerializeField] Button CancelBtn;
     [SerializeField] Button ApplyBtn;
 
-
+    public delegate void dele();
     [HideInInspector] public Dictionary<Button, GameObject> ButtonByGODict;
-
+    [HideInInspector] public Dictionary<GameObject, dele> DeleByGODict;
     
 
     #endregion
@@ -50,9 +51,16 @@ public class Option : MonoBehaviour, IInteract
             { VideoBtn, VideoSetting},
             { CreditBtn, CreditSetting}
         };
+        DeleByGODict = new Dictionary<GameObject, dele>()
+        {
+            { GameSetting, new dele(GameSettingManager.SetGameSetting) },
+            { AudioSetting, new dele(GameSettingManager.SetAudioSetting) },
+            { VideoSetting, new dele(GameSettingManager.SetVedioSetting) },
+            { CreditSetting, new dele(GameSettingManager.SetCreditSetting) }
+        };
 
         // 왼쪽 리스트 클릭 셋
-        foreach(Button SettingBtn in ButtonByGODict.Keys)
+        foreach (Button SettingBtn in ButtonByGODict.Keys)
         {
             SettingBtn.OnClickAsObservable()
                 .Subscribe(btn =>
@@ -83,7 +91,7 @@ public class Option : MonoBehaviour, IInteract
         ApplyBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                
+                ApplyOptionDetail();
             });
         
     }
@@ -136,6 +144,16 @@ public class Option : MonoBehaviour, IInteract
             }
         }
         return true;
+    }
+    public void ApplyOptionDetail()
+    {
+        foreach (KeyValuePair<GameObject, dele> BtnByGo in DeleByGODict)
+        {
+            if (BtnByGo.Key.gameObject.activeSelf)
+            {
+                BtnByGo.Value();
+            }
+        }
     }
     private void setOffBtns(List<List<Button>> setOffBtns)
     {
