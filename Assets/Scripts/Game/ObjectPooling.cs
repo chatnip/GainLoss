@@ -9,8 +9,8 @@ public class ObjectPooling : MonoBehaviour
     [SerializeField] Queue<IDBtn> WordBtnObjectsQueue = new Queue<IDBtn>();
     [SerializeField] RectTransform wordPool;
 
-    [Header("*Norification Object")]
-    [SerializeField] public List<GameObject> NorificationObjectPrefabs = new List<GameObject>();
+    /*[Header("*Norification Object")]
+    [SerializeField] public List<GameObject> NorificationObjectPrefabs = new List<GameObject>();*/
 
     private void Awake()
     {
@@ -24,10 +24,10 @@ public class ObjectPooling : MonoBehaviour
             WordBtnObjectsQueue.Enqueue(WordBtnObjectPrefabs[i]);
             WordBtnObjectPrefabs[i].gameObject.SetActive(false);
         }
-        for (int i = 0; i < NorificationObjectPrefabs.Count; i++)
+        /*for (int i = 0; i < NorificationObjectPrefabs.Count; i++)
         {
             NorificationObjectPrefabs[i].gameObject.SetActive(false);
-        }
+        }*/
     }
 
     public IDBtn WordBtnObjectPool()
@@ -43,7 +43,7 @@ public class ObjectPooling : MonoBehaviour
         wordBtnObject.gameObject.SetActive(false);
     }
 
-    public GameObject ft_getUsableNOP()
+   /* public GameObject ft_getUsableNOP()
     {
         for(int i = 0; i < NorificationObjectPrefabs.Count; i++)
         {
@@ -53,5 +53,5 @@ public class ObjectPooling : MonoBehaviour
             }
         }
         return null;
-    }
+    }*/
 }
