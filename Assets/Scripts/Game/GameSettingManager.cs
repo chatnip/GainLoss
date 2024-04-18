@@ -22,17 +22,17 @@ public class GameSettingManager : Manager<GameSettingManager>
 
     public void SetAllSetting()
     {
-        SetGameSetting();
-        SetAudioSetting();
-        SetVedioSetting();
+        LoadAndSet_GameSetting();
+        LoadAndSet_AudioSetting();
+        LoadAndSet_VedioSetting();
     }
 
-    public void SetGameSetting()
+    public void LoadAndSet_GameSetting()
     {
 
     }
 
-    public void SetAudioSetting()
+    public void LoadAndSet_AudioSetting()
     {
         // Pad UI
         if (GameSetting.GameSetting_Game.ShowGuidePadUI)
@@ -51,7 +51,7 @@ public class GameSettingManager : Manager<GameSettingManager>
         }
     }
 
-    public void SetVedioSetting()
+    public void LoadAndSet_VedioSetting()
     {
         // FPS Show
         if (GameSetting.GameSetting_Video.ShowFPS)
@@ -72,7 +72,8 @@ public class GameSettingManager : Manager<GameSettingManager>
         // FPS
         Application.targetFrameRate = GameSetting.GameSetting_Video.GetDisplayValueByEnum(GameSetting.GameSetting_Video.display_FPSLimit);
     }
-    public void SetCreditSetting()
+
+    public void LoadAndSet_CreditSetting()
     {
 
     }
@@ -117,7 +118,7 @@ public class GameSetting_Video
 {
     public bool FullScreen = true;
     public Display_Resolution display_Resolution = Display_Resolution.FHD;
-    public FramePerSecond display_FPSLimit = FramePerSecond.FPS_60;
+    public FramePerSecond display_FPSLimit = FramePerSecond.FPS_144;
     public bool ShowFPS = false;
 
     private Dictionary<Display_Resolution, List<int>> display_ResolusionValueDict;
