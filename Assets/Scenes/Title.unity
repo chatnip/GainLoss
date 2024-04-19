@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 130366915}
   m_Layer: 5
   m_Name: PanelBtn_FullScreen
-  m_TagString: Untagged
+  m_TagString: Toggle_UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1070,13 +1070,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 130366909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140a51b201a848e4297c51738c7e54f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 42f69856943cf8941bea3fe8e9800f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 0}
   PlayerInputController: {fileID: 0}
   TitleInputController: {fileID: 0}
   thisBtn: {fileID: 0}
+  thisToggle: {fileID: 73434393}
+  onOffTxt: {fileID: 1032230864}
 --- !u!1 &132210175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3670,7 +3672,7 @@ GameObject:
   - component: {fileID: 789725404}
   m_Layer: 5
   m_Name: PanelBtn_Resolution
-  m_TagString: Untagged
+  m_TagString: ArrowLR_UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3801,13 +3803,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 789725398}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140a51b201a848e4297c51738c7e54f6, type: 3}
+  m_Script: {fileID: 11500000, guid: a087e3d2c3f7c964ab729a30efc7c896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 0}
   PlayerInputController: {fileID: 0}
   TitleInputController: {fileID: 0}
   thisBtn: {fileID: 0}
+  arrowLRValueType: 0
+  valueTxt: {fileID: 1366681775}
+  LeftBtn: {fileID: 1759373578}
+  RightBtn: {fileID: 1936040561}
+  currentResolution: 0
+  currentFPSLimit: 0
 --- !u!1 &821000679
 GameObject:
   m_ObjectHideFlags: 0
@@ -7193,7 +7201,7 @@ GameObject:
   - component: {fileID: 1459992253}
   m_Layer: 5
   m_Name: PanelBtn_ShowFPS
-  m_TagString: Untagged
+  m_TagString: Toggle_UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7324,13 +7332,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1459992247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140a51b201a848e4297c51738c7e54f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 42f69856943cf8941bea3fe8e9800f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 0}
   PlayerInputController: {fileID: 0}
   TitleInputController: {fileID: 0}
   thisBtn: {fileID: 0}
+  thisToggle: {fileID: 1904520038}
+  onOffTxt: {fileID: 273545741}
 --- !u!1 &1475849329
 GameObject:
   m_ObjectHideFlags: 0
@@ -7436,7 +7446,7 @@ GameObject:
   - component: {fileID: 1498519783}
   m_Layer: 5
   m_Name: PanelBtn_FPSLimit
-  m_TagString: Untagged
+  m_TagString: ArrowLR_UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7567,13 +7577,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1498519777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140a51b201a848e4297c51738c7e54f6, type: 3}
+  m_Script: {fileID: 11500000, guid: a087e3d2c3f7c964ab729a30efc7c896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Outline: {fileID: 0}
   PlayerInputController: {fileID: 0}
   TitleInputController: {fileID: 0}
   thisBtn: {fileID: 0}
+  arrowLRValueType: 1
+  valueTxt: {fileID: 125880746}
+  LeftBtn: {fileID: 2070406792}
+  RightBtn: {fileID: 1176092771}
+  currentResolution: 0
+  currentFPSLimit: 0
 --- !u!1 &1511734851
 GameObject:
   m_ObjectHideFlags: 0
@@ -10095,6 +10111,7 @@ MonoBehaviour:
       display_Resolution: 2
       display_FPSLimit: 5
       ShowFPS: 0
+  JsonManager: {fileID: 1277301793}
   FPSText: {fileID: 2014003972}
   PadUIs: []
   MainCanvas: {fileID: 0}

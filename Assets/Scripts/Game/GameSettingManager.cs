@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class GameSettingManager : Manager<GameSettingManager>
@@ -20,19 +22,23 @@ public class GameSettingManager : Manager<GameSettingManager>
         SetAllSetting();
     }
 
+    #region Apply By Json
+
     public void SetAllSetting()
     {
-        LoadAndSet_GameSetting();
-        LoadAndSet_AudioSetting();
-        LoadAndSet_VedioSetting();
+        Apply_Gs();
+        Apply_As();
+        Apply_Vs();
     }
 
-    public void LoadAndSet_GameSetting()
+    // Game Setting
+    public void Apply_Gs()
     {
 
     }
 
-    public void LoadAndSet_AudioSetting()
+    // Audio Setting
+    public void Apply_As()
     {
         // Pad UI
         if (GameSetting.GameSetting_Game.ShowGuidePadUI)
@@ -51,7 +57,8 @@ public class GameSettingManager : Manager<GameSettingManager>
         }
     }
 
-    public void LoadAndSet_VedioSetting()
+    // Video Setting
+    public void Apply_Vs()
     {
         // FPS Show
         if (GameSetting.GameSetting_Video.ShowFPS)
@@ -66,17 +73,34 @@ public class GameSettingManager : Manager<GameSettingManager>
         }
 
         // FullScreen, Resolution
-        List<int> Width_Height = GameSetting.GameSetting_Video.GetDisplayValueByEnum(GameSetting.GameSetting_Video.display_Resolution);
+        List<int> Width_Height = 
+            GameSetting.GameSetting_Video.GetDisplayValueByEnum_Reso(
+                GameSetting.GameSetting_Video.display_Resolution);
         Screen.SetResolution(Width_Height[0], Width_Height[1], GameSetting.GameSetting_Video.FullScreen);
 
         // FPS
-        Application.targetFrameRate = GameSetting.GameSetting_Video.GetDisplayValueByEnum(GameSetting.GameSetting_Video.display_FPSLimit);
+        Application.targetFrameRate =
+            GameSetting.GameSetting_Video.GetDisplayValueByEnum_Fps(
+                GameSetting.GameSetting_Video.display_FPSLimit);
     }
 
-    public void LoadAndSet_CreditSetting()
+    // Credit Setting
+    public void Apply_Cs()
     {
 
     }
+
+    #endregion
+
+    #region Init InData
+
+    public void InitData_Gs()
+    {
+    }
+
+    #endregion
+
+    #region Other
 
     IEnumerator SetFPS()
     {
@@ -84,6 +108,8 @@ public class GameSettingManager : Manager<GameSettingManager>
         yield return new WaitForSeconds(1f);
         StartCoroutine(SetFPS());
     }
+
+    #endregion
 
 }
 
@@ -146,14 +172,28 @@ public class GameSetting_Video
     }
 
 
-    public List<int> GetDisplayValueByEnum(Display_Resolution DisplayEnum)
+    // Get Resolution Values
+    public List<int> GetDisplayValueByEnum_Reso(Display_Resolution DR)
+    { return display_ResolusionValueDict[DR]; }
+    public Display_Resolution GetDisplayEnumByValue_Reso(List<int> resoInts)
     {
-        return display_ResolusionValueDict[DisplayEnum];
+        foreach (var e in display_ResolusionValueDict)
+        {
+            if (e.Value == resoInts)
+            {
+                Debug.Log("도출");
+                return e.Key;
+            }
+        }
+        return Display_Resolution.FHD;
     }
-    public int GetDisplayValueByEnum(FramePerSecond DisplayEnum)
-    {
-        return display_FPSValueDict[DisplayEnum];
-    }
+
+
+    // Get Fps Values
+    public int GetDisplayValueByEnum_Fps(FramePerSecond FPS)
+    { return display_FPSValueDict[FPS]; }
+    public FramePerSecond GetDisplayEnumByValue_Fps(int FpsInts)
+    { return display_FPSValueDict.FirstOrDefault(x => x.Value == FpsInts).Key; }
 }
 
 #endregion
@@ -162,11 +202,35 @@ public class GameSetting_Video
 
 public enum Display_Resolution
 {
-    HD, HD_plus, FHD, QHD
+    HD = 0, HD_plus = 1, FHD = 2, QHD = 3
 }
 public enum FramePerSecond
 {
-    FPS_30, FPS_60, FPS_70, FPS_100, FPS_120, FPS_144
+    FPS_30 = 0, FPS_60 = 1, FPS_70 = 2, FPS_100 = 3, FPS_120 = 4, FPS_144
+}
+
+#endregion
+
+#region Other (Cacul)
+
+// Enum확장
+public static class Enum_Extensions
+{
+    // Enum 다음 값 받기 -> 최대치 넘어가면 최초값
+    public static T Next<T>(this T source) where T : System.Enum
+    {
+        T[] Arr = (T[])Enum.GetValues(source.GetType());
+        int j = Array.IndexOf<T>(Arr, source) + 1;
+        return (Arr.Length <= j) ? Arr[0] : Arr[j];
+    }
+    // Enum 이전 값 받기 -> 최소치 전으로 가면 최대치
+    public static T Before<T>(this T source) where T : System.Enum
+    {
+        T[] Arr = (T[])Enum.GetValues(source.GetType());
+        int j = Array.IndexOf<T>(Arr, source) - 1;
+        return (0 > j) ? Arr[Arr.Length - 1] : Arr[j];
+    }
+
 }
 
 #endregion

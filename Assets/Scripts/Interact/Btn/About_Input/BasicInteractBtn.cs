@@ -11,8 +11,8 @@ public class BasicInteractBtn : InteractCore
     #region Value
 
     [Header("*Manager")]
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] TitleInputController TitleInputController;
+    [SerializeField] public PlayerInputController PlayerInputController;
+    [SerializeField] public TitleInputController TitleInputController;
 
     [Header("*Compnenet")]
     [SerializeField] public Button thisBtn;
@@ -21,7 +21,7 @@ public class BasicInteractBtn : InteractCore
 
     #region Main
 
-    public void Awake()
+    public virtual void Awake()
     {
         //InteractiveBtn_comp = GetComponent<Button>();
         if (SceneManager.GetActiveScene().name == "Title")
@@ -30,7 +30,8 @@ public class BasicInteractBtn : InteractCore
         else if (SceneManager.GetActiveScene().name == "Main")
         { PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>(); }
 
-        thisBtn = this.gameObject.GetComponent<Button>();
+        if (this.gameObject.TryGetComponent(out Button btn))
+        { thisBtn = btn; }
     }
 
     #endregion

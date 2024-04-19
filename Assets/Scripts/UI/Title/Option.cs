@@ -49,7 +49,7 @@ public class Option : MonoBehaviour, IInteract
 
     public delegate void dele();
     [HideInInspector] public Dictionary<Button, GameObject> ButtonByGODict;
-    [HideInInspector] public Dictionary<GameObject, dele> LoadAndSetDeleByGODict;
+    [HideInInspector] public Dictionary<GameObject, dele> DataSaveAndApplyDeleByGODict;
     
 
     #endregion
@@ -64,20 +64,20 @@ public class Option : MonoBehaviour, IInteract
             { VideoBtn, VideoSetting},
             { CreditBtn, CreditSetting}
         };
-        LoadAndSetDeleByGODict = new Dictionary<GameObject, dele>()
+        DataSaveAndApplyDeleByGODict = new Dictionary<GameObject, dele>()
         {
-            { GameSetting, new dele(GameSettingManager.LoadAndSet_GameSetting) },
-            { AudioSetting, new dele(GameSettingManager.LoadAndSet_AudioSetting) },
-            { VideoSetting, new dele(GameSettingManager.LoadAndSet_VedioSetting) },
-            { CreditSetting, new dele(GameSettingManager.LoadAndSet_CreditSetting) }
+            { GameSetting, new dele(GameSettingManager.Apply_Gs) },
+            { AudioSetting, new dele(GameSettingManager.Apply_As) },
+            { VideoSetting, new dele(GameSettingManager.Apply_Vs) },
+            { CreditSetting, new dele(GameSettingManager.Apply_Cs) }
         };
         GOByBtns = new Dictionary<GameObject, List<List<Button>>>
         {
-            { VideoSetting, new List<List<Button>> { 
-                new List<Button> {fullScreen_BtnPanel },
-                new List<Button> {resolution_BtnPanel },
-                new List<Button> {FPSLimit_BtnPanel },
-                new List<Button> {showFPS_BtnPanel }}}
+            { VideoSetting, new List<List<Button>> {
+                new List<Button> { fullScreen_BtnPanel },
+                new List<Button> { resolution_BtnPanel },
+                new List<Button> { FPSLimit_BtnPanel },
+                new List<Button> { showFPS_BtnPanel }}}
             
         };
     }
@@ -100,10 +100,9 @@ public class Option : MonoBehaviour, IInteract
                     ButtonByGODict[SettingBtn].gameObject.SetActive(true);
                     CancelBtn.interactable = true;
                     ApplyBtn.interactable = true;
-                    FindAndTurnOn_Setting(ButtonByGODict[SettingBtn]);
-
                     Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[SettingBtn]], this);
-                    
+
+                    FindAndTurnOn_Setting(ButtonByGODict[SettingBtn]);
                 });
         }
         BackBtn.OnClickAsObservable()
@@ -121,13 +120,26 @@ public class Option : MonoBehaviour, IInteract
         ApplyBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ApplyOptionDetail();
+                Apply_OptionDetail();
             });
         
     }
 
     public void Interact()
     {
+        if(CheckIsOnOptionDetail() != null)
+        {
+            if(Title.TitleInputController.SelectBtn.TryGetComponent(out ToggleInteractBtn TIB))
+            {
+                bool ToggleOn = TIB.thisToggle.isOn;
+                if (ToggleOn) { TIB.thisToggle.isOn = false; }
+                else { TIB.thisToggle.isOn = true; }
+                TIB.SetToggleUI(TIB.thisToggle.isOn);
+            }
+
+            return;
+        }
+
         // 왼쪽 리스트 클릭 셋
         ApplyBtnSet(Title.TitleInputController.SelectBtn);
         void ApplyBtnSet(Button selected)
@@ -142,17 +154,10 @@ public class Option : MonoBehaviour, IInteract
                 ButtonByGODict[selected].gameObject.SetActive(true);
                 CancelBtn.interactable = true;
                 ApplyBtn.interactable = true;
-                FindAndTurnOn_Setting(ButtonByGODict[selected]);
-
                 Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[selected]], this);
+
+                FindAndTurnOn_Setting(ButtonByGODict[selected]);
             }
-        }
-
-
-        if (Title.TitleInputController.SelectBtn == BackBtn && BackBtn.interactable)
-        {
-            SetOffOption();
-            Title.SetButtonThisTitle();
         }
     }
 
@@ -191,11 +196,29 @@ public class Option : MonoBehaviour, IInteract
 
     private void TurnOn_VideoSetting()
     {
+        Debug.Log("Video Setting On");
+        // 현재 값 출력
         GameSetting_Video GS_V = GameSettingManager.GameSetting.GameSetting_Video;
         fullScreen.IsOnOff(GS_V.FullScreen);
-        resolution.setText(GS_V.GetDisplayValueByEnum(GS_V.display_Resolution)[0] + " X " + GS_V.GetDisplayValueByEnum(GS_V.display_Resolution)[1]);
-        FPSLimit.setText(GS_V.GetDisplayValueByEnum(GS_V.display_FPSLimit) + "fps");
+        resolution.setText(
+            GS_V.GetDisplayValueByEnum_Reso(GS_V.display_Resolution)[0] + " X " + 
+            GS_V.GetDisplayValueByEnum_Reso(GS_V.display_Resolution)[1]);
+        FPSLimit.setText(GS_V.GetDisplayValueByEnum_Fps(GS_V.display_FPSLimit) + "fps");
         showFPS.IsOnOff(GS_V.ShowFPS);
+
+        /*// 현재 값에 따른 InteractBtn DataValue 삽입
+        List<Button> Btns = Title.TitleInputController.AllSectionBtns();
+        foreach(Button Btn in Btns)
+        {
+            if(Btn.TryGetComponent(out ArrowLRInteractBtn ALR_IB))
+            {
+                ALR_IB.SetEnumValue();
+            }
+            else if(Btn.TryGetComponent(out ToggleInteractBtn T_IB))
+            {
+                T_IB.SetToggleUI();
+            }
+        }*/
     }
 
     #endregion
@@ -211,30 +234,48 @@ public class Option : MonoBehaviour, IInteract
     }
     public bool SetOffOptionDetail()
     {
+
+        GameObject OnDetailOptionWindow = CheckIsOnOptionDetail();
+        if (OnDetailOptionWindow != null)
+        {
+            OnDetailOptionWindow.SetActive(false);
+            OnEnable();
+            return false;
+        }
+        else 
+        { 
+            return true; 
+        }
+        
+    }
+    public GameObject CheckIsOnOptionDetail()
+    {
         foreach (KeyValuePair<Button, GameObject> BtnByGo in ButtonByGODict)
         {
             if (BtnByGo.Value.gameObject.activeSelf)
             {
-                BtnByGo.Value.gameObject.SetActive(false);
-                OnEnable();
-                return false;
+                return BtnByGo.Value;
             }
         }
-        return true;
+        return null;
     }
 
     #endregion
 
     #region Btn
-    public void ApplyOptionDetail()
+    public void Apply_OptionDetail()
     {
-        foreach (KeyValuePair<GameObject, dele> BtnByGo in LoadAndSetDeleByGODict)
+        foreach (KeyValuePair<GameObject, dele> BtnByGo in DataSaveAndApplyDeleByGODict)
         {
             if (BtnByGo.Key.gameObject.activeSelf)
             {
                 BtnByGo.Value();
             }
         }
+    }
+    public void Cancel_OptionDetail()
+    {
+
     }
 
     private void setOffBtns(List<List<Button>> setOffBtns)

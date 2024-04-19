@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UniRx;
 using Unity.VisualScripting;
@@ -48,11 +49,16 @@ public class TitleInputController : Manager<TitleInputController>
     private void EnableTitleInput()
     {
         var TitleInput = _input.actions.FindActionMap("Title");
+
         TitleInput["SelectUp"].started += UpSelectedBtn;
         TitleInput["SelectDown"].started += DownSelectedBtn;
         TitleInput["SelectLeft"].started += LeftSelectedBtn;
         TitleInput["SelectRight"].started += RightSelectedBtn;
+
         TitleInput["Select"].started += select;
+
+        TitleInput["Apply"].started += ApplyButton;
+
         TitleInput["Back"].started += back;
     }
 
@@ -62,7 +68,11 @@ public class TitleInputController : Manager<TitleInputController>
         _input.actions["SelectDown"].started -= DownSelectedBtn;
         _input.actions["SelectLeft"].started -= LeftSelectedBtn;
         _input.actions["SelectRight"].started -= RightSelectedBtn;
+
         _input.actions["Select"].started -= select;
+
+        _input.actions["Apply"].started -= ApplyButton;
+
         _input.actions["Back"].started -= back;
     }
 
@@ -190,7 +200,16 @@ public class TitleInputController : Manager<TitleInputController>
         }
     }
 
+    // Y Button
+    private void ApplyButton(InputAction.CallbackContext obj)
+    {
+        if(Option.CheckIsOnOptionDetail() != null)
+        {
 
+        }
+    }
+
+    // A Button
     private void select(InputAction.CallbackContext obj)
     {
         if (SelectBtn != null)
@@ -202,6 +221,8 @@ public class TitleInputController : Manager<TitleInputController>
             }
         }
     }
+    
+    // X Button
     private void back(InputAction.CallbackContext obj)
     {
         if(!Option.SetOffOptionDetail())
@@ -232,6 +253,40 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if (SectionBtns == null || btn == null) { return; }
 
+        List<Button> allSectionList = new List<Button>();
+        foreach (List<Button> btns in SectionBtns)
+        {
+            allSectionList.AddRange(btns);
+        }
+
+        foreach (Button SectionBtn in allSectionList)
+        {
+
+            if (SectionBtn == btn) // 선택 버튼
+            {
+                if (SectionBtn.gameObject.TryGetComponent(out Outline outline))
+                { outline.enabled = true; }
+                if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
+                {
+                    DOTween.Kill(RT.localScale);
+                    RT.DOScale(Vector3.one * 1.1f, 0.1f);
+                }
+
+
+            }
+            else // 비선택 버튼들
+            {
+                if (SectionBtn.gameObject.TryGetComponent(out Outline outline))
+                { outline.enabled = false; }
+                if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
+                {
+                    DOTween.Kill(RT.localScale);
+                    RT.DOScale(Vector3.one * 1.0f, 0.1f);
+                }
+            }
+        }
+        /*if (SectionBtns == null || btn == null) { return; }
+
         List<Button> allBtn = new List<Button>();
         foreach(List<Button> SectionBtn in SectionBtns)
         {
@@ -256,7 +311,7 @@ public class TitleInputController : Manager<TitleInputController>
                 }
 
             }
-        }
+        }*/
     }
 
     public void ClearSeletedBtns()
@@ -264,6 +319,16 @@ public class TitleInputController : Manager<TitleInputController>
         SectionBtns = null;
         SelectBtn = null;
         interact = null;
+    }
+
+    public List<Button> AllSectionBtns()
+    {
+        List<Button> Btnlist = new List<Button>();
+        foreach(List<Button> Btns in SectionBtns)
+        {
+            Btnlist.AddRange(Btns);
+        }
+        return Btnlist;
     }
 
     #endregion
