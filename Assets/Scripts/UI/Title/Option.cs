@@ -15,6 +15,7 @@ public class Option : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] Title Title;
     [SerializeField] GameSettingManager GameSettingManager;
+    [SerializeField] JsonManager JsonManager;
 
     [Header("*Window")]
     [SerializeField] GameObject GameSetting;
@@ -29,17 +30,15 @@ public class Option : MonoBehaviour, IInteract
     [SerializeField] Button CreditBtn;
     [SerializeField] Button BackBtn;
 
+    #region Video
+
     [Header("*Video")]
     [SerializeField] Button fullScreen_BtnPanel;
     [SerializeField] Button resolution_BtnPanel;
     [SerializeField] Button FPSLimit_BtnPanel;
     [SerializeField] Button showFPS_BtnPanel;
-    [Header("*VideoDetail")]
-    [SerializeField] ToggleValue fullScreen;
-    [SerializeField] LeftRightBtnValue resolution;
-    [SerializeField] LeftRightBtnValue FPSLimit;
-    [SerializeField] ToggleValue showFPS;
 
+    #endregion
 
     Dictionary<GameObject, List<List<Button>>> GOByBtns;
 
@@ -49,12 +48,14 @@ public class Option : MonoBehaviour, IInteract
 
     public delegate void dele();
     [HideInInspector] public Dictionary<Button, GameObject> ButtonByGODict;
-    [HideInInspector] public Dictionary<GameObject, dele> DataSaveAndApplyDeleByGODict;
-    
+    [HideInInspector] public Dictionary<GameObject, dele> Apply_DeleByGODict;
+    [HideInInspector] public Dictionary<GameObject, dele> Save_DeleByGODict;
+
 
     #endregion
 
     #region Main
+
     private void setData()
     {
         ButtonByGODict = new Dictionary<Button, GameObject>()
@@ -64,12 +65,19 @@ public class Option : MonoBehaviour, IInteract
             { VideoBtn, VideoSetting},
             { CreditBtn, CreditSetting}
         };
-        DataSaveAndApplyDeleByGODict = new Dictionary<GameObject, dele>()
+        Apply_DeleByGODict = new Dictionary<GameObject, dele>()
         {
             { GameSetting, new dele(GameSettingManager.Apply_Gs) },
             { AudioSetting, new dele(GameSettingManager.Apply_As) },
             { VideoSetting, new dele(GameSettingManager.Apply_Vs) },
             { CreditSetting, new dele(GameSettingManager.Apply_Cs) }
+        };
+        Save_DeleByGODict = new Dictionary<GameObject, dele>()
+        {
+            { GameSetting, new dele(InitData_Gs) },
+            { AudioSetting, new dele(InitData_As) },
+            { VideoSetting, new dele(InitData_Vs) },
+            { CreditSetting, new dele(InitData_Cs) }
         };
         GOByBtns = new Dictionary<GameObject, List<List<Button>>>
         {
@@ -115,7 +123,7 @@ public class Option : MonoBehaviour, IInteract
         CancelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                SetOffOptionDetail();
+                Cancel_OptionDetail();
             });
         ApplyBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -186,6 +194,43 @@ public class Option : MonoBehaviour, IInteract
 
     #endregion
 
+    #region Init InData
+
+    public void InitData_Gs()
+    {
+
+    }
+    public void InitData_As()
+    {
+
+    }
+    public void InitData_Vs()
+    {
+        GameSetting_Video GS_V = GameSettingManager.GameSetting.GameSetting_Video;
+        if (fullScreen_BtnPanel.TryGetComponent(out ToggleInteractBtn fs_TIB))
+        { GameSettingManager.GameSetting.GameSetting_Video.FullScreen = fs_TIB.thisToggle.isOn; }
+        if (resolution_BtnPanel.TryGetComponent(out ArrowLRInteractBtn re_AIB))
+        { GameSettingManager.GameSetting.GameSetting_Video.display_Resolution = re_AIB.GetReso(re_AIB.valueTxt.text); }
+        if (FPSLimit_BtnPanel.TryGetComponent(out ArrowLRInteractBtn fl_AIB))
+        { GameSettingManager.GameSetting.GameSetting_Video.display_FPSLimit = fl_AIB.GetFpsLimit(fl_AIB.valueTxt.text); }
+        if (showFPS_BtnPanel.TryGetComponent(out ToggleInteractBtn sf_TIB))
+        { GameSettingManager.GameSetting.GameSetting_Video.ShowFPS = sf_TIB.thisToggle.isOn; }
+
+        JsonManager.JsonSave(JsonManager.json_SettingFileName, GameSettingManager.GameSetting);
+        
+    }
+    public void InitData_Cs()
+    {
+
+    }
+
+    #endregion
+
+    #region Get Values
+
+
+    #endregion
+
     #region Turn On
 
     private void FindAndTurnOn_Setting(GameObject go)
@@ -199,26 +244,16 @@ public class Option : MonoBehaviour, IInteract
         Debug.Log("Video Setting On");
         // 현재 값 출력
         GameSetting_Video GS_V = GameSettingManager.GameSetting.GameSetting_Video;
-        fullScreen.IsOnOff(GS_V.FullScreen);
-        resolution.setText(
-            GS_V.GetDisplayValueByEnum_Reso(GS_V.display_Resolution)[0] + " X " + 
-            GS_V.GetDisplayValueByEnum_Reso(GS_V.display_Resolution)[1]);
-        FPSLimit.setText(GS_V.GetDisplayValueByEnum_Fps(GS_V.display_FPSLimit) + "fps");
-        showFPS.IsOnOff(GS_V.ShowFPS);
+        if(fullScreen_BtnPanel.TryGetComponent(out ToggleInteractBtn fs_TIB)) 
+        { fs_TIB.ResetUI(GS_V.FullScreen); }
+        if (resolution_BtnPanel.TryGetComponent(out ArrowLRInteractBtn re_AIB))
+        { re_AIB.ResetUI(GS_V.GetDisplayValueByEnum_Reso()[0] + " X " + GS_V.GetDisplayValueByEnum_Reso()[1]); }
+        if (FPSLimit_BtnPanel.TryGetComponent(out ArrowLRInteractBtn fl_AIB))
+        { fl_AIB.ResetUI(GS_V.GetDisplayValueByEnum_Fps(GS_V.display_FPSLimit) + "fps"); }
+        if (showFPS_BtnPanel.TryGetComponent(out ToggleInteractBtn sf_TIB))
+        { sf_TIB.ResetUI(GS_V.ShowFPS); }
 
-        /*// 현재 값에 따른 InteractBtn DataValue 삽입
-        List<Button> Btns = Title.TitleInputController.AllSectionBtns();
-        foreach(Button Btn in Btns)
-        {
-            if(Btn.TryGetComponent(out ArrowLRInteractBtn ALR_IB))
-            {
-                ALR_IB.SetEnumValue();
-            }
-            else if(Btn.TryGetComponent(out ToggleInteractBtn T_IB))
-            {
-                T_IB.SetToggleUI();
-            }
-        }*/
+
     }
 
     #endregion
@@ -232,22 +267,7 @@ public class Option : MonoBehaviour, IInteract
         Title.TitleInputController.SelectBtn = Title.OptionBtn;
         Title.TitleInputController.OnOffSelectedBtn(Title.OptionBtn);
     }
-    public bool SetOffOptionDetail()
-    {
-
-        GameObject OnDetailOptionWindow = CheckIsOnOptionDetail();
-        if (OnDetailOptionWindow != null)
-        {
-            OnDetailOptionWindow.SetActive(false);
-            OnEnable();
-            return false;
-        }
-        else 
-        { 
-            return true; 
-        }
-        
-    }
+    
     public GameObject CheckIsOnOptionDetail()
     {
         foreach (KeyValuePair<Button, GameObject> BtnByGo in ButtonByGODict)
@@ -265,17 +285,26 @@ public class Option : MonoBehaviour, IInteract
     #region Btn
     public void Apply_OptionDetail()
     {
-        foreach (KeyValuePair<GameObject, dele> BtnByGo in DataSaveAndApplyDeleByGODict)
+        foreach (GameObject WindowGO in Apply_DeleByGODict.Keys)
         {
-            if (BtnByGo.Key.gameObject.activeSelf)
+            if (WindowGO.gameObject.activeSelf)
             {
-                BtnByGo.Value();
+                Save_DeleByGODict[WindowGO]();
+                Apply_DeleByGODict[WindowGO]();
             }
         }
     }
-    public void Cancel_OptionDetail()
+    public bool Cancel_OptionDetail()
     {
-
+        GameObject OnDetailOptionWindow = CheckIsOnOptionDetail();
+        if (OnDetailOptionWindow != null)
+        {
+            OnDetailOptionWindow.SetActive(false);
+            OnEnable();
+            return false;
+        }
+        else
+        { return true; }
     }
 
     private void setOffBtns(List<List<Button>> setOffBtns)
@@ -284,35 +313,12 @@ public class Option : MonoBehaviour, IInteract
         {
             foreach (Button btn in btnList)
             {
+                if(btn.TryGetComponent(out Outline ol))
+                { ol.enabled = false; }
                 btn.interactable = false;
             }
         }
     }
 
     #endregion
-}
-
-[System.Serializable]
-public class LeftRightBtnValue
-{
-    public TMP_Text ValueTxt;
-    public Button LeftBtn;
-    public Button RightBtn;
-    public void setText(string s)
-    {
-        ValueTxt.text = s;
-    }
-}
-
-[System.Serializable]
-public class ToggleValue
-{
-    public TMP_Text ValueTxt;
-    public Toggle Toggle;
-    public void IsOnOff(bool Is)
-    {
-        Toggle.isOn = Is;
-        if (Is) { ValueTxt.text = "ON"; }
-        else { ValueTxt.text = "OFF"; }
-    }
 }

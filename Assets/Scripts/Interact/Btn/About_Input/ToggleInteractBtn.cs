@@ -13,10 +13,15 @@ public class ToggleInteractBtn : BasicInteractBtn
         base.Awake();
         thisToggle.onValueChanged.AddListener(SetToggleUI);
     }
-
-    public void SetToggleUI(bool _bool)
+    public void ResetUI(bool _b)
     {
-        if (_bool)
+        thisToggle.isOn = _b;
+        SetToggleUI(_b);
+    }
+
+    public void SetToggleUI(bool _b)
+    {
+        if (_b)
         { onOffTxt.text = "ON"; }
         else
         { onOffTxt.text = "OFF"; }

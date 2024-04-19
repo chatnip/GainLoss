@@ -82,6 +82,9 @@ public class TitleInputController : Manager<TitleInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
+        { AIB.SetEnumValue(true); return; }
+
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -108,6 +111,9 @@ public class TitleInputController : Manager<TitleInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
+        { AIB.SetEnumValue(false); return; }
+
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -225,7 +231,7 @@ public class TitleInputController : Manager<TitleInputController>
     // X Button
     private void back(InputAction.CallbackContext obj)
     {
-        if(!Option.SetOffOptionDetail())
+        if(!Option.Cancel_OptionDetail())
         { return; }
          
         if(Option.gameObject.activeSelf)

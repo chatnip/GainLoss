@@ -11,6 +11,7 @@ public class GameSettingManager : Manager<GameSettingManager>
 {
     [Header("*Property")]
     [SerializeField] public GameSetting GameSetting;
+    [SerializeField] Option Option;
 
     [Header("*UI")]
     [SerializeField] TMP_Text FPSText;
@@ -29,16 +30,11 @@ public class GameSettingManager : Manager<GameSettingManager>
         Apply_Gs();
         Apply_As();
         Apply_Vs();
+        Apply_Cs();
     }
 
     // Game Setting
     public void Apply_Gs()
-    {
-
-    }
-
-    // Audio Setting
-    public void Apply_As()
     {
         // Pad UI
         if (GameSetting.GameSetting_Game.ShowGuidePadUI)
@@ -51,10 +47,16 @@ public class GameSettingManager : Manager<GameSettingManager>
         }
 
         // UI Scale
-        if(MainCanvas != null)
+        if (MainCanvas != null)
         {
 
         }
+    }
+
+    // Audio Setting
+    public void Apply_As()
+    {
+        
     }
 
     // Video Setting
@@ -74,8 +76,7 @@ public class GameSettingManager : Manager<GameSettingManager>
 
         // FullScreen, Resolution
         List<int> Width_Height = 
-            GameSetting.GameSetting_Video.GetDisplayValueByEnum_Reso(
-                GameSetting.GameSetting_Video.display_Resolution);
+            GameSetting.GameSetting_Video.GetDisplayValueByEnum_Reso();
         Screen.SetResolution(Width_Height[0], Width_Height[1], GameSetting.GameSetting_Video.FullScreen);
 
         // FPS
@@ -92,13 +93,6 @@ public class GameSettingManager : Manager<GameSettingManager>
 
     #endregion
 
-    #region Init InData
-
-    public void InitData_Gs()
-    {
-    }
-
-    #endregion
 
     #region Other
 
@@ -147,8 +141,8 @@ public class GameSetting_Video
     public FramePerSecond display_FPSLimit = FramePerSecond.FPS_144;
     public bool ShowFPS = false;
 
-    private Dictionary<Display_Resolution, List<int>> display_ResolusionValueDict;
-    private Dictionary<FramePerSecond, int> display_FPSValueDict;
+    public static Dictionary<Display_Resolution, List<int>> display_ResolusionValueDict;
+    public static Dictionary<FramePerSecond, int> display_FPSValueDict;
 
 
     public GameSetting_Video()
@@ -173,20 +167,10 @@ public class GameSetting_Video
 
 
     // Get Resolution Values
-    public List<int> GetDisplayValueByEnum_Reso(Display_Resolution DR)
-    { return display_ResolusionValueDict[DR]; }
-    public Display_Resolution GetDisplayEnumByValue_Reso(List<int> resoInts)
-    {
-        foreach (var e in display_ResolusionValueDict)
-        {
-            if (e.Value == resoInts)
-            {
-                Debug.Log("도출");
-                return e.Key;
-            }
-        }
-        return Display_Resolution.FHD;
-    }
+    public List<int> GetDisplayValueByEnum_Reso()
+    { return display_ResolusionValueDict[display_Resolution]; }
+    public Display_Resolution GetDisplayEnumByValue_Reso()
+    { return display_ResolusionValueDict.FirstOrDefault(x => x.Value == GetDisplayValueByEnum_Reso()).Key; }
 
 
     // Get Fps Values
@@ -230,6 +214,57 @@ public static class Enum_Extensions
         int j = Array.IndexOf<T>(Arr, source) - 1;
         return (0 > j) ? Arr[Arr.Length - 1] : Arr[j];
     }
+
+    // Enum Or Value 찾기
+
+    // Reso
+    public static Display_Resolution GetValue_Resolution(List<int> WidthHeightValue)
+    {
+        foreach(KeyValuePair<Display_Resolution, List<int>> dict in GameSetting_Video.display_ResolusionValueDict)
+        {
+            if (dict.Value[0] == WidthHeightValue[0] && dict.Value[1] == WidthHeightValue[1])
+            {
+                return dict.Key;
+            }
+        }
+        return Display_Resolution.FHD;
+    }
+    public static List<int> GetValue_Resolution(Display_Resolution DREnum)
+    {
+        foreach (KeyValuePair<Display_Resolution, List<int>> dict in GameSetting_Video.display_ResolusionValueDict)
+        {
+            if (dict.Key == DREnum)
+            {
+                return dict.Value;
+            }
+        }
+        return GameSetting_Video.display_ResolusionValueDict[Display_Resolution.FHD];
+    }
+
+    // Fps
+    public static FramePerSecond GetValue_Fps(int Value)
+    {
+        foreach(KeyValuePair<FramePerSecond, int> dict in GameSetting_Video.display_FPSValueDict)
+        {
+            if (dict.Value == Value)
+            {
+                return dict.Key;
+            }
+        }
+        return FramePerSecond.FPS_60;
+    }
+    public static int GetValue_Fps(FramePerSecond DREnum)
+    {
+        foreach (KeyValuePair<FramePerSecond, int> dict in GameSetting_Video.display_FPSValueDict)
+        {
+            if (dict.Key == DREnum)
+            {
+                return dict.Value;
+            }
+        }
+        return GameSetting_Video.display_FPSValueDict[FramePerSecond.FPS_60];
+    }
+
 
 }
 

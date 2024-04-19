@@ -1889,7 +1889,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &331223892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,9 +3495,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 290, y: 0}
   m_SizeDelta: {x: -580, y: 0}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &731912711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3814,8 +3814,6 @@ MonoBehaviour:
   valueTxt: {fileID: 1366681775}
   LeftBtn: {fileID: 1759373578}
   RightBtn: {fileID: 1936040561}
-  currentResolution: 0
-  currentFPSLimit: 0
 --- !u!1 &821000679
 GameObject:
   m_ObjectHideFlags: 0
@@ -7588,8 +7586,6 @@ MonoBehaviour:
   valueTxt: {fileID: 125880746}
   LeftBtn: {fileID: 2070406792}
   RightBtn: {fileID: 1176092771}
-  currentResolution: 0
-  currentFPSLimit: 0
 --- !u!1 &1511734851
 GameObject:
   m_ObjectHideFlags: 0
@@ -8251,7 +8247,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1663420781
 GameObject:
   m_ObjectHideFlags: 0
@@ -8394,7 +8390,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1727812706
 GameObject:
   m_ObjectHideFlags: 0
@@ -10111,7 +10107,7 @@ MonoBehaviour:
       display_Resolution: 2
       display_FPSLimit: 5
       ShowFPS: 0
-  JsonManager: {fileID: 1277301793}
+  Option: {fileID: 0}
   FPSText: {fileID: 2014003972}
   PadUIs: []
   MainCanvas: {fileID: 0}
@@ -10385,7 +10381,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &39111830761398482
 GameObject:
   m_ObjectHideFlags: 0
@@ -11904,6 +11900,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: {fileID: 1475849331}
   GameSettingManager: {fileID: 2053332141}
+  JsonManager: {fileID: 1277301793}
   GameSetting: {fileID: 1660506246}
   AudioSetting: {fileID: 317018126}
   VideoSetting: {fileID: 2122087506}
@@ -11917,20 +11914,6 @@ MonoBehaviour:
   resolution_BtnPanel: {fileID: 789725401}
   FPSLimit_BtnPanel: {fileID: 1498519780}
   showFPS_BtnPanel: {fileID: 1459992250}
-  fullScreen:
-    ValueTxt: {fileID: 1032230864}
-    Toggle: {fileID: 73434393}
-  resolution:
-    ValueTxt: {fileID: 1366681775}
-    LeftBtn: {fileID: 1759373578}
-    RightBtn: {fileID: 1936040561}
-  FPSLimit:
-    ValueTxt: {fileID: 125880746}
-    LeftBtn: {fileID: 2070406792}
-    RightBtn: {fileID: 1176092771}
-  showFPS:
-    ValueTxt: {fileID: 273545741}
-    Toggle: {fileID: 1904520038}
   CancelBtn: {fileID: 1428802732}
   ApplyBtn: {fileID: 1931345971}
 --- !u!114 &8547497183903879076

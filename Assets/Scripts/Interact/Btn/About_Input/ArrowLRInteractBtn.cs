@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UniRx;
@@ -12,7 +11,7 @@ public class ArrowLRInteractBtn : BasicInteractBtn
 
     [Header("*UI")]
     [SerializeField] public ArrowLRValueType arrowLRValueType;
-    [SerializeField] TMP_Text valueTxt;
+    [SerializeField] public TMP_Text valueTxt;
     [SerializeField] Button LeftBtn;
     [SerializeField] Button RightBtn;
 
@@ -35,33 +34,55 @@ public class ArrowLRInteractBtn : BasicInteractBtn
             });
     }
 
+    public void ResetUI(string s)
+    {
+        valueTxt.text = s;
+    }
 
     public void SetEnumValue(bool IsNext)
     {
         if(arrowLRValueType == ArrowLRValueType.Resolution)
         {
-            Display_Resolution Temp_DR = GetReso(valueTxt.text);
-            Display_Resolution NextValue;
+            Display_Resolution TempEnum = GetReso(valueTxt.text);
+            Display_Resolution ResultValue;
             if (IsNext)
-            { NextValue = Enum_Extensions.Next(Temp_DR); }
+            { ResultValue = Enum_Extensions.Next(TempEnum); }
             else
-            { NextValue = Enum_Extensions.Before(Temp_DR); }
-
-            List<int> ResultReso = GameSettingManager.GameSetting.GameSetting_Video.GetDisplayValueByEnum_Reso(NextValue);
-            valueTxt.text = ResultReso[0] + " X " + ResultReso[1];
+            { ResultValue = Enum_Extensions.Before(TempEnum); }
+            List<int> resultValue = Enum_Extensions.GetValue_Resolution(ResultValue);
+            valueTxt.text = resultValue[0] + " X " + resultValue[1];
+            return;
+        }
+        else if (arrowLRValueType == ArrowLRValueType.FPSLimit)
+        {
+            FramePerSecond Temp_DR = GetFpsLimit(valueTxt.text);
+            FramePerSecond ResultValue;
+            if (IsNext)
+            { ResultValue = Enum_Extensions.Next(Temp_DR); }
+            else
+            { ResultValue = Enum_Extensions.Before(Temp_DR); }
+            int resultValue = Enum_Extensions.GetValue_Fps(ResultValue);
+            valueTxt.text = resultValue + "fps";
+            return;
         }
 
     }
 
     #region Check
 
-    private Display_Resolution GetReso(string txt)
+    public Display_Resolution GetReso(string txt)
     {
         string[] s = txt.Split();
         List<int> reso = new List<int>() { Convert.ToInt32(s[0]), Convert.ToInt32(s[2]) };
-        Debug.Log(Convert.ToInt32(s[0]) + " " + Convert.ToInt32(s[2]));
-        return GameSettingManager.GameSetting.GameSetting_Video.GetDisplayEnumByValue_Reso(reso);
+        return Enum_Extensions.GetValue_Resolution(reso);
     }
+    public FramePerSecond GetFpsLimit(string txt)
+    {
+        int fps = Convert.ToInt32(txt.Replace("fps", ""));
+        Debug.Log(fps);
+        return Enum_Extensions.GetValue_Fps(fps);
+    }
+
 
     #endregion
 
