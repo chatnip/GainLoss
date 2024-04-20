@@ -301,7 +301,15 @@ public class Option : MonoBehaviour, IInteract
 
     private void TurnOn_GameSetting()
     {
-
+        Debug.Log("Video Setting On");
+        // 현재 값 출력
+        GameSetting_Game GS_G = GameSettingManager.GameSetting.GameSetting_Game;
+        if (showPadGuide_BtnPanel.TryGetComponent(out ToggleInteractBtn spg_TIB))
+        { spg_TIB.ResetUI(GS_G.ShowGuidePadUI); }
+        if (showTutorialGuide_BtnPanel.TryGetComponent(out ToggleInteractBtn stg_AIB))
+        { stg_AIB.ResetUI(GS_G.ShowGuideTutorial); }
+        if (IsOnBG_of3D_BtnPanel.TryGetComponent(out ToggleInteractBtn iob_AIB))
+        { iob_AIB.ResetUI(GS_G.IsOnBG_of3D); }
     }
     private void TurnOn_AudioSetting()
     {
@@ -355,6 +363,9 @@ public class Option : MonoBehaviour, IInteract
     #region Btn
     public void Apply_OptionDetail()
     {
+        if (!IsChangedTxt.gameObject.activeSelf)
+        { return; }
+
         foreach (GameObject WindowGO in Apply_DeleByGODict.Keys)
         {
             if (WindowGO.gameObject.activeSelf)
