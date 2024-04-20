@@ -9,6 +9,8 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class GameSettingManager : Manager<GameSettingManager>
 {
+    #region Value
+
     [Header("*Property")]
     [SerializeField] public GameSetting GameSetting;
     [SerializeField] Option Option;
@@ -18,12 +20,21 @@ public class GameSettingManager : Manager<GameSettingManager>
     [SerializeField] List<GameObject> PadUIs;
     [SerializeField] Canvas MainCanvas;
 
+
+    #endregion
+
+    #region Main
+
     protected override void Awake()
     {
         SetAllSetting();
     }
 
+    #endregion
+
     #region Apply By Json
+
+    // 타입별 적용
 
     public void SetAllSetting()
     {
@@ -93,7 +104,6 @@ public class GameSettingManager : Manager<GameSettingManager>
 
     #endregion
 
-
     #region Other
 
     IEnumerator SetFPS()
@@ -102,6 +112,7 @@ public class GameSettingManager : Manager<GameSettingManager>
         yield return new WaitForSeconds(1f);
         StartCoroutine(SetFPS());
     }
+
 
     #endregion
 
@@ -124,6 +135,8 @@ public class GameSetting
 public class GameSetting_Game
 {
     public bool ShowGuidePadUI = true;
+    public bool ShowGuideTutorial = true;
+    public bool IsOnBG_of3D = true;
     public int MainUIScale = 5;
 
 
@@ -141,21 +154,17 @@ public class GameSetting_Video
     public FramePerSecond display_FPSLimit = FramePerSecond.FPS_144;
     public bool ShowFPS = false;
 
-    public static Dictionary<Display_Resolution, List<int>> display_ResolusionValueDict;
-    public static Dictionary<FramePerSecond, int> display_FPSValueDict;
-
-
-    public GameSetting_Video()
-    {
-        display_ResolusionValueDict = new Dictionary<Display_Resolution, List<int>>
+    public static Dictionary<Display_Resolution, List<int>> display_ResolusionValueDict = 
+        new Dictionary<Display_Resolution, List<int>>
         {
             { Display_Resolution.HD, new List<int> { 1280, 720 } },
             { Display_Resolution.HD_plus, new List<int> { 1600, 900 } },
             { Display_Resolution.FHD, new List<int> { 1920, 1080 } },
             { Display_Resolution.QHD, new List<int> { 2560, 1440 } }
         };
-        display_FPSValueDict = new Dictionary<FramePerSecond, int>
-        {   
+    public static Dictionary<FramePerSecond, int> display_FPSValueDict = 
+        new Dictionary<FramePerSecond, int>
+        {
             { FramePerSecond.FPS_30, 30 },
             { FramePerSecond.FPS_60, 60 },
             { FramePerSecond.FPS_70, 70 },
@@ -163,7 +172,6 @@ public class GameSetting_Video
             { FramePerSecond.FPS_120, 120 },
             { FramePerSecond.FPS_144, 144 }
         };
-    }
 
 
     // Get Resolution Values

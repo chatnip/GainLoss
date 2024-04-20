@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ArrowLRInteractBtn : BasicInteractBtn
 {
-    GameSettingManager GameSettingManager;
+    Option Option;
 
     [Header("*UI")]
     [SerializeField] public ArrowLRValueType arrowLRValueType;
@@ -19,18 +19,20 @@ public class ArrowLRInteractBtn : BasicInteractBtn
     public override void Awake()
     {
         base.Awake();
-        if (GameObject.Find("SettingManager").TryGetComponent(out GameSettingManager GSM))
-        { GameSettingManager = GSM; }
+        if (GameObject.Find("OptionWindow").TryGetComponent(out Option option))
+        { Option = option; }
 
         LeftBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 SetEnumValue(false);
+                Option.CanSave(true);
             });
         RightBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 SetEnumValue(true);
+                Option.CanSave(true);
             });
     }
 

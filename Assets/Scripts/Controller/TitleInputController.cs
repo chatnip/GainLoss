@@ -211,7 +211,7 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if(Option.CheckIsOnOptionDetail() != null)
         {
-
+            Option.Apply_OptionDetail();
         }
     }
 

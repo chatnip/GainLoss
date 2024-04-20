@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 
 public class Option : MonoBehaviour, IInteract
 {
@@ -23,14 +24,25 @@ public class Option : MonoBehaviour, IInteract
     [SerializeField] GameObject VideoSetting;
     [SerializeField] GameObject CreditSetting;
 
+    [Header("*Result")]
+    [SerializeField] CanvasGroup DoneCG;
+    [SerializeField] RectTransform DoneFrameRT;
+    [SerializeField] TMP_Text TypeTxt;
+    [SerializeField] TMP_Text AnnoTxt;
+
     [Header("*OptionBtn")]
     [SerializeField] Button GameBtn;
     [SerializeField] Button AudioBtn;
     [SerializeField] Button VideoBtn;
     [SerializeField] Button CreditBtn;
     [SerializeField] Button BackBtn;
+    [SerializeField] Button OkBtn;
 
-    #region Video
+    [Header("*Game")]
+    [SerializeField] Button showPadGuide_BtnPanel;
+    [SerializeField] Button showTutorialGuide_BtnPanel;
+    [SerializeField] Button IsOnBG_of3D_BtnPanel;
+    [SerializeField] Button MainUIScale_BtnPanel;
 
     [Header("*Video")]
     [SerializeField] Button fullScreen_BtnPanel;
@@ -38,16 +50,18 @@ public class Option : MonoBehaviour, IInteract
     [SerializeField] Button FPSLimit_BtnPanel;
     [SerializeField] Button showFPS_BtnPanel;
 
-    #endregion
 
     Dictionary<GameObject, List<List<Button>>> GOByBtns;
 
     [Header("*SetBtn")]
     [SerializeField] Button CancelBtn;
     [SerializeField] Button ApplyBtn;
+    [SerializeField] TMP_Text IsChangedTxt;
+    
 
     public delegate void dele();
     [HideInInspector] public Dictionary<Button, GameObject> ButtonByGODict;
+    [HideInInspector] public Dictionary<GameObject, dele> WhenTurnOn_DeleByGODict;
     [HideInInspector] public Dictionary<GameObject, dele> Apply_DeleByGODict;
     [HideInInspector] public Dictionary<GameObject, dele> Save_DeleByGODict;
 
@@ -65,6 +79,13 @@ public class Option : MonoBehaviour, IInteract
             { VideoBtn, VideoSetting},
             { CreditBtn, CreditSetting}
         };
+        WhenTurnOn_DeleByGODict = new Dictionary<GameObject, dele>
+        {
+            { GameSetting, new dele(TurnOn_GameSetting) },
+            { AudioSetting, new dele(TurnOn_AudioSetting) },
+            { VideoSetting, new dele(TurnOn_VideoSetting) },
+            { CreditSetting, new dele(TurnOn_CreditSetting) }
+        };
         Apply_DeleByGODict = new Dictionary<GameObject, dele>()
         {
             { GameSetting, new dele(GameSettingManager.Apply_Gs) },
@@ -81,13 +102,37 @@ public class Option : MonoBehaviour, IInteract
         };
         GOByBtns = new Dictionary<GameObject, List<List<Button>>>
         {
+            { GameSetting, new List<List<Button>> {
+                new List<Button> { showPadGuide_BtnPanel },
+                new List<Button> { showTutorialGuide_BtnPanel },
+                new List<Button> { IsOnBG_of3D_BtnPanel },
+                new List<Button> { MainUIScale_BtnPanel }}},
+            { AudioSetting, new List<List<Button>> {
+                new List<Button> {  },
+                new List<Button> {  },
+                new List<Button> {  },
+                new List<Button> {  }}},
             { VideoSetting, new List<List<Button>> {
                 new List<Button> { fullScreen_BtnPanel },
                 new List<Button> { resolution_BtnPanel },
                 new List<Button> { FPSLimit_BtnPanel },
                 new List<Button> { showFPS_BtnPanel }}}
-            
         };
+    }
+    public void CanSave(bool _b)
+    {
+        Debug.Log("CanSave" + _b);
+        IsChangedTxt.gameObject.SetActive(_b);
+        IsInteractable(ApplyBtn, _b);
+    }
+    private void IsInteractable(Button btn, bool _b)
+    {
+        btn.interactable = _b;
+        if (btn.transform.GetChild(0).TryGetComponent(out Image img))
+        {
+            if (_b) { img.DOFade(1f, 0f); }
+            else { img.DOFade(0.25f, 0f); }
+        }
     }
 
     private void Awake()
@@ -106,11 +151,12 @@ public class Option : MonoBehaviour, IInteract
                         SettingGO.gameObject.SetActive(false);
                     }
                     ButtonByGODict[SettingBtn].gameObject.SetActive(true);
-                    CancelBtn.interactable = true;
-                    ApplyBtn.interactable = true;
+                    IsInteractable(CancelBtn, true);
+                    IsInteractable(ApplyBtn, false);
                     Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[SettingBtn]], this);
 
-                    FindAndTurnOn_Setting(ButtonByGODict[SettingBtn]);
+                    WhenTurnOn_DeleByGODict[ButtonByGODict[SettingBtn]]();
+                    //FindAndTurnOn_Setting(ButtonByGODict[SettingBtn]);
                 });
         }
         BackBtn.OnClickAsObservable()
@@ -130,13 +176,26 @@ public class Option : MonoBehaviour, IInteract
             {
                 Apply_OptionDetail();
             });
+        OkBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                Disappear_Window();
+            });
         
     }
 
     public void Interact()
     {
+        // 적용 or 적용안됨 창이 켜져있을 때
+        if(Title.TitleInputController.SelectBtn == OkBtn && OkBtn.interactable)
+        {
+            Disappear_Window();
+        }
+
+        
         if(CheckIsOnOptionDetail() != null)
         {
+            //토글형식
             if(Title.TitleInputController.SelectBtn.TryGetComponent(out ToggleInteractBtn TIB))
             {
                 bool ToggleOn = TIB.thisToggle.isOn;
@@ -160,11 +219,12 @@ public class Option : MonoBehaviour, IInteract
                     SettingGO.gameObject.SetActive(false);
                 }
                 ButtonByGODict[selected].gameObject.SetActive(true);
-                CancelBtn.interactable = true;
-                ApplyBtn.interactable = true;
+                IsInteractable(CancelBtn, true);
+                IsInteractable(ApplyBtn, false);
                 Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[selected]], this);
 
-                FindAndTurnOn_Setting(ButtonByGODict[selected]);
+                WhenTurnOn_DeleByGODict[ButtonByGODict[selected]]();
+                //FindAndTurnOn_Setting(ButtonByGODict[selected]);
             }
         }
     }
@@ -173,13 +233,13 @@ public class Option : MonoBehaviour, IInteract
     {
         foreach(KeyValuePair<Button, GameObject> ButtonAndGO in ButtonByGODict)
         {
-            ButtonAndGO.Key.interactable = true;
-            BackBtn.interactable = true;
+            IsInteractable(ButtonAndGO.Key, true);
+            IsInteractable(BackBtn, true);
 
             ButtonAndGO.Value.gameObject.SetActive(false);
 
-            CancelBtn.interactable = false;
-            ApplyBtn.interactable = false;
+            IsInteractable(CancelBtn, false); 
+            IsInteractable(ApplyBtn, false);
 
         }
 
@@ -195,6 +255,9 @@ public class Option : MonoBehaviour, IInteract
     #endregion
 
     #region Init InData
+
+    // 데이터 삽입 후 Json 저장
+    // 적용은 GameSettingManager에서 진행
 
     public void InitData_Gs()
     {
@@ -217,7 +280,8 @@ public class Option : MonoBehaviour, IInteract
         { GameSettingManager.GameSetting.GameSetting_Video.ShowFPS = sf_TIB.thisToggle.isOn; }
 
         JsonManager.JsonSave(JsonManager.json_SettingFileName, GameSettingManager.GameSetting);
-        
+
+        Appear_Window_WhenApply("비디오 세팅", "저장 및 적용");
     }
     public void InitData_Cs()
     {
@@ -233,12 +297,16 @@ public class Option : MonoBehaviour, IInteract
 
     #region Turn On
 
-    private void FindAndTurnOn_Setting(GameObject go)
-    {
-        if(go == VideoSetting)
-        { TurnOn_VideoSetting(); }
-    }
+    // 타입별 킬때 초기화
 
+    private void TurnOn_GameSetting()
+    {
+
+    }
+    private void TurnOn_AudioSetting()
+    {
+
+    }
     private void TurnOn_VideoSetting()
     {
         Debug.Log("Video Setting On");
@@ -252,7 +320,9 @@ public class Option : MonoBehaviour, IInteract
         { fl_AIB.ResetUI(GS_V.GetDisplayValueByEnum_Fps(GS_V.display_FPSLimit) + "fps"); }
         if (showFPS_BtnPanel.TryGetComponent(out ToggleInteractBtn sf_TIB))
         { sf_TIB.ResetUI(GS_V.ShowFPS); }
-
+    }
+    private void TurnOn_CreditSetting()
+    {
 
     }
 
@@ -289,6 +359,7 @@ public class Option : MonoBehaviour, IInteract
         {
             if (WindowGO.gameObject.activeSelf)
             {
+                CanSave(false);
                 Save_DeleByGODict[WindowGO]();
                 Apply_DeleByGODict[WindowGO]();
             }
@@ -299,6 +370,7 @@ public class Option : MonoBehaviour, IInteract
         GameObject OnDetailOptionWindow = CheckIsOnOptionDetail();
         if (OnDetailOptionWindow != null)
         {
+            CanSave(false);
             OnDetailOptionWindow.SetActive(false);
             OnEnable();
             return false;
@@ -306,6 +378,39 @@ public class Option : MonoBehaviour, IInteract
         else
         { return true; }
     }
+
+    private void Appear_Window_WhenApply(string Type, string Anno)
+    {
+        DoneCG.alpha = 0;
+        DoneCG.gameObject.SetActive(true);
+        TypeTxt.text = "<#7F18FF>" + Type + "</color>";
+        AnnoTxt.text = "<#7F0000><b>" + Anno + "</b></color>\n되었습니다!";
+        DoneFrameRT.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        DoneCG.DOFade(1f, 0.12f);
+        DoneFrameRT.DOScale(1f, 0.12f).SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+            {
+                OkBtn.interactable = true;  
+            });
+
+        Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { OkBtn } }, this);
+    }
+    private void Appear_Window_WhenCancel()
+    {
+
+    }
+    private void Disappear_Window()
+    {
+        OkBtn.interactable = false; 
+        DoneCG.DOFade(0f, 0.12f);
+        DoneFrameRT.DOScale(0.7f, 0.12f).SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                DoneCG.gameObject.SetActive(false);
+            });
+        OnEnable();
+    }
+    
 
     private void setOffBtns(List<List<Button>> setOffBtns)
     {
@@ -315,7 +420,8 @@ public class Option : MonoBehaviour, IInteract
             {
                 if(btn.TryGetComponent(out Outline ol))
                 { ol.enabled = false; }
-                btn.interactable = false;
+                IsInteractable(btn, false);
+                //btn.interactable = false;
             }
         }
     }
