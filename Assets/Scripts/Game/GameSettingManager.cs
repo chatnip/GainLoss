@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
 
@@ -11,14 +12,15 @@ public class GameSettingManager : Manager<GameSettingManager>
 {
     #region Value
 
+    [HideInInspector] public GameSetting GameSetting;
+
     [Header("*Property")]
-    [SerializeField] public GameSetting GameSetting;
     [SerializeField] Option Option;
 
     [Header("*UI")]
     [SerializeField] TMP_Text FPSText;
     [SerializeField] List<GameObject> PadUIs;
-    [SerializeField] Canvas MainCanvas;
+    [SerializeField] Canvas HUDCanvas;
 
 
     #endregion
@@ -57,10 +59,16 @@ public class GameSettingManager : Manager<GameSettingManager>
             foreach (GameObject PadUI in PadUIs) { PadUI.gameObject.SetActive(false); }
         }
 
-        // UI Scale
-        if (MainCanvas != null)
-        {
+        // Tutorial & IsOnBG_3DMap -> Main Scene Script
 
+        // UI Scale
+        if (HUDCanvas != null)
+        {
+            if(HUDCanvas.TryGetComponent(out CanvasScaler CS))
+            {
+                Vector2 BaseResolution = new Vector2(1920, 1080);
+                CS.referenceResolution = BaseResolution * (GameSetting.GameSetting_Game.MainUIScale * 0.01f);
+            }
         }
     }
 
@@ -137,7 +145,7 @@ public class GameSetting_Game
     public bool ShowGuidePadUI = true;
     public bool ShowGuideTutorial = true;
     public bool IsOnBG_of3D = true;
-    public int MainUIScale = 5;
+    public int MainUIScale = 100;
 
 
 }

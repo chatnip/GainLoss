@@ -261,7 +261,18 @@ public class Option : MonoBehaviour, IInteract
 
     public void InitData_Gs()
     {
+        if (showPadGuide_BtnPanel.TryGetComponent(out ToggleInteractBtn spg_TIB))
+        { GameSettingManager.GameSetting.GameSetting_Game.ShowGuidePadUI = spg_TIB.thisToggle.isOn; }
+        if (showTutorialGuide_BtnPanel.TryGetComponent(out ToggleInteractBtn stg_AIB))
+        { GameSettingManager.GameSetting.GameSetting_Game.ShowGuideTutorial = stg_AIB.thisToggle.isOn; }
+        if (IsOnBG_of3D_BtnPanel.TryGetComponent(out ToggleInteractBtn iob_AIB))
+        { GameSettingManager.GameSetting.GameSetting_Game.IsOnBG_of3D = iob_AIB.thisToggle.isOn; }
+        if (MainUIScale_BtnPanel.TryGetComponent(out SliderInteractBtn mus_SIB))
+        { GameSettingManager.GameSetting.GameSetting_Game.MainUIScale = mus_SIB.GetPercentValue_fromSilderValue(mus_SIB.thisSlider.value); }
 
+        JsonManager.JsonSave(JsonManager.json_SettingFileName, GameSettingManager.GameSetting);
+
+        Appear_Window_WhenApply("게임 세팅", "저장 및 적용");
     }
     public void InitData_As()
     {
@@ -269,7 +280,6 @@ public class Option : MonoBehaviour, IInteract
     }
     public void InitData_Vs()
     {
-        GameSetting_Video GS_V = GameSettingManager.GameSetting.GameSetting_Video;
         if (fullScreen_BtnPanel.TryGetComponent(out ToggleInteractBtn fs_TIB))
         { GameSettingManager.GameSetting.GameSetting_Video.FullScreen = fs_TIB.thisToggle.isOn; }
         if (resolution_BtnPanel.TryGetComponent(out ArrowLRInteractBtn re_AIB))
@@ -290,11 +300,6 @@ public class Option : MonoBehaviour, IInteract
 
     #endregion
 
-    #region Get Values
-
-
-    #endregion
-
     #region Turn On
 
     // 타입별 킬때 초기화
@@ -310,6 +315,8 @@ public class Option : MonoBehaviour, IInteract
         { stg_AIB.ResetUI(GS_G.ShowGuideTutorial); }
         if (IsOnBG_of3D_BtnPanel.TryGetComponent(out ToggleInteractBtn iob_AIB))
         { iob_AIB.ResetUI(GS_G.IsOnBG_of3D); }
+        if (MainUIScale_BtnPanel.TryGetComponent(out SliderInteractBtn mus_SIB)) 
+        { mus_SIB.ResetUI(GS_G.MainUIScale); }
     }
     private void TurnOn_AudioSetting()
     {

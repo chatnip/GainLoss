@@ -10,7 +10,7 @@ public class ToggleInteractBtn : BasicInteractBtn
     [Header("*UI")]
     [SerializeField] public Toggle thisToggle;
     [SerializeField] TMP_Text onOffTxt;
-    string SavedValue;
+    string savedValue;
 
     public override void Awake()
     {
@@ -21,29 +21,29 @@ public class ToggleInteractBtn : BasicInteractBtn
     }
     private void OnDisable()
     {
-        SavedValue = null;
+        savedValue = null;
     }
     public void ResetUI(bool _b)
     {
-        thisToggle.isOn = _b; 
-        if (_b)
-        { onOffTxt.text = "ON"; }
-        else
-        { onOffTxt.text = "OFF"; }
-
-        SavedValue = onOffTxt.text;
+        thisToggle.isOn = _b;
+        SetValueTxt(_b);
+        savedValue = onOffTxt.text;
     }
     
 
     public void SetToggleUI(bool _b)
     {
+        SetValueTxt(_b);
+        if (savedValue != onOffTxt.text && savedValue != null && savedValue != "")
+        { Option.CanSave(true); }
+    }
+
+    private void SetValueTxt(bool _b)
+    {
         if (_b)
         { onOffTxt.text = "ON"; }
         else
         { onOffTxt.text = "OFF"; }
-
-        if(SavedValue != onOffTxt.text && SavedValue != null && SavedValue != "")
-        { Option.CanSave(true); }
     }
 
 }
