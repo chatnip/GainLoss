@@ -84,6 +84,9 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(true); return; }
+        else if (SelectBtn != null && SelectBtn.TryGetComponent(out SliderInteractBtn SIB))
+        { SIB.SetSliderUI_ByPad(0.1f); return; }
+
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -113,6 +116,8 @@ public class TitleInputController : Manager<TitleInputController>
     {
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(false); return; }
+        else if (SelectBtn != null && SelectBtn.TryGetComponent(out SliderInteractBtn SIB))
+        { SIB.SetSliderUI_ByPad(-0.1f); return; }
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {

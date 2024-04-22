@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 public class SliderInteractBtn : BasicInteractBtn
@@ -39,6 +38,17 @@ public class SliderInteractBtn : BasicInteractBtn
         if (savedValue != valueTxt.text && savedValue != null && savedValue != "")
         { Option.CanSave(true); }
     }
+    public void SetSliderUI_ByPad(float f_change)
+    {
+        double value = thisSlider.value;
+        value += f_change;
+        if (value < 0) { value = 0; }
+        else if (value > 1) {  value = 1; }
+
+        value = Math.Round(value * 10) / 10;
+        Debug.Log(value);
+        SetValueTxt((float)value);
+    }
     private void SetValueTxt(float _f)
     {
         thisSlider.value = _f;
@@ -58,6 +68,6 @@ public class SliderInteractBtn : BasicInteractBtn
         float sliderValue = _f;
         sliderValue *= 100f;
         sliderValue += 50f;
-        return (int)Math.Ceiling(sliderValue);
+        return (int)Math.Round(sliderValue);
     }
 }
