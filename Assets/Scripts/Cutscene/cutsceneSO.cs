@@ -18,6 +18,8 @@ public class cutsceneSO : ScriptableObject
     //public static bool cutsceneIsPlaying = false;
     public static Sequence makeCutscene(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
+
+       
         cutsceneImg.color = Color.black;
         cutsceneImg.gameObject.SetActive(true);
         cutsceneTxt.text = "";
@@ -26,6 +28,7 @@ public class cutsceneSO : ScriptableObject
         thisSequence.timeScale = 1.0f;
         cutsceneImg.sprite = currentCSSO.cutsceneSprites[0];
         thisSequence.Append(cutsceneImg.DOFade(1.0f, 0.25f));
+
         for (int i = 0; i < currentCSSO.cutsceneSprites.Count; i++)
         {
             thisSequence.Append(cutsceneImg.DOColor(Color.white, 0.25f));
@@ -78,7 +81,7 @@ public class cutsceneSO : ScriptableObject
     }
     public static void skipOrCompleteSeq(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
-        if (currentCSSO == null) { return; }
+        if (currentCSSO ==  null || currentCSSO.cutsceneSprites.Count == 0) { return; }
 
         cutsceneSeq.timeScale = 1.0f;
 

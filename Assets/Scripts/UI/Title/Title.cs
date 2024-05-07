@@ -66,7 +66,6 @@ public class Title : MonoBehaviour, IInteract
                     .SetEase(Ease.InOutBack)
                     .OnComplete(() =>
                     {
-                        
                         DOTween.KillAll();
                         SceneManager.LoadScene("Main");
                     });

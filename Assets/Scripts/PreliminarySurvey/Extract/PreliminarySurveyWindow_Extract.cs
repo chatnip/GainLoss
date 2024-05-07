@@ -292,6 +292,13 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     private void ft_showCutscene()
     {
+        if (SelectedPreliminarySurveySO.cutsceneSO.cutsceneSprites.Count <= 0)
+        {
+            showResult();
+            endBtn.interactable = true;
+            return;
+        }
+
         endBtn.interactable = false;
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 

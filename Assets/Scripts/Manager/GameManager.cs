@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
             return cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
         }
     }
-
 }
 
 [Serializable]
