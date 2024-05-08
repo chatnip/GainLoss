@@ -38,7 +38,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_StartBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                StartCoroutine(StartPartTimeJob(1.0f, selectCSSO()));
+                StartCoroutine(StartPartTimeJob(5.0f, selectCSSO()));
             });
         partTimeJob_EndBtn.OnClickAsObservable()
             .Subscribe(_ =>

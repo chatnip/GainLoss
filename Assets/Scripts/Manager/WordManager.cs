@@ -69,6 +69,7 @@ public class WordManager : Manager<WordManager>
     }
     public void TodoReset()
     {
+        Desktop.streamStartBtn.interactable = false;
         Desktop.CanUseThisSentence = true;
         resetBtn.TryGetComponent(out Outline OL);
         OL.enabled = false;

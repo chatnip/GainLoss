@@ -49,7 +49,7 @@ public class IDBtn : MonoBehaviour
 
             case ButtonType.WordActionType:
                 IDBtnSetup();
-                WordActionTypeAdd();
+                WordActionTypeAdd(); 
                 break;
             case ButtonType.WordActionPadType:
                 IDBtnSetup();
@@ -162,9 +162,14 @@ public class IDBtn : MonoBehaviour
             reason.text = Reason;
             CannotUseLabal.SetActive(true);
         }
-        
     }
-
+    public void CheckCannotUse()
+    {
+        if (CannotUseLabal.activeSelf)
+        { button.interactable = false; }
+        else
+        { button.interactable = true; }
+    }
     #endregion
 
     #region Set

@@ -75,7 +75,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         else if(PlayerInputController.SelectBtn == WordManager.resetBtn && WordManager.resetBtn.interactable)
         {
             WordManager.TodoReset();
-            Desktop.streamStartBtn.interactable = true;
             SetThisSectionBtns(wordParentObject);
             setOnLine();
         }
@@ -165,7 +164,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
                 wordBtn.CannotUse(false, "자연스러운 문장 조합 불가");
             }
 
-
+            wordBtn.CheckCannotUse();
         }
 
         WordManager.WordBtnListSet(); // 데이터 삽입
