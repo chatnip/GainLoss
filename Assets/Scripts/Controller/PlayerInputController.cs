@@ -449,7 +449,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
     {
-        if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setChooseClue(SelectBtn);
         }
@@ -466,7 +466,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         if(Desktop.streamWindow.activeSelf) 
         { DialogManager.ft_allSkip(); }
 
-        if (Desktop.PSWindow.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
+        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
         { PSWindow_FC.ft_tryToCombine(); }
 
         if (ScheduleManager.PassNextScheduleBtn.gameObject.activeSelf)
@@ -582,7 +582,7 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void PointerMoveInput(Vector2 newPointerMoveDirection)
     {
-        if (Desktop.PSWindow.activeSelf) { pointerMove = newPointerMoveDirection; }
+        if (PSWindow_FC.gameObject.activeSelf) { pointerMove = newPointerMoveDirection; }
     }
     
 
@@ -600,7 +600,7 @@ public class PlayerInputController : Manager<PlayerInputController>
         else if (Panel_Npc.activeSelf)
         { GameSystem.NpcDescriptionSkip(); return; }
 
-        if (Desktop.PSWindow.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf)
         {
             interact.Interact();
         }
@@ -644,7 +644,7 @@ public class PlayerInputController : Manager<PlayerInputController>
             OnOffSelectedBtn(SelectBtn);
         }
 
-        if (Desktop.PSWindow.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setClueImg(SelectBtn);
         }
@@ -677,7 +677,7 @@ public class PlayerInputController : Manager<PlayerInputController>
             }
             OnOffSelectedBtn(SelectBtn);
         }
-        if (Desktop.PSWindow.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setClueImg(SelectBtn);
         }
@@ -723,7 +723,7 @@ public class PlayerInputController : Manager<PlayerInputController>
             OnOffSelectedBtn(SelectBtn);
         }
 
-        if (Desktop.PSWindow.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setClueImg(SelectBtn);
         }
@@ -744,17 +744,31 @@ public class PlayerInputController : Manager<PlayerInputController>
             int lineIndex = SectionBtns.IndexOf(currentBtnList);
             int index = currentBtnList.IndexOf(SelectBtn);
 
-            if(lineIndex <= 0)
+            if (lineIndex <= 0)
             {
-                SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
+                if (index > SectionBtns[SectionBtns.Count - 1].Count - 1)
+                {
+                    SelectBtn = SectionBtns[SectionBtns.Count - 1][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[SectionBtns.Count - 1][index];
+                }
             }
             else
             {
-                SelectBtn = SectionBtns[lineIndex - 1][index];
+                if (index > SectionBtns[lineIndex - 1].Count - 1)
+                {
+                    SelectBtn = SectionBtns[lineIndex - 1][0];
+                }
+                else
+                {
+                    SelectBtn = SectionBtns[lineIndex - 1][index];
+                }
             }
             OnOffSelectedBtn(SelectBtn);
         }
-        if (Desktop.PSWindow.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setClueImg(SelectBtn);
         }

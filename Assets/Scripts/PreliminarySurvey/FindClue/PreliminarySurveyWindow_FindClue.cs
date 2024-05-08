@@ -297,7 +297,8 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             if (SelectedPreliminarySurveySO.cutsceneSO.cutsceneSprites.Count <= 0)
             {
                 showResult();
-                endBtn.interactable = true;
+                endBtn.interactable = true; 
+                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
                 return;
             }
 

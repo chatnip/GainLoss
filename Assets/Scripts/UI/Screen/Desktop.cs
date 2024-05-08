@@ -48,7 +48,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     [Header("*Preliminary Survey")] // = PS
     [SerializeField] Button PSOpenBtn;
-    [SerializeField] public GameObject PSWindow;
+    [SerializeField] GameObject PSPopupWindow;
 
     [Header("*ConfirmPopup")]
     [SerializeField] DesktopSoftwere desktopSoftwere;
@@ -206,7 +206,7 @@ public class Desktop : MonoBehaviour, IInteract
             if (ScheduleManager.currentPrograssScheduleID == "S01")
             {
                 confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(PSWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+                EffectfulWindow.AppearEffectful(PSPopupWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
                 return;
             }
             else if(ScheduleManager.currentPrograssScheduleID == "S03")
@@ -294,7 +294,7 @@ public class Desktop : MonoBehaviour, IInteract
             .Subscribe(btn =>
             {
                 confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(PSWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+                EffectfulWindow.AppearEffectful(PSPopupWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
 
                 disposable.Dispose();
             });
