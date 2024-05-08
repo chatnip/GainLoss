@@ -41,6 +41,7 @@ public class MainInfo
     public int angerGage = 0;
     public int riskGage = 0;
     public int overloadGage = 0;
+
 }
 
 

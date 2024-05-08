@@ -13,6 +13,7 @@ public class Title : MonoBehaviour, IInteract
 
     [Header("*Property")]
     [SerializeField] public TitleInputController TitleInputController;
+    [SerializeField] JsonManager JsonManager;
     [SerializeField] CanvasScaler TitleCanvasScaler;
     [SerializeField] Camera MainCamera;
 
@@ -61,6 +62,8 @@ public class Title : MonoBehaviour, IInteract
         newGameBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                JsonManager.ResetMainJson();
+
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
                     .SetEase(Ease.InOutBack)

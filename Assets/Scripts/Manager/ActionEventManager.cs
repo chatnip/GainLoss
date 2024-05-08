@@ -178,7 +178,6 @@ public class ActionEventManager : Manager<ActionEventManager>
         {
             loading.gameObject.SetActive(false);
             if( !TutorialManager.tutorial_ScreenCG.gameObject.activeSelf ) { PlayerInputController.CanMove = true; }
-            
             //GameSystem.GameStart();
         });
     }

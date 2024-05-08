@@ -43,20 +43,22 @@ public class JsonManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "Title")
         {
+            Debug.Log("Title Json");
             SetSettingJsonPath();
         }
         else if(SceneManager.GetActiveScene().name == "Main")
         {
+            Debug.Log("Main Json");
             SetAllJsonPath();
             LoadAllGameDatas();
-            if (GameManager.currentMainInfo.NewGame)
+
+            /*if (GameManager.currentMainInfo.NewGame)
             {
                 Debug.Log("Reset!!!");
                 ResetMainJson();
                 LoadAllGameDatas();
-            }
+            }*/
         }
-       
     }
 
     private void SetSettingJsonPath()
@@ -96,28 +98,33 @@ public class JsonManager : MonoBehaviour
     }
     public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
-        string path = jsonPath + jsonName;
-        var loadJson = Resources.Load<TextAsset>(path);
+        /*string path = jsonPath + jsonName;
+        TextAsset loadJson = Resources.Load<TextAsset>(path);
         MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson.ToString());
+*/
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
+
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
+#endif
 
         return mainInfo;
     }
     public List<string> JsonLoad_L(string jsonPath, string jsonName)
     {
-        /*string loadJson = File.ReadAllText(jsonPath + jsonName);
-        
-        WordIDs wordIDs = JsonUtility.FromJson<WordIDs>(loadJson.ToString());
-        WordManager.currentWordIDList = wordIDs.wordIDList;*/
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        IDs ids = JsonUtility.FromJson<IDs>(jsonString);
 
-        /*if (!File.Exists(jsonPath + jsonName))
-        {
-            Debug.LogError("None File this Path");
-            return null;
-        }*/
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        ids = JsonUtility.FromJson<IDs>(jsonString);
+#endif
+        return ids.dataIDList;
 
-        var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
-        IDs saveData = JsonUtility.FromJson<IDs>(saveFile.ToString());
-        return saveData.dataIDList;
+        //var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
+        //IDs saveData = JsonUtility.FromJson<IDs>(saveFile.ToString());
     }
     public Dictionary<string, int> JsonLoad_D(string jsonPath, string jsonName)
     {
@@ -172,20 +179,37 @@ public class JsonManager : MonoBehaviour
             Debug.LogError("None File this Path");
             return null;
         }*/
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        PSBase ids = JsonUtility.FromJson<PSBase>(jsonString);
 
-        var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        ids = JsonUtility.FromJson<PSBase>(jsonString);
+#endif
+        return ids.Data();
+
+        /*var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
         PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile.ToString());
-        return saveData.Data();
+        return saveData.Data();*/
     }
 
     // Setting
     private GameSetting JsonLoad_S(string jsonPath, string jsonName)
     {
-        string path = jsonPath + jsonName;
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        GameSetting GS = JsonUtility.FromJson<GameSetting>(jsonString);
+
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        GS = JsonUtility.FromJson<GameSetting>(jsonString);
+#endif
+        return GS;
+
+        /*string path = jsonPath + jsonName;
         var loadJson = Resources.Load<TextAsset>(path);
         GameSetting settingInfo = JsonUtility.FromJson<GameSetting>(loadJson.ToString());
 
-        return settingInfo;
+        return settingInfo;*/
 
     }
     
@@ -242,25 +266,24 @@ public class JsonManager : MonoBehaviour
 #if UNITY_EDITOR
         saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
 #endif
-
-
-        File.WriteAllText(saveFilePath, saveJson);
-        Debug.Log("Save Success: " + saveFilePath);
+        System.IO.File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log(jsonName);
     }
 
     public void JsonSave(string jsonName, MainInfo mainDatas)
     {
-       
         string saveJson = JsonUtility.ToJson(mainDatas, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
+        Debug.Log(saveFilePath);
 
 #if UNITY_EDITOR
         saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
+        Debug.Log(saveFilePath);
 #endif
 
 
-        File.WriteAllText(saveFilePath, saveJson);
-        Debug.Log("Save Success: " + saveFilePath);
+        System.IO.File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log(jsonName);
     }
     public void JsonSave(string jsonName, List<string> currentWordIDs)
     {
@@ -277,8 +300,8 @@ public class JsonManager : MonoBehaviour
         saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
 #endif
 
-        File.WriteAllText(saveFilePath, saveJson);
-        Debug.Log("Save Success: " + saveFilePath);
+        System.IO.File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log(jsonName);
     }
     public void JsonSave(string jsonName,  Dictionary<string, int> Dict)
     {
@@ -333,8 +356,8 @@ public class JsonManager : MonoBehaviour
         saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
 #endif
 
-        File.WriteAllText(saveFilePath, saveJson);
-        Debug.Log("Save Success: " + saveFilePath);
+        System.IO.File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log(jsonName);
     }
     public void JsonSave(string jsonName, GameSetting gameSetting)
     {
@@ -345,8 +368,8 @@ public class JsonManager : MonoBehaviour
         saveFilePath = "Assets/Resources/Json/" + jsonName + ".json";
 #endif
 
-        File.WriteAllText(saveFilePath, saveJson);
-        Debug.Log("Save Success: " + saveFilePath);
+        System.IO.File.WriteAllText(saveFilePath, saveJson);
+        Debug.Log(jsonName);
     }
 
     // Save ALL
@@ -383,6 +406,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_SettingFileName, GameSettingManager.GameSetting);
 
     }
+    
 
 #endregion
 
@@ -393,7 +417,6 @@ public class JsonManager : MonoBehaviour
     public void ResetMainJson()
     {
         SetAllJsonPath();
-
         JsonSave(json_tutorialFileName, new TutorialInfo());
         JsonSave(json_mainInfoFileName, new MainInfo());
         JsonSave(json_wordFileName, new List<string>() { "W001" });
@@ -401,10 +424,9 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_ScheduleFileName, new List<string>() { "S01", "S02", "S03", "S04" });
         JsonSave(json_PlaceFileName, new Dictionary<string, int>() { { "P00", 1 }, { "P01", 0 } });
         JsonSave(json_PSFileName, new PSBase(new List<string> { }, new List<string> { }));
-        
-
         Set_StartSentence(); // Sentence IDs
     }
+
 
     void Set_StartSentence()
     {
