@@ -1,6 +1,4 @@
 using DG.Tweening;
-using Spine.Unity;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UniRx;
@@ -33,10 +31,6 @@ public class ScheduleManager : Manager<ScheduleManager>
     [Header("*Guide")]
     [SerializeField] RectTransform computerArrowRT;
     [SerializeField] public RectTransform inUIEffectRT;
-
-    [Header("*Sun And Moon")]
-    [SerializeField] public RectTransform SAM_Frame;
-    [SerializeField] SkeletonGraphic SAM_SkeletonGraphic;
 
     #endregion
 
@@ -107,29 +101,6 @@ public class ScheduleManager : Manager<ScheduleManager>
         currentPrograssScheduleComplete = false;
     }
 
-    public void ShowSAM_Effectful(string ID)
-    {
-        Sequence seq = DOTween.Sequence();
-        SAM_Frame.TryGetComponent(out CanvasGroup CG);
-        if (ID == "S00")
-        {
-            SAM_SkeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "evening_morning", loop: false);
-            seq.AppendInterval(1f);
-            seq.Append(CG.DOFade(0f, 1f));
-            seq.Join(SAM_Frame.DOScale(Vector2.one, 1));
-            
-        }
-        else
-        {
-            seq.Append(CG.DOFade(1f, 1f));
-            seq.Join(SAM_Frame.DOScale(Vector2.one * 2, 1)
-                .OnComplete(() =>
-                {
-                    SAM_SkeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "morning_evening", loop: false);
-                }));
-        }
-    }
-
     public void PassNextSchedule()
     {
         PassBtnOff();
@@ -187,7 +158,6 @@ public class ScheduleManager : Manager<ScheduleManager>
     public void SetDotweenGuide()
     {
         ResetDotweenGuide();
-        Debug.Log(currentPrograssScheduleID);
 
         inUIEffectRT.TryGetComponent(out Image img);
 

@@ -1,11 +1,9 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEditor.ShaderData;
 
 public class TitleInputController : Manager<TitleInputController>
 {

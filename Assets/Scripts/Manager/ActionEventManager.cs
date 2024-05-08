@@ -53,9 +53,8 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     protected override void Awake()
     {
-        if(GameManager.currentMainInfo.day == 1)
+        /*if(GameManager.currentMainInfo.day == 1)
         {
-            ScheduleManager.SAM_Frame.gameObject.SetActive(false);
             GameManager.playMainCutscene(GameManager.TestCutsceneSO)
                 .OnComplete(() =>
                 {
@@ -64,7 +63,6 @@ public class ActionEventManager : Manager<ActionEventManager>
                     GameSystem.cutsceneTxt.text = "";
                     cutsceneSO.currentCSSO = null;
 
-                    ScheduleManager.SAM_Frame.gameObject.SetActive(true);
                     loading.gameObject.SetActive(true);
                     loading.alpha = 1.0f;
                     StartCoroutine(Post_ShowNextDayText(1f));
@@ -75,7 +73,11 @@ public class ActionEventManager : Manager<ActionEventManager>
             loading.gameObject.SetActive(true);
             loading.alpha = 1.0f;
             StartCoroutine(Post_ShowNextDayText(1f));
-        }
+        }*/
+
+        loading.gameObject.SetActive(true);
+        loading.alpha = 1.0f;
+        StartCoroutine(Post_ShowNextDayText(1f));
     }
 
     #region PassDay Loading
@@ -87,7 +89,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     private IEnumerator Past_ShowNextDayText(float time)
     {
-        ScheduleManager.ShowSAM_Effectful("S99");
+        //ScheduleManager.ShowSAM_Effectful("S99");
         BeforeSaveDatas();
 
         PassDayExplanationText.color = Color.white;
@@ -121,7 +123,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
         yield return new WaitForSeconds(time);
 
-        ScheduleManager.ShowSAM_Effectful("S00");
+        //ScheduleManager.ShowSAM_Effectful("S00");
 
         //SchedulePrograss.SetExplanation("S00");
         PassDayExplanationText.text = "";
