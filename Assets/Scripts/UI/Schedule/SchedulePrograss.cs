@@ -122,8 +122,8 @@ public class SchedulePrograss : MonoBehaviour
 
     public void Set_InStartScheduleUI()
     {
-        ScheduleAM.text = "오전 (계획 필요)";
-        SchedulePM.text = "오후 (계획 필요)";
+        ScheduleAM.text = "오전";
+        SchedulePM.text = "오후";
 
         SetProgressingUI(StartImg);
         SetNotProgressingUI(AMImg);

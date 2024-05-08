@@ -67,25 +67,25 @@ public class ScheduleManager : Manager<ScheduleManager>
         if(currentPrograssScheduleID == "S00")
         {
             // 오전 업무 보여주기
-            Current = "오전"; 
+            Current = "오전";
             Schedule = DataManager.ScheduleDatas[3][currentSelectedScheduleID[0]].ToString(); }
         else
         {
             // 오후 업무 보여주기
             if (prograssing == 0) 
             { 
-                Current = "오후"; 
+                Current = "오후";
                 Schedule = DataManager.ScheduleDatas[3][currentSelectedScheduleID[1]].ToString(); 
             }
             // 야간 하루 종료 보여주기
             else if (prograssing == 1) 
             { 
-                Current = "야간"; 
+                Current = "야간";
                 Schedule = DataManager.ScheduleDatas[3]["S99"].ToString(); 
             }
         }
         PassNextScheduleBtnText.text =
-            "<size=150%><b><#161616>[" + Current + "]\r\n<size=120%><#7F0000>[" + Schedule + "]</b><size=100%><#000000>\r\n(으)로 넘어가기";
+            "<size=140%><b><#161616>[" + Current + "]\r\n<size=120%><#7F0000>[" + Schedule + "]</b><size=100%><#000000>\r\n(으)로 넘어가기";
     
     }
 
