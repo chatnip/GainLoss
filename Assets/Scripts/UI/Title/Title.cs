@@ -39,6 +39,9 @@ public class Title : MonoBehaviour, IInteract
     [SerializeField] List<RectTransform> MoveEffectRTList;
     [Tooltip("Dont change this - only Check")][SerializeField] List<Vector3> OffsetRotationList;
 
+    [Header("*BGM")]
+    [SerializeField] AudioSource Bgm;
+
     #endregion
 
     #region Main
@@ -64,6 +67,7 @@ public class Title : MonoBehaviour, IInteract
             {
                 JsonManager.ResetMainJson();
 
+                Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
                     .SetEase(Ease.InOutBack)
@@ -76,6 +80,7 @@ public class Title : MonoBehaviour, IInteract
         continueBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
                     .SetEase(Ease.InOutBack)
@@ -131,18 +136,19 @@ public class Title : MonoBehaviour, IInteract
     {
         if(TitleInputController.SelectBtn == newGameBtn && newGameBtn.interactable)
         {
+            Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
             BlackScreenImg.gameObject.SetActive(true);
             BlackScreenImg.DOFade(1.0f, 0.7f)
                 .SetEase(Ease.InOutBack)
                 .OnComplete(() =>
-                {
-                    
+                {                  
                     DOTween.KillAll();
-                    SceneManager.LoadScene("Main");
+                    SceneManager.LoadScene("Main");                
                 });
         }
         if (TitleInputController.SelectBtn == continueBtn && continueBtn.interactable)
         {
+            Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
             BlackScreenImg.gameObject.SetActive(true);
             BlackScreenImg.DOFade(1.0f, 0.7f)
                 .SetEase(Ease.InOutBack)
@@ -215,6 +221,7 @@ public class Title : MonoBehaviour, IInteract
             {
                 SetButtonThisTitle();
                 BlackScreenImg.gameObject.SetActive(false);
+                Bgm.Play();
             }));
     }
 
