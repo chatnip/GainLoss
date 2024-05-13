@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UniRx;
-using Unity.VisualScripting;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -144,7 +140,7 @@ public class PlayerController : MonoBehaviour
     private void GroundedCheck()
     {
         // set sphere position, with offset
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
             transform.position.z);
         Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
@@ -156,6 +152,14 @@ public class PlayerController : MonoBehaviour
             _animator.SetBool(_animIDGrounded, Grounded);
         }
         */
+    }
+    void OnDrawGizmosSelected()
+    {
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
+            transform.position.z);
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(spherePosition, GroundedRadius);
     }
 
     public virtual void Move()
