@@ -216,7 +216,10 @@ public class PlayerController : MonoBehaviour
     public void resetAnime()
     {
         if (_animIDSpeed == 0) { AssignAnimationIDs(); }
-        _animator.SetFloat(_animIDSpeed, 0);
+
+        _animationBlend = 0;
+        _animator.SetFloat(_animIDSpeed, _animationBlend);
+        _animator.SetFloat(_animIDMotionSpeed, 0);
     }
 
     private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
@@ -240,6 +243,7 @@ public class PlayerController : MonoBehaviour
     {
         _npcInteractCamera.gameObject.SetActive(false);
     }
+
     /*
     private void CameraRotation()
     {

@@ -304,11 +304,10 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void TurnOn()
     {
-        //snsWindow.SetActive(false);
-        //fancafeWindow.SetActive(false);
         List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
         if (ScheduleManager.currentPrograssScheduleID == "S01") { setAbleInteractBtn(PSOpenBtn, OpenBtns); }
         else if (ScheduleManager.currentPrograssScheduleID == "S03") { setAbleInteractBtn(streamOpenBtn, OpenBtns); }
+        confirmPopup.SetActive(false);
         resultWindow.SetActive(false);
         streamWindow.SetActive(false);
         todoWindow.SetActive(false);

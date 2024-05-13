@@ -292,17 +292,34 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 일시정지
     private void OnOffPause(InputAction.CallbackContext obj)
     {
-        if(PhoneHardware.phone2DCamera.activeSelf)
-        { 
-            PhoneHardware.PhoneOff(); 
-            return; 
+        // 폰 켜져있을 시 끄기
+        if (PhoneHardware.phone2DCamera.activeSelf)
+        {
+            PhoneHardware.PhoneOff();
+            return;
         }
-
-        if (ComputerCamera2D.activeSelf)
-        { 
-            Desktop.TurnOff();
-            ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
-            return; 
+        // 컴퓨터 켜져있을 시 끄기
+        else if (ComputerCamera2D.activeSelf)
+        {
+            // 이 창들이 켜져있을때는 끌 수 없음
+            if (!Desktop.streamWindow.activeSelf &&
+                !PSWindow_FC.gameObject.activeSelf &&
+                !PSWindow_E.gameObject.activeSelf)
+            { 
+                Desktop.TurnOff();
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+            }
+            return;
+        }
+        else if (GameSystem.objPanel.activeSelf)
+        {
+            GameSystem.ObjectDescriptionOff();
+            return;
+        }
+        else if (GameSystem.NpcPanel.activeSelf)
+        {
+            GameSystem.NpcDescriptionOff();
+            return;
         }
 
         OnOffPause();
@@ -835,23 +852,4 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     #endregion
 
-
-    /*
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        SetCursorState(cursorLocked);
-    }
-
-    private void SetCursorState(bool newState)
-    {
-        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-    }
-    
-
-    private bool LookForGameObject(out RaycastHit hit)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out hit);
-    }
-    */
 }
