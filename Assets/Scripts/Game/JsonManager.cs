@@ -90,18 +90,18 @@ public class JsonManager : MonoBehaviour
     // Main
     public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
     {
-        string path = jsonPath + jsonName;
-        var loadJson = Resources.Load<TextAsset>(path);
-        TutorialInfo tutorialInfo = JsonUtility.FromJson<TutorialInfo>(loadJson.ToString());
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        TutorialInfo tutorialInfo = JsonUtility.FromJson<TutorialInfo>(jsonString);
+
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        tutorialInfo = JsonUtility.FromJson<TutorialInfo>(jsonString);
+#endif
 
         return tutorialInfo;
     }
     public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
-        /*string path = jsonPath + jsonName;
-        TextAsset loadJson = Resources.Load<TextAsset>(path);
-        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson.ToString());
-*/
         string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
         MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
 
@@ -122,9 +122,6 @@ public class JsonManager : MonoBehaviour
         ids = JsonUtility.FromJson<IDs>(jsonString);
 #endif
         return ids.dataIDList;
-
-        //var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
-        //IDs saveData = JsonUtility.FromJson<IDs>(saveFile.ToString());
     }
     public Dictionary<string, int> JsonLoad_D(string jsonPath, string jsonName)
     {
@@ -174,11 +171,6 @@ public class JsonManager : MonoBehaviour
     }
     public List<List<string>> JsonLoad_LL(string jsonPath, string jsonName)
     {
-        /*if (!File.Exists(jsonPath + jsonName))
-        {
-            Debug.LogError("None File this Path");
-            return null;
-        }*/
         string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
         PSBase ids = JsonUtility.FromJson<PSBase>(jsonString);
 
@@ -187,10 +179,6 @@ public class JsonManager : MonoBehaviour
         ids = JsonUtility.FromJson<PSBase>(jsonString);
 #endif
         return ids.Data();
-
-        /*var saveFile = Resources.Load<TextAsset>(jsonPath + jsonName);
-        PSBase saveData = JsonUtility.FromJson<PSBase>(saveFile.ToString());
-        return saveData.Data();*/
     }
 
     // Setting
@@ -204,12 +192,6 @@ public class JsonManager : MonoBehaviour
         GS = JsonUtility.FromJson<GameSetting>(jsonString);
 #endif
         return GS;
-
-        /*string path = jsonPath + jsonName;
-        var loadJson = Resources.Load<TextAsset>(path);
-        GameSetting settingInfo = JsonUtility.FromJson<GameSetting>(loadJson.ToString());
-
-        return settingInfo;*/
 
     }
     

@@ -17,7 +17,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
-    [SerializeField] GameObject phone2DCamera;
+    [SerializeField] public GameObject phone2DCamera;
     [SerializeField] PhoneSoftware phoneSoftware;
     [SerializeField] GameObject phoneViewCamera;
     [SerializeField] GameObject quarterViewCamera;

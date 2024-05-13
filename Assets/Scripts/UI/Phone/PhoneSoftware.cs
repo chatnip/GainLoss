@@ -74,6 +74,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     [Header("*Allback")]
     [SerializeField] Button backBtn;
 
+    [Header("*When PhoneTurnOn Exception Btns")]
+    [SerializeField] List<Button> ExceptionBtns;
+
     #endregion
 
     #region Main
@@ -142,6 +145,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
             .Subscribe(btn =>
             {
                 PhoneHardware.PhoneOff();
+                ExceptionBtnsTurnOn();
             });
         #endregion
 
@@ -199,7 +203,13 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     private void OnEnable()
     {
         PlayerInputController.interact = this;
+        ExceptionBtnsTurnOff();
         ResetUI();
+    }
+
+    private void OnDisable()
+    {
+        ExceptionBtnsTurnOn();
     }
 
     private void LateUpdate()
@@ -585,4 +595,19 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
 
     #endregion
+
+    public void ExceptionBtnsTurnOn()
+    {
+        foreach(Button btn in ExceptionBtns)
+        {
+            btn.interactable = true;
+        }
+    }
+    private void ExceptionBtnsTurnOff()
+    {
+        foreach (Button btn in ExceptionBtns)
+        {
+            btn.interactable = false;
+        }
+    }
 }

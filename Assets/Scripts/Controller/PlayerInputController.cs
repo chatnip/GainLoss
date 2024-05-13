@@ -292,22 +292,20 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 일시정지
     private void OnOffPause(InputAction.CallbackContext obj)
     {
-        OnOffPause();
-        /*if (pause.gameObject.activeSelf)
-        {
-            pause.ft_closePausePopup();
-
-            SetSectionBtns(TempSectionBtns, TempInteract);
-            OnOffSelectedBtn(TempSelectedBtn);
+        if(PhoneHardware.phone2DCamera.activeSelf)
+        { 
+            PhoneHardware.PhoneOff(); 
+            return; 
         }
-        else
-        {
-            TempSectionBtns = this.SectionBtns;
-            TempInteract = this.interact;
-            TempSelectedBtn = this.SelectBtn;
 
-            pause.ft_openPausePopup();
-        }*/
+        if (ComputerCamera2D.activeSelf)
+        { 
+            Desktop.TurnOff();
+            ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+            return; 
+        }
+
+        OnOffPause();
     }
     public void OnOffPause()
     {

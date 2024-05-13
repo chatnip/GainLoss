@@ -74,21 +74,6 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void Awake()
     {
-        /*
-        snsOpenBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                desktopSoftwere = DesktopSoftwere.SNS;
-                ConfirmPopupSetting();
-            });
-
-        fancafeOpenBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                desktopSoftwere = DesktopSoftwere.FanCafe;
-                ConfirmPopupSetting();
-            });
-        */
         PSOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -305,7 +290,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     #region Turn ON/OFF
 
-    private void TurnOff()
+    public void TurnOff()
     {
         BlackScreen.color = Color.black;
         BlackScreen.gameObject.SetActive(true);
