@@ -11,7 +11,6 @@ public class VirtualScreen : GraphicRaycaster
     [SerializeField] Camera screenCamera;
     [Tooltip("2D 화면의 UI 캔버스")]
     [SerializeField] GraphicRaycaster screenCaster;
-    [SerializeField] GameObject TargetOB;
 
     [HideInInspector] public Vector3 eventdataPos;
 
@@ -23,9 +22,8 @@ public class VirtualScreen : GraphicRaycaster
         ray = eventCamera.ScreenPointToRay(eventData.position);
         Debug.DrawRay(ray.origin, ray.direction * 20, Color.red);
 
-        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == TargetOB && hit.collider.transform == transform)
+        if (Physics.Raycast(ray, out hit) && hit.collider.transform == transform)
         {
-            Debug.Log("In Field");
             Vector3 virtualPos = new Vector3(hit.textureCoord.x, hit.textureCoord.y);
             virtualPos.x *= screenCamera.targetTexture.width;
             virtualPos.y *= screenCamera.targetTexture.height;
@@ -33,10 +31,6 @@ public class VirtualScreen : GraphicRaycaster
             eventData.position = virtualPos;
             eventdataPos = virtualPos;
             screenCaster.Raycast(eventData, resultAppendList);
-        }
-        else
-        {
-            Debug.Log("Out Field");
         }
     }
 }

@@ -64,6 +64,9 @@ public class Desktop : MonoBehaviour, IInteract
     [SerializeField] public float DisappearTime;
     [SerializeField] public float DisappearLastSize;
 
+    [Header("*Ext Btn")]
+    [SerializeField] List<Button> ExceptionBtns;
+
     IDisposable disposable;
 
     public bool CanUseThisSentence = true;
@@ -208,6 +211,11 @@ public class Desktop : MonoBehaviour, IInteract
         #endregion
     }
 
+    private void OnDisable()
+    {
+        ExceptionBtnsTurnOn();
+    }
+
     #endregion
 
     #region Confirm
@@ -304,6 +312,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void TurnOn()
     {
+        ExceptionBtnsTurnOff();
         List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
         if (ScheduleManager.currentPrograssScheduleID == "S01") { setAbleInteractBtn(PSOpenBtn, OpenBtns); }
         else if (ScheduleManager.currentPrograssScheduleID == "S03") { setAbleInteractBtn(streamOpenBtn, OpenBtns); }
@@ -338,6 +347,21 @@ public class Desktop : MonoBehaviour, IInteract
     }
 
     #endregion
+
+    public void ExceptionBtnsTurnOn()
+    {
+        foreach (Button btn in ExceptionBtns)
+        {
+            btn.interactable = true;
+        }
+    }
+    private void ExceptionBtnsTurnOff()
+    {
+        foreach (Button btn in ExceptionBtns)
+        {
+            btn.interactable = false;
+        }
+    }
 }
 
 
