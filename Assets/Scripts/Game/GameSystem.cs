@@ -107,29 +107,10 @@ public class GameSystem : MonoBehaviour
 
     #endregion
 
-    /*#region Loading
-
-    public void TurnOnLoading()
-    {
-        loading.gameObject.SetActive(true);
-        Sequence loadingSequence = DOTween.Sequence();
-        loadingSequence.OnStart(() =>
-        {
-            loading.DOFade(1f, 0.3f);
-        })
-        .SetDelay(1f)
-        .Append(loading.DOFade(0f, 1f))
-        .OnComplete(() => loading.gameObject.SetActive(false));
-    }
-
-    #endregion*/
-
     #region Obj Panel
 
     public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
     {
-        PlayerController.resetAnime();
-
         PlayerInputController.StopMove();
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
 
@@ -162,7 +143,6 @@ public class GameSystem : MonoBehaviour
 
     public void NpcDescriptionOn(ConversationBase conversationBase, Animator animator) // NPC 설명 패널 켜기
     {
-        PlayerController.resetAnime();
         PlayerController.setOnNpcInteractCamera(animator.gameObject);
         PlayerInputController.StopMove();
         PlayerController.isTalking = true;

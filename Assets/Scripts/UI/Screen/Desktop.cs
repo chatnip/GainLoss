@@ -64,6 +64,9 @@ public class Desktop : MonoBehaviour, IInteract
     [SerializeField] public float DisappearTime;
     [SerializeField] public float DisappearLastSize;
 
+    [Header("*Ext Btn")]
+    [SerializeField] List<Button> ExceptionBtns;
+
     IDisposable disposable;
 
     public bool CanUseThisSentence = true;
@@ -74,21 +77,6 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void Awake()
     {
-        /*
-        snsOpenBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                desktopSoftwere = DesktopSoftwere.SNS;
-                ConfirmPopupSetting();
-            });
-
-        fancafeOpenBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                desktopSoftwere = DesktopSoftwere.FanCafe;
-                ConfirmPopupSetting();
-            });
-        */
         PSOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -223,6 +211,11 @@ public class Desktop : MonoBehaviour, IInteract
         #endregion
     }
 
+    private void OnDisable()
+    {
+        ExceptionBtnsTurnOn();
+    }
+
     #endregion
 
     #region Confirm
@@ -305,7 +298,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     #region Turn ON/OFF
 
-    private void TurnOff()
+    public void TurnOff()
     {
         BlackScreen.color = Color.black;
         BlackScreen.gameObject.SetActive(true);
@@ -319,11 +312,11 @@ public class Desktop : MonoBehaviour, IInteract
 
     private void TurnOn()
     {
-        //snsWindow.SetActive(false);
-        //fancafeWindow.SetActive(false);
+        ExceptionBtnsTurnOff();
         List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
         if (ScheduleManager.currentPrograssScheduleID == "S01") { setAbleInteractBtn(PSOpenBtn, OpenBtns); }
         else if (ScheduleManager.currentPrograssScheduleID == "S03") { setAbleInteractBtn(streamOpenBtn, OpenBtns); }
+        confirmPopup.SetActive(false);
         resultWindow.SetActive(false);
         streamWindow.SetActive(false);
         todoWindow.SetActive(false);
@@ -354,6 +347,21 @@ public class Desktop : MonoBehaviour, IInteract
     }
 
     #endregion
+
+    public void ExceptionBtnsTurnOn()
+    {
+        foreach (Button btn in ExceptionBtns)
+        {
+            btn.interactable = true;
+        }
+    }
+    private void ExceptionBtnsTurnOff()
+    {
+        foreach (Button btn in ExceptionBtns)
+        {
+            btn.interactable = false;
+        }
+    }
 }
 
 

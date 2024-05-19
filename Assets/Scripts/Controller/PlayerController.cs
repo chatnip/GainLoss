@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UniRx;
-using Unity.VisualScripting;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -144,7 +140,7 @@ public class PlayerController : MonoBehaviour
     private void GroundedCheck()
     {
         // set sphere position, with offset
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
             transform.position.z);
         Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
@@ -156,6 +152,14 @@ public class PlayerController : MonoBehaviour
             _animator.SetBool(_animIDGrounded, Grounded);
         }
         */
+    }
+    void OnDrawGizmosSelected()
+    {
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
+            transform.position.z);
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(spherePosition, GroundedRadius);
     }
 
     public virtual void Move()
@@ -216,7 +220,10 @@ public class PlayerController : MonoBehaviour
     public void resetAnime()
     {
         if (_animIDSpeed == 0) { AssignAnimationIDs(); }
-        _animator.SetFloat(_animIDSpeed, 0);
+
+        _animationBlend = 0;
+        _animator.SetFloat(_animIDSpeed, _animationBlend);
+        _animator.SetFloat(_animIDMotionSpeed, 0);
     }
 
     private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
@@ -240,6 +247,7 @@ public class PlayerController : MonoBehaviour
     {
         _npcInteractCamera.gameObject.SetActive(false);
     }
+
     /*
     private void CameraRotation()
     {

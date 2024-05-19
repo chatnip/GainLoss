@@ -292,22 +292,37 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 일시정지
     private void OnOffPause(InputAction.CallbackContext obj)
     {
-        OnOffPause();
-        /*if (pause.gameObject.activeSelf)
+        // 폰 켜져있을 시 끄기
+        if (PhoneHardware.phone2DCamera.activeSelf)
         {
-            pause.ft_closePausePopup();
-
-            SetSectionBtns(TempSectionBtns, TempInteract);
-            OnOffSelectedBtn(TempSelectedBtn);
+            PhoneHardware.PhoneOff();
+            return;
         }
-        else
+        // 컴퓨터 켜져있을 시 끄기
+        else if (ComputerCamera2D.activeSelf)
         {
-            TempSectionBtns = this.SectionBtns;
-            TempInteract = this.interact;
-            TempSelectedBtn = this.SelectBtn;
+            // 이 창들이 켜져있을때는 끌 수 없음
+            if (!Desktop.streamWindow.activeSelf &&
+                !PSWindow_FC.gameObject.activeSelf &&
+                !PSWindow_E.gameObject.activeSelf)
+            { 
+                Desktop.TurnOff();
+                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+            }
+            return;
+        }
+        else if (GameSystem.objPanel.activeSelf)
+        {
+            GameSystem.ObjectDescriptionOff();
+            return;
+        }
+        else if (GameSystem.NpcPanel.activeSelf)
+        {
+            GameSystem.NpcDescriptionOff();
+            return;
+        }
 
-            pause.ft_openPausePopup();
-        }*/
+        OnOffPause();
     }
     public void OnOffPause()
     {
@@ -837,23 +852,4 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     #endregion
 
-
-    /*
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        SetCursorState(cursorLocked);
-    }
-
-    private void SetCursorState(bool newState)
-    {
-        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
-    }
-    
-
-    private bool LookForGameObject(out RaycastHit hit)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out hit);
-    }
-    */
 }

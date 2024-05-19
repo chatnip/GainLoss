@@ -109,7 +109,8 @@ public class Title : MonoBehaviour, IInteract
     }
     private void OnEnable()
     {
-        MainInfo SavedMainInfo = JsonLoad_MI();
+        MainInfo SavedMainInfo = JsonLoad_MI("Json/", "mainInfoDatabase");
+        Debug.Log(SavedMainInfo.NewGame);
         if (SavedMainInfo.NewGame)
         {
             continueBtn.interactable = false;
@@ -172,8 +173,6 @@ public class Title : MonoBehaviour, IInteract
     #endregion
 
     #region Start
-
-
     private void ft_StartTitle()
     {
 
@@ -251,16 +250,20 @@ public class Title : MonoBehaviour, IInteract
         Debug.Log("Save Success: " + saveFilePath);
     }
 
-    private MainInfo JsonLoad_MI()
+    public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
-        /*if (!File.Exists("Assets/Resources/Json/" + "mainInfoDatabase.json"))
-        {
-            Debug.LogError("None File this Path");
-            return null;
-        }*/
+        /*string path = jsonPath + jsonName;
+        TextAsset loadJson = Resources.Load<TextAsset>(path);
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(loadJson.ToString());
+*/
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
 
-        var path = Resources.Load<TextAsset>("Json/mainInfoDatabase");
-        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(path.ToString());
+#if UNITY_EDITOR
+        jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
+        mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
+#endif
+
         return mainInfo;
     }
 
