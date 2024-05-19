@@ -44,8 +44,6 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
     {
         if (NeedGenBtn(targetGO)) { GenBtn(targetGO); }
         SetActiveBtns(activeGOs);
-
-
     }
 
     // 새로 생성해야하는지 판별
@@ -97,7 +95,7 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
         Vector3 v3_pos;
         for (int i = 0; i <= activeInteractionBtns.Count; i++)
         {
-            v3_pos = new Vector3(0, i * InteractionBtn.GetComponent<RectTransform>().rect.height, 0);
+            v3_pos = new Vector3(-50, (i * InteractionBtn.GetComponent<RectTransform>().rect.height) + ((i + 1) * 25), 0);
             if (i == activeInteractionBtns.Count)
             { 
                 pad_start.GetComponent<RectTransform>().anchoredPosition = v3_pos + new Vector3( -10, 10, 0);
@@ -199,6 +197,10 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
             if (child.TryGetComponent(out UnityEngine.UI.Outline childOutline))
             {
                 childOutline.enabled = false;
+            }
+            if (child.TryGetComponent(out RectTransform RT))
+            {
+                RT.localScale = Vector3.one;    
             }
         }
     }
