@@ -111,8 +111,8 @@ public class ActionEventManager : Manager<ActionEventManager>
         SaveDatas();
 
         #region Test Version
-        Debug.Log("30게이지 넘는지 판별하는 구간 (언리엑세스 버젼)");
-        if(GameManager.currentMainInfo.overloadGage >= 30) 
+        Debug.Log("21게이지 넘는지 판별하는 구간 (언리엑세스 버젼)");
+        if(GameManager.currentMainInfo.overloadGage >= 21) 
         { ft_EndGameForBetaVersion(); }
         #endregion
 
