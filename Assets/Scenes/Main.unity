@@ -1076,6 +1076,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 34689099}
+  - component: {fileID: 34689100}
   m_Layer: 5
   m_Name: Activity
   m_TagString: Untagged
@@ -1104,6 +1105,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &34689100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34689098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5f647a9ef178c45979fe8c3abd5aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 1799882741}
+  PlayerInputController: {fileID: 1955638128}
+  PhoneHardware: {fileID: 420522339}
+  ObjectInteractionButtonGenerator: {fileID: 1637006480}
+  activityGageWindowRT: {fileID: 1021821699}
+  gageImg: {fileID: 1529833586}
+  markImg: {fileID: 1796980524}
+  amountNumTxt: {fileID: 2090347483}
+  activityQuestionWindowRT: {fileID: 1670225272}
+  questionContentTxt: {fileID: 2119447178}
+  kindOfGageByActivityTxt: {fileID: 1050837872}
+  AmountNumInWindowTxt: {fileID: 324927217}
+  gageInWindowImg: {fileID: 161618222}
+  noBtn: {fileID: 449765337}
+  yesBtn: {fileID: 271780383}
 --- !u!1 &38869347
 GameObject:
   m_ObjectHideFlags: 0
@@ -18791,6 +18819,7 @@ MonoBehaviour:
   ScheduleManager: {fileID: 1944875640}
   PlayerInputController: {fileID: 1955638128}
   GameSystem: {fileID: 445175857}
+  ActivityController: {fileID: 34689100}
   phoneScreen: {fileID: 1795775185}
   phone2DCamera: {fileID: 293448836}
   phoneSoftware: {fileID: 919177753}
@@ -18800,6 +18829,7 @@ MonoBehaviour:
   InteractionUI3D: {fileID: 1637006475}
   Schedules: {fileID: 227287642}
   ScheduleUIs: {fileID: 1758463226}
+  IconCollectionGO: {fileID: 175155596}
   circleEffectRT: {fileID: 243342416}
   bellRT: {fileID: 910173044}
   waveRT: {fileID: 1550656848}
@@ -75127,7 +75157,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.5
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -77539,9 +77569,9 @@ RectTransform:
   - {fileID: 361593216}
   - {fileID: 1946825544}
   - {fileID: 6693010971843178698}
+  - {fileID: 34689099}
   - {fileID: 2004313365}
   - {fileID: 360962320}
-  - {fileID: 34689099}
   m_Father: {fileID: 475479896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -81628,7 +81658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670225272}
   m_Layer: 5
-  m_Name: ActivitySelectWindow
+  m_Name: ActivityQuestionWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81658,7 +81688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 750, y: 270}
+  m_AnchoredPosition: {x: 720, y: 100}
   m_SizeDelta: {x: 460, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1673246147
@@ -88803,8 +88833,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1021821699}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -89184,6 +89214,8 @@ MonoBehaviour:
   currentMainInfo:
     NewGame: 0
     day: 0
+    maxActivity: 4
+    currentActivity: 2
     TodayOfTheWeek: Mon
     money: 100
     stressGage: 0
@@ -89916,6 +89948,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 404626696}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: IconCollectionGO
+      value: 
+      objectReference: {fileID: 175155596}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: SchedulePrograss
       value: 
       objectReference: {fileID: 227287644}
@@ -89923,6 +89959,10 @@ PrefabInstance:
       propertyPath: quarterViewCamera
       value: 
       objectReference: {fileID: 1023763536}
+    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+      propertyPath: ActivityController
+      value: 
+      objectReference: {fileID: 34689100}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: PlayerInputController
       value: 
@@ -105948,8 +105988,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1021821699}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}

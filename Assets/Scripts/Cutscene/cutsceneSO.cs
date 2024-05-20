@@ -18,8 +18,6 @@ public class cutsceneSO : ScriptableObject
     //public static bool cutsceneIsPlaying = false;
     public static Sequence makeCutscene(Image cutsceneImg, TMP_Text cutsceneTxt)
     {
-
-       
         cutsceneImg.color = Color.black;
         cutsceneImg.gameObject.SetActive(true);
         cutsceneTxt.text = "";

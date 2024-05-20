@@ -206,6 +206,7 @@ public class PlaceManager : Manager<PlaceManager>
     {
         StartCoroutine(GoingSomewhereLoading(delay));
         PlayerInputController.StopMove();
+        GameManager.CanInput = false;
     }
 
     private IEnumerator GoingSomewhereLoading(float delay)
@@ -264,6 +265,7 @@ public class PlaceManager : Manager<PlaceManager>
             {
                 GoingSomewhereloadingCG.gameObject.SetActive(false);
                 PlayerInputController.CanMove = true;
+                GameManager.CanInput = true;
             });
 
     }

@@ -13,6 +13,7 @@ public class ComputerInteract : InteractObject
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
+    [SerializeField] ActivityController ActivityController;
 
     [Header("*Camera")]
     [Tooltip("메인 가상 카메라")]
@@ -26,6 +27,7 @@ public class ComputerInteract : InteractObject
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] GameObject PhoneOpenBtns;
+    [SerializeField] GameObject IconCollectionGO;
 
     [Header("*Description")]
     [TextArea] [SerializeField] public string description;
@@ -72,6 +74,8 @@ public class ComputerInteract : InteractObject
 
         PlayerInputController.StopMove();
 
+        ActivityController.gameObject.SetActive(false);
+        IconCollectionGO.gameObject.SetActive(false);
 
         ScheduleManager.ResetDotweenGuide();
     }
@@ -83,7 +87,9 @@ public class ComputerInteract : InteractObject
 
         PlayerInputController.CanMove = true;
 
-
+        ActivityController.gameObject.SetActive(true);
+        IconCollectionGO.gameObject.SetActive(true);
+        
         ScheduleManager.SetDotweenGuide();
     }
 

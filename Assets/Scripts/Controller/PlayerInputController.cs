@@ -218,51 +218,6 @@ public class PlayerInputController : Manager<PlayerInputController>
         LookInput(obj.ReadValue<Vector2>());
     }
 
-
-    /*private void OnInteract(InputAction.CallbackContext obj)
-    {
-        if (interact != null)
-        {
-            interact.Interact();
-        }
-    }
-
-    
-    private void OnInteractCancel(InputAction.CallbackContext obj)
-    {
-        interact.InteractCancel();
-    }
-
-    
-    public void SetInteract(IInteract interact)
-    {
-        this.interact = interact;
-    }
-
-    public bool AlreadyHaveInteract(IInteract interact)
-    {
-        if (this.interact == interact)
-        {
-            return true;
-        }
-        return false;
-    }
-    
-
-    
-    private void OnClick(InputAction.CallbackContext obj)
-    {
-        if (interactableMode && LookForGameObject(out RaycastHit hit))
-        {
-            if (hit.collider.gameObject.CompareTag("ClickableInteract"))
-            {
-                // 단어장에 단어 추가
-            }
-        }
-    }
-    */
-
-
     public void MoveInput(Vector2 newMoveDirection)
     {
         if (PSWindow_E.gameObject.activeSelf)
@@ -292,6 +247,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 일시정지
     private void OnOffPause(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         // 폰 켜져있을 시 끄기
         if (PhoneHardware.phone2DCamera.activeSelf)
         {
@@ -326,6 +283,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void OnOffPause()
     {
+        if (!GameManager.CanInput) { return; }
+
         if (pause.gameObject.activeSelf)
         {
             Debug.Log("Pause 끄기");
@@ -360,22 +319,11 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void OnOffPhone(InputAction.CallbackContext obj)
     {
         OnOffPhone();
-        /*if(isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
-
-        foreach(GameObject Go in Panels)
-        {
-            if (Go.activeSelf) { return; }
-        }
-
-        if (ObjectInteractionButtonGenerator.SectionIsThis)
-        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-        if (SchedulePrograss.OnExplanation) 
-        { SchedulePrograss.OnOffVisibleSchedule(); }
-
-        PhoneHardware.SetOnOffPhoneBtn();*/
     }
     public void OnOffPhone()
     {
+        if (!GameManager.CanInput) { return; }
+
         if (isPause ||
             !QuarterViewCamera.activeSelf ||
             GameSystem.cutsceneImg.gameObject.activeSelf ||
@@ -390,8 +338,6 @@ public class PlayerInputController : Manager<PlayerInputController>
 
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-        //if (SchedulePrograss.OnExplanation)
-        //{ SchedulePrograss.OnOffVisibleSchedule(); }
 
         PhoneHardware.SetOnOffPhoneBtn();
     }
@@ -400,22 +346,11 @@ public class PlayerInputController : Manager<PlayerInputController>
     private void OnOffInteractObject(InputAction.CallbackContext obj)
     {
         OnOffInteractObject();
-        /*if (isPause || !QuarterViewCamera.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
-
-        foreach (GameObject Go in Panels)
-        {
-            if (Go.activeSelf) { return; }
-        }
-
-        if (PhoneHardware.sectionIsThis)
-        { PhoneHardware.SetOnOffPhoneBtn(); }
-        if (SchedulePrograss.OnExplanation)
-        { SchedulePrograss.OnOffVisibleSchedule(); }
-
-        ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();*/
     }
     public void OnOffInteractObject()
     {
+        if (!GameManager.CanInput) { return; }
+
         if (isPause || 
             !QuarterViewCamera.activeSelf || 
             GameSystem.cutsceneImg.gameObject.activeSelf ||
@@ -439,31 +374,15 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 스케쥴 표 보이기
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
-        //OnOffShowScheduleDetailBtn();
-       /* if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
-
-        if (PhoneHardware.sectionIsThis)
-        { PhoneHardware.SetOnOffPhoneBtn(); }
-        if (ObjectInteractionButtonGenerator.SectionIsThis)
-        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-
-        SchedulePrograss.OnOffVisibleSchedule();*/
+       
     }
-    /*public void OnOffShowScheduleDetailBtn()
-    {
-        if (isPause || GameSystem.cutsceneImg.gameObject.activeSelf) { return; }
-
-        if (PhoneHardware.sectionIsThis)
-        { PhoneHardware.SetOnOffPhoneBtn(); }
-        if (ObjectInteractionButtonGenerator.SectionIsThis)
-        { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
-
-        SchedulePrograss.OnOffVisibleSchedule();
-    }*/
+    
 
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setChooseClue(SelectBtn);
@@ -473,6 +392,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 파트 넘기기 (Y키)
     private void TerminatePart(InputAction.CallbackContext context)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (isPause || 
             GameSystem.cutsceneImg.gameObject.activeSelf ||
             allLoadingGO.activeSelf) 
@@ -511,6 +432,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     // 뒤로가기(B키)
     private void BackBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         //Pause
         if (pause.gameObject.activeSelf) 
         { pause.ft_closePausePopup(); return; }
@@ -597,6 +520,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     public void PointerMoveInput(Vector2 newPointerMoveDirection)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (PSWindow_FC.gameObject.activeSelf) { pointerMove = newPointerMoveDirection; }
     }
     
@@ -607,6 +532,8 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (GameSystem.cutsceneImg.gameObject.activeSelf)
         { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg, GameSystem.cutsceneTxt); return; }
 
@@ -633,7 +560,9 @@ public class PlayerInputController : Manager<PlayerInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        foreach(GameObject pad in Pads)
+        if (!GameManager.CanInput) { return; }
+
+        foreach (GameObject pad in Pads)
         { if (pad.gameObject.activeSelf) { return; } }
 
         if(SectionBtns != null && SectionBtns.Count >= 1)
@@ -667,6 +596,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         foreach (GameObject pad in Pads)
         { if (pad.gameObject.activeSelf) { return; } }
 
@@ -699,6 +630,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -745,6 +678,8 @@ public class PlayerInputController : Manager<PlayerInputController>
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
             List<Button> currentBtnList = new List<Button>();

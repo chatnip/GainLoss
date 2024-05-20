@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!GameManager.CanInput) { return; }
         GroundedCheck();
         if(PlayerInputController.CanMove && _controller.enabled) Move();
         if(isTalking) setOriginalAnimation();

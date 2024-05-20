@@ -125,6 +125,8 @@ public class Pause : MonoBehaviour, IInteract
 
     public void Interact()
     {
+        if (!GameManager.CanInput) { return; }
+
         if (PlayerInputController.SelectBtn == resumeBtn)
         { ft_closePausePopup(); return; }
         else if (PlayerInputController.SelectBtn == backToTitleBtn)

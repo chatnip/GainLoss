@@ -84,6 +84,7 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     public void TurnOnLoading()
     {
+        GameManager.CanInput = false;
         StartCoroutine(Past_ShowNextDayText(1f));
     }
 
@@ -108,6 +109,8 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     private IEnumerator Post_ShowNextDayText(float time)
     {
+        GameManager.CanInput = false;
+
         SaveDatas();
 
         #region Test Version
@@ -178,6 +181,7 @@ public class ActionEventManager : Manager<ActionEventManager>
         {
             loading.gameObject.SetActive(false);
             if( !TutorialManager.tutorial_ScreenCG.gameObject.activeSelf ) { PlayerInputController.CanMove = true; }
+            GameManager.CanInput = true;
             //GameSystem.GameStart();
         });
     }
@@ -221,6 +225,8 @@ public class ActionEventManager : Manager<ActionEventManager>
 
     private void ft_EndGameForBetaVersion()
     {
+        GameManager.CanInput = false;
+
         StopAllCoroutines();
 
         Sequence seq = DOTween.Sequence();

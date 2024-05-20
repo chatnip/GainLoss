@@ -52,6 +52,8 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
         closeTutorialBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
+                if (!GameManager.CanInput) { return; }
+
                 OffAllTutorial();
             });
 
@@ -63,6 +65,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
 
     private void OffAllTutorial()
     {
+        GameManager.CanInput = false;
         DOTween.Complete(tutorialsDict.Values);
         foreach(GameObject tutorial in tutorialsDict.Values) { DOTween.Complete(tutorial); }
 
@@ -73,6 +76,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
                 foreach (GameObject tutorial in tutorialsDict.Values) { tutorial.gameObject.SetActive(false); }
                 tutorial_ScreenCG.gameObject.SetActive(false);
                 closeTutorialBtn.interactable = false;
+                GameManager.CanInput = true;
             });
     }
     #endregion
@@ -90,6 +94,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
 
     public void OpenTutorialWindow_On(string scheduleID)
     {
+        GameManager.CanInput = false;
         GameObject tutorialWindow_type = tutorialsDict[scheduleID];
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
@@ -110,6 +115,7 @@ public class TutorialManager : Manager<TutorialManager>, IInteract
                 closeTutorialBtn.interactable = true;
                 string ID = tutorialsDict.FirstOrDefault(x => x.Value == tutorialWindow_type).Key;
                 ShowRecordDataInit(ID);
+                GameManager.CanInput = true;
             });
     }
 

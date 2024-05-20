@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
     [SerializeField] public cutsceneSO TestCutsceneSO;
     [SerializeField] GameSystem GameSystem;
+    public static bool CanInput = true;
 
     private void Awake()
     {
@@ -34,6 +35,12 @@ public class MainInfo
 {
     public bool NewGame = true;
     public int day = 1;
+
+    public int maxActivity = 4;
+    public int currentActivity = 2;
+
+    #region Need to determine if necessary
+
     public string TodayOfTheWeek = "Monday";
     public int money = 100;
 
@@ -42,6 +49,7 @@ public class MainInfo
     public int riskGage = 0;
     public int overloadGage = 0;
 
+    #endregion
 }
 
 

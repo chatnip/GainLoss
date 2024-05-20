@@ -34,10 +34,6 @@ public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
 
     #endregion
 
-    #region Main
-
-    #endregion
-
     #region Btns
 
     public void ObPooling(GameObject targetGO, List<GameObject> activeGOs)

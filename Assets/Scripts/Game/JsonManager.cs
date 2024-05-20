@@ -90,36 +90,45 @@ public class JsonManager : MonoBehaviour
     // Main
     public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
-        TutorialInfo tutorialInfo = JsonUtility.FromJson<TutorialInfo>(jsonString);
+        string jsonString;
+        TutorialInfo tutorialInfo;
 
 #if UNITY_EDITOR
         jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
         tutorialInfo = JsonUtility.FromJson<TutorialInfo>(jsonString);
+#else
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        TutorialInfo tutorialInfo = JsonUtility.FromJson<TutorialInfo>(jsonString);
 #endif
 
         return tutorialInfo;
     }
     public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
-        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
+        string jsonString;
+        MainInfo mainInfo;
 
 #if UNITY_EDITOR
         jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
         mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
+#else
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        MainInfo mainInfo = JsonUtility.FromJson<MainInfo>(jsonString);
 #endif
 
         return mainInfo;
     }
     public List<string> JsonLoad_L(string jsonPath, string jsonName)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
-        IDs ids = JsonUtility.FromJson<IDs>(jsonString);
+        string jsonString;
+        IDs ids;
 
 #if UNITY_EDITOR
         jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
         ids = JsonUtility.FromJson<IDs>(jsonString);
+#else
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        IDs ids = JsonUtility.FromJson<IDs>(jsonString);
 #endif
         return ids.dataIDList;
     }
@@ -171,12 +180,15 @@ public class JsonManager : MonoBehaviour
     }
     public List<List<string>> JsonLoad_LL(string jsonPath, string jsonName)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
-        PSBase ids = JsonUtility.FromJson<PSBase>(jsonString);
+        string jsonString;
+        PSBase ids;
 
 #if UNITY_EDITOR
         jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
         ids = JsonUtility.FromJson<PSBase>(jsonString);
+#else
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        PSBase ids = JsonUtility.FromJson<PSBase>(jsonString);
 #endif
         return ids.Data();
     }
@@ -184,12 +196,15 @@ public class JsonManager : MonoBehaviour
     // Setting
     private GameSetting JsonLoad_S(string jsonPath, string jsonName)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
-        GameSetting GS = JsonUtility.FromJson<GameSetting>(jsonString);
+        string jsonString;
+        GameSetting GS;
 
 #if UNITY_EDITOR
         jsonString = File.ReadAllText(Application.dataPath + "/Resources/" + jsonPath + jsonName + ".json");
         GS = JsonUtility.FromJson<GameSetting>(jsonString);
+#else
+        string jsonString = File.ReadAllText(Application.persistentDataPath + "/" + jsonName + ".json");
+        GameSetting GS = JsonUtility.FromJson<GameSetting>(jsonString);
 #endif
         return GS;
 

@@ -14,6 +14,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
     [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] GameSystem GameSystem;
+    [SerializeField] ActivityController ActivityController;
 
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
@@ -27,6 +28,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] GameObject Schedules;
     [SerializeField] GameObject ScheduleUIs;
+    [SerializeField] GameObject IconCollectionGO;
 
 
     [Header("*Effectful Phone")]
@@ -108,6 +110,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     public void Interact()
     {
+        if (!GameManager.CanInput) { return; }
         if (PlayerInputController.SelectBtn == PhoneOnBtn) 
         {
             phoneEffectfulCor(false);
@@ -156,6 +159,9 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
     public void phoneEffectfulCor(bool setCurrentScheduleUI)
     {
+        if(!GameManager.CanInput) { return; }
+        GameManager.CanInput = false;
+
         PlayerInputController.SetSectionBtns(null, null);
 
         Sequence seq = DOTween.Sequence();
@@ -228,6 +234,7 @@ public class PhoneHardware : MonoBehaviour, IInteract
             .OnComplete(() =>
             {
                 circleEffectRT.gameObject.SetActive(false);
+                GameManager.CanInput = true;
             }));
     }
     public void SetOnOffPhoneBtn()
@@ -257,7 +264,6 @@ public class PhoneHardware : MonoBehaviour, IInteract
         }
         else // 휴대폰 버튼이 상호작용 버튼들로 적용 해제
         {
-
             sectionIsThis = false;
 
             SetOff(PhoneOnBtn, new Vector2(0.0f, PhoneOnBtn.GetComponent<RectTransform>().anchoredPosition.y));
@@ -337,6 +343,9 @@ public class PhoneHardware : MonoBehaviour, IInteract
 
         PlayerInputController.StopMove();
 
+        ActivityController.gameObject.SetActive(false);
+        IconCollectionGO.gameObject.SetActive(false);
+
         ScheduleManager.ResetDotweenGuide();
     }
 
@@ -354,6 +363,9 @@ public class PhoneHardware : MonoBehaviour, IInteract
         Schedules.gameObject.SetActive(true);
         PhoneListOpenBtn.gameObject.SetActive(true);
         sectionIsThis = false;
+
+        ActivityController.gameObject.SetActive(true);
+        IconCollectionGO.gameObject.SetActive(true);
 
         PlayerInputController.CanMove = true;
 

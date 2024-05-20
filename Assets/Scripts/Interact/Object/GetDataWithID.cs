@@ -45,7 +45,7 @@ public class GetDataWithID : MonoBehaviour
     private void setUI(string name, string type)
     {
         Popup.gameObject.SetActive(false);
-        DOTween.Kill(this.gameObject.GetComponent<RectTransform>());
+        DOTween.Complete(this.gameObject.GetComponent<RectTransform>());
         Name.text = name;
         Extension.text = type;
         Popup.gameObject.SetActive(true);

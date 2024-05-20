@@ -38,11 +38,15 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         partTimeJob_StartBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
+                if (!GameManager.CanInput) { return; }
+
                 StartCoroutine(StartPartTimeJob(5.0f, selectCSSO()));
             });
         partTimeJob_EndBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
+                if (!GameManager.CanInput) { return; }
+
                 EndPartTimeJob();
             });
     }
@@ -75,6 +79,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
     }
     public IEnumerator StartPartTimeJob(float time, cutsceneSO selectCSSO)
     {
+        GameManager.CanInput = false;
         ScheduleManager.ResetDotweenGuide();
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { partTimeJob_EndBtn } }, this);
         partTimeJob_LoadingCG.TryGetComponent(out Image image);
@@ -86,13 +91,14 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
         seq.OnComplete(() =>
         {
             partTimeJob_EndBtn.interactable = true;
-
+            GameManager.CanInput = true;
         });
         yield return new WaitForSeconds(0.5f);
     }
 
     public void EndPartTimeJob()
     {
+        GameManager.CanInput = false;
         partTimeJob_LoadingCG.DOFade(0.0f, 0.5f)
             .OnStart(() =>
             {
@@ -106,6 +112,7 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
                 PlayerInputController.SetSectionBtns(null, null);
                 ResetPartTimeJobUI();
                 PlayerInputController.CanMove = true;
+                GameManager.CanInput = true;
             });
     }
     private void GetMoney(int money)

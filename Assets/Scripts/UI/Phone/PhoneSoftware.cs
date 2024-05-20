@@ -518,6 +518,9 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     private void openApp(GameObject App, Image ClickImg)
     {
+        if (!GameManager.CanInput) { return; }
+        GameManager.CanInput = false;
+
         appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT);
         Sequence seq = DOTween.Sequence();
 
@@ -556,7 +559,10 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                 appIconImg.gameObject.SetActive(false);
             }));
 
-
+        seq.OnComplete(() =>
+        {
+            GameManager.CanInput = true;
+        });
     }
 
     #endregion

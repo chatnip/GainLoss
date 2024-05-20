@@ -30,7 +30,6 @@ public class InteractObject : InteractCore
     [HideInInspector] public bool CanInteract = true;
 
     protected GameSystem GameSystem;
-    ObjectPooling ObjectPooling;
     CheckGetAllDatas CheckGetAllDatas;
     GameObject GetSomething;
     GetDataWithID getSomethingWithID;
@@ -47,7 +46,6 @@ public class InteractObject : InteractCore
         WordManager = GameObject.Find("WordManager").GetComponent<WordManager>();
         GetSomething = GameObject.Find("GetSomething");
         getSomethingWithID = GetSomething.GetComponent<GetDataWithID>();
-        ObjectPooling = GameObject.Find("ObjectPooling").GetComponent<ObjectPooling>();
         PlaceManager = GameObject.Find("PlaceManager").GetComponent <PlaceManager>();
 
         CanInteract = true;

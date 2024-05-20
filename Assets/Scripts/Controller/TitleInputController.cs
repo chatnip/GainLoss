@@ -80,6 +80,8 @@ public class TitleInputController : Manager<TitleInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(true); return; }
         else if (SelectBtn != null && SelectBtn.TryGetComponent(out SliderInteractBtn SIB))
@@ -112,6 +114,8 @@ public class TitleInputController : Manager<TitleInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(false); return; }
         else if (SelectBtn != null && SelectBtn.TryGetComponent(out SliderInteractBtn SIB))
@@ -142,6 +146,8 @@ public class TitleInputController : Manager<TitleInputController>
     }
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -183,6 +189,8 @@ public class TitleInputController : Manager<TitleInputController>
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
             List<Button> currentBtnList = new List<Button>();
@@ -212,7 +220,9 @@ public class TitleInputController : Manager<TitleInputController>
     // Y Button
     private void ApplyButton(InputAction.CallbackContext obj)
     {
-        if(Option.CheckIsOnOptionDetail() != null)
+        if (!GameManager.CanInput) { return; }
+
+        if (Option.CheckIsOnOptionDetail() != null)
         {
             Option.Apply_OptionDetail();
         }
@@ -221,6 +231,8 @@ public class TitleInputController : Manager<TitleInputController>
     // A Button
     private void select(InputAction.CallbackContext obj)
     {
+        if (!GameManager.CanInput) { return; }
+
         if (SelectBtn != null)
         {
             SelectBtn.TryGetComponent(out Button btn);
@@ -234,7 +246,9 @@ public class TitleInputController : Manager<TitleInputController>
     // X Button
     private void back(InputAction.CallbackContext obj)
     {
-        if(!Option.Cancel_OptionDetail())
+        if (!GameManager.CanInput) { return; }
+
+        if (!Option.Cancel_OptionDetail())
         { return; }
          
         if(Option.gameObject.activeSelf)
