@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScheduleManager : Manager<ScheduleManager>
+public class ScheduleManager : Singleton<ScheduleManager>
 {
     #region Value
     [Header("*Property")]
@@ -41,7 +41,7 @@ public class ScheduleManager : Manager<ScheduleManager>
         EndDayBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ActionEventManager.TurnOnLoading();
+                ActionEventManager.StartLoading();
             });
 
         PassNextScheduleBtn.OnClickAsObservable()
@@ -131,10 +131,8 @@ public class ScheduleManager : Manager<ScheduleManager>
         }
 
         // 튜토리얼 보여주기
-        if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
-        {
-            TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID);
-        }
+        //if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
+        //{ TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID); }
 
         SetDotweenGuide();
         
@@ -172,7 +170,7 @@ public class ScheduleManager : Manager<ScheduleManager>
             // S00: 스케쥴 짜기
             if (currentPrograssScheduleID == "S00") 
             {
-                seq.Append(InCanvasUI(PhoneHardware.PhoneListOpenBtn.gameObject, 1f)); 
+                
             }
 
             // S01: 사전 조사하기
@@ -187,7 +185,7 @@ public class ScheduleManager : Manager<ScheduleManager>
             else if (currentPrograssScheduleID == "S02") 
             {
                 if (PlaceManager.currentPlace.ID == "P00")
-                { seq.Append(InCanvasUI(PhoneHardware.PhoneListOpenBtn.gameObject, 1f)); }
+                { }
                 else
                 { seq.Append(InCanvasUI(TerminatedPart.gameObject, 1f)); }
             }
@@ -252,10 +250,8 @@ public class ScheduleManager : Manager<ScheduleManager>
         currentPrograssScheduleID = "S00";
 
         // 튜토리얼 보여주기
-        if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
-        {
-            TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID);
-        }
+        //if (TutorialManager.OpenTutorialWindow(currentPrograssScheduleID))
+        //{ TutorialManager.OpenTutorialWindow_On(currentPrograssScheduleID); }
 
         SchedulePrograss.Set_InStartScheduleUI();
         SchedulePrograss.SetExplanation(currentPrograssScheduleID);

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class GameSettingManager : Manager<GameSettingManager>
+public class GameSettingManager : Singleton<GameSettingManager>
 {
     #region Value
 

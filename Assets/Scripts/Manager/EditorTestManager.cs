@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
 
-public class EditorTestManager : Manager<EditorTestManager>
+public class EditorTestManager : Singleton<EditorTestManager>
 {
     [Header("*Input")]
     [SerializeField] InputAction TestInput;

@@ -4,134 +4,109 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 
-public class ActionEventManager : Manager<ActionEventManager>
+public class ActionEventManager : Singleton<ActionEventManager>
 {
-    [Header("*Property")]
-    [SerializeField] GameManager GameManager;
-    [SerializeField] GameSystem GameSystem;
-    [SerializeField] JsonManager JsonManager;
-    [SerializeField] ScheduleManager ScheduleManager;
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
-    [SerializeField] SchedulePrograss SchedulePrograss;
-    [SerializeField] PlaceManager PlaceManager;
-    [SerializeField] TutorialManager TutorialManager;
+    #region Value
 
-    [Header("*Input")]
-    [SerializeField] PlayerInputController PlayerInputController;
-
-
-    [Header("*LoadingWindow")]
+    [Header("=== LoadingWindow")]
     [SerializeField] TMP_Text PassDayExplanationText;
     [SerializeField] TMP_Text SavingPrograssText;
     [SerializeField] CanvasGroup loading;
 
-    [Header("*UI")]
-    [SerializeField] TMP_Text moneyText;
+    [Header("=== UI")]
     [SerializeField] TMP_Text dayText;
 
-    [Header("*")]
-    [SerializeField] CanvasGroup EndBlackScreenCG;
-    [SerializeField] TMP_Text EndTitleTxt;
-    [SerializeField] TMP_Text EndContentTxt;
-    [SerializeField] TMP_Text EndCreditText;
+    #endregion
 
-
-    /*[Header("*Place")]
-    [HideInInspector] public string currentActionEventID;
-    [SerializeField] List<PlaceDataBase> placeList = new();
-    [SerializeField] Transform placeParent;
-    [SerializeField] GameObject currentPlace;
-    [SerializeField] GameObject home;
-    */
-
-    //[SerializeField] private ReactiveProperty<PlaceDataBase> placeData = new ReactiveProperty<PlaceDataBase>();
-
+    #region Enum
     enum WeekDays
     {
         Monday = 0, Tuesday = 1, Wednesday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
     }
 
+    #endregion
+
+    #region Framework
+
     protected override void Awake()
     {
-        /*if(GameManager.currentMainInfo.day == 1)
-        {
-            GameManager.playMainCutscene(GameManager.TestCutsceneSO)
-                .OnComplete(() =>
-                {
-                    GameSystem.cutsceneImg.color = new Color(0, 0, 0, 0);
-                    GameSystem.cutsceneImg.gameObject.SetActive(false);
-                    GameSystem.cutsceneTxt.text = "";
-                    cutsceneSO.currentCSSO = null;
+        base.Awake();
+    }
 
-                    loading.gameObject.SetActive(true);
-                    loading.alpha = 1.0f;
-                    StartCoroutine(Post_ShowNextDayText(1f));
-                });
-        }
-        else
-        {
-            loading.gameObject.SetActive(true);
-            loading.alpha = 1.0f;
-            StartCoroutine(Post_ShowNextDayText(1f));
-        }*/
+    #endregion
 
+    #region Offset
+
+    public void Offset()
+    {
         loading.gameObject.SetActive(true);
         loading.alpha = 1.0f;
         StartCoroutine(Post_ShowNextDayText(1f));
     }
 
+    #endregion
+
     #region PassDay Loading
 
-    public void TurnOnLoading()
+    public void StartLoading()
     {
-        GameManager.CanInput = false;
+        GameManager.Instance.CanInput = false;
         StartCoroutine(Past_ShowNextDayText(1f));
     }
 
     private IEnumerator Past_ShowNextDayText(float time)
     {
-        //ScheduleManager.ShowSAM_Effectful("S99");
-        BeforeSaveDatas();
+        SavingPrograssText.text = "< Saving... >";
+        SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
         PassDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
+        string TextTemp = "DAY [" + GameManager.Instance.MainInfo.day + "]";
 
-        StartLoading();
+        loading.gameObject.SetActive(true);
+        loading.DOFade(1f, 1f);
+
+        SavingPrograssText.text = "Saving...";
 
         PassDayExplanationText.text = TextTemp;
         yield return new WaitForSeconds(time + 0.5f);
 
         PassDayExplanationText.DOFade(0, time);
 
-        SetDayText();
+        GameManager.Instance.MainInfo.day++;
+
+        string strName = GameManager.Instance.MainInfo.TodayOfTheWeek;
+        int DayOrdinal1 = (int)Enum.Parse(typeof(WeekDays), strName) + 1;
+        if (DayOrdinal1 >= 7)
+        { GameManager.Instance.MainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
+        else { GameManager.Instance.MainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
+
         StartCoroutine(Post_ShowNextDayText(1f));
     }
 
     private IEnumerator Post_ShowNextDayText(float time)
     {
-        GameManager.CanInput = false;
+        GameManager.Instance.CanInput = false;
 
-        SaveDatas();
+        DOTween.Kill(SavingPrograssText);
+        GameSystem.Instance.SetPlayerTransform();
 
-        #region Test Version
-        Debug.Log("21게이지 넘는지 판별하는 구간 (언리엑세스 버젼)");
-        if(GameManager.currentMainInfo.overloadGage >= 21) 
-        { ft_EndGameForBetaVersion(); }
-        #endregion
+        SavingPrograssText.text = "< Saved >";
+        SavingPrograssText.DOFade(1f, 1f);
 
-        setMainUI();
-        PlaceManager.InitPlace();
+        //Debug.Log("사전 조사 데이터 세팅");
+        //PreliminarySurveyManager.ft_setAPSSOs();
+
+        dayText.text = GameManager.Instance.MainInfo.day.ToString();
+
+        //PlaceManager.Instance.InitPlace();
 
         PassDayExplanationText.color = Color.white;
 
         yield return new WaitForSeconds(time);
 
-        //ScheduleManager.ShowSAM_Effectful("S00");
-
-        //SchedulePrograss.SetExplanation("S00");
         PassDayExplanationText.text = "";
         PassDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.currentMainInfo.day + "]";
+        string TextTemp = "DAY [" + GameManager.Instance.MainInfo.day + "]";
         PassDayExplanationText.DOText(TextTemp, time);
         yield return new WaitForSeconds(time * 2);
         PassDayExplanationText.DOFade(0, time);
@@ -140,116 +115,19 @@ public class ActionEventManager : Manager<ActionEventManager>
         EndLoading();
     }
 
-    private void StartLoading()
-    {
-        Sequence loadingSequence = DOTween.Sequence();
-        loadingSequence.OnStart(() =>
-        {
-            loading.gameObject.SetActive(true);
-            loading.DOFade(1f, 1f);
-
-            SavingPrograssText.text = "Saving...";
-        });
-    }
-
-    private void SetDayText()
-    {
-        //Day++
-        GameManager.currentMainInfo.day++;
-
-        //Next Day of the Week
-        string strName = GameManager.currentMainInfo.TodayOfTheWeek;
-        int DayOrdinal1 = (int)Enum.Parse(typeof(WeekDays), strName) + 1;
-        if( DayOrdinal1 >= 7 )
-        { GameManager.currentMainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
-        else { GameManager.currentMainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
-
-        /*// UI
-        foreach (TMP_Text tmpText in DayUI)
-        { tmpText.text = "Day " + GameManager.currentMainInfo.day; }
-        foreach (TMP_Text tmpText in DayOfWeekUI)
-        { tmpText.text = GameManager.currentMainInfo.TodayOfTheWeek; }*/
-
-    }
-
     private void EndLoading()
     {
-        ScheduleManager.ResetDay();
+        //ScheduleManager.ResetDay();
         Sequence loadingSequence = DOTween.Sequence();
         loadingSequence.Append(loading.DOFade(0f, 1f))
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
-            if( !TutorialManager.tutorial_ScreenCG.gameObject.activeSelf ) { PlayerInputController.CanMove = true; }
-            GameManager.CanInput = true;
-            //GameSystem.GameStart();
+            GameManager.Instance.CanInput = true;
+            PlayerInputController.Instance.CanMove = true;
         });
-    }
-
-    private void setMainUI()
-    {
-        moneyText.text = GameManager.currentMainInfo.money.ToString();
-        dayText.text = GameManager.currentMainInfo.day.ToString();
     }
 
     #endregion
 
-    #region SaveDatas
-
-    private void BeforeSaveDatas()
-    {
-        SavingPrograssText.text = "< Saving... >";
-        SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
-
-        
-    }
-
-    private void SaveDatas()
-    {
-        DOTween.Kill(SavingPrograssText);
-
-        JsonManager.SaveAllMainGameDatas();
-
-
-        GameSystem.SetPlayerTransform();
-
-        SavingPrograssText.text = "< Saved >";
-        SavingPrograssText.DOFade(1f, 1f);
-
-
-        Debug.Log("사전 조사 데이터 세팅");
-        PreliminarySurveyManager.ft_setAPSSOs();
-    }
-
-    #endregion
-
-    private void ft_EndGameForBetaVersion()
-    {
-        GameManager.CanInput = false;
-
-        StopAllCoroutines();
-
-        Sequence seq = DOTween.Sequence();
-
-        EndBlackScreenCG.gameObject.SetActive(true);
-        EndBlackScreenCG.alpha = 0f;
-        seq.Append(EndBlackScreenCG.DOFade(1f, 1f));
-
-        seq.AppendInterval(3f);
-
-        seq.Append(EndContentTxt.DOFade(0f, 1f));
-        seq.Join(EndTitleTxt.DOFade(0f, 1f));
-
-        EndCreditText.TryGetComponent(out RectTransform CRT);
-        CRT.anchoredPosition = new Vector2(0f, -1250f);
-        seq.Append(CRT.DOAnchorPos(new Vector2(0f, 1250f), 10f));
-
-        seq.AppendInterval(3f);
-
-        seq.OnComplete(() =>
-        {
-
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
-        });
-    }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StreamManager : Manager<StreamManager>
+public class StreamManager : Singleton<StreamManager>
 {
     [SerializeField] GameManager GameManager;
     [SerializeField] DialogManager DialogManager;
@@ -23,7 +23,6 @@ public class StreamManager : Manager<StreamManager>
 
     public ScenarioBase InitStreamEventID(string id) //currentStreamEventID
     {
-        ApplyGage();
         SetNumberOfUses(id);
         DialogManager.SetUpdateSubscriberAmountText();
 
@@ -74,21 +73,6 @@ public class StreamManager : Manager<StreamManager>
         ScenarioBase scenario = new(fragments);
 
         return scenario;
-    }
-
-    private void ApplyGage()
-    {
-        DialogManager.currentStreamEvent = this.currentStreamEvent;
-
-        GameManager.currentMainInfo.stressGage += currentStreamEvent.stressValue;
-        GameManager.currentMainInfo.angerGage += currentStreamEvent.angerValue;
-        GameManager.currentMainInfo.riskGage += currentStreamEvent.riskValue;
-        GameManager.currentMainInfo.overloadGage += currentStreamEvent.OverloadValue;
-
-        if (GameManager.currentMainInfo.stressGage < 0) { GameManager.currentMainInfo.stressGage = 0; }
-        if (GameManager.currentMainInfo.angerGage < 0) { GameManager.currentMainInfo.angerGage = 0; }
-        if (GameManager.currentMainInfo.riskGage < 0) { GameManager.currentMainInfo.riskGage = 0; }
-        if (GameManager.currentMainInfo.overloadGage < 0) { GameManager.currentMainInfo.overloadGage = 0; }
     }
 
     private void SetNumberOfUses(string id)

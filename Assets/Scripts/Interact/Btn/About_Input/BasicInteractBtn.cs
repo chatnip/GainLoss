@@ -1,3 +1,4 @@
+//Refactoring v1.0
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,7 @@ public class BasicInteractBtn : InteractCore
 {
     #region Value
 
-    [Header("*Manager")]
-    [SerializeField] public PlayerInputController PlayerInputController;
-    [SerializeField] public TitleInputController TitleInputController;
-
-    [Header("*Compnenet")]
+    [Header("=== Compnenet")]
     [SerializeField] public Button thisBtn;
 
     #endregion
@@ -23,13 +20,6 @@ public class BasicInteractBtn : InteractCore
 
     public virtual void Awake()
     {
-        //InteractiveBtn_comp = GetComponent<Button>();
-        if (SceneManager.GetActiveScene().name == "Title")
-        { TitleInputController = GameObject.Find("TitleInputController").GetComponent<TitleInputController>(); }
-        
-        else if (SceneManager.GetActiveScene().name == "Main")
-        { PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>(); }
-
         if (this.gameObject.TryGetComponent(out Button btn))
         { thisBtn = btn; }
     }
@@ -42,37 +32,37 @@ public class BasicInteractBtn : InteractCore
     {
         base.OnPointerEnter(eventData);
 
-        if (TitleInputController != null)
+        if (TitleInputController.Instance != null)
         {
             // 이중 List -> List로 변경
             List<Button> Section = new List<Button>();
-            if (TitleInputController.SectionBtns != null)
+            if (TitleInputController.Instance.SectionBtns != null)
             {
-                foreach (List<Button> BtnList in TitleInputController.SectionBtns)
+                foreach (List<Button> BtnList in TitleInputController.Instance.SectionBtns)
                 {
                     Section.AddRange(BtnList);
                 }
                 if (Section.Contains(thisBtn)) // PlayerInputController 버튼 리스트에 포함되어있는지
                 {
-                    TitleInputController.SelectBtn = thisBtn;
-                    TitleInputController.OnOffSelectedBtn(TitleInputController.SelectBtn);
+                    TitleInputController.Instance.SelectBtn = thisBtn;
+                    TitleInputController.Instance.OnOffSelectedBtn(TitleInputController.Instance.SelectBtn);
                 }
             }
         }
-        if (PlayerInputController != null)
+        if (PlayerInputController.Instance != null)
         {
             // 이중 List -> List로 변경
             List<Button> Section = new List<Button>();
-            if (PlayerInputController.SectionBtns != null)
+            if (PlayerInputController.Instance.SectionBtns != null)
             {
-                foreach (List<Button> BtnList in PlayerInputController.SectionBtns)
+                foreach (List<Button> BtnList in PlayerInputController.Instance.SectionBtns)
                 {
                     Section.AddRange(BtnList);
                 }
                 if (Section.Contains(thisBtn)) // PlayerInputController 버튼 리스트에 포함되어있는지
                 {
-                    PlayerInputController.SelectBtn = thisBtn;
-                    PlayerInputController.OnOffSelectedBtn(PlayerInputController.SelectBtn);
+                    PlayerInputController.Instance.SelectBtn = thisBtn;
+                    PlayerInputController.Instance.OnOffSelectedBtn(PlayerInputController.Instance.SelectBtn);
                 }
             }
         }

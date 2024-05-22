@@ -218,7 +218,7 @@ public class JsonManager : MonoBehaviour
             JsonLoad_TR(json_filePath, json_tutorialFileName);
 
         // Load -> MainInfo Json
-        GameManager.currentMainInfo =
+        GameManager.MainInfo =
             JsonLoad_MI(json_filePath, json_mainInfoFileName);
 
         // Load -> Word Json
@@ -376,7 +376,7 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
 
         // Save -> MainInfo Json
-        JsonSave(json_mainInfoFileName, GameManager.currentMainInfo);
+        JsonSave(json_mainInfoFileName, GameManager.MainInfo);
 
         // Save -> Word Json
         JsonSave(json_wordFileName, WordManager.currentWordIDList);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
+public class PreliminarySurveyManager : Singleton<PreliminarySurveyManager>
 {
     #region Value
 
@@ -36,14 +36,14 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         PSSOs_FindClue_Available = PSSOs_FindClue_All;
         PSSOs_FindClue_Available = ft_removeCPSSOs(PSSOs_FindClue_Available);
         PSSOs_FindClue_Available = ft_removeAlreadyPSSOs(PSSOs_FindClue_Available);
-        PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
+        //PSSOs_FindClue_Available = ft_removeSpecialCase(PSSOs_FindClue_Available);
     }
     private void ft_setAPSSOs_Extract()
     {
         PSSOs_Extract_Available = PSSOs_Extract_All;
         PSSOs_Extract_Available = ft_removeCPSSOs(PSSOs_Extract_Available);
         PSSOs_Extract_Available = ft_removeAlreadyPSSOs(PSSOs_Extract_Available);
-        PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
+        //PSSOs_Extract_Available = ft_removeSpecialCase(PSSOs_Extract_Available);
     }
 
     #endregion
@@ -109,7 +109,7 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         List<PreliminarySurveySO> result = APSSOs.Except(removeSOs).ToList();
         return result;
     }
-
+/*
     // 과부하 기준에 충족하는지
     private List<PreliminarySurveySO> ft_removeSpecialCase(List<PreliminarySurveySO> APSSOs)
     {
@@ -117,7 +117,7 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
 
         foreach (PreliminarySurveySO SO in APSSOs)
         {
-            if (GameManager.currentMainInfo.overloadGage < SO.conditionToOverload)
+            if (GameManager.MainInfo.overloadGage < SO.conditionToOverload)
             {
                 removeSOs.Add(SO);
             }
@@ -127,6 +127,6 @@ public class PreliminarySurveyManager : Manager<PreliminarySurveyManager>
         return result;
 
     }
-
+*/
     #endregion
 }

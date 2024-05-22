@@ -25,7 +25,7 @@ public class InteractObjectBtn : InteractCore
         PlayerInputController = GameObject.Find("PlayerInputController").GetComponent<PlayerInputController>();
         thisBtn = this.gameObject.GetComponent<Button>();
     }
-
+/*
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
@@ -53,9 +53,11 @@ public class InteractObjectBtn : InteractCore
         if(thisBtn.interactable)
         {
             base.OnPointerDown(eventData);
-            interactObject();
+            //interactObject();
         }
     }
+*/
+
     public void interactObject()
     {
         if (TargetGO.TryGetComponent(out InteractObject interactObject)) { interactObject.Interact(); }

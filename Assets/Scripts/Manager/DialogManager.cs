@@ -9,7 +9,7 @@ using TMPro;
 using Spine.Unity;
 using System;
 
-public class DialogManager : Manager<DialogManager>, IInteract
+public class DialogManager : Singleton<DialogManager>, IInteract
 {
     #region Value
 
@@ -269,20 +269,6 @@ public class DialogManager : Manager<DialogManager>, IInteract
         CG.DOFade(1, showTime);
         yield return new WaitForSeconds(showTime);
 
-        // 게이지 출력
-        EffectGage(stressSlider, GameManager.currentMainInfo.stressGage, showTime, stressBarColor);
-        EffectGage(angerSlider, GameManager.currentMainInfo.angerGage, showTime, angerBarColor);
-        EffectGage(riskSlider, GameManager.currentMainInfo.riskGage, showTime, riskBarColor);
-        EffectGage(overloadSilder, GameManager.currentMainInfo.overloadGage, showTime, overloadBarColor);
-        yield return new WaitForSeconds(showTime);
-
-        // 수치(text) 출력
-        IncOpacityText(stressText, GameManager.currentMainInfo.stressGage, currentStreamEvent.stressValue, showTime);
-        IncOpacityText(angerText, GameManager.currentMainInfo.angerGage, currentStreamEvent.angerValue, showTime);
-        IncOpacityText(riskText, GameManager.currentMainInfo.riskGage, currentStreamEvent.riskValue, showTime);
-        IncOpacityText(overloadText, GameManager.currentMainInfo.overloadGage, currentStreamEvent.OverloadValue, showTime);
-        yield return new WaitForSeconds(showTime);
-
         // 다음날로 가는 버튼 출력
         EndBtn.gameObject.SetActive(true);
         EndBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
@@ -298,6 +284,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
             overloadText.alpha = 0;
             resultWindow.SetActive(true); //결과창
         }
+/*
         void EffectGage(Slider slider, int appliedGage, float time, Color color)
         {
             var sequence = DOTween.Sequence();
@@ -317,6 +304,7 @@ public class DialogManager : Manager<DialogManager>, IInteract
             text.text = gageAmount;
             text.DOFade(1, time).SetEase(Ease.OutSine);
         }
+*/
     }
 
     #endregion

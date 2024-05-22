@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
-public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
+public class PartTimeJobManager : Singleton<PartTimeJobManager>, IInteract
 {
     #region Value
 
@@ -105,7 +105,6 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
                 ScheduleManager.PassBtnOn();
                 ScheduleManager.SetDotweenGuide();
                 partTimeJob_EndBtn.interactable = false;
-                GetMoney(100);
             })
             .OnComplete(() =>
             {
@@ -114,11 +113,6 @@ public class PartTimeJobManager : Manager<PartTimeJobManager>, IInteract
                 PlayerInputController.CanMove = true;
                 GameManager.CanInput = true;
             });
-    }
-    private void GetMoney(int money)
-    {
-        GameManager.currentMainInfo.money += money;
-        moneyTMP.text = GameManager.currentMainInfo.money.ToString();
     }
 
     #endregion

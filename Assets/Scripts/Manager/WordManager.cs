@@ -6,7 +6,7 @@ using TMPro;
 using UniRx;
 using UnityEditor;
 
-public class WordManager : Manager<WordManager>
+public class WordManager : Singleton<WordManager>
 {
     #region Value
 

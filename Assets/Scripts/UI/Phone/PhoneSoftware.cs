@@ -434,11 +434,11 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
         foreach (TMP_Text txt in DayText)
         {
-            txt.text = "DAY " + GameManager.currentMainInfo.day;
+            txt.text = "DAY " + GameManager.MainInfo.day;
         }
         foreach (TMP_Text txt in DayOfWeekText)
         {
-            txt.text = GameManager.currentMainInfo.TodayOfTheWeek;
+            txt.text = GameManager.MainInfo.TodayOfTheWeek;
         }
 
         //Set

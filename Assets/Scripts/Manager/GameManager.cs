@@ -1,55 +1,47 @@
+//Refactoring v1.0
 using UnityEngine;
 using System;
-using DG.Tweening;
 
-[Serializable]
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    [HideInInspector] public MainInfo currentMainInfo = new MainInfo();
+    #region Value
+
+    [Header("=== Other")]
+    [SerializeField] public MainInfo MainInfo = new MainInfo();
     [SerializeField] public cutsceneSO TestCutsceneSO;
-    [SerializeField] GameSystem GameSystem;
-    public static bool CanInput = true;
 
-    private void Awake()
+    // Other
+    public bool CanInput = true;
+
+    #endregion
+
+    #region Framework
+
+    protected override void Awake()
     {
-        if(currentMainInfo.NewGame == true)
-        {
-            currentMainInfo.NewGame = false;
-        }
+        base.Awake();
+
+        ActionEventManager.Instance.Offset();
+        ActivityController.Instance.Offset();
     }
 
-    public Sequence playMainCutscene(cutsceneSO playCutsceneSO)
-    {
-
-        if (cutsceneSO.currentCSSO != null) { return null; }
-        else
-        {
-            cutsceneSO.currentCSSO = playCutsceneSO;
-            return cutsceneSO.cutsceneSeq = cutsceneSO.makeCutscene(GameSystem.cutsceneImg, GameSystem.cutsceneTxt);
-        }
-    }
+    #endregion
 }
 
 [Serializable]
 public class MainInfo
 {
+    // Flow
     public bool NewGame = true;
     public int day = 1;
 
+    // Activity
+    public int currentActivity = 3;
     public int maxActivity = 4;
-    public int currentActivity = 2;
 
-    #region Need to determine if necessary
-
+    // Deco
     public string TodayOfTheWeek = "Monday";
-    public int money = 100;
 
-    public int stressGage = 0;
-    public int angerGage = 0;
-    public int riskGage = 0;
-    public int overloadGage = 0;
-
-    #endregion
 }
 
 

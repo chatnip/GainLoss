@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainSceneUIManager : Manager<MainSceneUIManager>
+public class MainSceneUIManager : Singleton<MainSceneUIManager>
 {
     [Header("*In Game GOs or Components")]
     [SerializeField] InGameHUD InGameHUD;

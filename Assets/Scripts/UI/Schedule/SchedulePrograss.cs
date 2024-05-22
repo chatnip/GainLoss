@@ -40,23 +40,6 @@ public class SchedulePrograss : MonoBehaviour
     #endregion
 
 
-    #region Main
-
-    private void Awake()
-    {
-        //ScheduleManager.PassNextSchedule();
-        //Set_InStartScheduleUI();
-
-        /*ExplanationBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                PlayerInputController.OnOffShowScheduleDetailBtn();
-                //OnOffVisibleSchedule();
-            });*/
-    }
-
-    #endregion
-
     #region Progress UI
 
     public void OnOffVisibleSchedule()

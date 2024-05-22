@@ -9,7 +9,7 @@ using DG.Tweening;
 using System.Linq;
 using Spine.Unity;
 
-public class PlaceManager : Manager<PlaceManager>
+public class PlaceManager : Singleton<PlaceManager>
 {
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
@@ -206,7 +206,7 @@ public class PlaceManager : Manager<PlaceManager>
     {
         StartCoroutine(GoingSomewhereLoading(delay));
         PlayerInputController.StopMove();
-        GameManager.CanInput = false;
+        GameManager.Instance.CanInput = false;
     }
 
     private IEnumerator GoingSomewhereLoading(float delay)
@@ -265,7 +265,7 @@ public class PlaceManager : Manager<PlaceManager>
             {
                 GoingSomewhereloadingCG.gameObject.SetActive(false);
                 PlayerInputController.CanMove = true;
-                GameManager.CanInput = true;
+                GameManager.Instance.CanInput = true;
             });
 
     }
@@ -276,6 +276,13 @@ public class PlaceManager : Manager<PlaceManager>
     public void InitPlace()
     {
         currentPlaceList.Clear(); // √ ±‚»≠
+        currentPlaceID_Dict = new Dictionary<string, int>
+        {
+            { "P00", 0 },
+            { "P01", 0 },
+            { "P02", 0 }
+        };
+
         foreach (IDBtn btn in placeBtnList)
         {
             btn.button.interactable = false;

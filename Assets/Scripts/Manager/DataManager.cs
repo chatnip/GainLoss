@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif*/
 
-public class DataManager : Manager<DataManager>
+public class DataManager : Singleton<DataManager>
 {
     [Header("*All_CSV_File")]
     [SerializeField] TextAsset StreamEventsFile;

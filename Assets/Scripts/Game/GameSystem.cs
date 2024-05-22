@@ -6,7 +6,7 @@ using UniRx;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameSystem : MonoBehaviour
+public class GameSystem : Singleton<GameSystem>
 {
     #region Value
 

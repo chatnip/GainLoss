@@ -5,7 +5,7 @@ using DG.Tweening;
 using System.Linq;
 using UniRx;
 
-public class ObjectInteractionButtonGenerator : MonoBehaviour, IInteract
+public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>, IInteract
 {
     #region Value
 
