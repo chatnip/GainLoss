@@ -1,3 +1,4 @@
+//Refactoring v1.0
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,438 +8,114 @@ using DG.Tweening;
 using System;
 using System.Linq;
 
-public class PhoneSoftware : MonoBehaviour, IInteract
+public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 {
     #region Value
 
-    [Header("*Manager")]
-    [SerializeField] GameManager GameManager;
-    [SerializeField] PhoneHardware PhoneHardware;
-    [SerializeField] SchedulePrograss SchedulePrograss;
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] PlaceManager PlaceManager;
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
-    [SerializeField] TutorialManager TutorialManager;
+    [Header("=== Screen By Condition")]
+    [SerializeField] public GameObject visitPlaceScreen;
+    [SerializeField] public GameObject optionScreen;
 
-    [Header("*Create Schedule")]
-    [SerializeField] GameObject CreateScheduleGO;
-    [SerializeField] GameObject ScheculeBtnGO;
+    [Header("=== Main Btn")]
+    [SerializeField] Button phoneExitBtn;
 
-    [SerializeField] Button WatchingTheStreamingBtn;
-    [SerializeField] TMP_Text WatchingTheStreamingText;
-    [SerializeField] Button SiteSurveyBtn;
-    [SerializeField] TMP_Text SiteSurveyText;
-    [SerializeField] Button PreliminarySurveyBtn;
-    [SerializeField] TMP_Text PreliminarySurveyText;
-    [SerializeField] Button DoingPartTimeJobBtn;
-    [SerializeField] TMP_Text DoingPartTimeJobText;
-
-    [SerializeField] Button[] SelectedScheduleBtns;
-    [SerializeField] TMP_Text[] SelectedScheduleTexts;
-    int Turn;
-
-    [SerializeField] Button DecisionBtn;
-    [SerializeField] TMP_Text DecisionWarningText;
-
-    [Header("*Site Survey")]
+    [Header("=== visit Place Btn")]
     [SerializeField] List<Button> PlaceBtns;
-    [SerializeField] GameObject map;
 
-    [Header("*Everytime Set Text")]
-    [SerializeField] List<TMP_Text> DayText;
-    [SerializeField] List<TMP_Text> DayOfWeekText;
-    [SerializeField] List<TMP_Text> realTimeText;
-    [SerializeField] TMP_Text EventText;
+    [Header("=== Base Info")]
+    [SerializeField] TMP_Text DayText;
+    [SerializeField] TMP_Text DayOfWeekText;
+    [SerializeField] TMP_Text realTimeText;
 
-    [Header("*Software")]
-    [SerializeField] Button lockScreen;
-
-    [Header("*AppEffecful")]
+    [Header("=== Other")]
     [SerializeField] Image appOpenBackgroundImg;
     [SerializeField] Image appIconImg;
 
-    [Header("*ail")]
-    [SerializeField] Button AIL_pad_Btn;
-    [SerializeField] Button AIL_pad_backBtn;
-    [SerializeField] GameObject AIL_pad;
-    [Header("*exe")]
-    [SerializeField] Button EXE_pad_Btn;
-    [SerializeField] Button EXE_pad_backBtn;
-    [SerializeField] GameObject EXE_pad;
-    [Header("*place")]
-    [SerializeField] Button Place_pad_Btn;
-    [SerializeField] Button Place_pad_backBtn;
-    [SerializeField] GameObject Place_pad;
-    [Header("*Allback")]
-    [SerializeField] Button backBtn;
-
-    [Header("*When PhoneTurnOn Exception Btns")]
-    [SerializeField] List<Button> ExceptionBtns;
-
     #endregion
 
-    #region Main
-    private void Awake()
+    #region Framework
+
+    public void Offset()
     {
-        ft_setEventText(EventText, "♡♥ 마린과의 첫만남 ♥♡");
+        #region Btn
 
-        #region Base
-
-        lockScreen
+        phoneExitBtn
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                lockScreen.gameObject.SetActive(false);
-            });
-
-
-        AIL_pad_Btn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                AIL_pad_Btn.TryGetComponent(out Image img);
-                openApp(AIL_pad, img);
-                //AIL_pad.SetActive(true);
-            });
-        AIL_pad_backBtn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                AIL_pad.SetActive(false);
-            });
-
-
-        EXE_pad_Btn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                EXE_pad_Btn.TryGetComponent(out Image img);
-                openApp(EXE_pad, img);
-                //EXE_pad.SetActive(true);
-            });
-        EXE_pad_backBtn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                EXE_pad.SetActive(false);
-            });
-
-        Place_pad_Btn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                Place_pad_Btn.TryGetComponent(out Image img);
-                openApp(Place_pad, img);
-                //Place_pad.SetActive(true);
-            });
-        Place_pad_backBtn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                Place_pad.SetActive(false);
-            });
-
-        backBtn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                PhoneHardware.PhoneOff();
-                ExceptionBtnsTurnOn();
-            });
-        #endregion
-
-        #region Set Create Schedule Btn
-
-        Turn = 0;
-
-        WatchingTheStreamingBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            { InputSchedule(WatchingTheStreamingBtn, WatchingTheStreamingText); });
-        SiteSurveyBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            { InputSchedule(SiteSurveyBtn, SiteSurveyText); });
-        PreliminarySurveyBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            { InputSchedule(PreliminarySurveyBtn, PreliminarySurveyText); });
-        DoingPartTimeJobBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            { InputSchedule(DoingPartTimeJobBtn, DoingPartTimeJobText); });
-
-        SelectedScheduleBtns[0].OnClickAsObservable()
-            .Subscribe(btn =>
-            { ClearSelectedScheduleFirstBtns(); });
-        SelectedScheduleBtns[1].OnClickAsObservable()
-            .Subscribe(btn =>
-            { ClearSelectedScheduleSecondBtns(); });
-
-        DecisionBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                Decision();
+                PhoneHardware.Instance.PhoneOff();
             });
 
         #endregion
 
-        #region Site Survey
-
-        /*map_Btn
-            .OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                map.SetActive(true);
-            });
-
-        map_backBtn
-            .OnClickAsObservable () 
-            .Subscribe(btn =>
-            { 
-                map.SetActive(false); 
-            });*/
-
-        #endregion
+        this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
-    private void OnEnable()
+    protected override void Awake()
     {
-        PlayerInputController.interact = this;
-        ExceptionBtnsTurnOff();
-        ResetUI();
-    }
-
-    private void OnDisable()
-    {
-        ExceptionBtnsTurnOn();
+        base.Awake();
     }
 
     private void LateUpdate()
     {
-        ft_setRealTime(realTimeText);
+        realTimeText.text = ft_getRealTimeString_H_M();
     }
 
     public void Interact()
     {
-        #region base
-
-        if (PlayerInputController.SelectBtn == AIL_pad_Btn) 
-        {
-            AIL_pad_Btn.TryGetComponent(out Image img);
-            openApp(AIL_pad, img);
-            return; 
-        }
-        else if (PlayerInputController.SelectBtn == EXE_pad_Btn) 
-        {
-            EXE_pad_Btn.TryGetComponent(out Image img);
-            openApp(EXE_pad, img);
-            return; 
-        }
-        else if (PlayerInputController.SelectBtn == Place_pad_Btn) 
-        {
-            Place_pad_Btn.TryGetComponent(out Image img);
-            openApp(Place_pad, img);
-            return; 
-        }
-
-        #endregion Set Create Schedule Btn
-
-        #region  Set Create Schedule Btn
-
-        if (PlayerInputController.SelectBtn == WatchingTheStreamingBtn) 
-        { InputSchedule(WatchingTheStreamingBtn, WatchingTheStreamingText); return; }
-        else if (PlayerInputController.SelectBtn == SiteSurveyBtn) 
-        { InputSchedule(SiteSurveyBtn, SiteSurveyText); return; }
-        else if (PlayerInputController.SelectBtn == PreliminarySurveyBtn) 
-        { InputSchedule(PreliminarySurveyBtn, PreliminarySurveyText); return; }
-        else if (PlayerInputController.SelectBtn == DoingPartTimeJobBtn)
-        { InputSchedule(DoingPartTimeJobBtn, DoingPartTimeJobText); return; }
-        else if (PlayerInputController.SelectBtn == SelectedScheduleBtns[0])
-        { ClearSelectedScheduleFirstBtns(); return; }
-        else if (PlayerInputController.SelectBtn == SelectedScheduleBtns[1])
-        { ClearSelectedScheduleSecondBtns(); return; }
-        else if (PlayerInputController.SelectBtn == DecisionBtn)
-        { Decision(); return; }
-
-        #endregion
-
         #region Site Survey
 
-        if (PlayerInputController.SelectBtn.gameObject.name == "Home")
-        { PhoneHardware.PhoneOff(); PlayerInputController.ClearSeletedBtns(); return; }
+        if (PlayerInputController.Instance.SelectBtn.gameObject.name == "Home")
+        { PhoneHardware.Instance.PhoneOff(); PlayerInputController.Instance.ClearSeletedBtns(); return; }
         else
-        { PlaceManager.SetPlaceBtnSet(PlayerInputController.SelectBtn.GetComponent<IDBtn>().buttonValue); PlayerInputController.ClearSeletedBtns(); return; }
+        { PlaceManager.Instance.SetPlaceBtnSet(PlayerInputController.Instance.SelectBtn.GetComponent<IDBtn>().buttonValue); PlayerInputController.Instance.ClearSeletedBtns(); return; }
 
         #endregion
     }
 
     #endregion
 
-    #region About Create Schedule
+    #region Base Info
 
-    private void InputSchedule(Button ScheduleBtn, TMP_Text tmp)
+    public void SetBaseInfo()
     {
-        string ScheduleText = tmp.text;
-        if (Turn == 0)
-        {
-            SelectedScheduleTexts[0].text = ScheduleText;
-            Turn++;
-        }
-        else if (Turn == 1)
-        {
-            if (SelectedScheduleTexts[0].text != ScheduleText)
-            {
-                SelectedScheduleTexts[1].text = ScheduleText;
-                Turn++;
-            }
-        }
-        if (Turn >= 2)
-        {
-            SetOrdering(SelectedScheduleTexts[0].text, SelectedScheduleTexts[1].text);
-        }
-    }
-    private void SetOrdering(string firstText, string secondText)
-    {
-        string firstKey = "";
-        string SecondKey = "";
-        foreach (string Kor in DataManager.ScheduleDatas[3].Values)
-        {
-            if (firstText == Kor)
-            { firstKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
-            if (secondText == Kor)
-            { SecondKey = DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == Kor).Key; }
-        }
-        if (Convert.ToInt32(DataManager.ScheduleDatas[1][firstKey]) > Convert.ToInt32(DataManager.ScheduleDatas[1][SecondKey]))
-        {
-            string temp = SelectedScheduleTexts[0].text;
-            SelectedScheduleTexts[0].text = SelectedScheduleTexts[1].text;
-            SelectedScheduleTexts[1].text = temp;
-        }
+        #region Base Info
 
+        PlayerInputController.Instance.interact = this;
 
-    }
-    private void ClearSelectedScheduleFirstBtns()
-    {
-        if (SelectedScheduleTexts[0].text != "" && SelectedScheduleTexts[0].text != null)
-        {
-            SelectedScheduleTexts[0].text = null;
-            Turn--;
-        }
-        if (SelectedScheduleTexts[1].text != "" && SelectedScheduleTexts[1].text != null)
-        {
-            string s_temp = SelectedScheduleTexts[1].text;
-            SelectedScheduleTexts[0].text = s_temp;
-            SelectedScheduleTexts[1].text = null;
-        }
-    }
-    private void ClearSelectedScheduleSecondBtns()
-    {
-        if (SelectedScheduleTexts[1].text != "" && SelectedScheduleTexts[1].text != null)
-        {
-            SelectedScheduleTexts[1].text = null;
-            Turn--;
-        }
-    }
-    private void Decision()
-    {
-        if ((SelectedScheduleTexts[0].text != null && SelectedScheduleTexts[0].text != "") &&
-                (SelectedScheduleTexts[1].text != null && SelectedScheduleTexts[1].text != ""))
-        {
-            DOTween.Kill(DecisionWarningText);
-            List<string> ScheduleStrings = new List<string>
-                    {
-                        SelectedScheduleTexts[0].text,
-                        SelectedScheduleTexts[1].text
-                    };
-            List<string> Ids = new List<string>();
-            foreach (string ScheduleString in ScheduleStrings)
-            {
-                Ids.Add((string)DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == ScheduleString).Key);
-            }
+        DayText.text = "DAY " + GameManager.Instance.MainInfo.day;
+        DayOfWeekText.text = GameManager.Instance.MainInfo.TodayOfTheWeek;
 
-            //ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
-            //SchedulePrograss.Set_InAMScheduleUI();
-            //TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
-            //ScheduleManager.SetDotweenGuide();
-            CreateScheduleGO.SetActive(false);
-            PhoneHardware.PhoneOff();
-            //SchedulePrograss.SetExplanation(ScheduleManager.currentPrograssScheduleID);
-            //PartTimeJobManager.distinctionPartTimeJob();
-        }
-        else
-        {
-            DOTween.Kill(DecisionWarningText);
-            DecisionWarningText.color = Color.white;
-            DecisionWarningText.DOFade(0, 1);
-        }
-    }
-
-    #endregion
-
-    #region Reset
-
-    public void ResetUI()
-    {
-
-        #region Everytime
-
-        foreach (TMP_Text txt in DayText)
-        {
-            txt.text = "DAY " + GameManager.MainInfo.day;
-        }
-        foreach (TMP_Text txt in DayOfWeekText)
-        {
-            txt.text = GameManager.MainInfo.TodayOfTheWeek;
-        }
-
-        //Set
-        /*if (ScheduleManager.currentPrograssScheduleID == "S02") { map_Btn.interactable = true; }
-        else { map_Btn.interactable = false; }*/
-        CreateScheduleGO.SetActive(false);
-        map.SetActive(false);
-
-        AIL_pad_Btn.interactable = true;
-        AIL_pad.SetActive(false);
-
-        EXE_pad_Btn.interactable = true;
-        EXE_pad.SetActive(false);
-         
-        Place_pad_Btn.interactable = true;
-        Place_pad.SetActive(false);
+        if (phoneExitBtn.TryGetComponent(out RectTransform RT)) { RT.localScale = Vector3.one; }
 
         #endregion
-
-    }
-
-    public void SetCurrentScheduleUI(bool IsThisSchedule)
-    {
-        List<List<Button>> btns = new List<List<Button>>();
-        if (!IsThisSchedule)
-        {
-            btns = new List<List<Button>>
-            { new List<Button> { AIL_pad_Btn, EXE_pad_Btn, Place_pad_Btn } };
-            PlayerInputController.SetSectionBtns(btns, this);
-        }
-        else 
-        {
-            
-        }
-        
     }
 
     #endregion
 
-    #region Effectful ( App Open )
+    #region Effectful
 
-    private void openApp(GameObject App, Image ClickImg)
+    private void OpenApp(GameObject App, Image ClickImg, float dotweenTime)
     {
-        if (!GameManager.CanInput) { return; }
-        GameManager.CanInput = false;
+        if (!GameManager.Instance.CanInput) { return; }
+        GameManager.Instance.CanInput = false;
 
-        appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT);
+        if (DOTween.IsTweening("OpenApp")) { DOTween.Complete("OpenApp"); }
         Sequence seq = DOTween.Sequence();
+        seq.SetId("OpenApp").OnComplete(() => { GameManager.Instance.CanInput = true; });
 
         // BG 초기 설정
-        DOTween.Kill(appOpenBackgroundImg.gameObject);
-        BGRT.localScale = Vector3.zero;
-        appOpenBackgroundImg.DOFade(0, 0);
+        if(appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT))
+        {
+            BGRT.localScale = Vector3.zero;
+            appOpenBackgroundImg.DOFade(0, 0); 
+            seq.Append(BGRT.DOScale(Vector3.one, dotweenTime)
+                .SetEase(Ease.OutCubic)
+                .OnComplete(() =>
+                {
+                    App.gameObject.SetActive(true);
+                }));
+        }
 
         // Icon 초기 설정
         appIconImg.DOFade(0, 0);
@@ -448,47 +125,22 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         appOpenBackgroundImg.gameObject.SetActive(true);
         appIconImg.gameObject.SetActive(true);
 
-        seq.Append(BGRT.DOScale(Vector3.one, 0.2f)
-            .SetEase(Ease.OutCubic)
-            .OnComplete(() =>
-            {
-                App.gameObject.SetActive(true);
-            }));
-        seq.Join(appOpenBackgroundImg.DOFade(1, 0.2f));
+        
+        seq.Join(appOpenBackgroundImg.DOFade(1, dotweenTime));
         seq.Join(appIconImg.DOFade(1, 0.1f));
 
-        seq.AppendInterval(0.2f);
+        seq.AppendInterval(dotweenTime);
 
-        seq.Append(appOpenBackgroundImg.DOFade(0, 0.15f)
-            .OnComplete(() =>
-            {
-                appOpenBackgroundImg.gameObject.SetActive(false);
-            }));
-        seq.Join(appIconImg.DOFade(0, 0.15f)
-            .OnComplete(() =>
-            {
-                appIconImg.gameObject.SetActive(false);
-            }));
+        seq.Append(appOpenBackgroundImg.DOFade(0, dotweenTime).OnComplete(() => { appOpenBackgroundImg.gameObject.SetActive(false); }));
+        seq.Join(appIconImg.DOFade(0, dotweenTime).OnComplete(() => { appIconImg.gameObject.SetActive(false); }));
 
-        seq.OnComplete(() =>
-        {
-            GameManager.CanInput = true;
-        });
+        
     }
 
     #endregion
 
     #region Real Time
 
-    private void ft_setRealTime(List<TMP_Text> allTimeTmp)
-    {
-        foreach (TMP_Text timeTmp in allTimeTmp)
-        {
-            if(timeTmp.text != ft_getRealTimeString_H_M()) 
-            { timeTmp.text = ft_getRealTimeString_H_M(); }
-            
-        }
-    }
     private string ft_getRealTimeString_H_M()
     {
         string AllRealTime = DateTime.Now.ToString(("yyyy-MM-dd HH:mm:ss tt"));
@@ -499,32 +151,4 @@ public class PhoneSoftware : MonoBehaviour, IInteract
     }
 
     #endregion
-
-    #region Event Text
-
-    private void ft_setEventText(TMP_Text targetComp, string Text)
-    {
-        string TextSet = "<size=50%>" + Text + "</size>\n";
-        string TextStaticDay = "<size=100%>" + "20XX.XX.XX" + "</size>";
-
-        targetComp.text = TextSet + TextStaticDay;       
-    }
-
-
-    #endregion
-
-    public void ExceptionBtnsTurnOn()
-    {
-        foreach(Button btn in ExceptionBtns)
-        {
-            btn.interactable = true;
-        }
-    }
-    private void ExceptionBtnsTurnOff()
-    {
-        foreach (Button btn in ExceptionBtns)
-        {
-            btn.interactable = false;
-        }
-    }
 }

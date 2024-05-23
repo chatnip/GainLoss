@@ -39,6 +39,10 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     public Dictionary<e_HomeInteractType, QuestionWindowConfig> questionWindowConfigDict;
     public Dictionary<e_HomeInteractType, int> questionWindowAbilitiyDict;
 
+    // Dotween
+    Sequence SAG_UI;
+    Sequence SAG_UI_Use;
+
     #endregion
 
     #region Enum
@@ -58,10 +62,10 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         // Set Dict
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
         { 
-            { e_HomeInteractType.Observational, new QuestionWindowConfig("사진 더미를 보며 시간 좀 때워볼까?", "관찰력", "observationalAnim") },
-            { e_HomeInteractType.Persuasive, new QuestionWindowConfig("책을 하나 읽을까?", "설득력", "persuasiveAnim") },
-            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig("침대에서 조금 잘까?", "정신력", "mentalStrengthAnim") },
-            { e_HomeInteractType.GoOutside, new QuestionWindowConfig("외출할까?", "", "goOutsideAnim") }
+            { e_HomeInteractType.Observational, new QuestionWindowConfig("사진 더미를 보며 시간 좀 때워볼까?", "관찰력", "observationalAnim", 1, 1) },
+            { e_HomeInteractType.Persuasive, new QuestionWindowConfig("책을 하나 읽을까?", "설득력", "persuasiveAnim", 1, 1) },
+            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig("침대에서 조금 잘까?", "정신력", "mentalStrengthAnim", 1, 1) },
+            { e_HomeInteractType.GoOutside, new QuestionWindowConfig("외출할까?", "", "goOutsideAnim", 0, 0) }
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
@@ -71,7 +75,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         };
 
         // Set UI
-        SetActivityGageUI();
+        SetActivityGageUI(0.25f);
 
         activityQuestionWindowRT.anchoredPosition = new Vector2(1200, activityQuestionWindowRT.anchoredPosition.y);
         noBtn.interactable = false;
@@ -83,7 +87,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
             {
                 if (!GameManager.Instance.CanInput) { return; }
 
-                SetActivityGageUI();
+                SetActivityGageUI(0.25f);
                 QuestionWindow_ActiveOff(0.25f);
             });
         yesBtn.OnClickAsObservable()
@@ -93,7 +97,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
                 if (currentQuestionWindowType == e_HomeInteractType.GoOutside)
                 { 
-                    GoOutside(); 
+                    StartCoroutine(GoOutside()); 
                 }
                 else
                 {
@@ -120,14 +124,20 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     #region Gage
 
-    private void SetActivityGageUI()
+    private void SetActivityGageUI(float dotweenTime)
     {
+        // Dotween
+        DOTween.Kill(SAG_UI); 
+        DOTween.Kill(SAG_UI_Use); 
+        SAG_UI = DOTween.Sequence();
+        SAG_UI_Use = DOTween.Sequence();
+
         // Set Fill Gage
         float value = (float)GameManager.Instance.MainInfo.currentActivity / GameManager.Instance.MainInfo.maxActivity;
         foreach(Image img in gageActualImgs)
-        { img.fillAmount = value; }
+        { SAG_UI.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
         foreach (Image img in gageUsePreviewImgs)
-        { img.fillAmount = 0; }
+        { SAG_UI_Use.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, 0, dotweenTime)); }
 
 
         // Set Num
@@ -137,16 +147,21 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         float RT_X = activityGageWindowRT.rect.width;
         RT_X /= GameManager.Instance.MainInfo.maxActivity;
         if (markImg.TryGetComponent(out RectTransform markRT)) 
-        { markRT.anchoredPosition = new Vector2(RT_X * GameManager.Instance.MainInfo.currentActivity, 0); }
+        { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameManager.Instance.MainInfo.currentActivity, 0), dotweenTime)); }
     }
 
-    private void SetActivityGageUI_Use(e_HomeInteractType previewHI_Type)
+    private void SetActivityGageUI_Use(e_HomeInteractType previewHI_Type, float dotweenTime)
     {
-        SetActivityGageUI();
+        // Dotween
+        DOTween.Kill(SAG_UI_Use);
+        SAG_UI_Use = DOTween.Sequence();
+
+        // Set Gage
+        SetActivityGageUI(dotweenTime);
         int previewActivity = GameManager.Instance.MainInfo.currentActivity - questionWindowConfigDict[previewHI_Type].DecActivity;
         float value = 1 - ((float)previewActivity / GameManager.Instance.MainInfo.maxActivity);
         foreach (Image img in gageUsePreviewImgs)
-        { img.fillAmount = value; }
+        { SAG_UI_Use.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
     }
 
     #endregion
@@ -166,8 +181,16 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { noBtn, yesBtn } }, this);
         
         // set Txt
-        questionContentTxt.text = 
-            questionWindowConfigDict[HI_Type].QuestionContent;
+        if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.MainInfo.currentActivity > 0)
+        {
+            questionContentTxt.text =
+                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>아직 사용하지 않은 행동력이 존재하지만, 정말 나갈까?</size></color>";
+        }
+        else
+        {
+            questionContentTxt.text =
+                questionWindowConfigDict[HI_Type].QuestionContent;
+        }
         
         kindOfGageByActivityTxt.text =
             questionWindowConfigDict[HI_Type].ActivityKind + "+" + questionWindowConfigDict[HI_Type].IncAbility.ToString();
@@ -176,7 +199,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
             GameManager.Instance.MainInfo.currentActivity.ToString() + "/" + GameManager.Instance.MainInfo.maxActivity.ToString();
 
         // Set Fill Gage
-        SetActivityGageUI_Use(currentQuestionWindowType);
+        SetActivityGageUI_Use(currentQuestionWindowType, 0.25f);
 
         if (questionWindowConfigDict[HI_Type].ActivityKind != null && questionWindowConfigDict[HI_Type].ActivityKind != "")
         { aboutAbilityPanelRT.gameObject.SetActive(true); }
@@ -210,13 +233,18 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     #endregion
 
-    #region Do Interact
+    #region Go Outside
 
-    private void GoOutside()
+    private IEnumerator GoOutside()
     {
-
+        QuestionWindow_ActiveOff(0.25f);
+        yield return new WaitForSeconds(0.26f);
+        PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.visitPlace);
     }
 
+    #endregion
+
+    #region Get Ability
 
     private void GetAbility_Start(e_HomeInteractType HI_Type)
     {
@@ -246,14 +274,17 @@ public class ActivityController : Singleton<ActivityController>, IInteract
             HI_Type, questionWindowConfigDict[HI_Type].IncAbility,
             questionWindowConfigDict[HI_Type].DecActivity);
 
-        SetActivityGageUI();
+        QuestionWindow_ActiveOff(0.25f);
+        SetActivityGageUI(0.25f);
 
+#if UNITY_EDITOR
         Debug.Log(
             $"\n행동력{GameManager.Instance.MainInfo.currentActivity}" +
             $"\n관찰력{GameManager.Instance.MainInfo.ObservationalAbility}" +
             $"\n설득력{GameManager.Instance.MainInfo.PersuasiveAbility}" +
             $"\n정신력{GameManager.Instance.MainInfo.MentalStrengthAbility}"
             );
+#endif
     }
 
     #endregion
@@ -268,11 +299,13 @@ public class QuestionWindowConfig
     public int DecActivity = 1;
     public int IncAbility = 1;
 
-    public QuestionWindowConfig(string questionContent, string activityKind, string animString)
+    public QuestionWindowConfig(string questionContent, string activityKind, string animString, int incAbility, int decActivity)
     {
         QuestionContent = questionContent;
         ActivityKind = activityKind;
         AnimString = animString;
+        IncAbility = incAbility;
+        DecActivity = decActivity;
     }
 
 }

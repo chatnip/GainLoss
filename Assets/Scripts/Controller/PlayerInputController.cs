@@ -236,7 +236,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (!GameManager.Instance.CanInput) { return; }
 
         // 폰 켜져있을 시 끄기
-        if (PhoneHardware.phone2DCamera.activeSelf)
+        if (PhoneHardware.Instance.gameObject.activeSelf)
         {
             PhoneHardware.PhoneOff();
             return;

@@ -24,6 +24,9 @@ public class GameManager : Singleton<GameManager>
 
         LoadingManager.Instance.Offset();
         ActivityController.Instance.Offset();
+
+        PhoneSoftware.Instance.Offset();
+        PhoneHardware.Instance.Offset();
     }
 
     #endregion

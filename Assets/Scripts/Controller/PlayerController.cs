@@ -120,7 +120,8 @@ public class PlayerController : Singleton<PlayerController>
         if(PlayerInputController.Instance.CanMove && _controller.enabled) Move();
         if(isTalking) setOriginalAnimation();
 
-        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
+            !_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
             resetAnime();
         }

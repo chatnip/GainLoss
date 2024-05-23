@@ -181,7 +181,6 @@ public class PlaceManager : Singleton<PlaceManager>
         currentPlace = BV;
         Debug.Log("정해진 장소: " + currentPlace.ID + " / " + currentPlace.Name);
         PhoneHardware.PhoneOff();
-        PhoneHardware.DoNotNeedBtns_ExceptionSituation = true;
 
         StartGoingSomewhereLoading(1.5f);
     }

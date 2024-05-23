@@ -1,7 +1,6 @@
+//Refactoring v1.0
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,56 +8,49 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 {
     #region Value
 
-    [SerializeField] GameSystem GameSystem;
+    [Header("=== UICanvas")]
+    [SerializeField] List<GameObject> identicalGOs;
+    [SerializeField] List<GameObject> oppositeGOs;
 
-    [Header("*Hardware")]
-    [SerializeField] GameObject phoneScreen;
-    [SerializeField] public GameObject phone2DCamera;
-    [SerializeField] PhoneSoftware phoneSoftware;
-    [SerializeField] GameObject phoneViewCamera;
-    [SerializeField] GameObject quarterViewCamera;
-    [SerializeField] GameObject lockScreen;
-
-    [Header("*UICanvas")]
-    [SerializeField] GameObject InteractionUI3D;
-    [SerializeField] GameObject ScheduleUIs;
-    [SerializeField] GameObject IconCollectionGO;
-
-
-    [Header("*Effectful Phone")]
+    [Header("=== Effectful")]
     [SerializeField] RectTransform circleEffectRT;
     [SerializeField] RectTransform bellRT;
     [SerializeField] RectTransform waveRT;
 
-    List<string> DoNotNeedBtns;
-    [HideInInspector] public bool DoNotNeedBtns_ExceptionSituation;
-    [HideInInspector] public bool sectionIsThis = false;
+    // Other Value
+    public Dictionary<e_phoneStateExtra, GameObject> turnOnExtraGODict;
 
     #endregion
 
-    #region Main
+    #region Enum
+
+    public enum e_phoneStateExtra
+    {
+        visitPlace, option
+    }
+
+    #endregion
+
+    #region Framework & Base Set
+
+    public void Offset()
+    {
+        turnOnExtraGODict = new Dictionary<e_phoneStateExtra, GameObject>
+        {
+            { e_phoneStateExtra.visitPlace,  PhoneSoftware.Instance.visitPlaceScreen },
+            { e_phoneStateExtra.option, PhoneSoftware.Instance.optionScreen }
+        };
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        DoNotNeedBtns = new List<string>()
-        {
-            "S01", "S03", "S04", "S99"
-        };
-        DoNotNeedBtns_ExceptionSituation = false;
         this.gameObject.SetActive(false);
     }
     
+    #endregion
 
-    private void OnEnable()
-    {
-        PhoneOn();
-    }
-
-    private void OnDisable()
-    {
-        PhoneOff();
-    }
+    #region For Pad
 
     public void Interact()
     {
@@ -70,11 +62,12 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     #region Effectful
 
-    public void phoneEffectfulCor(bool setCurrentScheduleUI)
+    public void Start_PhoneOn(e_phoneStateExtra pse)
     {
         if(!GameManager.Instance.CanInput) { return; }
         GameManager.Instance.CanInput = false;
 
+        PlayerInputController.Instance.StopMove();
         PlayerInputController.Instance.SetSectionBtns(null, null);
 
         Sequence seq = DOTween.Sequence();
@@ -94,15 +87,12 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         seq.Append(bellRT.DOSizeDelta(new Vector2(0.75f, 1f)* 100, 0.1f));
         for (int i = 0; i < 4; i++)
         {
-            //bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 360.0f * i), 20.0f, RotateMode.FastBeyond360);
             if (i % 2 == 0)
             { seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 15.0f), 0.1f, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutBack)
                     .OnUpdate(() =>
                     {
                         bellRT.rotation.SetLookRotation(Vector3.back);
-                        //float z = bellRT.rotation.z;
-                        //bellRT.rotation = Quaternion.Euler(new Vector3(0, 0, z));
                     })); }
             else
             { seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, -15.0f), 0.1f, RotateMode.FastBeyond360))
@@ -110,8 +100,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
                     .OnUpdate(() =>
                     {
                         bellRT.rotation.SetLookRotation(Vector3.back);
-                        //float z = bellRT.rotation.z;
-                        //bellRT.rotation = Quaternion.Euler(new Vector3(0, 0, z));
                     }); 
             }
         }
@@ -123,7 +111,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             .OnComplete(() =>
             {
                 PhoneOn();
-                phoneSoftware.SetCurrentScheduleUI(setCurrentScheduleUI);
+                turnOnExtraGODict[pse].gameObject.SetActive(true);
 
                 waveRT.gameObject.SetActive(true);
                 waveRT.sizeDelta = Vector2.zero;
@@ -155,27 +143,17 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
     public void PhoneOn()
     {
         this.gameObject.SetActive(true);
+        foreach(GameObject identicalGO in identicalGOs) { identicalGO.SetActive(true); }
+        foreach(GameObject oppositeGO in oppositeGOs) { oppositeGO.SetActive(false); }
 
-        phone2DCamera.SetActive(true);
-        phoneScreen.SetActive(true);
-        phoneViewCamera.SetActive(true);
-        quarterViewCamera.SetActive(false);
-
-        InteractionUI3D.SetActive(false);
+        PhoneSoftware.Instance.SetBaseInfo();
     }
 
     public void PhoneOff()
     {
-        phone2DCamera.SetActive(false);
-        phoneScreen.SetActive(false);
-        phoneViewCamera.SetActive(false);
-        quarterViewCamera.SetActive(true);
-
         this.gameObject.SetActive(false);
-
-        InteractionUI3D.SetActive(true);
-
-        sectionIsThis = false;
+        foreach (GameObject identicalGO in identicalGOs) { identicalGO.SetActive(false); }
+        foreach (GameObject oppositeGO in oppositeGOs) { oppositeGO.SetActive(true); }
     }
 
     #endregion

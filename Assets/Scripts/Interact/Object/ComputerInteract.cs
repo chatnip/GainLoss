@@ -56,8 +56,6 @@ public class ComputerInteract : InteractObject
 
     private void ScreenOn()
     {
-        ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn();
-        // 나중에 애니메이션 추가!!!
         Computer2DCamera.SetActive(true);
         InteractionUI3D.SetActive(false);
 
@@ -65,8 +63,6 @@ public class ComputerInteract : InteractObject
 
         ActivityController.gameObject.SetActive(false);
         IconCollectionGO.gameObject.SetActive(false);
-
-        //ScheduleManager.ResetDotweenGuide();
     }
 
     private void ScreenOff()
@@ -79,7 +75,6 @@ public class ComputerInteract : InteractObject
         ActivityController.gameObject.SetActive(true);
         IconCollectionGO.gameObject.SetActive(true);
         
-        //ScheduleManager.SetDotweenGuide();
     }
 
     #endregion
