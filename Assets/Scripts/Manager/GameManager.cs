@@ -22,7 +22,9 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
 
+        GameSystem.Instance.Offset();
         LoadingManager.Instance.Offset();
+        PlaceManager.Instance.Offset();
         ActivityController.Instance.Offset();
 
         PhoneSoftware.Instance.Offset();

@@ -237,8 +237,8 @@ public class JsonManager : Singleton<JsonManager>
         //ScheduleManager.currentPrograssScheduleID = "S00";
 
         // Load -> place Json
-        PlaceManager.currentPlaceID_Dict =
-            JsonLoad_D(json_filePath, json_PlaceFileName);
+        //PlaceManager.currentPlaceID_Dict =
+        //    JsonLoad_D(json_filePath, json_PlaceFileName);
 
         // Load -> got PreliminarySurvey Json
         PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[0];
@@ -389,7 +389,7 @@ public class JsonManager : Singleton<JsonManager>
         //JsonSave(json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
 
         // Save -> Place Json
-        JsonSave(json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
+        //JsonSave(json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
 
         // Save -> Got PreliminarySurvey Json
         JsonSave(json_PSFileName, new PSBase(

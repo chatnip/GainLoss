@@ -239,7 +239,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     {
         QuestionWindow_ActiveOff(0.25f);
         yield return new WaitForSeconds(0.26f);
-        PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.visitPlace);
+        StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.visitPlace));
     }
 
     #endregion

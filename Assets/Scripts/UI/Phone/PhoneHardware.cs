@@ -1,5 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,15 +63,16 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     #region Effectful
 
-    public void Start_PhoneOn(e_phoneStateExtra pse)
+    public IEnumerator Start_PhoneOn(e_phoneStateExtra pse)
     {
-        if(!GameManager.Instance.CanInput) { return; }
+        if(!GameManager.Instance.CanInput) { yield return null; }
         GameManager.Instance.CanInput = false;
 
         PlayerInputController.Instance.StopMove();
         PlayerInputController.Instance.SetSectionBtns(null, null);
 
         Sequence seq = DOTween.Sequence();
+
 
         circleEffectRT.sizeDelta = Vector2.zero;
         circleEffectRT.gameObject.SetActive(true); 
@@ -111,7 +113,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             .OnComplete(() =>
             {
                 PhoneOn();
-                turnOnExtraGODict[pse].gameObject.SetActive(true);
 
                 waveRT.gameObject.SetActive(true);
                 waveRT.sizeDelta = Vector2.zero;
@@ -134,6 +135,14 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
                 circleEffectRT.gameObject.SetActive(false);
                 GameManager.Instance.CanInput = true;
             }));
+
+
+        turnOnExtraGODict[pse].gameObject.SetActive(true);
+
+        yield return new WaitForEndOfFrame();
+
+        if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf) 
+        { PhoneSoftware.Instance.OpenMap(); }
     }
     
     #endregion

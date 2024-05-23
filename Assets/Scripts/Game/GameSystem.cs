@@ -1,91 +1,96 @@
+//Refactoring v1.0
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UniRx;
-using System.Collections.Generic;
-using System.Linq;
 
 public class GameSystem : Singleton<GameSystem>
 {
     #region Value
 
-    [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] public PlayerInputController PlayerInputController;
-    [SerializeField] Animator PlayerAnimator;
-    [SerializeField] Animator AnotherAnimator;
-    [SerializeField] Pause Pause;
-
-    [SerializeField] PlaceManager PlaceManager;
-
-    [Header("*Popular UI")]
-    [SerializeField] public CanvasGroup loading;
+    [Header("=== Main UI")]
     [SerializeField] public Button PauseBtn;
 
-    [Header("*Obj Panel")]
-    [SerializeField] public GameObject objPanel;
-    [SerializeField] public Button objPanelBtn_toSkip;
+    [Header("=== Obj Panel")]
+    [SerializeField] public Button objPanelBtn;
     [SerializeField] public TMP_Text objText;
     [SerializeField] public Button objPanelExitBtn;
 
-    [Header("*Npc Panel")]
-    [SerializeField] public GameObject NpcPanel;
-    [SerializeField] public Button NpcPanelBtn_toSkip;
+    [Header("=== Npc Panel")]
+    [SerializeField] public Button NpcPanelBtn;
     [SerializeField] public TMP_Text NpcName;
     [SerializeField] public TMP_Text NpcText;
     [SerializeField] public Image NpcImg;
     [SerializeField] public Button NpcPanelExitBtn;
-    [SerializeField] public GameObject NpcInteractCamera;
 
-    [Header("*Cutscene")]
+    [Header("=== Animator")]
+    [SerializeField] Animator PlayerAnimator;
+    [SerializeField] Animator AnotherAnimator;
+
+    [Header("=== Cutscene")]
     [SerializeField] public Image cutsceneImg;
     [SerializeField] public TMP_Text cutsceneTxt;
 
+    [Header("=== Player")]
+    public Transform playerPos;
+
+    // Dotween
+    Tween objTextingTween;
+    Tween npcTextingTween;
+
+    // Other Value
     ConversationBase conversations;
     bool conversationTweeningNow = false;
     int currentOrder = 0;
 
-    [Header("*Player")]
-    public Transform playerPos;
-
     #endregion
 
-    #region Main
+    #region Framework & Base Set
 
-    private void Start()
+    public void Offset()
     {
-        SetPlayerTransform();
+        //Player
+
+        playerPos.position = new Vector3(0f, 0f, 0f);
+        playerPos.rotation = Quaternion.identity;
+
+        //Btns
 
         PauseBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                PlayerInputController.OnOffPause();
+                PlayerInputController.Instance.OnOffPause();
             });
 
         objPanelExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ObjectDescriptionOff();
+                ObjDescOff();
             });
-        objPanelBtn_toSkip.OnClickAsObservable()
+        objPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                ObjectDescriptionSkip();
+                ObjDescSkip();
             });
 
 
         NpcPanelExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                NpcDescriptionOff();
+                NpcDescOff();
             });
-        NpcPanelBtn_toSkip.OnClickAsObservable()
-            .Subscribe(btn => 
-            { 
-                NpcDescriptionSkip();
+        NpcPanelBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                NpcDescSkip();
             });
 
-        
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     private void LateUpdate()
@@ -97,66 +102,59 @@ public class GameSystem : Singleton<GameSystem>
         }
     }
 
-    public void SetPlayerTransform()
-    {
-        playerPos.position = new Vector3(0, 0.2f, 0);
-        playerPos.rotation = Quaternion.identity;
-    }
 
     #endregion
 
     #region Obj Panel
 
-    public void ObjectDescriptionOn(string text) // 오브젝트 설명 패널 켜기
+    public void ObjDescOn(string text)
     {
-        PlayerInputController.StopMove();
-        ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
+        PlayerInputController.Instance.StopMove();
+        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
 
         objText.text = "";
-        objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
-        objPanel.SetActive(true);
+        objTextingTween = objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
+        objPanelBtn.gameObject.SetActive(true);
     }
     
-    public void ObjectDescriptionSkip()
+    public void ObjDescSkip()
     {
-        if (DOTween.IsTweening("Obj_Description"))
-        { DOTween.Complete("Obj_Description"); }
-        else 
-        { ObjectDescriptionOff(); }
+        if (DOTween.IsTweening(objTextingTween)) { DOTween.Complete(objTextingTween); }
+        else { ObjDescOff(); }
     }
     
-    public void ObjectDescriptionOff() // 오브젝트 설명 패널 끄기
+    public void ObjDescOff()
     {
-        PlayerInputController.CanMove = true;
-        DOTween.Complete("Obj_Description");
-        objPanel.SetActive(false);
+        PlayerInputController.Instance.CanMove = true;
+        DOTween.Complete(objTextingTween);
+        objPanelBtn.gameObject.SetActive(false);
         objText.text = null;
 
-        ObjectInteractionButtonGenerator.SetOnOffAllBtns(true);
+        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
     }
 
     #endregion
 
     #region Npc Panel
 
-    public void NpcDescriptionOn(ConversationBase conversationBase, Animator animator) // NPC 설명 패널 켜기
+    public void NpcDescOn(ConversationBase conversationBase, Animator animator)
     {
         PlayerController.Instance.setOnNpcInteractCamera(animator.gameObject);
-        PlayerInputController.StopMove();
+        PlayerInputController.Instance.StopMove();
         PlayerController.Instance.isTalking = true;
         AnotherAnimator = animator;
-        ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
+        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
         this.conversations = conversationBase;
-        SetTween(0);
+        npcTextingTween = SetTween(0);
 
-        NpcPanel.SetActive(true);
+        NpcPanelBtn.gameObject.SetActive(true);
     }
 
-    public void NpcDescriptionSkip()
+    public void NpcDescSkip()
     {
         if (conversationTweeningNow)
         {
-            DOTween.Complete(NpcText);
+            DOTween.Complete(npcTextingTween);
         }
         else if (!conversationTweeningNow && (conversations.NpcConversations.Count > currentOrder))
         {
@@ -173,27 +171,27 @@ public class GameSystem : Singleton<GameSystem>
 
             }
 
-            DOTween.Kill(NpcText);
+            DOTween.Kill(npcTextingTween);
             NpcText.text = null;
-            SetTween(currentOrder);
+            npcTextingTween = SetTween(currentOrder);
         }
         else if (!conversationTweeningNow)
         {
-            NpcDescriptionOff();
+            NpcDescOff();
         }
     }
 
-    public void NpcDescriptionOff() // NPC 설명 패널 끄기
+    public void NpcDescOff()
     {
-        PlayerInputController.CanMove = true;
+        PlayerInputController.Instance.CanMove = true;
         PlayerController.Instance.setOffNpcInteractCamera();
         PlayerController.Instance.isTalking = false;
-        NpcPanel.SetActive(false);
+        NpcPanelBtn.gameObject.SetActive(false);
         DOTween.Kill(NpcText);
         NpcText.text = null;
         conversationTweeningNow = false;
         currentOrder = 0;
-        ObjectInteractionButtonGenerator.SetOnOffAllBtns(true);
+        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
         PlayerAnimator.SetTrigger("Return");
         AnotherAnimator.SetTrigger("Return");
@@ -215,17 +213,9 @@ public class GameSystem : Singleton<GameSystem>
                         
 
                          if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
-                         {
-                             PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             NpcInteractCamera.transform.position = conversations.playerCameraPos;
-                             NpcInteractCamera.transform.LookAt(PlayerController.Instance.gameObject.transform.position + new Vector3(0, conversations.playerHeight, 0));
-                         }
+                         { PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
-                         {
-                             AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
-                             NpcInteractCamera.transform.position = conversations.anotherCameraPos;
-                             NpcInteractCamera.transform.LookAt(AnotherAnimator.gameObject.transform.position + new Vector3(0, conversations.anotherHeight, 0));
-                         }
+                         { AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
                      })
                      .OnComplete(() =>
                      {

@@ -88,7 +88,8 @@ public class LoadingManager : Singleton<LoadingManager>
         GameManager.Instance.CanInput = false;
 
         DOTween.Kill(SavingPrograssText);
-        GameSystem.Instance.SetPlayerTransform();
+        PlayerController.Instance.gameObject.transform.position = new Vector3(0f, 0f, 0f);
+        PlayerController.Instance.gameObject.transform.rotation = Quaternion.identity;
 
         SavingPrograssText.text = "< Saved >";
         SavingPrograssText.DOFade(1f, 1f);

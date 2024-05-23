@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooling : MonoBehaviour
+public class ObjectPooling : Singleton<ObjectPooling>
 {
     [Header("*Word Btn")]
     [SerializeField] List<IDBtn> WordBtnObjectPrefabs = new List<IDBtn>();
@@ -12,8 +12,9 @@ public class ObjectPooling : MonoBehaviour
     /*[Header("*Norification Object")]
     [SerializeField] public List<GameObject> NorificationObjectPrefabs = new List<GameObject>();*/
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Setup();
     }
 

@@ -31,9 +31,13 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
     [SerializeField] Image appOpenBackgroundImg;
     [SerializeField] Image appIconImg;
 
+    // Dotween
+    Sequence OpenAppSeq;
+    Sequence OpenMapSeq;
+
     #endregion
 
-    #region Framework
+    #region Framework & Base Set
 
     public void Offset()
     {
@@ -48,6 +52,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
         #endregion
 
+        this.visitPlaceScreen.gameObject.SetActive(false);
+        this.optionScreen.gameObject.SetActive(false);
         this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
@@ -66,9 +72,15 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         #region Site Survey
 
         if (PlayerInputController.Instance.SelectBtn.gameObject.name == "Home")
-        { PhoneHardware.Instance.PhoneOff(); PlayerInputController.Instance.ClearSeletedBtns(); return; }
+        { 
+            PhoneHardware.Instance.PhoneOff(); 
+            PlayerInputController.Instance.ClearSeletedBtns(); return; 
+        }
         else
-        { PlaceManager.Instance.SetPlaceBtnSet(PlayerInputController.Instance.SelectBtn.GetComponent<IDBtn>().buttonValue); PlayerInputController.Instance.ClearSeletedBtns(); return; }
+        {
+            PlayerInputController.Instance.ClearSeletedBtns(); 
+            return; 
+        }
 
         #endregion
     }
@@ -100,16 +112,16 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         if (!GameManager.Instance.CanInput) { return; }
         GameManager.Instance.CanInput = false;
 
-        if (DOTween.IsTweening("OpenApp")) { DOTween.Complete("OpenApp"); }
-        Sequence seq = DOTween.Sequence();
-        seq.SetId("OpenApp").OnComplete(() => { GameManager.Instance.CanInput = true; });
+        if (DOTween.IsTweening(OpenAppSeq)) { DOTween.Complete(OpenAppSeq); }
+        OpenAppSeq = DOTween.Sequence();
+        OpenAppSeq.OnComplete(() => { GameManager.Instance.CanInput = true; });
 
         // BG 초기 설정
         if(appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT))
         {
             BGRT.localScale = Vector3.zero;
             appOpenBackgroundImg.DOFade(0, 0); 
-            seq.Append(BGRT.DOScale(Vector3.one, dotweenTime)
+            OpenAppSeq.Append(BGRT.DOScale(Vector3.one, dotweenTime)
                 .SetEase(Ease.OutCubic)
                 .OnComplete(() =>
                 {
@@ -126,15 +138,41 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         appIconImg.gameObject.SetActive(true);
 
         
-        seq.Join(appOpenBackgroundImg.DOFade(1, dotweenTime));
-        seq.Join(appIconImg.DOFade(1, 0.1f));
+        OpenAppSeq.Join(appOpenBackgroundImg.DOFade(1, dotweenTime));
+        OpenAppSeq.Join(appIconImg.DOFade(1, 0.1f));
 
-        seq.AppendInterval(dotweenTime);
+        OpenAppSeq.AppendInterval(dotweenTime);
 
-        seq.Append(appOpenBackgroundImg.DOFade(0, dotweenTime).OnComplete(() => { appOpenBackgroundImg.gameObject.SetActive(false); }));
-        seq.Join(appIconImg.DOFade(0, dotweenTime).OnComplete(() => { appIconImg.gameObject.SetActive(false); }));
+        OpenAppSeq.Append(appOpenBackgroundImg.DOFade(0, dotweenTime).OnComplete(() => { appOpenBackgroundImg.gameObject.SetActive(false); }));
+        OpenAppSeq.Join(appIconImg.DOFade(0, dotweenTime).OnComplete(() => { appIconImg.gameObject.SetActive(false); }));
 
         
+    }
+
+    public void OpenMap()
+    {
+        Debug.Log("실행");
+        
+        this.OpenMapSeq = DOTween.Sequence();
+        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.CanInput = true; });
+
+        List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
+        PlayerInputController.Instance.SetSectionBtns(btns, this);
+
+        OpenMapSeq.AppendInterval(2f);
+        for (int i = 0; i < PlaceBtns.Count; i++)
+        {
+            PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
+            PlaceBtns[i].TryGetComponent(out CanvasGroup BtnCG);
+
+            BtnRT.sizeDelta = Vector2.zero;
+            DOTween.Kill(BtnRT.localScale);
+            BtnCG.alpha = 0.0f;
+
+            OpenMapSeq.Append(BtnRT.DOSizeDelta(Vector2.one * 300, 0.2f)
+                .SetEase(Ease.OutBack));
+            OpenMapSeq.Join(BtnCG.DOFade(1, 0.2f));
+        }
     }
 
     #endregion

@@ -16,10 +16,10 @@ public class BasicInteractObject : InteractObject
     {
         base.Interact();
 
-        if (GameSystem.Instance.objPanel.gameObject.activeSelf) { GameSystem.Instance.objPanel.gameObject.SetActive(false); }
-        if (GameSystem.Instance.NpcPanel.gameObject.activeSelf) { GameSystem.Instance.NpcPanel.gameObject.SetActive(false); }
+        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
+        if (GameSystem.Instance.NpcPanelBtn.gameObject.activeSelf) { GameSystem.Instance.NpcPanelBtn.gameObject.SetActive(false); }
 
-        GameSystem.Instance.ObjectDescriptionOn(basicDescroption); 
+        GameSystem.Instance.ObjDescOn(basicDescroption); 
 
 
     }

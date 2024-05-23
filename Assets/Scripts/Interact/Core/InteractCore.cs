@@ -1,28 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
+//Refactoring v1.0
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InteractCore : MonoBehaviour, IInteract, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    [Header("*CoreThings")]
+    #region Value
+
+    [Header("=== CoreThings")]
     [SerializeField] protected OutlineObject Outline;
+
+    #endregion
+
+    #region Pointer
+
     public virtual void OnPointerDown(PointerEventData eventData)
-    {
-        Debug.Log("click!");
-    }
+    { Debug.Log("click!"); }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
-    {
-        //Outline.enabled = true;
-    }
+    { }
 
     public virtual void OnPointerExit(PointerEventData eventData)
-    {
-        //Outline.enabled = false;
-    }
+    { }
+
+    #endregion
+
+    #region Interact
+
     public virtual void Interact()
-    {
-        
-    }
+    { }
+
+    #endregion
+
 }

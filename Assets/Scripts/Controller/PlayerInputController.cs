@@ -33,7 +33,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     [Header("*Interact Object")]
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] GameObject Panel_Object;
     [SerializeField] GameObject Panel_Npc;
     List<GameObject> Panels = new List<GameObject>();
@@ -254,14 +253,14 @@ public class PlayerInputController : Singleton<PlayerInputController>
             }
             return;
         }
-        else if (GameSystem.Instance.objPanel.activeSelf)
+        else if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf)
         {
-            GameSystem.Instance.ObjectDescriptionOff();
+            GameSystem.Instance.ObjDescOff();
             return;
         }
-        else if (GameSystem.Instance.NpcPanel.activeSelf)
+        else if (GameSystem.Instance.NpcPanelBtn.gameObject.activeSelf)
         {
-            GameSystem.Instance.NpcDescriptionOff();
+            GameSystem.Instance.NpcDescOff();
             return;
         }
 
@@ -391,10 +390,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
 
-        if (CheckGetAllDatas.TerminateBtn.gameObject.activeSelf)
-        {
-            CheckGetAllDatas.TerminatePlaceAndGoHome();
-        }
     }
 
     // 뒤로가기(B키)
@@ -412,9 +407,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         //Panels
         if (Panel_Object.activeSelf) 
-        { GameSystem.Instance.ObjectDescriptionOff(); return; }
+        { GameSystem.Instance.ObjDescOff(); return; }
         else if (Panel_Npc.activeSelf) 
-        { GameSystem.Instance.NpcDescriptionOff(); return; }
+        { GameSystem.Instance.NpcDescOff(); return; }
 
         //Computer
         if (ComputerOffWindow(Desktop.confirmPopup)) // Confirm 팝업창이 있다면 끄기
@@ -490,9 +485,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
         { cutsceneSO.skipOrCompleteSeq(GameSystem.Instance.cutsceneImg, GameSystem.Instance.cutsceneTxt); return; }
 
         if (Panel_Object.activeSelf)
-        { GameSystem.Instance.ObjectDescriptionSkip(); return; }
+        { GameSystem.Instance.ObjDescSkip(); return; }
         else if (Panel_Npc.activeSelf)
-        { GameSystem.Instance.NpcDescriptionSkip(); return; }
+        { GameSystem.Instance.NpcDescSkip(); return; }
 
         if (PSWindow_FC.gameObject.activeSelf)
         {

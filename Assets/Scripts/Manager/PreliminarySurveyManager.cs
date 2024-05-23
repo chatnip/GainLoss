@@ -96,7 +96,6 @@ public class PreliminarySurveyManager : Singleton<PreliminarySurveyManager>
         List<string> AllIDs = new List<string>();
         AllIDs.AddRange(WordManager.currentWordActionIDList);
         AllIDs.AddRange(WordManager.currentWordIDList);
-        AllIDs.AddRange(PlaceManager.currentPlaceID_Dict.Keys);
 
         foreach (PreliminarySurveySO SO in APSSOs)
         {

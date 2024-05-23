@@ -1,35 +1,23 @@
+//Refactoring v1.0
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SetInteractionObjects : MonoBehaviour
+public class SetInteractionObjects : Singleton<SetInteractionObjects>
 {
     #region Value
 
-    [Header("*Input")]
-    [SerializeField] EventSystem EventSystem;
-    [SerializeField] PlayerInputController PlayerInputController;
-
-    [Header("*Collider")]
+    [Header("=== Component")]
     [SerializeField] SphereCollider sphereCollider;
-    [Tooltip("상호작용 가능 반경")] 
-    [SerializeField] float colliderRadius;
-    [Tooltip("기본 위치")]
-    [SerializeField] Vector3 ColliderPos;
-
-    [Header("*Generator")]
-    [SerializeField] ObjectInteractionButtonGenerator objectInteractionButtonGenerator;
-
     [HideInInspector] public List<GameObject> activeInteractionGOs = new List<GameObject>();
 
     #endregion
 
-    #region Main
+    #region Framework
 
-    private void Awake()
+    protected override void Awake()
     {
-        sphereCollider.radius = this.colliderRadius;
-        sphereCollider.center = this.ColliderPos;
+        base.Awake();
     }
 
     #endregion
@@ -45,10 +33,14 @@ public class SetInteractionObjects : MonoBehaviour
 
             activeInteractionGOs.Add(OB.gameObject);
 
-            objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
+            ObjectInteractionButtonGenerator.Instance.ObPooling(OB.gameObject, activeInteractionGOs);
 
-            if (objectInteractionButtonGenerator.SectionIsThis)
-            { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
+            if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
+            { 
+                PlayerInputController.Instance.SetSectionBtns(
+                    ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
+                    ObjectInteractionButtonGenerator.Instance); 
+            }
 
         }
     }
@@ -60,28 +52,30 @@ public class SetInteractionObjects : MonoBehaviour
             interactObject.SetOff_colorAni();
             activeInteractionGOs.Remove(OB.gameObject);
 
-            objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
+            ObjectInteractionButtonGenerator.Instance.SetActiveBtns(activeInteractionGOs);
 
-            if (objectInteractionButtonGenerator.SectionIsThis)
-            { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
+            if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
+            {
+                PlayerInputController.Instance.SetSectionBtns(
+                    ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
+                    ObjectInteractionButtonGenerator.Instance); 
+            }
         }
 
     }
 
     #endregion
 
-    #region Func
+    #region Set Interactive Object
 
-    public void OffInteractiveOB()
+    public void SetOff_InteractiveOB()
     {
-        //sphereCollider.radius = 0;
         sphereCollider.enabled = false;
         activeInteractionGOs.Clear();
-        objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
+        ObjectInteractionButtonGenerator.Instance.SetActiveBtns(activeInteractionGOs);
     }
-    public void OnInteractiveOB()
+    public void SetOn_InteractiveOB()
     {
-        //sphereCollider.radius = this.colliderRadius;
         sphereCollider.enabled = true;
     }
 
