@@ -9,9 +9,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 {
     #region Value
 
-    [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] GameSystem GameSystem;
-    [SerializeField] ActivityController ActivityController;
 
     [Header("*Hardware")]
     [SerializeField] GameObject phoneScreen;
@@ -43,14 +41,12 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
     protected override void Awake()
     {
         base.Awake();
-        this.gameObject.SetActive(false);
-        PlayerInputController.StopMove();
-
         DoNotNeedBtns = new List<string>()
         {
             "S01", "S03", "S04", "S99"
         };
         DoNotNeedBtns_ExceptionSituation = false;
+        this.gameObject.SetActive(false);
     }
     
 
@@ -72,21 +68,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     #endregion
 
-    #region Reset
-
-    public void ResetPhoneBtns()
-    {
-        void SetOff(Button btn, Vector2 endPos)
-        {
-            btn.interactable = false;
-            btn.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
-            btn.gameObject.GetComponent<RectTransform>().anchoredPosition = endPos;
-            btn.gameObject.SetActive(false);
-        }
-    }
-
-    #endregion
-
     #region Effectful
 
     public void phoneEffectfulCor(bool setCurrentScheduleUI)
@@ -94,7 +75,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         if(!GameManager.Instance.CanInput) { return; }
         GameManager.Instance.CanInput = false;
 
-        PlayerInputController.SetSectionBtns(null, null);
+        PlayerInputController.Instance.SetSectionBtns(null, null);
 
         Sequence seq = DOTween.Sequence();
 
@@ -141,8 +122,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         seq.Append(bellRT.DOSizeDelta(Vector2.zero, 0.1f)
             .OnComplete(() =>
             {
-                //SchedulePrograss.ResetExlanation();
-                ResetPhoneBtns();
                 PhoneOn();
                 phoneSoftware.SetCurrentScheduleUI(setCurrentScheduleUI);
 
@@ -183,14 +162,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         quarterViewCamera.SetActive(false);
 
         InteractionUI3D.SetActive(false);
-
-
-
-        PlayerInputController.StopMove();
-
-        ActivityController.gameObject.SetActive(false);
-        IconCollectionGO.gameObject.SetActive(false);
-
     }
 
     public void PhoneOff()
@@ -205,12 +176,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         InteractionUI3D.SetActive(true);
 
         sectionIsThis = false;
-
-        ActivityController.gameObject.SetActive(true);
-        IconCollectionGO.gameObject.SetActive(true);
-
-        PlayerInputController.CanMove = true;
-
     }
 
     #endregion

@@ -324,7 +324,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     {
         endBtn.interactable = true;
         
-        incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        //incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
         incomeDataAnno.text = SelectedPreliminarySurveySO.getID_Anno;
 
         PrograssBarDataTxt.text = currentGage + "MB / " + SelectedPreliminarySurveySO.GoalPoint + "MB";

@@ -73,7 +73,7 @@ public class WordManager : Singleton<WordManager>
         Desktop.CanUseThisSentence = true;
         resetBtn.TryGetComponent(out Outline OL);
         OL.enabled = false;
-        todoWordBtnSpawner.PickWordActionBtn();
+        //todoWordBtnSpawner.PickWordActionBtn();
         currentWord = null;
         currentWordAction = null;
         // currentWordIDList.Clear();  // 목록을 지우도록 수정
@@ -123,7 +123,7 @@ public class WordManager : Singleton<WordManager>
         currentWord = BV;
         Debug.Log("currentWord : " + currentWord.Name);
         InitWordAction(currentWord.ID);
-        todoWordBtnSpawner.SpawnWordActionBtn();
+        //todoWordBtnSpawner.SpawnWordActionBtn();
     }
 
     #endregion

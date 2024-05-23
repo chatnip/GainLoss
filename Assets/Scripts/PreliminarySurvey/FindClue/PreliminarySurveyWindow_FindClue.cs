@@ -364,7 +364,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             int index = ((int)Nums[i] - 49);
             CompleteImgs[i].sprite = genClueData[index].mainSprite;
         }
-        incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
+        //incomeData.text = GameSystem.ft_setTextGetData(SelectedPreliminarySurveySO.getID);
         incomeDataAnno.text = SelectedPreliminarySurveySO.getID_Anno;
 
         OnlyFail.gameObject.SetActive(false);

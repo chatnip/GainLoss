@@ -8,10 +8,7 @@ public class ComputerInteract : InteractObject
     #region Value
 
     [Header("*property")]
-    [SerializeField] ScheduleManager ScheduleManager;
-    [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PhoneHardware PhoneHardware;
-    [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
     [SerializeField] ActivityController ActivityController;
 
@@ -26,7 +23,6 @@ public class ComputerInteract : InteractObject
 
     [Header("*UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
-    [SerializeField] GameObject PhoneOpenBtns;
     [SerializeField] GameObject IconCollectionGO;
 
     [Header("*Description")]
@@ -42,10 +38,6 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(false);
         screenViewCamera.SetActive(true);
 
-        SchedulePrograss.gameObject.SetActive(false);
-        PhoneOpenBtns.SetActive(false);
-        PhoneHardware.ResetPhoneBtns();
-
 
         ScreenOn();
 
@@ -57,9 +49,6 @@ public class ComputerInteract : InteractObject
         ScreenOff();
         quarterViewCamera.SetActive(true);
         screenViewCamera.SetActive(false);
-
-        PhoneOpenBtns.SetActive(true);
-        SchedulePrograss.gameObject.SetActive(true);
         screenObject.SetActive(false);
 
         yield break;
@@ -72,12 +61,12 @@ public class ComputerInteract : InteractObject
         Computer2DCamera.SetActive(true);
         InteractionUI3D.SetActive(false);
 
-        PlayerInputController.StopMove();
+        PlayerInputController.Instance.StopMove();
 
         ActivityController.gameObject.SetActive(false);
         IconCollectionGO.gameObject.SetActive(false);
 
-        ScheduleManager.ResetDotweenGuide();
+        //ScheduleManager.ResetDotweenGuide();
     }
 
     private void ScreenOff()
@@ -85,12 +74,12 @@ public class ComputerInteract : InteractObject
         Computer2DCamera.SetActive(false);
         InteractionUI3D.SetActive(true);
 
-        PlayerInputController.CanMove = true;
+        PlayerInputController.Instance.CanMove = true;
 
         ActivityController.gameObject.SetActive(true);
         IconCollectionGO.gameObject.SetActive(true);
         
-        ScheduleManager.SetDotweenGuide();
+        //ScheduleManager.SetDotweenGuide();
     }
 
     #endregion
@@ -99,12 +88,9 @@ public class ComputerInteract : InteractObject
 
     public override void Interact()
     {
-        if ((ScheduleManager.currentPrograssScheduleID == "S01" ||
-            ScheduleManager.currentPrograssScheduleID == "S03") &&
-            !ScheduleManager.currentPrograssScheduleComplete) // S01: 사전 조사 | S03: 방송 | 아직 끝내지 못한 상황
-        { StartCoroutine(ScreenZoomIn()); }
-        else { GameSystem.ObjectDescriptionOn(description); base.Interact(); }
-        //StartCoroutine(ScreenZoomIn());
+        
+        //GameSystem.ObjectDescriptionOn(description); base.Interact();
+        StartCoroutine(ScreenZoomIn());
     }
 
     #endregion

@@ -12,22 +12,14 @@ using Spine.Unity;
 public class PlaceManager : Singleton<PlaceManager>
 {
     [Header("*Property")]
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] GameSystem GameSystem;
-    [SerializeField] PlayerController PlayerController;
     [SerializeField] ObjectPooling ObjectPooling;
-    [SerializeField] ActionEventManager ActionEventManager;
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
-    [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
     [SerializeField] Camera MainCamera;
-    [SerializeField] ScheduleManager ScheduleManager;
     
-
     [Header("*Player")]
     [SerializeField] SetInteractionObjects SetInteractionObjects;
-
 
     [Header("*Going Somewhere loading")]
     [SerializeField] CanvasGroup GoingSomewhereloadingCG;
@@ -85,7 +77,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     new Vector3(100, 0, 0);
             }
 
-            PlayerController.ft_resetPlayerSpot();
+            PlayerController.Instance.ft_resetPlayerSpot();
 
             placeGOList[0].SetActive(true);
             placeGOList[0].transform.position = new Vector3(0, 0, 0);
@@ -93,8 +85,6 @@ public class PlaceManager : Singleton<PlaceManager>
 
             SetInteractionObjects.OnInteractiveOB();
 
-            CheckGetAllDatas.CurrentMap = placeGOList[0];
-            CheckGetAllDatas.gameObject.SetActive(false);
         }
         else 
         {
@@ -105,7 +95,7 @@ public class PlaceManager : Singleton<PlaceManager>
                 go.transform.position = new Vector3(100, 0, 0);
             }
 
-            PlayerController.ft_resetPlayerSpot();
+            PlayerController.Instance.ft_resetPlayerSpot();
 
             placeGOList[s].SetActive(true);
             MainCamera.backgroundColor = placeColorList[s];
@@ -122,8 +112,6 @@ public class PlaceManager : Singleton<PlaceManager>
             SetInteractionObjects.OnInteractiveOB();
 
 
-            CheckGetAllDatas.CurrentMap = placeGOList[s];
-            CheckGetAllDatas.gameObject.SetActive(true);
         }
 
         //PlayerController.ResetPlayerSpot();
@@ -205,14 +193,12 @@ public class PlaceManager : Singleton<PlaceManager>
     public void StartGoingSomewhereLoading(float delay)
     {
         StartCoroutine(GoingSomewhereLoading(delay));
-        PlayerInputController.StopMove();
+        PlayerInputController.Instance.StopMove();
         GameManager.Instance.CanInput = false;
     }
 
     private IEnumerator GoingSomewhereLoading(float delay)
     {
-        ScheduleManager.inUIEffectRT.TryGetComponent(out Image img);
-        img.enabled = false;
         CurrentPlaceTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID] + "(으)로 이동합니다.";
         GoingSomewhereloadingCG.alpha = 0f;
         GoingSomewhereloadingCG.DOFade(1, delay);
@@ -248,23 +234,19 @@ public class PlaceManager : Singleton<PlaceManager>
         yield return new WaitForSeconds(delay);
 
         SetInteractionObjects.OffInteractiveOB();
-        GameSystem.NpcDescriptionOff();
-        GameSystem.ObjectDescriptionOff();
+        GameSystem.Instance.NpcDescriptionOff();
+        GameSystem.Instance.ObjectDescriptionOff();
         SetCurrent3DMap(currentPlace);
         HUD_currentPlactTxt.text = (string)DataManager.PlaceDatas[1][currentPlace.ID];
 
         yield return new WaitForSeconds(delay);
 
-        if (currentPlace.ID == "P00")
-        { ScheduleManager.PassBtnOn(); }
-        ScheduleManager.SetDotweenGuide();
-        img.enabled = true;
 
         GoingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>
             {
                 GoingSomewhereloadingCG.gameObject.SetActive(false);
-                PlayerInputController.CanMove = true;
+                PlayerInputController.Instance.CanMove = true;
                 GameManager.Instance.CanInput = true;
             });
 

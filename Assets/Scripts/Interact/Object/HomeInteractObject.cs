@@ -14,15 +14,10 @@ public class HomeInteractObject : InteractObject
 
     public override void Interact()
     {
-        if (base.CanInteract)
-        {
-            ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
-            ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
+        base.Interact();
 
-
-
-            base.Interact();
-        }
+        ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
+        ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
     }
 
     #endregion

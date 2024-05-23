@@ -13,7 +13,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     [Header("*Property")]
     [SerializeField] Desktop Desktop;
     [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] DialogManager DialogManager;
 
@@ -36,7 +35,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     protected override void OnDisable()
     {
         base.OnDisable();
-        PickWordActionBtn();
+        //PickWordActionBtn();
     }
 
     public void SetThisSectionBtns(RectTransform parentRT)
@@ -58,7 +57,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             if(iDBtn.buttonType == ButtonType.WordType)
             {
                 if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
-                WordManager.WordBtnApply(iDBtn.buttonValue);
+                //WordManager.WordBtnApply(iDBtn.buttonValue);
                 SetThisSectionBtns(wordActionParentObject);
 
                 return;
@@ -66,17 +65,11 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             else if (iDBtn.buttonType == ButtonType.WordActionType)
             {
                 if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
-                WordManager.WordActionBtnApply(iDBtn.buttonValue);
-                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
+                //WordManager.WordActionBtnApply(iDBtn.buttonValue);
+                //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
 
                 return;
             }
-        }
-        else if(PlayerInputController.SelectBtn == WordManager.resetBtn && WordManager.resetBtn.interactable)
-        {
-            WordManager.TodoReset();
-            SetThisSectionBtns(wordParentObject);
-            setOnLine();
         }
         else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn && Desktop.streamStartBtn.interactable)
         {
@@ -101,10 +94,10 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         return wordBtn;
     }
 
-    protected override void SpawnIDBtn()
+    /*protected override void SpawnIDBtn()
     {
         SpawnWordBtn();
-    }
+    }*/
 
     // 이 AIL 파일과 같이 사용할 수 있는 EXE 판별 후 반환
     private List<string> GetThisAILCanCombine(string AIL_ID)
@@ -125,7 +118,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     }
 
     #region AIL Btns
-
+/*
     private void SpawnWordBtn()
     {
         Debug.Log("Spawn AIL Btn");
@@ -168,7 +161,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         }
 
         WordManager.WordBtnListSet(); // 데이터 삽입
-    }
+    }*/
     private bool CheckCanUseMalicious(string rate, string wordID)
     {
         if (rate == "Malicious")
@@ -196,7 +189,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     #region EXE Btns
 
     
-    public void SpawnWordActionBtn()
+    /*public void SpawnWordActionBtn()
     {
         Debug.Log("Spawn EXE Btn");
         PickWordActionBtn(); // 버튼 초기화
@@ -228,11 +221,11 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         }
         WordManager.WordActionBtnListSet(); // 데이터 삽입
     }
-
+*/
     #endregion
 
     #region Pick
-
+/*
     protected override void PickIDBtn()
     {
         PickWordBtn(); 
@@ -261,7 +254,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             WordManager.enableWordActionBtnList.Clear();
         }
     }
-
+*/
     public void setOnLine()
     {
         // 모든 버튼

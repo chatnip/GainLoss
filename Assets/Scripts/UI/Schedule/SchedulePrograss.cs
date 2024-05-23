@@ -14,7 +14,6 @@ public class SchedulePrograss : MonoBehaviour
     #region Value
     
     [Header("*Manger")]
-    [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlayerInputController PlayerInputController;
 
     [Header("Txts")]
@@ -65,11 +64,6 @@ public class SchedulePrograss : MonoBehaviour
         }
         else // Ç¥ Å°±â
         {
-            if (ScheduleManager.currentPrograssScheduleID != null)
-            {
-                SetExplanation(ScheduleManager.currentPrograssScheduleID);
-            }
-
             DOTween.Kill(ExplanationTxt);
             DOTween.Kill(currentSchedule);
 
@@ -116,9 +110,6 @@ public class SchedulePrograss : MonoBehaviour
 
     public void Set_InAMScheduleUI()
     {
-        ScheduleAM.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentSelectedScheduleID[0]];
-        SchedulePM.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentSelectedScheduleID[1]];
-
         SetComplatePrograssing(StartImg);
         SetProgressingUI(AMImg);
         SetNotProgressingUI(PMImg);
@@ -166,10 +157,6 @@ public class SchedulePrograss : MonoBehaviour
     public void SetExplanation(string id)
     {
         ExplanationTxt.text = (string)DataManager.ScheduleDatas[4][id];
-    }
-    public void SetByScheduleBtnOwnTxt()
-    {
-        ByScheduleBtnOwnTxt.text = (string)DataManager.ScheduleDatas[3][ScheduleManager.currentPrograssScheduleID];
     }
 
     #endregion

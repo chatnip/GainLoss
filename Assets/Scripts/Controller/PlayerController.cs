@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     #region Value
 
@@ -24,10 +25,10 @@ public class PlayerController : MonoBehaviour
     public bool Grounded = true;
 
     [Tooltip("Useful for rough ground")]
-    public float GroundedOffset = -0.14f;
+    public float GroundedOffset = 0.8f;
 
     [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-    public float GroundedRadius = 0.28f;
+    public float GroundedRadius = 0.8f;
 
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
@@ -51,11 +52,10 @@ public class PlayerController : MonoBehaviour
     */
 
     [SerializeField] CharacterController _controller;
-    [SerializeField] PlayerInputController _input;
     [SerializeField] Transform _mainCamera;
     [SerializeField] Transform _npcInteractCamera;
     [SerializeField] public bool isTalking = false;
-    [SerializeField] Animator _animator;
+    [SerializeField] public Animator _animator;
 
     // [SerializeField] GameObject interactCanvas;
     // [SerializeField] private InputAction interactInput,cancelInput;
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            return _input._input.currentControlScheme == "KeyboardMouse";
+            return PlayerInputController.Instance._input.currentControlScheme == "KeyboardMouse";
         }
     }
 
@@ -98,18 +98,32 @@ public class PlayerController : MonoBehaviour
 
     #region Main
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         AssignAnimationIDs();
         ft_resetPlayerSpot();
     }
 
+    private void Start()
+    {
+        //AssignAnimationIDs();
+        //ft_resetPlayerSpot();
+    }
+
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        
         GroundedCheck();
+        if (!GameManager.Instance.CanInput) { return; }
+
         if(PlayerInputController.Instance.CanMove && _controller.enabled) Move();
         if(isTalking) setOriginalAnimation();
+
+        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+        {
+            resetAnime();
+        }
     }
 
     #endregion
@@ -145,7 +159,8 @@ public class PlayerController : MonoBehaviour
             transform.position.z);
         Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
-
+        if (!Grounded)
+        { this.gameObject.transform.position += Vector3.down * Time.deltaTime; }
         // update animator if using character
         /*
         if (_hasAnimator)
@@ -168,7 +183,7 @@ public class PlayerController : MonoBehaviour
         float targetSpeed = MoveSpeed;
 
         // 입력이 없으면 목표 속도를 0으로 설정
-        if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+        if (PlayerInputController.Instance.move == Vector2.zero) targetSpeed = 0.0f;
 
         // 상호작용 중이면 목표 속도를 0으로 설정
         // if (_input.interactMode.Value == true) targetSpeed = 0.0f;
@@ -192,10 +207,10 @@ public class PlayerController : MonoBehaviour
         if (_animationBlend < 0.01f) _animationBlend = 0f;
 
         // 입력 방향 정규화
-        Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(PlayerInputController.Instance.move.x, 0.0f, PlayerInputController.Instance.move.y).normalized;
 
         // 이동 입력이 있을 경우 플레이어가 움직일 때 플레이어 회전
-        if (_input.move != Vector2.zero)
+        if (PlayerInputController.Instance.move != Vector2.zero)
         {
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
@@ -218,13 +233,14 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat(_animIDSpeed, _animationBlend);
         _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
+
     public void resetAnime()
     {
-        if (_animIDSpeed == 0) { AssignAnimationIDs(); }
-
+        Debug.Log("Anim Reset");
+        //if (_animIDSpeed == 0) { AssignAnimationIDs(); }
+        _animator.SetTrigger("Return");
         _animationBlend = 0;
-        _animator.SetFloat(_animIDSpeed, _animationBlend);
-        _animator.SetFloat(_animIDMotionSpeed, 0);
+        _animator.SetFloat(_animIDSpeed, 0);
     }
 
     private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
@@ -248,6 +264,8 @@ public class PlayerController : MonoBehaviour
     {
         _npcInteractCamera.gameObject.SetActive(false);
     }
+
+    
 
     /*
     private void CameraRotation()

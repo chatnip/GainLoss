@@ -19,10 +19,8 @@ public class CheckGetAllDatas : MonoBehaviour
 
     [Header("*Property")]
     [SerializeField] PlaceManager PlaceManager;
-    [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] SetInteractionObjects SetInteractionObjects;
     [SerializeField] PhoneHardware PhoneHardware;
-    [SerializeField] WordManager WordManager;
 
     #endregion
 
@@ -47,15 +45,10 @@ public class CheckGetAllDatas : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        ApplyTerminateBtnAndText();
-    }
-
     #endregion
 
     #region
-
+/*
     public void ApplyTerminateBtnAndText()
     {
         if (checkGetAllDatas(CurrentMap) <= 0)
@@ -93,6 +86,6 @@ public class CheckGetAllDatas : MonoBehaviour
 
         return _remain;
     }
-
+*/
     #endregion
 }

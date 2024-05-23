@@ -12,7 +12,6 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
     #region Value
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] ScheduleManager ScheduleManager;
 
     [Header("*Data")]
     [SerializeField] public TutorialInfo currentTutorialInfo;

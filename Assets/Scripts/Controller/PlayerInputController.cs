@@ -11,12 +11,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     #region Value
 
     [Header("*Property")]
-    [SerializeField] GameSystem GameSystem;
-    [SerializeField] public PlayerController PlayerController;
-    [SerializeField] ActionEventManager ActionEventManager;
-    [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] DialogManager DialogManager;
-    [SerializeField] Pause pause;
     [HideInInspector] public bool isPause = false;
     [SerializeField] GameObject allLoadingGO;
 
@@ -27,7 +22,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] PhoneSoftware PhoneSoftware;
     [SerializeField] GameObject PhoneCamera2D;
-    [SerializeField] List<GameObject> Pads;
 
     [Header("*Computer")]
     [SerializeField] ComputerInteract ComputerInteract;
@@ -37,20 +31,12 @@ public class PlayerInputController : Singleton<PlayerInputController>
     [SerializeField] PreliminarySurveyWindow_Extract PSWindow_E;
     [SerializeField] GameObject ComputerCamera2D;
 
-    [Header("*PartTimeJob")]
-    [SerializeField] Button PartTimeJobLoadingBtn;
-
     [Header("*Interact Object")]
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
     [SerializeField] CheckGetAllDatas CheckGetAllDatas;
     [SerializeField] GameObject Panel_Object;
     [SerializeField] GameObject Panel_Npc;
     List<GameObject> Panels = new List<GameObject>();
-
-    [Header("*Schedule")]
-    [SerializeField] SchedulePrograss SchedulePrograss;
-    [SerializeField] ScheduleManager ScheduleManager;
-    
 
     [Header("*Camera")]
     [SerializeField] GameObject QuarterViewCamera;
@@ -237,7 +223,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         CanMove = false;
         move = Vector2.zero;
-        PlayerController.resetAnime();
+        PlayerController.Instance.resetAnime();
     }
 
     #endregion
@@ -268,14 +254,14 @@ public class PlayerInputController : Singleton<PlayerInputController>
             }
             return;
         }
-        else if (GameSystem.objPanel.activeSelf)
+        else if (GameSystem.Instance.objPanel.activeSelf)
         {
-            GameSystem.ObjectDescriptionOff();
+            GameSystem.Instance.ObjectDescriptionOff();
             return;
         }
-        else if (GameSystem.NpcPanel.activeSelf)
+        else if (GameSystem.Instance.NpcPanel.activeSelf)
         {
-            GameSystem.NpcDescriptionOff();
+            GameSystem.Instance.NpcDescriptionOff();
             return;
         }
 
@@ -285,7 +271,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.CanInput) { return; }
 
-        if (pause.gameObject.activeSelf)
+        /*if (pause.gameObject.activeSelf)
         {
             Debug.Log("Pause 끄기");
             OffPause();
@@ -299,7 +285,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
             pause.ft_openPausePopup();
 
-        }
+        }*/
     }
     public void OnPause()
     {
@@ -326,7 +312,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         if (isPause ||
             !QuarterViewCamera.activeSelf ||
-            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
             TutorialScreenGO.activeSelf ||
             allLoadingGO.activeSelf) 
         { return; }
@@ -352,7 +338,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         if (isPause || 
             !QuarterViewCamera.activeSelf || 
-            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
             TutorialScreenGO.activeSelf ||
             allLoadingGO.activeSelf) 
         { return; }
@@ -380,7 +366,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.CanInput) { return; }
 
-        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.cutsceneImg.gameObject.activeSelf)
+        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
         {
             PSWindow_FC.ft_setChooseClue(SelectBtn);
         }
@@ -392,7 +378,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (!GameManager.Instance.CanInput) { return; }
 
         if (isPause || 
-            GameSystem.cutsceneImg.gameObject.activeSelf ||
+            GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
             allLoadingGO.activeSelf) 
         { return; }
 
@@ -402,23 +388,12 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
         { PSWindow_FC.ft_tryToCombine(); }
 
-        if (ScheduleManager.PassNextScheduleBtn.gameObject.activeSelf)
-        { ScheduleManager.PassNextSchedule(); }
-
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
 
-        if (PartTimeJobLoadingBtn.gameObject.activeSelf)
-        {
-            StartCoroutine(PartTimeJobManager.StartPartTimeJob(5.0f, PartTimeJobManager.selectCSSO()));
-        }
         if (CheckGetAllDatas.TerminateBtn.gameObject.activeSelf)
         {
             CheckGetAllDatas.TerminatePlaceAndGoHome();
-        }
-        else if (ScheduleManager.EndDayBtn.gameObject.activeSelf)
-        {
-            ActionEventManager.StartLoading();
         }
     }
 
@@ -427,12 +402,8 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.CanInput) { return; }
 
-        //Pause
-        if (pause.gameObject.activeSelf) 
-        { pause.ft_closePausePopup(); return; }
-
         // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
-        if (GameSystem.cutsceneImg.gameObject.activeSelf ||
+        if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
             Desktop.streamWindow.activeSelf || 
             PSWindow_E.gameObject.activeSelf ||
             TutorialScreenGO.activeSelf ||
@@ -441,9 +412,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         //Panels
         if (Panel_Object.activeSelf) 
-        { GameSystem.ObjectDescriptionOff(); return; }
+        { GameSystem.Instance.ObjectDescriptionOff(); return; }
         else if (Panel_Npc.activeSelf) 
-        { GameSystem.NpcDescriptionOff(); return; }
+        { GameSystem.Instance.NpcDescriptionOff(); return; }
 
         //Computer
         if (ComputerOffWindow(Desktop.confirmPopup)) // Confirm 팝업창이 있다면 끄기
@@ -478,15 +449,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
             return false;
         }
 
-        //Phone
-        for (int i = 0; i < Pads.Count; i++) //Pads
-        {
-            if (Pads[i].gameObject.activeSelf) 
-            { 
-                Pads[i].gameObject.SetActive(false);
-                return;
-            }
-        }
         if (PhoneCamera2D.activeSelf) //PhoneScreen
         {
             PhoneHardware.PhoneOff();
@@ -524,13 +486,13 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.CanInput) { return; }
 
-        if (GameSystem.cutsceneImg.gameObject.activeSelf)
-        { cutsceneSO.skipOrCompleteSeq(GameSystem.cutsceneImg, GameSystem.cutsceneTxt); return; }
+        if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
+        { cutsceneSO.skipOrCompleteSeq(GameSystem.Instance.cutsceneImg, GameSystem.Instance.cutsceneTxt); return; }
 
         if (Panel_Object.activeSelf)
-        { GameSystem.ObjectDescriptionSkip(); return; }
+        { GameSystem.Instance.ObjectDescriptionSkip(); return; }
         else if (Panel_Npc.activeSelf)
-        { GameSystem.NpcDescriptionSkip(); return; }
+        { GameSystem.Instance.NpcDescriptionSkip(); return; }
 
         if (PSWindow_FC.gameObject.activeSelf)
         {
@@ -551,9 +513,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
         if (!GameManager.Instance.CanInput) { return; }
-
-        foreach (GameObject pad in Pads)
-        { if (pad.gameObject.activeSelf) { return; } }
 
         if(SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -587,9 +546,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
         if (!GameManager.Instance.CanInput) { return; }
-
-        foreach (GameObject pad in Pads)
-        { if (pad.gameObject.activeSelf) { return; } }
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {

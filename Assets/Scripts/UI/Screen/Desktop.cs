@@ -15,11 +15,10 @@ public class Desktop : MonoBehaviour, IInteract
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] DataManager DataManager;
     [SerializeField] WordManager WordManager;
-    [SerializeField] ActionEventManager ActionEventManager;
+    [SerializeField] LoadingManager ActionEventManager;
     [SerializeField] StreamManager StreamManager;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract computerInteract;
-    [SerializeField] ScheduleManager ScheduleManager;
 
 
     [Header("*Public")]
@@ -134,9 +133,6 @@ public class Desktop : MonoBehaviour, IInteract
         TurnOff();
         //ActionEventManager.TurnOnLoading();
         computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
-        ScheduleManager.PassBtnOn();
-
-        ScheduleManager.SetDotweenGuide();
     }
     public void DisappearPopup(GameObject Popup)
     {
@@ -191,21 +187,7 @@ public class Desktop : MonoBehaviour, IInteract
         }
         else if(PlayerInputController.SelectBtn == confirmBtn)
         {
-            if (ScheduleManager.currentPrograssScheduleID == "S01")
-            {
-                confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(PSPopupWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-                return;
-            }
-            else if(ScheduleManager.currentPrograssScheduleID == "S03")
-            {
-                WordManager.TodoReset();
-                WordManager.InitWord();
-
-                confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-                return;
-            }
+            
         }
 
         #endregion
@@ -314,8 +296,6 @@ public class Desktop : MonoBehaviour, IInteract
     {
         ExceptionBtnsTurnOff();
         List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
-        if (ScheduleManager.currentPrograssScheduleID == "S01") { setAbleInteractBtn(PSOpenBtn, OpenBtns); }
-        else if (ScheduleManager.currentPrograssScheduleID == "S03") { setAbleInteractBtn(streamOpenBtn, OpenBtns); }
         confirmPopup.SetActive(false);
         resultWindow.SetActive(false);
         streamWindow.SetActive(false);

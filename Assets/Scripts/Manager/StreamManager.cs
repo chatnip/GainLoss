@@ -8,7 +8,6 @@ public class StreamManager : Singleton<StreamManager>
     [SerializeField] GameManager GameManager;
     [SerializeField] DialogManager DialogManager;
     [SerializeField] DataManager DataManager;
-    [SerializeField] ScheduleManager ScheduleManager;
 
     [HideInInspector] public string currentStreamEventID;
     [HideInInspector] public StreamEvent currentStreamEvent;

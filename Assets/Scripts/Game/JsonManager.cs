@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class JsonManager : MonoBehaviour
+public class JsonManager : Singleton<JsonManager>
 {
     #region Value
 
@@ -24,10 +24,7 @@ public class JsonManager : MonoBehaviour
     // public List<WordBase> myWords = new List<WordBase>();
 
     [Header("*MainGame")]
-    [SerializeField] WordManager WordManager;
     [SerializeField] StreamManager StreamManager;
-    [SerializeField] GameManager GameManager;
-    [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] TutorialManager TutorialManager;
@@ -39,8 +36,9 @@ public class JsonManager : MonoBehaviour
 
     #region Main
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if(SceneManager.GetActiveScene().name == "Title")
         {
             Debug.Log("Title Json");
@@ -218,25 +216,25 @@ public class JsonManager : MonoBehaviour
             JsonLoad_TR(json_filePath, json_tutorialFileName);
 
         // Load -> MainInfo Json
-        GameManager.MainInfo =
+        GameManager.Instance.MainInfo =
             JsonLoad_MI(json_filePath, json_mainInfoFileName);
 
         // Load -> Word Json
-        WordManager.currentWordIDList =
-            JsonLoad_L(json_filePath, json_wordFileName);
+        //WordManager.currentWordIDList =
+        //    JsonLoad_L(json_filePath, json_wordFileName);
 
         // Load -> WordAction Json
-        WordManager.currentWordActionIDList =
-            JsonLoad_L(json_filePath, json_wordActionFileName);
+        //WordManager.currentWordActionIDList =
+        //    JsonLoad_L(json_filePath, json_wordActionFileName);
 
         // Load -> Sentence Json
         StreamManager.currentStreamEventDatas =
             JsonLoad_LD(json_filePath, json_sentenceFileName);
 
         // Load -> schedule Json
-        ScheduleManager.currentHaveScheduleID =
-            JsonLoad_L(json_filePath, json_ScheduleFileName);
-        ScheduleManager.currentPrograssScheduleID = "S00";
+        //ScheduleManager.currentHaveScheduleID =
+        //    JsonLoad_L(json_filePath, json_ScheduleFileName);
+        //ScheduleManager.currentPrograssScheduleID = "S00";
 
         // Load -> place Json
         PlaceManager.currentPlaceID_Dict =
@@ -376,19 +374,19 @@ public class JsonManager : MonoBehaviour
         JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
 
         // Save -> MainInfo Json
-        JsonSave(json_mainInfoFileName, GameManager.MainInfo);
+        JsonSave(json_mainInfoFileName, GameManager.Instance.MainInfo);
 
         // Save -> Word Json
-        JsonSave(json_wordFileName, WordManager.currentWordIDList);
+        //JsonSave(json_wordFileName, WordManager.currentWordIDList);
 
         // Save -> WordAction Json
-        JsonSave(json_wordActionFileName, WordManager.currentWordActionIDList);
+        //JsonSave(json_wordActionFileName, WordManager.currentWordActionIDList);
 
         // Save -> Sentence Json
         JsonSave(json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
         // Save -> Schedule Json
-        JsonSave(json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
+        //JsonSave(json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
 
         // Save -> Place Json
         JsonSave(json_PlaceFileName, PlaceManager.currentPlaceID_Dict);

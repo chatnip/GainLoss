@@ -1,18 +1,32 @@
-using Spine;
-using System.Collections;
-using System.Collections.Generic;
+//Refactoring v1.0
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class NpcInteractObject : InteractObject
 {
     #region Value
 
-    [Header("*Description")]
+    [Header("=== Description")]
     [SerializeField] protected ConversationBase ConversationBase_SO;
+
+    [Header("=== Component")]
     [SerializeField] public Animator Animator;
     [Tooltip("playerCharacter will place that this NPC Postion + this Value")]
     [SerializeField] private Transform setPlayerPos;
+
+    #endregion
+
+    #region Framework
+
+    public void FixedUpdate()
+    {
+        if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            if (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            {
+                Animator.SetTrigger("Return");
+            }
+        }
+    }
 
     #endregion
 
@@ -20,26 +34,13 @@ public class NpcInteractObject : InteractObject
 
     public override void Interact()
     {
-        if (base.CanInteract)
-        {
-            if (GameSystem.objPanel.gameObject.activeSelf) { GameSystem.objPanel.gameObject.SetActive(false); }
-            if (GameSystem.NpcPanel.gameObject.activeSelf) { GameSystem.NpcPanel.gameObject.SetActive(false); }
+        base.Interact();
 
-            GameSystem.PlayerController.ft_setPlayerSpot(setPlayerPos.transform.position);
-            GameSystem.NpcDescriptionOn(ConversationBase_SO, Animator);
+        if (GameSystem.Instance.objPanel.gameObject.activeSelf) { GameSystem.Instance.objPanel.gameObject.SetActive(false); }
+        if (GameSystem.Instance.NpcPanel.gameObject.activeSelf) { GameSystem.Instance.NpcPanel.gameObject.SetActive(false); }
 
-            base.Interact();
-        }
-    }
-    public void FixedUpdate()
-    {
-        if(!Animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            if (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
-            {
-                Animator.SetTrigger("Return");
-            }
-        }
+        PlayerController.Instance.ft_setPlayerSpot(setPlayerPos.transform.position);
+        GameSystem.Instance.NpcDescriptionOn(ConversationBase_SO, Animator);
     }
     #endregion
 }

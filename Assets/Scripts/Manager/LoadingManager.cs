@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 
-public class ActionEventManager : Singleton<ActionEventManager>
+public class LoadingManager : Singleton<LoadingManager>
 {
     #region Value
 

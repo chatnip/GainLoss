@@ -40,26 +40,24 @@ public class SetInteractionObjects : MonoBehaviour
     {
         if(OB.TryGetComponent(out InteractObject interactObject))
         {
-            if (interactObject.CanInteract)
-            {
-                interactObject.ft_setOn_outlineAni();
-                interactObject.ft_setOn_colorAni();
-                //OB.gameObject.GetComponent<OutlineObject>().enabled = true;
-                activeInteractionGOs.Add(OB.gameObject);
+            interactObject.SetOn_outlineAni();
+            interactObject.SetOn_colorAni();
 
-                objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
+            activeInteractionGOs.Add(OB.gameObject);
 
-                if (objectInteractionButtonGenerator.SectionIsThis)
-                { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
-            }
+            objectInteractionButtonGenerator.ObPooling(OB.gameObject, activeInteractionGOs);
+
+            if (objectInteractionButtonGenerator.SectionIsThis)
+            { PlayerInputController.SetSectionBtns(objectInteractionButtonGenerator.SetSectionBtns(), objectInteractionButtonGenerator); }
+
         }
     }
     private void OnTriggerExit(Collider OB)
     {
         if (OB.TryGetComponent(out InteractObject interactObject))
         {
-            interactObject.ft_setOff_outlineAni();
-            //OB.gameObject.GetComponent<OutlineObject>().enabled = false;
+            interactObject.SetOff_outlineAni();
+            interactObject.SetOff_colorAni();
             activeInteractionGOs.Remove(OB.gameObject);
 
             objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
@@ -69,21 +67,6 @@ public class SetInteractionObjects : MonoBehaviour
         }
 
     }
-    private void OnTriggerStay(Collider OB)
-    {
-        if (OB.TryGetComponent(out InteractObject interactObject))
-        {
-            if (!interactObject.CanInteract)
-            {
-                interactObject.ft_setOff_outlineAni();
-                //OB.gameObject.GetComponent<OutlineObject>().enabled = false;
-                activeInteractionGOs.Remove(OB.gameObject);
-
-                objectInteractionButtonGenerator.SetActiveBtns(activeInteractionGOs);
-            }
-        }
-    }
-
 
     #endregion
 

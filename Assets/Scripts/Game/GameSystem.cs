@@ -11,13 +11,11 @@ public class GameSystem : Singleton<GameSystem>
     #region Value
 
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] public PlayerController PlayerController;
     [SerializeField] public PlayerInputController PlayerInputController;
     [SerializeField] Animator PlayerAnimator;
     [SerializeField] Animator AnotherAnimator;
     [SerializeField] Pause Pause;
 
-    [SerializeField] WordManager WordManager;
     [SerializeField] PlaceManager PlaceManager;
 
     [Header("*Popular UI")]
@@ -143,9 +141,9 @@ public class GameSystem : Singleton<GameSystem>
 
     public void NpcDescriptionOn(ConversationBase conversationBase, Animator animator) // NPC 설명 패널 켜기
     {
-        PlayerController.setOnNpcInteractCamera(animator.gameObject);
+        PlayerController.Instance.setOnNpcInteractCamera(animator.gameObject);
         PlayerInputController.StopMove();
-        PlayerController.isTalking = true;
+        PlayerController.Instance.isTalking = true;
         AnotherAnimator = animator;
         ObjectInteractionButtonGenerator.SetOnOffAllBtns(false);
         this.conversations = conversationBase;
@@ -188,8 +186,8 @@ public class GameSystem : Singleton<GameSystem>
     public void NpcDescriptionOff() // NPC 설명 패널 끄기
     {
         PlayerInputController.CanMove = true;
-        PlayerController.setOffNpcInteractCamera();
-        PlayerController.isTalking = false;
+        PlayerController.Instance.setOffNpcInteractCamera();
+        PlayerController.Instance.isTalking = false;
         NpcPanel.SetActive(false);
         DOTween.Kill(NpcText);
         NpcText.text = null;
@@ -220,7 +218,7 @@ public class GameSystem : Singleton<GameSystem>
                          {
                              PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName);
                              NpcInteractCamera.transform.position = conversations.playerCameraPos;
-                             NpcInteractCamera.transform.LookAt(PlayerController.gameObject.transform.position + new Vector3(0, conversations.playerHeight, 0));
+                             NpcInteractCamera.transform.LookAt(PlayerController.Instance.gameObject.transform.position + new Vector3(0, conversations.playerHeight, 0));
                          }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
                          {
@@ -239,38 +237,4 @@ public class GameSystem : Singleton<GameSystem>
 
     #endregion
 
-    #region Get
-    public string ft_setTextGetData(string ID)
-    {
-        string name = "";
-        if (ID.Substring(0, 2) == "WA")
-        {
-            name = ft_setEachTextGetData(DataManager.WordActionDatas[3], WordManager.currentWordActionIDList, ID, ".EXE");
-        }
-        else if (ID.Substring(0, 1) == "W")
-        {
-            name = ft_setEachTextGetData(DataManager.WordDatas[5], WordManager.currentWordIDList, ID, ".AIL");
-        }
-        else if (ID.Substring(0, 1) == "P")
-        {
-            name = ft_setEachTextGetData(DataManager.PlaceDatas[1], PlaceManager.currentPlaceID_Dict.Keys.ToList(), ID, "(Place)");
-        }
-        return name;
-
-        string ft_setEachTextGetData(Dictionary<string, object> Data, List<string> haveThings, string id, string type)
-        {
-            string nameTemp = "";
-            if (!haveThings.Contains(id))
-            {
-                nameTemp = Data[id].ToString() + type + " 획득";
-                haveThings.Add(id);
-            }
-            else
-            {
-                nameTemp = "※ 이미 가지고 있는 요소 ※";
-            }
-            return nameTemp;
-        }
-    }
-    #endregion
 }

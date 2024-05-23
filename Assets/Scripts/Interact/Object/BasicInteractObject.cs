@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
+//Refactoring v1.0
 using UnityEngine;
 
 public class BasicInteractObject : InteractObject
 {
     #region Value
 
-    [Header("*Description")]
-    [TextArea] [SerializeField] public List<string> description;
+    [Header("=== Description")]
     [TextArea] [SerializeField] public string basicDescroption;
 
     #endregion
@@ -16,22 +14,14 @@ public class BasicInteractObject : InteractObject
 
     public override void Interact()
     {
-        if(base.CanInteract)
-        {
-            if (GameSystem.objPanel.gameObject.activeSelf) { GameSystem.objPanel.gameObject.SetActive(false); }
-            if (GameSystem.NpcPanel.gameObject.activeSelf) { GameSystem.NpcPanel.gameObject.SetActive(false); }
+        base.Interact();
 
-            if (description.Count > 0 &&
-                description[Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]) - 1] != null &&
-                description[Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]) - 1] != "" &&
-                description.Count >= Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]))
-            { GameSystem.ObjectDescriptionOn(description[Convert.ToInt32(PlaceManager.currentPlaceID_Dict[PlaceManager.currentPlace.ID]) - 1]); }
-            else
-            { GameSystem.ObjectDescriptionOn(basicDescroption); }
+        if (GameSystem.Instance.objPanel.gameObject.activeSelf) { GameSystem.Instance.objPanel.gameObject.SetActive(false); }
+        if (GameSystem.Instance.NpcPanel.gameObject.activeSelf) { GameSystem.Instance.NpcPanel.gameObject.SetActive(false); }
 
-            base.Interact();
+        GameSystem.Instance.ObjectDescriptionOn(basicDescroption); 
 
-        }
+
     }
 
     #endregion

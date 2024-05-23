@@ -13,12 +13,10 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     [Header("*Manager")]
     [SerializeField] GameManager GameManager;
-    [SerializeField] ScheduleManager ScheduleManager;
     [SerializeField] PhoneHardware PhoneHardware;
     [SerializeField] SchedulePrograss SchedulePrograss;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] PlaceManager PlaceManager;
-    [SerializeField] PartTimeJobManager PartTimeJobManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] TutorialManager TutorialManager;
 
@@ -355,8 +353,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
                 Ids.Add((string)DataManager.ScheduleDatas[3].FirstOrDefault(x => (string)x.Value == ScheduleString).Key);
             }
 
-            ScheduleManager.currentSelectedScheduleID = Ids;
-            ScheduleManager.PassBtnOn(); 
             //ScheduleManager.currentPrograssScheduleID = ScheduleManager.currentSelectedScheduleID[0];
             //SchedulePrograss.Set_InAMScheduleUI();
             //TutorialManager.OpenTutorialWindow(ScheduleManager.currentPrograssScheduleID);
@@ -380,55 +376,6 @@ public class PhoneSoftware : MonoBehaviour, IInteract
 
     public void ResetUI()
     {
-
-        #region Schedule
-
-        //Create
-        if (ScheduleManager.currentPrograssScheduleID == "S00")
-        {
-            Turn = 0;
-
-            //CreateScheduleGO.SetActive(true);
-            //SchedulePrograss.Set_InStartScheduleUI();
-
-            for (int i = 0; i < ScheculeBtnGO.transform.childCount; i++)
-            {
-                Button BtnGO = ScheculeBtnGO.transform.GetChild(i).GetComponent<Button>();
-                foreach (string CanScheduleID in ScheduleManager.currentHaveScheduleID)
-                {
-                    string Kor = DataManager.ScheduleDatas[3][CanScheduleID].ToString();
-                    if (BtnGO.transform.GetChild(0).TryGetComponent(out TMP_Text tmp_Text))
-                    {
-                        if (tmp_Text.text == Kor)
-                        {
-                            BtnGO.interactable = true;
-                        }
-                    }
-                }
-            }
-
-            if ((PreliminarySurveyManager.PSSOs_FindClue_Available.Count + 
-                PreliminarySurveyManager.PSSOs_Extract_Available.Count) == 0)
-            {
-                PreliminarySurveyBtn.interactable = false;
-            }
-            else
-            {
-                PreliminarySurveyBtn.interactable = true;
-            }
-
-            foreach (TMP_Text text in SelectedScheduleTexts)
-            {
-                text.text = null;
-            }
-        }
-
-
-
-
-
-
-        #endregion
 
         #region Everytime
 
@@ -471,43 +418,7 @@ public class PhoneSoftware : MonoBehaviour, IInteract
         }
         else 
         {
-            string id = ScheduleManager.currentPrograssScheduleID;
-            switch (id)
-            {
-                case "S00":
-                    CreateScheduleGO.SetActive(true);
-                    btns = new List<List<Button>>()
-                    { 
-                        new List<Button>() { PreliminarySurveyBtn, SiteSurveyBtn, WatchingTheStreamingBtn, DoingPartTimeJobBtn },
-                        new List<Button>() { SelectedScheduleBtns[0] },
-                        new List<Button>() { SelectedScheduleBtns[1] },
-                        new List<Button>() { DecisionBtn } 
-                    };
-                    PlayerInputController.SetSectionBtns(btns, this);
-                    break;
-                case "S02":
-                    map.SetActive(true);
-                    btns = new List<List<Button>>() { PlaceBtns };
-                    PlayerInputController.SetSectionBtns(btns, this);
-
-                    Sequence sequence = DOTween.Sequence();
-                    sequence.AppendInterval(2f);
-                    for(int i = 0; i < PlaceBtns.Count; i++)
-                    {
-                        PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
-                        PlaceBtns[i].TryGetComponent(out CanvasGroup BtnCG);
-
-                        BtnRT.sizeDelta = Vector2.zero;
-                        DOTween.Kill(BtnRT.localScale);
-                        BtnCG.alpha = 0.0f;
-
-                        sequence.Append(BtnRT.DOSizeDelta(Vector2.one * 300, 0.2f)
-                            .SetEase(Ease.OutBack));
-                        sequence.Join(BtnCG.DOFade(1, 0.2f));
-                    }
-
-                    break;
-            }
+            
         }
         
     }
