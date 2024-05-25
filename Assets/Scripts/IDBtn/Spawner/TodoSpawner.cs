@@ -56,7 +56,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         {
             if(iDBtn.buttonType == ButtonType.WordType)
             {
-                if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
                 //WordManager.WordBtnApply(iDBtn.buttonValue);
                 SetThisSectionBtns(wordActionParentObject);
 
@@ -64,7 +63,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
             }
             else if (iDBtn.buttonType == ButtonType.WordActionType)
             {
-                if (iDBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
                 //WordManager.WordActionBtnApply(iDBtn.buttonValue);
                 //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
 
@@ -104,13 +102,6 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     {
         List<string> AILCanCombineExe = new List<string>();
 
-        foreach (string all_id in DataManager.DialogDatas[0].Keys)
-        {
-            if (all_id.Substring(0, 4) == AIL_ID)
-            {
-                AILCanCombineExe.Add(all_id.Substring(4, 4));
-            }
-        }
         AILCanCombineExe = AILCanCombineExe.Distinct().ToList();
         foreach (string id in AILCanCombineExe) { Debug.Log(id); }
 
@@ -167,11 +158,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
         if (rate == "Malicious")
         {
             List<string> streamEventIDs = new List<string>();
-            for (int i = 0; i < (DataManager.WordActionDatas[0].Count - 1); i++)
-            {
-                if (i.ToString().Length == 1) { streamEventIDs.Add(wordID + "WA0" + (i + 1)); }
-                else if (i.ToString().Length == 2) { streamEventIDs.Add(wordID + "WA" + (i + 1)); }
-            }
+           
 
             foreach (string s in streamEventIDs)
             {

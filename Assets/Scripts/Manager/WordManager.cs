@@ -26,7 +26,7 @@ public class WordManager : Singleton<WordManager>
     [SerializeField] TMP_Text ResultPreview_NumberOfUsed;
     [SerializeField] TMP_Text ResultPreview_Gage;
     StringReactiveProperty currentWordActionStr = new();
-    [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
+    //[HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
 
     // 켜진 단어 및 단어의 액션 버튼 목록
@@ -50,7 +50,7 @@ public class WordManager : Singleton<WordManager>
     private void Start()
     {
         TodoReset();
-        InitWord();
+        //InitWord();
 
         currentWordActionStr
             .Subscribe(x =>
@@ -92,40 +92,39 @@ public class WordManager : Singleton<WordManager>
     #region ButtonListSetting
 
     #region AIL
-
-    public void WordBtnListSet()
-    {
-        ResultPreview_NumberOfUsed.text = "";
-        ResultPreview_Gage.text = "";
-
-        Debug.Log(enableWordBtnList.Count);
-        foreach (IDBtn wordBtn in enableWordBtnList)
+    /*
+        public void WordBtnListSet()
         {
-            Debug.Log(wordBtn.buttonValue.Name);
-            wordBtn.button
-                .OnClickAsObservable()
-                .Select(word => wordBtn.buttonValue)
-                .RepeatUntilDisable(wordBtn)
-                .Subscribe(word =>
-                {
-                    if (wordBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
+            ResultPreview_NumberOfUsed.text = "";
+            ResultPreview_Gage.text = "";
 
-                    WordBtnApply(word);
+            Debug.Log(enableWordBtnList.Count);
+            foreach (IDBtn wordBtn in enableWordBtnList)
+            {
+                Debug.Log(wordBtn.buttonValue.Name);
+                wordBtn.button
+                    .OnClickAsObservable()
+                    .Select(word => wordBtn.buttonValue)
+                    .RepeatUntilDisable(wordBtn)
+                    .Subscribe(word =>
+                    {
+                        WordBtnApply(word);
 
-                    todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordActionParentObject);
-                    todoWordBtnSpawner.setOnLine();
+                        todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordActionParentObject);
+                        todoWordBtnSpawner.setOnLine();
 
-                });
+                    });
+            }
         }
-    }
-    public void WordBtnApply(ButtonValue BV)
-    {
-        currentWord = BV;
-        Debug.Log("currentWord : " + currentWord.Name);
-        InitWordAction(currentWord.ID);
-        //todoWordBtnSpawner.SpawnWordActionBtn();
-    }
 
+        public void WordBtnApply(ButtonValue BV)
+        {
+            currentWord = BV;
+            Debug.Log("currentWord : " + currentWord.Name);
+            InitWordAction(currentWord.ID);
+            //todoWordBtnSpawner.SpawnWordActionBtn();
+        }
+    */
     #endregion
 
     #region EXE
@@ -142,8 +141,6 @@ public class WordManager : Singleton<WordManager>
                 .RepeatUntilDisable(wordActionBtn)
                 .Subscribe(action =>
                 {
-                    if (wordActionBtn.CannotUseLabal.gameObject.activeSelf) { Desktop.CanUseThisSentence = false; }
-
                     WordActionBtnApply(action);
 
                     PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { resetBtn, Desktop.streamStartBtn } }, todoWordBtnSpawner);
@@ -160,7 +157,7 @@ public class WordManager : Singleton<WordManager>
         currentWordActionStr.Value = text;
         StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
 
-        currentStreamEvent = SetStreamEvent(
+        /*currentStreamEvent = SetStreamEvent(
             currentWord.ID,
             currentWordAction.ID,
             Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
@@ -170,12 +167,13 @@ public class WordManager : Singleton<WordManager>
             currentStreamEvent,
             Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
             Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
+    */
     }
 
     #endregion
 
     #region Set
-
+/*
     private StreamEvent SetStreamEvent(string wordID, string wordActionID, bool isCreated, int NumberOfUsed)
     {
         StreamEvent streamEvent = new StreamEvent();
@@ -193,7 +191,7 @@ public class WordManager : Singleton<WordManager>
             streamEvent.OverloadValue);
         return streamEvent;
     }
-
+*/
     private int SetGage(int gage, bool isCreated, int NumberOfUsed, string wordRate, string wordActionRate) // 수치 조절 함수
     {
         int finalGage = gage;
@@ -238,6 +236,7 @@ public class WordManager : Singleton<WordManager>
 
         return finalGage;
     }
+/*  
     private void SetResultPreview(StreamEvent streamEvent, bool isCreated, int NumberOfUsed)
     {
         if (!Desktop.CanUseThisSentence)
@@ -277,7 +276,7 @@ public class WordManager : Singleton<WordManager>
         ResultPreview_NumberOfUsed.text = info[0];
         ResultPreview_Gage.text = info[1];
     }
-
+*/
 #endregion
 
 #endregion
@@ -286,7 +285,7 @@ public class WordManager : Singleton<WordManager>
 
     // JsonLoadTest() == InitWordID()
     // 나중에 하루 지날때마다 실행되도록 해야함
-
+/*
     public void InitWord()
     {
         currentWordList.Clear(); // 초기화
@@ -310,7 +309,7 @@ public class WordManager : Singleton<WordManager>
             }
         }
     }
-
+*/
     #endregion
 }
 

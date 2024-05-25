@@ -98,7 +98,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
 
-        TutorialNameTxt.text = "<size=80%>" + DataManager.ScheduleDatas[3][scheduleID].ToString() + "</size> <#323232>TUTORIAL</color>";
+        //TutorialNameTxt.text = "<size=80%>" + DataManager.ScheduleDatas[3][scheduleID].ToString() + "</size> <#323232>TUTORIAL</color>";
         closeTutorialBtn.interactable = false;
         tutorialWindow_type.SetActive(true);
         tutorial_ScreenCG.gameObject.SetActive(true);

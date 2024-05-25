@@ -125,7 +125,7 @@ public class Desktop : MonoBehaviour, IInteract
         EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
         //streamWindow.SetActive(true);
 
-        StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
+        //StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
         StreamManager.StartDialog(StreamManager.currentStreamEventID);
     }
     public void EndScheduleThis()
@@ -251,7 +251,7 @@ public class Desktop : MonoBehaviour, IInteract
             .Subscribe(btn =>
             {
                 WordManager.TodoReset();
-                WordManager.InitWord();
+                //WordManager.InitWord();
 
                 confirmPopup.SetActive(false);
                 EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);

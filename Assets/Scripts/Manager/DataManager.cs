@@ -7,36 +7,34 @@ using UnityEditor;
 
 public class DataManager : Singleton<DataManager>
 {
-    [Header("*All_CSV_File")]
-    [SerializeField] TextAsset StreamEventsFile;
-    [SerializeField] TextAsset TitlesFile;
-    [SerializeField] TextAsset BasicDialogsFile;
-    [SerializeField] TextAsset DialogsFile;
-    [SerializeField] TextAsset WordsFile;
-    [SerializeField] TextAsset WordActionsFile;
-    [SerializeField] TextAsset PlaceFile;
-    [SerializeField] TextAsset ScheduleFile;
-    [SerializeField] TextAsset ObjectEventFile;
+    [Header("=== CSV File")]
+    [SerializeField] TextAsset ChapterCSV;
+    [SerializeField] TextAsset PlaceCSV;
+    [SerializeField] TextAsset ObjectCSV;
+    [SerializeField] TextAsset LanguageCSV;
 
-    [Header("*AllData")]
-    public static List<Dictionary<string, object>> StreamEventDatas = new();
-    public static List<Dictionary<string, object>> TitleDatas = new();
-    public static List<Dictionary<string, object>> BasicDialogDatas = new();
-    public static List<Dictionary<string, object>> DialogDatas = new();
-    public static List<Dictionary<string, object>> WordDatas = new();
-    public static List<Dictionary<string, object>> WordActionDatas = new();
-    public static List<Dictionary<string, object>> PlaceDatas = new();
-    public static List<Dictionary<string, object>> ScheduleDatas = new();
-    public static List<Dictionary<string, object>> ObjectEventData = new();
+    /*
+        [Header("*All_CSV_File")]
+        [SerializeField] TextAsset StreamEventsFile;
 
+        [SerializeField] TextAsset PlaceFile;
+        [SerializeField] TextAsset ScheduleFile;
+        [SerializeField] TextAsset ObjectEventFile;
+
+        [Header("*AllData")]
+        public static List<Dictionary<string, object>> StreamEventDatas = new();
+        
+        public static List<Dictionary<string, object>> PlaceDatas = new();
+        public static List<Dictionary<string, object>> ScheduleDatas = new();
+        public static List<Dictionary<string, object>> ObjectEventData = new();
+    */
 
     protected override void Awake()
     {
         base.Awake();
-        InitData();
     }
-
-    public void InitData()
+/*
+    public void InitData_Old()
     {
         #region original
 
@@ -70,6 +68,6 @@ public class DataManager : Singleton<DataManager>
         #endregion
 
     }
-
+*/
 
 }

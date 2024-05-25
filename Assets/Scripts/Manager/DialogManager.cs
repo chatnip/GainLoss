@@ -59,7 +59,7 @@ public class DialogManager : Singleton<DialogManager>, IInteract
     [SerializeField] Button EndBtn;
     [HideInInspector] public bool turnOver = false;
 
-    [HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
+    //[HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
 
 
 

@@ -10,7 +10,7 @@ public class StreamManager : Singleton<StreamManager>
     [SerializeField] DataManager DataManager;
 
     [HideInInspector] public string currentStreamEventID;
-    [HideInInspector] public StreamEvent currentStreamEvent;
+    //[HideInInspector] public StreamEvent currentStreamEvent;
 
     [HideInInspector] public List<Dictionary<string, object>> currentStreamEventDatas = new();
 
@@ -31,20 +31,21 @@ public class StreamManager : Singleton<StreamManager>
         List<Fragment> fragments = new();
         List<KeyValuePair<string, object>> basicDatas = new();
 
-        foreach (var data in DataManager.BasicDialogDatas[0]) //// 베이직 다이얼로그 순회
+        Debug.Log("Need Basic Dialog");
+        /*foreach (var data in DataManager.BasicDialogDatas[0]) //// 베이직 다이얼로그 순회
         {
             if (data.Key.Contains(id.Substring(4, 4)))
             {
                 basicDatas.Add(data);
             }
-        }
+        }*/
 
         // 방송 제목 삽입
         int rand = UnityEngine.Random.Range(1, 3);
         string addID = "T0" + rand.ToString();
-        Debug.Log(addID);
-        DialogManager.streamURLText.text = "https:/" + "/www.stream." + (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID] + ".com/";
-
+        Debug.Log("Need Stream Title Name");
+        //DialogManager.streamURLText.text = "https:/" + "/www.stream." + (string)DataManager.TitleDatas[1][id.Substring(4, 4) + addID] + ".com/";
+/*
         foreach (var data in basicDatas) // 베이직 T 데이터 순회
         {
             if (data.Key.Contains(addID))
@@ -57,7 +58,8 @@ public class StreamManager : Singleton<StreamManager>
 
             }
         }
-
+*/
+/*
         foreach (var data in DataManager.DialogDatas[0]) // 다이얼로그 순회
         {
             if (data.Key.Contains(id))
@@ -69,6 +71,7 @@ public class StreamManager : Singleton<StreamManager>
                 fragments.Add(fragment);
             }
         }
+  */
         ScenarioBase scenario = new(fragments);
 
         return scenario;
@@ -93,14 +96,5 @@ public class StreamManager : Singleton<StreamManager>
        
     }
 
-}
-[System.Serializable]
-public class StreamEvent
-{
-    [HideInInspector] public int numberOfUses;
-    [HideInInspector] public int stressValue;
-    [HideInInspector] public int angerValue;
-    [HideInInspector] public int riskValue;
-    [HideInInspector] public int OverloadValue;
 }
 
