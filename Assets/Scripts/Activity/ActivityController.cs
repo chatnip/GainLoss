@@ -69,9 +69,9 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
-            { e_HomeInteractType.Observational, GameManager.Instance.MainInfo.ObservationalAbility },
-            { e_HomeInteractType.Persuasive, GameManager.Instance.MainInfo.PersuasiveAbility },
-            { e_HomeInteractType.MentalStrength, GameManager.Instance.MainInfo.MentalStrengthAbility }
+            { e_HomeInteractType.Observational, GameManager.Instance.mainInfo.ObservationalAbility },
+            { e_HomeInteractType.Persuasive, GameManager.Instance.mainInfo.PersuasiveAbility },
+            { e_HomeInteractType.MentalStrength, GameManager.Instance.mainInfo.MentalStrengthAbility }
         };
 
         // Set UI
@@ -85,7 +85,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         noBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.CanInput) { return; }
+                if (!GameManager.Instance.canInput) { return; }
 
                 SetActivityGageUI(0.25f);
                 QuestionWindow_ActiveOff(0.25f);
@@ -93,7 +93,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         yesBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.CanInput) { return; }
+                if (!GameManager.Instance.canInput) { return; }
 
                 if (currentQuestionWindowType == e_HomeInteractType.GoOutside)
                 { 
@@ -133,7 +133,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         SAG_UI_Use = DOTween.Sequence();
 
         // Set Fill Gage
-        float value = (float)GameManager.Instance.MainInfo.currentActivity / GameManager.Instance.MainInfo.maxActivity;
+        float value = (float)GameManager.Instance.mainInfo.CurrentActivity / GameManager.Instance.mainInfo.MaxActivity;
         foreach(Image img in gageActualImgs)
         { SAG_UI.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
         foreach (Image img in gageUsePreviewImgs)
@@ -141,13 +141,13 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
 
         // Set Num
-        amountNumTxt.text = GameManager.Instance.MainInfo.currentActivity.ToString();
+        amountNumTxt.text = GameManager.Instance.mainInfo.CurrentActivity.ToString();
 
         // Set Triangle Pos
         float RT_X = activityGageWindowRT.rect.width;
-        RT_X /= GameManager.Instance.MainInfo.maxActivity;
+        RT_X /= GameManager.Instance.mainInfo.MaxActivity;
         if (markImg.TryGetComponent(out RectTransform markRT)) 
-        { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameManager.Instance.MainInfo.currentActivity, 0), dotweenTime)); }
+        { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameManager.Instance.mainInfo.CurrentActivity, 0), dotweenTime)); }
     }
 
     private void SetActivityGageUI_Use(e_HomeInteractType previewHI_Type, float dotweenTime)
@@ -158,8 +158,8 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
         // Set Gage
         SetActivityGageUI(dotweenTime);
-        int previewActivity = GameManager.Instance.MainInfo.currentActivity - questionWindowConfigDict[previewHI_Type].DecActivity;
-        float value = 1 - ((float)previewActivity / GameManager.Instance.MainInfo.maxActivity);
+        int previewActivity = GameManager.Instance.mainInfo.CurrentActivity - questionWindowConfigDict[previewHI_Type].DecActivity;
+        float value = 1 - ((float)previewActivity / GameManager.Instance.mainInfo.MaxActivity);
         foreach (Image img in gageUsePreviewImgs)
         { SAG_UI_Use.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
     }
@@ -171,8 +171,8 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     public void QuestionWindow_ActiveOn(e_HomeInteractType HI_Type, float time)
     {
         PlayerInputController.Instance.StopMove();
-        GameManager.Instance.CanInput = false;
-        GameManager.Instance.CanInteractObject = false;
+        GameManager.Instance.canInput = false;
+        GameManager.Instance.canInteractObject = false;
 
         // Exp
         if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
@@ -181,7 +181,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { noBtn, yesBtn } }, this);
         
         // set Txt
-        if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.MainInfo.currentActivity > 0)
+        if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.mainInfo.CurrentActivity > 0)
         {
             questionContentTxt.text =
                 questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>아직 사용하지 않은 행동력이 존재하지만, 정말 나갈까?</size></color>";
@@ -196,7 +196,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
             questionWindowConfigDict[HI_Type].ActivityKind + "+" + questionWindowConfigDict[HI_Type].IncAbility.ToString();
         
         amountNumInWindowTxt.text = 
-            GameManager.Instance.MainInfo.currentActivity.ToString() + "/" + GameManager.Instance.MainInfo.maxActivity.ToString();
+            GameManager.Instance.mainInfo.CurrentActivity.ToString() + "/" + GameManager.Instance.mainInfo.MaxActivity.ToString();
 
         // Set Fill Gage
         SetActivityGageUI_Use(currentQuestionWindowType, 0.25f);
@@ -209,7 +209,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         activityQuestionWindowRT.DOAnchorPos(new Vector2(720, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
-                GameManager.Instance.CanInput = true;
+                GameManager.Instance.canInput = true;
                 yesBtn.interactable = true;
                 noBtn.interactable = true; 
             });
@@ -217,7 +217,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     public void QuestionWindow_ActiveOff(float time)
     {
         PlayerInputController.Instance.CanMove = false;
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
 
         yesBtn.interactable = false;
         noBtn.interactable = false;
@@ -225,8 +225,8 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         activityQuestionWindowRT.DOAnchorPos(new Vector2(1200, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
-                GameManager.Instance.CanInput = true;
-                GameManager.Instance.CanInteractObject = true;
+                GameManager.Instance.canInput = true;
+                GameManager.Instance.canInteractObject = true;
                 PlayerInputController.Instance.CanMove = true;           
             });
     }
@@ -248,7 +248,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     private void GetAbility_Start(e_HomeInteractType HI_Type)
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
 
         QuestionWindowConfig QWC = questionWindowConfigDict[HI_Type];
         StartCoroutine(PlayAnim(QWC.AnimString));
@@ -264,13 +264,13 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
         yield return new WaitForSeconds(animLength);
 
-        GameManager.Instance.CanInput = true;
+        GameManager.Instance.canInput = true;
         GetAbility_End(currentQuestionWindowType);
     }
 
     private void GetAbility_End(e_HomeInteractType HI_Type)
     {
-        GameManager.Instance.MainInfo.IncAbility(
+        GameManager.Instance.mainInfo.IncAbility(
             HI_Type, questionWindowConfigDict[HI_Type].IncAbility,
             questionWindowConfigDict[HI_Type].DecActivity);
 
@@ -279,10 +279,10 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
 #if UNITY_EDITOR
         Debug.Log(
-            $"\n행동력{GameManager.Instance.MainInfo.currentActivity}" +
-            $"\n관찰력{GameManager.Instance.MainInfo.ObservationalAbility}" +
-            $"\n설득력{GameManager.Instance.MainInfo.PersuasiveAbility}" +
-            $"\n정신력{GameManager.Instance.MainInfo.MentalStrengthAbility}"
+            $"\n행동력{GameManager.Instance.mainInfo.CurrentActivity}" +
+            $"\n관찰력{GameManager.Instance.mainInfo.ObservationalAbility}" +
+            $"\n설득력{GameManager.Instance.mainInfo.PersuasiveAbility}" +
+            $"\n정신력{GameManager.Instance.mainInfo.MentalStrengthAbility}"
             );
 #endif
     }

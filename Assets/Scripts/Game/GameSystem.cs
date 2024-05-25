@@ -10,7 +10,7 @@ public class GameSystem : Singleton<GameSystem>
     #region Value
 
     [Header("=== Main UI")]
-    [SerializeField] public Button PauseBtn;
+    [SerializeField] public Button pauseBtn;
 
     [Header("=== Obj Panel")]
     [SerializeField] public Button objPanelBtn;
@@ -18,15 +18,15 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] public Button objPanelExitBtn;
 
     [Header("=== Npc Panel")]
-    [SerializeField] public Button NpcPanelBtn;
-    [SerializeField] public TMP_Text NpcName;
-    [SerializeField] public TMP_Text NpcText;
-    [SerializeField] public Image NpcImg;
-    [SerializeField] public Button NpcPanelExitBtn;
+    [SerializeField] public Button npcPanelBtn;
+    [SerializeField] public TMP_Text npcName;
+    [SerializeField] public TMP_Text npcText;
+    [SerializeField] public Image npcImg;
+    [SerializeField] public Button npcPanelExitBtn;
 
     [Header("=== Animator")]
-    [SerializeField] Animator PlayerAnimator;
-    [SerializeField] Animator AnotherAnimator;
+    [SerializeField] Animator playerAnimator;
+    [SerializeField] Animator anotherAnimator;
 
     [Header("=== Cutscene")]
     [SerializeField] public Image cutsceneImg;
@@ -56,8 +56,7 @@ public class GameSystem : Singleton<GameSystem>
         playerPos.rotation = Quaternion.identity;
 
         //Btns
-
-        PauseBtn.OnClickAsObservable()
+        pauseBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 PlayerInputController.Instance.OnOffPause();
@@ -75,12 +74,12 @@ public class GameSystem : Singleton<GameSystem>
             });
 
 
-        NpcPanelExitBtn.OnClickAsObservable()
+        npcPanelExitBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 NpcDescOff();
             });
-        NpcPanelBtn.OnClickAsObservable()
+        npcPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 NpcDescSkip();
@@ -142,12 +141,12 @@ public class GameSystem : Singleton<GameSystem>
         PlayerController.Instance.setOnNpcInteractCamera(animator.gameObject);
         PlayerInputController.Instance.StopMove();
         PlayerController.Instance.isTalking = true;
-        AnotherAnimator = animator;
+        anotherAnimator = animator;
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
         this.conversations = conversationBase;
         npcTextingTween = SetTween(0);
 
-        NpcPanelBtn.gameObject.SetActive(true);
+        npcPanelBtn.gameObject.SetActive(true);
     }
 
     public void NpcDescSkip()
@@ -158,21 +157,21 @@ public class GameSystem : Singleton<GameSystem>
         }
         else if (!conversationTweeningNow && (conversations.NpcConversations.Count > currentOrder))
         {
-            if(!PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+            if(!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
             {
-                PlayerAnimator.SetTrigger("Return");
+                playerAnimator.SetTrigger("Return");
             }
-            if (AnotherAnimator != null)
+            if (anotherAnimator != null)
             {
-                if (!AnotherAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                if (!anotherAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
-                    AnotherAnimator.SetTrigger("Return");
+                    anotherAnimator.SetTrigger("Return");
                 }
 
             }
 
             DOTween.Kill(npcTextingTween);
-            NpcText.text = null;
+            npcText.text = null;
             npcTextingTween = SetTween(currentOrder);
         }
         else if (!conversationTweeningNow)
@@ -186,36 +185,36 @@ public class GameSystem : Singleton<GameSystem>
         PlayerInputController.Instance.CanMove = true;
         PlayerController.Instance.setOffNpcInteractCamera();
         PlayerController.Instance.isTalking = false;
-        NpcPanelBtn.gameObject.SetActive(false);
-        DOTween.Kill(NpcText);
-        NpcText.text = null;
+        npcPanelBtn.gameObject.SetActive(false);
+        DOTween.Kill(npcText);
+        npcText.text = null;
         conversationTweeningNow = false;
         currentOrder = 0;
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
-        PlayerAnimator.SetTrigger("Return");
-        AnotherAnimator.SetTrigger("Return");
+        playerAnimator.SetTrigger("Return");
+        anotherAnimator.SetTrigger("Return");
 
 
-        AnotherAnimator = PlayerAnimator;
+        anotherAnimator = playerAnimator;
     }
 
     private Tween SetTween(int i)
     {
-        Tween tw = NpcText.DOText(conversations.NpcConversations[i].conversation, conversations.NpcConversations[i].conversationDurTime)
+        Tween tw = npcText.DOText(conversations.NpcConversations[i].conversation, conversations.NpcConversations[i].conversationDurTime)
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
                          Debug.Log("NPC 상호작용의 데이터 적용");
                          conversationTweeningNow = true;
-                         NpcImg.sprite = conversations.NpcConversations[i].talkerSprite;
-                         NpcName.text = conversations.NpcConversations[i].talkerName;
+                         npcImg.sprite = conversations.NpcConversations[i].talkerSprite;
+                         npcName.text = conversations.NpcConversations[i].talkerName;
                         
 
                          if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
-                         { PlayerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
+                         { playerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
                          else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
-                         { AnotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
+                         { anotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
                      })
                      .OnComplete(() =>
                      {

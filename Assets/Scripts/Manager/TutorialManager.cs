@@ -51,7 +51,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
         closeTutorialBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.CanInput) { return; }
+                if (!GameManager.Instance.canInput) { return; }
 
                 OffAllTutorial();
             });
@@ -64,7 +64,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
 
     private void OffAllTutorial()
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
         DOTween.Complete(tutorialsDict.Values);
         foreach(GameObject tutorial in tutorialsDict.Values) { DOTween.Complete(tutorial); }
 
@@ -75,7 +75,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
                 foreach (GameObject tutorial in tutorialsDict.Values) { tutorial.gameObject.SetActive(false); }
                 tutorial_ScreenCG.gameObject.SetActive(false);
                 closeTutorialBtn.interactable = false;
-                GameManager.Instance.CanInput = true;
+                GameManager.Instance.canInput = true;
             });
     }
     #endregion
@@ -93,7 +93,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
 
     public void OpenTutorialWindow_On(string scheduleID)
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
         GameObject tutorialWindow_type = tutorialsDict[scheduleID];
 
         PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
@@ -114,7 +114,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
                 closeTutorialBtn.interactable = true;
                 string ID = tutorialsDict.FirstOrDefault(x => x.Value == tutorialWindow_type).Key;
                 ShowRecordDataInit(ID);
-                GameManager.Instance.CanInput = true;
+                GameManager.Instance.canInput = true;
             });
     }
 

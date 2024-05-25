@@ -9,8 +9,8 @@ public class LoadingManager : Singleton<LoadingManager>
     #region Value
 
     [Header("=== LoadingWindow")]
-    [SerializeField] TMP_Text PassDayExplanationText;
-    [SerializeField] TMP_Text SavingPrograssText;
+    [SerializeField] TMP_Text passDayExplanationText;
+    [SerializeField] TMP_Text savingPrograssText;
     [SerializeField] CanvasGroup loading;
 
     [Header("=== UI")]
@@ -50,67 +50,67 @@ public class LoadingManager : Singleton<LoadingManager>
 
     public void StartLoading()
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
         StartCoroutine(Past_ShowNextDayText(1f));
     }
 
     private IEnumerator Past_ShowNextDayText(float time)
     {
-        SavingPrograssText.text = "< Saving... >";
-        SavingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
+        savingPrograssText.text = "< Saving... >";
+        savingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
-        PassDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.Instance.MainInfo.day + "]";
+        passDayExplanationText.color = Color.white;
+        string TextTemp = "DAY [" + GameManager.Instance.mainInfo.Day + "]";
 
         loading.gameObject.SetActive(true);
         loading.DOFade(1f, 1f);
 
-        SavingPrograssText.text = "Saving...";
+        savingPrograssText.text = "Saving...";
 
-        PassDayExplanationText.text = TextTemp;
+        passDayExplanationText.text = TextTemp;
         yield return new WaitForSeconds(time + 0.5f);
 
-        PassDayExplanationText.DOFade(0, time);
+        passDayExplanationText.DOFade(0, time);
 
-        GameManager.Instance.MainInfo.day++;
+        GameManager.Instance.mainInfo.Day++;
 
-        string strName = GameManager.Instance.MainInfo.TodayOfTheWeek;
+        string strName = GameManager.Instance.mainInfo.TodayOfTheWeek;
         int DayOrdinal1 = (int)Enum.Parse(typeof(WeekDays), strName) + 1;
         if (DayOrdinal1 >= 7)
-        { GameManager.Instance.MainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
-        else { GameManager.Instance.MainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
+        { GameManager.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
+        else { GameManager.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
 
         StartCoroutine(Post_ShowNextDayText(1f));
     }
 
     private IEnumerator Post_ShowNextDayText(float time)
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
 
-        DOTween.Kill(SavingPrograssText);
+        DOTween.Kill(savingPrograssText);
         PlayerController.Instance.gameObject.transform.position = new Vector3(0f, 0f, 0f);
         PlayerController.Instance.gameObject.transform.rotation = Quaternion.identity;
 
-        SavingPrograssText.text = "< Saved >";
-        SavingPrograssText.DOFade(1f, 1f);
+        savingPrograssText.text = "< Saved >";
+        savingPrograssText.DOFade(1f, 1f);
 
         //Debug.Log("사전 조사 데이터 세팅");
         //PreliminarySurveyManager.ft_setAPSSOs();
 
-        dayText.text = GameManager.Instance.MainInfo.day.ToString();
+        dayText.text = GameManager.Instance.mainInfo.Day.ToString();
 
         //PlaceManager.Instance.InitPlace();
 
-        PassDayExplanationText.color = Color.white;
+        passDayExplanationText.color = Color.white;
 
         yield return new WaitForSeconds(time);
 
-        PassDayExplanationText.text = "";
-        PassDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.Instance.MainInfo.day + "]";
-        PassDayExplanationText.DOText(TextTemp, time);
+        passDayExplanationText.text = "";
+        passDayExplanationText.color = Color.white;
+        string TextTemp = "DAY [" + GameManager.Instance.mainInfo.Day + "]";
+        passDayExplanationText.DOText(TextTemp, time);
         yield return new WaitForSeconds(time * 2);
-        PassDayExplanationText.DOFade(0, time);
+        passDayExplanationText.DOFade(0, time);
         yield return new WaitForSeconds(time);
 
         EndLoading();
@@ -124,7 +124,7 @@ public class LoadingManager : Singleton<LoadingManager>
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
-            GameManager.Instance.CanInput = true;
+            GameManager.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
         });
     }

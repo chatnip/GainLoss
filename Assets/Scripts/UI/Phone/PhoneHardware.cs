@@ -55,7 +55,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     public void Interact()
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
         
     }
 
@@ -65,8 +65,8 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     public IEnumerator Start_PhoneOn(e_phoneStateExtra pse)
     {
-        if(!GameManager.Instance.CanInput) { yield return null; }
-        GameManager.Instance.CanInput = false;
+        if(!GameManager.Instance.canInput) { yield return null; }
+        GameManager.Instance.canInput = false;
 
         PlayerInputController.Instance.StopMove();
         PlayerInputController.Instance.SetSectionBtns(null, null);
@@ -133,7 +133,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             .OnComplete(() =>
             {
                 circleEffectRT.gameObject.SetActive(false);
-                GameManager.Instance.CanInput = true;
+                GameManager.Instance.canInput = true;
             }));
 
 

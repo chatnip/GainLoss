@@ -216,7 +216,7 @@ public class JsonManager : Singleton<JsonManager>
             JsonLoad_TR(json_filePath, json_tutorialFileName);
 
         // Load -> MainInfo Json
-        GameManager.Instance.MainInfo =
+        GameManager.Instance.mainInfo =
             JsonLoad_MI(json_filePath, json_mainInfoFileName);
 
         // Load -> Word Json
@@ -374,7 +374,7 @@ public class JsonManager : Singleton<JsonManager>
         JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
 
         // Save -> MainInfo Json
-        JsonSave(json_mainInfoFileName, GameManager.Instance.MainInfo);
+        JsonSave(json_mainInfoFileName, GameManager.Instance.mainInfo);
 
         // Save -> Word Json
         //JsonSave(json_wordFileName, WordManager.currentWordIDList);

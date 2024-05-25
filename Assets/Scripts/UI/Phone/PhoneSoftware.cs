@@ -95,8 +95,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
         PlayerInputController.Instance.interact = this;
 
-        DayText.text = "DAY " + GameManager.Instance.MainInfo.day;
-        DayOfWeekText.text = GameManager.Instance.MainInfo.TodayOfTheWeek;
+        DayText.text = "DAY " + GameManager.Instance.mainInfo.Day;
+        DayOfWeekText.text = GameManager.Instance.mainInfo.TodayOfTheWeek;
 
         if (phoneExitBtn.TryGetComponent(out RectTransform RT)) { RT.localScale = Vector3.one; }
 
@@ -109,12 +109,12 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
     private void OpenApp(GameObject App, Image ClickImg, float dotweenTime)
     {
-        if (!GameManager.Instance.CanInput) { return; }
-        GameManager.Instance.CanInput = false;
+        if (!GameManager.Instance.canInput) { return; }
+        GameManager.Instance.canInput = false;
 
         if (DOTween.IsTweening(OpenAppSeq)) { DOTween.Complete(OpenAppSeq); }
         OpenAppSeq = DOTween.Sequence();
-        OpenAppSeq.OnComplete(() => { GameManager.Instance.CanInput = true; });
+        OpenAppSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
 
         // BG 초기 설정
         if(appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT))
@@ -154,7 +154,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         Debug.Log("실행");
         
         this.OpenMapSeq = DOTween.Sequence();
-        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.CanInput = true; });
+        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
 
         List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
         PlayerInputController.Instance.SetSectionBtns(btns, this);

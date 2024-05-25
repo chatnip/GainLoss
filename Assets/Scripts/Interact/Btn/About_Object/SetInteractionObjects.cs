@@ -13,7 +13,12 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
     #endregion
 
-    #region Framework
+    #region Framework & Base Set
+
+    public void Offset()
+    {
+        sphereCollider.enabled = true;
+    }
 
     protected override void Awake()
     {

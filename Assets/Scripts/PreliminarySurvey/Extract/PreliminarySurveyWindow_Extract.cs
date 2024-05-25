@@ -186,7 +186,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     private IEnumerator ft_firstStart()
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
 
         CountAndAnnoTxt.text = "";
         CountAndAnnoTxt.DOText("암호가 존재합니다!", 1);
@@ -214,7 +214,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         {
             CountAndAnnoTxt.text = "";
             BallController.ft_shotBall();
-            GameManager.Instance.CanInput = true;
+            GameManager.Instance.canInput = true;
         });
     }
 

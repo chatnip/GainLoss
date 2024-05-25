@@ -34,8 +34,8 @@ public class TaskBar : MonoBehaviour
     }
     private void OnEnable()
     {
-        CurrentDayText.text = "DAY " + GameManager.MainInfo.day;
-        CurrentDayOfWeekText.text = GameManager.MainInfo.TodayOfTheWeek;
+        CurrentDayText.text = "DAY " + GameManager.mainInfo.Day;
+        CurrentDayOfWeekText.text = GameManager.mainInfo.TodayOfTheWeek;
 
 
     }

@@ -115,7 +115,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         
         GroundedCheck();
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if(PlayerInputController.Instance.CanMove && _controller.enabled) Move();
         if(isTalking) setOriginalAnimation();

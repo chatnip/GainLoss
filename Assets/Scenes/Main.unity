@@ -9272,6 +9272,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -10430,6 +10434,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -14769,6 +14777,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -15618,12 +15630,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P00
-    Name: "\uC9D1"
+  buttonID: P00
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 444339178}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 1081882860}
   rect: {fileID: 444339177}
   buttonType: 2
   isButton: 0
@@ -15746,17 +15756,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc7423a1419f6d489f89c5d267062b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PauseBtn: {fileID: 1018738984}
+  pauseBtn: {fileID: 1018738984}
   objPanelBtn: {fileID: 1084193117}
   objText: {fileID: 308292751}
   objPanelExitBtn: {fileID: 1762555580}
-  NpcPanelBtn: {fileID: 968929453}
-  NpcName: {fileID: 375156843}
-  NpcText: {fileID: 1281144486}
-  NpcImg: {fileID: 1756411825}
-  NpcPanelExitBtn: {fileID: 710835283}
-  PlayerAnimator: {fileID: 640177189}
-  AnotherAnimator: {fileID: 640177189}
+  npcPanelBtn: {fileID: 968929453}
+  npcName: {fileID: 375156843}
+  npcText: {fileID: 1281144486}
+  npcImg: {fileID: 1756411825}
+  npcPanelExitBtn: {fileID: 710835283}
+  playerAnimator: {fileID: 640177189}
+  anotherAnimator: {fileID: 640177189}
   cutsceneImg: {fileID: 361593217}
   cutsceneTxt: {fileID: 909619032}
   playerPos: {fileID: 640177187}
@@ -20171,12 +20181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P03
-    Name: "\uB137\uCE74\uD398"
+  buttonID: P03
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 557732250}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 2121065098}
   rect: {fileID: 557732248}
   buttonType: 2
   isButton: 0
@@ -21192,10 +21200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e813e6e986f4de04aa18b6a39270397b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainCamera: {fileID: 61803321}
-  GoingSomewhereloadingCG: {fileID: 144862818}
-  CurrentPlaceTxt: {fileID: 432623449}
-  Step_SG: {fileID: 606783129}
+  mainCamera: {fileID: 61803321}
+  goingSomewhereloadingCG: {fileID: 144862818}
+  currentPlaceTxt: {fileID: 432623449}
+  step_SG: {fileID: 606783129}
   HUD_currentPlactTxt: {fileID: 1146806038}
   placeBtnList:
   - {fileID: 444339185}
@@ -21221,6 +21229,7 @@ MonoBehaviour:
   - {r: 0.8, g: 0.8, b: 0.8, a: 1}
   - {r: 0.8, g: 0.8, b: 0.8, a: 1}
   - {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  canGoPlaceInChapter: []
 --- !u!1 &582192308
 GameObject:
   m_ObjectHideFlags: 0
@@ -21499,6 +21508,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -22011,6 +22024,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -23105,6 +23122,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -24021,6 +24042,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -31182,6 +31207,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -32856,6 +32885,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -34278,6 +34311,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -35321,6 +35358,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -35798,6 +35839,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -36295,6 +36340,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -39927,6 +39976,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -42242,7 +42295,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 160, y: 70}
+  m_SizeDelta: {x: 100, y: 70}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1146806038
 MonoBehaviour:
@@ -49879,12 +49932,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P02
-    Name: "\uD68C\uC0AC"
+  buttonID: P02
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 1334456103}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 2050125425}
   rect: {fileID: 1334456100}
   buttonType: 2
   isButton: 0
@@ -50792,12 +50843,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P01
-    Name: "\uACF5\uC6D0"
+  buttonID: P01
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 1355895145}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 2048091658}
   rect: {fileID: 1355895144}
   buttonType: 2
   isButton: 0
@@ -51561,6 +51610,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -51713,6 +51766,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -52530,6 +52587,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -53147,6 +53208,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -54638,12 +54703,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P06
-    Name: "\uAC70\uB9AC"
+  buttonID: P06
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 1416614116}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 503394422}
   rect: {fileID: 1416614115}
   buttonType: 2
   isButton: 0
@@ -55409,6 +55472,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -55728,6 +55795,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -56716,8 +56787,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa715c70cfc3a1943a03f986a27b8a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PassDayExplanationText: {fileID: 618912631}
-  SavingPrograssText: {fileID: 224789418}
+  passDayExplanationText: {fileID: 618912631}
+  savingPrograssText: {fileID: 224789418}
   loading: {fileID: 844579173}
   dayText: {fileID: 1406883138}
 --- !u!1 &1472525782
@@ -60528,6 +60599,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -67251,6 +67326,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -69230,12 +69309,7 @@ MonoBehaviour:
   enableWordBtnList: []
   enableWordActionBtnList: []
   currentWordIDList: []
-  currentWordList: []
   currentWordActionIDList: []
-  currentWordActionList: []
-  currentWord:
-    ID: 
-    Name: 
 --- !u!4 &1775436665
 Transform:
   m_ObjectHideFlags: 0
@@ -69662,6 +69736,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -70490,18 +70568,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d0d0c1fc00c9649adcdc4b776feedc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainInfo:
+  currentChapter: A
+  languageID: L00
+  languageNum: 0
+  mainInfo:
     NewGame: 1
-    day: 1
-    currentActivity: 2
-    maxActivity: 4
+    Day: 1
+    CurrentActivity: 3
+    MaxActivity: 4
     ObservationalAbility: 0
     PersuasiveAbility: 0
     MentalStrengthAbility: 0
     TodayOfTheWeek: Monday
-  TestCutsceneSO: {fileID: 11400000, guid: 4a03505ee00accc4eb926412cf20b2ab, type: 2}
-  CanInput: 1
-  CanInteractObject: 1
+  canInput: 1
+  canInteractObject: 1
 --- !u!1 &1804240090
 GameObject:
   m_ObjectHideFlags: 0
@@ -70851,6 +70931,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -70968,6 +71052,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -71843,12 +71931,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P05
-    Name: "\uCE74\uD398"
+  buttonID: P05
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 1829126526}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 121977539}
   rect: {fileID: 1829126525}
   buttonType: 2
   isButton: 0
@@ -74284,7 +74370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1873689249
 Transform:
   m_ObjectHideFlags: 0
@@ -74312,10 +74398,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8966efc19df86428f9803d6e9a11a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChapterCSV: {fileID: 0}
-  PlaceCSV: {fileID: 0}
-  ObjectCSV: {fileID: 0}
-  LanguageCSV: {fileID: 0}
+  ChapterCSV: {fileID: 4900000, guid: 80953f48d3772b643a8645807e34d2a7, type: 3}
+  AbilityCSV: {fileID: 4900000, guid: 5ba7756d37250a34dbee097aaeb4ffb5, type: 3}
+  PlaceCSV: {fileID: 4900000, guid: 3323547d61aa5684f8010a40dbc47c47, type: 3}
+  ObjectCSV: {fileID: 4900000, guid: f71be0f9d0d437148bd8f58199062f82, type: 3}
+  LanguageCSV: {fileID: 4900000, guid: b7407701f9bc231438a78c4e1cb377e7, type: 3}
 --- !u!1 &1875160940 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 253894022943864838, guid: ee6f0b7753204d449a57dc4fc55d6e79, type: 3}
@@ -74791,12 +74878,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonValue:
-    ID: P04
-    Name: "\uD3B8\uC758\uC810"
+  buttonID: P04
   basicImage: {fileID: 21300000, guid: 581f39cb67c766b4c9eed29444baebe1, type: 3}
   button: {fileID: 1882376234}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 389567394}
   rect: {fileID: 1882376231}
   buttonType: 2
   isButton: 0
@@ -78407,6 +78492,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -78984,6 +79073,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -79488,6 +79581,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -82456,6 +82553,10 @@ PrefabInstance:
       propertyPath: offset.y
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}
     m_RemovedGameObjects: []
@@ -83587,6 +83688,10 @@ PrefabInstance:
     - target: {fileID: 7619706975466649922, guid: 02155a48bf139794ab958ef47b155786, type: 3}
       propertyPath: offset.y
       value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841514377913648310, guid: 02155a48bf139794ab958ef47b155786, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1999562399258072010, guid: 02155a48bf139794ab958ef47b155786, type: 3}

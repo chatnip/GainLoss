@@ -1,34 +1,71 @@
 //Refactoring v1.0
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class GameManager : Singleton<GameManager>
 {
     #region Value
 
     [Header("=== Other")]
-    [SerializeField] public MainInfo MainInfo = new MainInfo();
-    [SerializeField] public cutsceneSO TestCutsceneSO;
+    [SerializeField] public string currentChapter = "A";
+    [SerializeField] public string languageID = "L00";
+    [SerializeField] public int languageNum = 0;
+    [SerializeField] public MainInfo mainInfo = new MainInfo();
 
     // Other Value
-    public bool CanInput = true;
-    public bool CanInteractObject = true;
+    public bool canInput = true;
+    public bool canInteractObject = true;
 
     #endregion
 
-    #region Framework
+    #region Framework & Base Set
+
+    
 
     protected override void Awake()
     {
         base.Awake();
 
+        //temp
+        currentChapter = "A";
+        languageID = "L00";
+        languageNum = GetLanguageNum(languageID);
+
+        Alloffset();
+    }
+
+    private void Offset()
+    {
+        mainInfo = new MainInfo(
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[4][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[3][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[6][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[7][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[8][currentChapter])
+            );
+
+    }
+
+    private void Alloffset()
+    {
+        Offset();
         GameSystem.Instance.Offset();
         LoadingManager.Instance.Offset();
         PlaceManager.Instance.Offset();
         ActivityController.Instance.Offset();
-
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
+        SetInteractionObjects.Instance.Offset();
+    }
+
+    #endregion
+
+    #region Other
+
+    private int GetLanguageNum(string languageID)
+    {
+        return Convert.ToInt32(languageID.Substring(1, 2));
     }
 
     #endregion
@@ -39,19 +76,31 @@ public class MainInfo
 {
     // Flow
     public bool NewGame = true;
-    public int day = 1;
+    public int Day = 1;
 
     // Activity
-    public int currentActivity = 3;
-    public int maxActivity = 4;
+    public int CurrentActivity = 3;
+    public int MaxActivity = 4;
 
     // Ability
     public int ObservationalAbility = 0;
     public int PersuasiveAbility = 0;
     public int MentalStrengthAbility = 0;
+
+    public MainInfo() { }
+    public MainInfo(int day, int currentActivity, int d_Obse, int d_Pers, int d_Ment)
+    {
+        Day = day;
+        CurrentActivity = currentActivity;
+        ObservationalAbility = d_Obse;
+        PersuasiveAbility = d_Pers;
+        MentalStrengthAbility = d_Ment;
+    }
+
+
     public void IncAbility(ActivityController.e_HomeInteractType HI_Type, int incAbilityValue, int DecActivityValue)
     {
-        currentActivity -= DecActivityValue;
+        CurrentActivity -= DecActivityValue;
         switch (HI_Type)
         {
             case ActivityController.e_HomeInteractType.Observational:

@@ -1,5 +1,4 @@
 //Refactoring v1.0
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,19 +6,20 @@ using TMPro;
 using UniRx;
 using DG.Tweening;
 using Spine.Unity;
+using System.Linq;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
     #region Value
 
     [Header("=== Camera")]
-    [SerializeField] Camera MainCamera;
+    [SerializeField] Camera mainCamera;
     
     [Header("=== Loading")]
     [Header("-- Go Somewhere")]
-    [SerializeField] CanvasGroup GoingSomewhereloadingCG;
-    [SerializeField] TMP_Text CurrentPlaceTxt;
-    [SerializeField] SkeletonGraphic Step_SG;
+    [SerializeField] CanvasGroup goingSomewhereloadingCG;
+    [SerializeField] TMP_Text currentPlaceTxt;
+    [SerializeField] SkeletonGraphic step_SG;
     [Header("-- Main UI")]
     [SerializeField] TMP_Text HUD_currentPlactTxt;
 
@@ -28,6 +28,9 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] List<GameObject> placeGOList = new();
     [SerializeField] List<Color> placeColorList = new();
     Dictionary<IDBtn, PlaceSet> placeIdBtnGODict;
+
+    [Header("=== About Data")]
+    [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
 
 
     #endregion
@@ -39,12 +42,13 @@ public class PlaceManager : Singleton<PlaceManager>
         // Set Place Btn
         foreach (IDBtn placeBtn in placeBtnList)
         {
+            // Suvscribe Btn
             if (placeBtn == placeBtnList[0])
             {
                 placeBtn.button.OnClickAsObservable()
                     .Subscribe(btn =>
                     {
-                        if (!GameManager.Instance.CanInput) { return; }
+                        if (!GameManager.Instance.canInput) { return; }
                         PhoneHardware.Instance.PhoneOff();
                     });
             }
@@ -53,16 +57,30 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeBtn.button.OnClickAsObservable()
                     .Subscribe(placeBV =>
                     {
-                        if (!GameManager.Instance.CanInput) { return; }
+                        if (!GameManager.Instance.canInput) { return; }
                         StartGoingSomewhereLoading(placeBtn, 1.5f);
+                        placeBtn.button.interactable = false;
+
                     });
             }
+            
+            // Check Interactable
+            canGoPlaceInChapter =
+                DataManager.Instance.ChapterCSVDatas[9][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+            
+            if (canGoPlaceInChapter.Contains(placeBtn.buttonID))
+            { placeBtn.button.interactable = true; }
+            else 
+            { placeBtn.button.interactable = false; }
         }
 
         // Set Dict
         placeIdBtnGODict = new Dictionary<IDBtn, PlaceSet>();
         for (int i = 0; i < placeBtnList.Count; i++)
         { placeIdBtnGODict.Add(placeBtnList[i], new PlaceSet(placeGOList[i], placeColorList[i])); }
+
+        // Spawn Room
+        SetCurrent3DMap(placeBtnList[0]); 
     }
 
     protected override void Awake()
@@ -82,7 +100,7 @@ public class PlaceManager : Singleton<PlaceManager>
             {
                 placeDict.Value.MapGO.SetActive(true);
                 placeDict.Value.MapGO.transform.position = new Vector3(0f, 0f, 0f);
-                MainCamera.backgroundColor = placeDict.Value.BGColor;
+                mainCamera.backgroundColor = placeDict.Value.BGColor;
             }
             else
             {
@@ -91,6 +109,8 @@ public class PlaceManager : Singleton<PlaceManager>
             }
             
         }
+
+        HUD_currentPlactTxt.text = DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][idBtn.buttonID].ToString();
 
         PlayerController.Instance.ft_resetPlayerSpot();
         SetInteractionObjects.Instance.SetOn_InteractiveOB();
@@ -102,7 +122,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
     public void StartGoingSomewhereLoading(IDBtn idBtn, float delay)
     {
-        GameManager.Instance.CanInput = false;
+        GameManager.Instance.canInput = false;
         PlayerInputController.Instance.StopMove();
         PhoneHardware.Instance.PhoneOff();
 
@@ -112,13 +132,14 @@ public class PlaceManager : Singleton<PlaceManager>
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
     {
         // Set Loading Canvas
-        CurrentPlaceTxt.text = $"\"{idBtn.buttonValue.Name}\"(으)로 이동합니다.";
-        GoingSomewhereloadingCG.alpha = 0f;
-        GoingSomewhereloadingCG.DOFade(1, delay);
-        GoingSomewhereloadingCG.gameObject.SetActive(true);
+        currentPlaceTxt.text = 
+            $"\"{DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][idBtn.buttonID]}\"(으)로 이동합니다.";
+        goingSomewhereloadingCG.alpha = 0f;
+        goingSomewhereloadingCG.DOFade(1, delay);
+        goingSomewhereloadingCG.gameObject.SetActive(true);
 
         // Set Spine
-        Step_SG.TryGetComponent(out RectTransform rectTransform);
+        step_SG.TryGetComponent(out RectTransform rectTransform);
         if (rectTransform.localScale.x < 0)
         {
             Vector3 v3 = rectTransform.localScale;
@@ -127,8 +148,8 @@ public class PlaceManager : Singleton<PlaceManager>
         }
         rectTransform.anchoredPosition = new Vector2(-400f, 0f);
 
-        Step_SG.AnimationState.SetEmptyAnimations(0);
-        Step_SG.AnimationState.SetAnimation(trackIndex: 0, "animation", loop: false);
+        step_SG.AnimationState.SetEmptyAnimations(0);
+        step_SG.AnimationState.SetAnimation(trackIndex: 0, "animation", loop: false);
 
 
         yield return new WaitForSeconds(delay);
@@ -142,12 +163,10 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Gen Map
         SetCurrent3DMap(idBtn);
-        HUD_currentPlactTxt.text = idBtn.buttonValue.Name.ToString();
-
         yield return new WaitForSeconds(delay);
 
         // End
-        GoingSomewhereloadingCG.DOFade(0, delay)
+        goingSomewhereloadingCG.DOFade(0, delay)
             .OnComplete(() =>
             {
                 EndGoingSomewhereLoading();
@@ -156,9 +175,9 @@ public class PlaceManager : Singleton<PlaceManager>
 
     private void EndGoingSomewhereLoading()
     {
-        GameManager.Instance.CanInput = true;
+        GameManager.Instance.canInput = true;
         PlayerInputController.Instance.CanMove = true;
-        GoingSomewhereloadingCG.gameObject.SetActive(false);
+        goingSomewhereloadingCG.gameObject.SetActive(false);
     }
 
     #endregion

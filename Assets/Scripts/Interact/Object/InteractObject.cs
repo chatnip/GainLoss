@@ -8,7 +8,6 @@ public class InteractObject : InteractCore
     #region Value
 
     [Header("==== ID")]
-    [SerializeField] public string thisName;
     [SerializeField] public string objectID;
 
     [Header("=== Interact")]
@@ -22,8 +21,8 @@ public class InteractObject : InteractCore
     {
         base.OnPointerDown(eventData);
 
-        if (GameManager.Instance.CanInput &&
-            GameManager.Instance.CanInteractObject)
+        if (GameManager.Instance.canInput &&
+            GameManager.Instance.canInteractObject)
         { Interact(); }
         
     }
@@ -44,8 +43,8 @@ public class InteractObject : InteractCore
 
     public override void Interact()
     {
-        GameManager.Instance.CanInput = false;
-        GameManager.Instance.CanInteractObject = false;
+        GameManager.Instance.canInput = false;
+        GameManager.Instance.canInteractObject = false;
         IsInteracted = true;
         SetOff_colorAni();
     }

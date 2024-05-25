@@ -35,13 +35,13 @@ public class WordManager : Singleton<WordManager>
 
     // 선택한 단어 및 단어의 액션 목록
     [HideInInspector] public List<string> currentWordIDList = new();
-    [HideInInspector] public List<ButtonValue> currentWordList = new();
+    //[HideInInspector] public List<ButtonValue> currentWordList = new();
     [HideInInspector] public List<string> currentWordActionIDList = new();
-    [HideInInspector] public List<ButtonValue> currentWordActionList = new();
+    //[HideInInspector] public List<ButtonValue> currentWordActionList = new();
 
     // 선택한 단어 및 단어의 액션
-    [HideInInspector] public ButtonValue currentWord;
-    private ButtonValue currentWordAction;
+    //[HideInInspector] public ButtonValue currentWord;
+    //private ButtonValue currentWordAction;
 
     #endregion
 
@@ -74,12 +74,12 @@ public class WordManager : Singleton<WordManager>
         resetBtn.TryGetComponent(out Outline OL);
         OL.enabled = false;
         //todoWordBtnSpawner.PickWordActionBtn();
-        currentWord = null;
-        currentWordAction = null;
+        //currentWord = null;
+        //currentWordAction = null;
         // currentWordIDList.Clear();  // 목록을 지우도록 수정
-        currentWordList.Clear();
+        //currentWordList.Clear();
         // currentWordActionIDList.Clear();
-        currentWordActionList.Clear();
+        //currentWordActionList.Clear();
         currentWordActionStr.Value = "아무것도 하지 않는다";
         todoWordBtnSpawner.SetThisSectionBtns(todoWordBtnSpawner.wordParentObject);
 
@@ -128,7 +128,7 @@ public class WordManager : Singleton<WordManager>
     #endregion
 
     #region EXE
-
+/*
     public void WordActionBtnListSet()
     {
         Debug.Log(enableWordActionBtnList.Count);
@@ -157,7 +157,7 @@ public class WordManager : Singleton<WordManager>
         currentWordActionStr.Value = text;
         StreamManager.currentStreamEventID = currentWord.ID + currentWordAction.ID;
 
-        /*currentStreamEvent = SetStreamEvent(
+        *//*currentStreamEvent = SetStreamEvent(
             currentWord.ID,
             currentWordAction.ID,
             Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
@@ -167,9 +167,9 @@ public class WordManager : Singleton<WordManager>
             currentStreamEvent,
             Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][StreamManager.currentStreamEventID]),
             Convert.ToInt32(StreamManager.currentStreamEventDatas[1][StreamManager.currentStreamEventID]));
-    */
+    *//*
     }
-
+*/
     #endregion
 
     #region Set
@@ -311,18 +311,4 @@ public class WordManager : Singleton<WordManager>
     }
 */
     #endregion
-}
-
-
-[System.Serializable]
-public class ButtonValue
-{
-    public string ID;
-    public string Name;
-
-    public ButtonValue(string id, string name)
-    {
-        ID = id;
-        Name = name;
-    }
 }

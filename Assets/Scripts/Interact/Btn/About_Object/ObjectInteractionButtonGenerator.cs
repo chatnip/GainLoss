@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using System.Linq;
 using UniRx;
 
 public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>, IInteract
@@ -62,10 +61,10 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
         btn.SetActive(false);
         targetGO.TryGetComponent(out InteractObject IO);
         btn.name = targetGO.name + "Btn";
-        
-        InteractObjectBtn interactionBtn = btn.GetComponent<InteractObjectBtn>();
-        interactionBtn.TargetGO = targetGO;
-        interactionBtn.txt_name_left.text = IO.thisName;
+
+        btn.TryGetComponent(out InteractObjectBtn IOB);
+        IOB.TargetGO = targetGO;
+        IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[GameManager.Instance.languageNum][IO.objectID].ToString();
 
         allInteractionBtns.Add(btn);
     }

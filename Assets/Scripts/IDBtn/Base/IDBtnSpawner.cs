@@ -18,7 +18,7 @@ public abstract class IDBtnSpawner : MonoBehaviour
 
     }
 
-    protected virtual IDBtn CreateIDBtn(ButtonValue buttonValue)
+    protected virtual IDBtn CreateIDBtn(string ID)
     {
         return null;
     }

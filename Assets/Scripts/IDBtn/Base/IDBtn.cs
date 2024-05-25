@@ -8,7 +8,7 @@ public class IDBtn : MonoBehaviour
     #region Value
 
     [Header("=== Data")]
-    [SerializeField] public ButtonValue buttonValue;
+    [SerializeField] public string buttonID;
 
     [Header("=== Component")]
     [SerializeField] Sprite basicImage;
@@ -28,15 +28,13 @@ public class IDBtn : MonoBehaviour
         switch (buttonType)
         {
             case ButtonType.WordType:
-                IDBtnSetup();
                 break;
 
             case ButtonType.WordActionType:
-                IDBtnSetup();
                 break;
 
             case ButtonType.PlaceType:
-                IDBtnSetup();
+                IDBtnSetup_PlaceType();
                 break;
         }
     }
@@ -45,15 +43,14 @@ public class IDBtn : MonoBehaviour
 
     #region Set
 
-    void IDBtnSetup()
+    private void IDBtnSetup_PlaceType()
     {
-        rect.localPosition = Vector3.zero;
+        buttonText.text = DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][this.buttonID].ToString();
         rect.localScale = Vector3.one;
         button.enabled = isButton;
-        buttonText.text = buttonValue.Name;
-        buttonText.rectTransform.localPosition = Vector3.zero;
         button.image.sprite = basicImage;
     }
+
 
     #endregion
 }

@@ -232,7 +232,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // 일시정지
     private void OnOffPause(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         // 폰 켜져있을 시 끄기
         if (PhoneHardware.Instance.gameObject.activeSelf)
@@ -258,7 +258,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
             GameSystem.Instance.ObjDescOff();
             return;
         }
-        else if (GameSystem.Instance.NpcPanelBtn.gameObject.activeSelf)
+        else if (GameSystem.Instance.npcPanelBtn.gameObject.activeSelf)
         {
             GameSystem.Instance.NpcDescOff();
             return;
@@ -268,7 +268,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     public void OnOffPause()
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         /*if (pause.gameObject.activeSelf)
         {
@@ -307,7 +307,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     public void OnOffPhone()
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (isPause ||
             !QuarterViewCamera.activeSelf ||
@@ -333,7 +333,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     public void OnOffInteractObject()
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (isPause || 
             !QuarterViewCamera.activeSelf || 
@@ -363,7 +363,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf || GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
         {
@@ -374,7 +374,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // 파트 넘기기 (Y키)
     private void TerminatePart(InputAction.CallbackContext context)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (isPause || 
             GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
@@ -395,7 +395,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // 뒤로가기(B키)
     private void BackBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
         if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
@@ -467,7 +467,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     public void PointerMoveInput(Vector2 newPointerMoveDirection)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (PSWindow_FC.gameObject.activeSelf) { pointerMove = newPointerMoveDirection; }
     }
@@ -479,7 +479,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
         { cutsceneSO.skipOrCompleteSeq(GameSystem.Instance.cutsceneImg, GameSystem.Instance.cutsceneTxt); return; }
@@ -507,7 +507,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if(SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -540,7 +540,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -571,7 +571,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
@@ -619,7 +619,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.CanInput) { return; }
+        if (!GameManager.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
