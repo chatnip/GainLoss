@@ -8,18 +8,32 @@ public class DataManager : Singleton<DataManager>
     #region Value
 
     [Header("=== CSV File")]
+    [Header("-- About Entire Play")]
     [SerializeField] TextAsset ChapterCSV;
     [SerializeField] TextAsset AbilityCSV;
-    [SerializeField] TextAsset PlaceCSV;
-    [SerializeField] TextAsset ObjectCSV;
-    [SerializeField] TextAsset LanguageCSV;
-
-    // Other Data
     public List<Dictionary<string, object>> ChapterCSVDatas = new();
     public List<Dictionary<string, object>> AbilityCSVDatas = new();
+
+
+    [Header("-- About Play")]
+    [SerializeField] TextAsset PlaceCSV;
+    [SerializeField] TextAsset ObjectCSV;
+    [SerializeField] TextAsset NpcCSV;
     public List<Dictionary<string, object>> PlaceCSVDatas = new();
     public List<Dictionary<string, object>> ObjectCSVDatas = new();
+    public List<Dictionary<string, object>> NpcCSVDatas = new();
+
+
+    [Header("-- About Language")]
+    [SerializeField] TextAsset LanguageCSV;
+    [SerializeField] TextAsset StaticTextCSV; 
     public List<Dictionary<string, object>> LanguageCSVDatas = new();
+    public List<Dictionary<string, object>> StaticTextCSVDatas = new();
+
+    // Other Data
+
+
+
 
     #endregion
 
@@ -33,9 +47,11 @@ public class DataManager : Singleton<DataManager>
 
     public void Offset_ReadData_from_CSV()
     {
+        #region Entire Play
+
         // 0. Eng / 1. Kor / 2. Jpn / 3. Get Activitiy Each Day / 4. Start Day / 5. End Day
         // 6. Default Observational / 7. Default Persuasive / 8. Default MentalStength
-        // 9. Visitable Place IDs / 10.Interactable Object IDs
+        // 9. Visitable Place IDs / 10. Interactable Object IDs / 11.Interactable NPC IDs
         ChapterCSVDatas = CSVReader.Read(this.ChapterCSV);
 
         // 0. Eng / 1. Kor / 2. Jpn
@@ -44,14 +60,32 @@ public class DataManager : Singleton<DataManager>
         // 0. Eng / 1. Kor / 2. Jpn
         PlaceCSVDatas = CSVReader.Read(this.PlaceCSV);
 
-        // 0. Eng / 1. Kor / 2. Jpn // 3. Default Desc
+        #endregion
+
+        #region Play
+
+        // 0. Eng / 1. Kor / 2. Jpn
+        // 3. Defualt Text Eng / 4. Defualt Text Kor / 5. Defualt Text Jpn
+        // 6. Extra Text Eng / 7. Extra Text Kor / 8. Extra Text Jpn 
         ObjectCSVDatas = CSVReader.Read(this.ObjectCSV);
+
+        NpcCSVDatas = CSVReader.Read(this.NpcCSV);
+
+        #endregion
+
+        #region Language
 
         // 0. Num
         LanguageCSVDatas = CSVReader.Read(this.LanguageCSV);
+
+        // 0 -> Length (It have one's turn)
+        StaticTextCSVDatas = CSVReader.Read(this.StaticTextCSV);
+
+        #endregion
+
     }
 
-    
+
 
     #endregion
 

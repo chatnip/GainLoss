@@ -1,5 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -59,13 +60,30 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     public void Offset()
     {
+        int LNum = LanguageManager.Instance.languageNum;
         // Set Dict
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
         { 
-            { e_HomeInteractType.Observational, new QuestionWindowConfig("사진 더미를 보며 시간 좀 때워볼까?", "관찰력", "observationalAnim", 1, 1) },
-            { e_HomeInteractType.Persuasive, new QuestionWindowConfig("책을 하나 읽을까?", "설득력", "persuasiveAnim", 1, 1) },
-            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig("침대에서 조금 잘까?", "정신력", "mentalStrengthAnim", 1, 1) },
-            { e_HomeInteractType.GoOutside, new QuestionWindowConfig("외출할까?", "", "goOutsideAnim", 0, 0) }
+            { e_HomeInteractType.Observational, new QuestionWindowConfig(
+                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O003"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O003"].ToString(), 
+                "observationalAnim", 
+                1, 1) },
+            { e_HomeInteractType.Persuasive, new QuestionWindowConfig(
+                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O002"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O002"].ToString(),
+                "persuasiveAnim", 
+                1, 1) },
+            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
+                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O001"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O001"].ToString(),
+                "mentalStrengthAnim", 
+                1, 1) },
+            { e_HomeInteractType.GoOutside, new QuestionWindowConfig(
+                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O000"].ToString(),
+                "",
+                "goOutsideAnim", 
+                0, 0) }
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
@@ -184,7 +202,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.mainInfo.CurrentActivity > 0)
         {
             questionContentTxt.text =
-                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>아직 사용하지 않은 행동력이 존재하지만, 정말 나갈까?</size></color>";
+                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + DataManager.Instance.ObjectCSVDatas[6 + LanguageManager.Instance.languageNum]["O000"].ToString() + "</size></color>";
         }
         else
         {

@@ -13,7 +13,7 @@ public class IDBtn : MonoBehaviour
     [Header("=== Component")]
     [SerializeField] Sprite basicImage;
     [SerializeField] public Button button;
-    [SerializeField] TMP_Text buttonText;
+    [SerializeField] public TMP_Text buttonText;
     [SerializeField] RectTransform rect;
     [SerializeField] ButtonType buttonType;
 
@@ -43,7 +43,7 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_PlaceType()
     {
-        buttonText.text = DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][this.buttonID].ToString();
+        buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
         rect.localScale = Vector3.one;
         button.enabled = true;
         button.image.sprite = basicImage;

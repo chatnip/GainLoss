@@ -64,8 +64,10 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
 
         btn.TryGetComponent(out InteractObjectBtn IOB);
         IOB.TargetGO = targetGO;
-        IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[GameManager.Instance.languageNum][IO.objectID].ToString();
-
+        if (IO is BasicInteractObject)
+        { IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
+        if (IO is NpcInteractObject)
+        { IOB.txt_name_left.text = DataManager.Instance.NpcCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
         allInteractionBtns.Add(btn);
     }
 

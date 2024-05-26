@@ -7,6 +7,8 @@ using UniRx;
 using DG.Tweening;
 using Spine.Unity;
 using System.Linq;
+using System;
+using Unity.VisualScripting;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -25,8 +27,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
     [Header("=== Place Components")]
     [SerializeField] public List<IDBtn> placeBtnList = new();
-    [SerializeField] List<GameObject> placeGOList = new();
-    [SerializeField] List<Color> placeColorList = new();
+    [SerializeField] List<PlaceSet> placeSetList = new();
     Dictionary<IDBtn, PlaceSet> placeIdBtnGODict;
 
     [Header("=== About Data")]
@@ -42,6 +43,9 @@ public class PlaceManager : Singleton<PlaceManager>
         // Set Place Btn
         foreach (IDBtn placeBtn in placeBtnList)
         {
+            // Set Language Text
+            LanguageManager.Instance.SetLanguageTxt(placeBtn.buttonText);
+
             // Suvscribe Btn
             if (placeBtn == placeBtnList[0])
             {
@@ -50,6 +54,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     {
                         if (!GameManager.Instance.canInput) { return; }
                         PhoneHardware.Instance.PhoneOff();
+                        PlayerInputController.Instance.CanMove = true;
                     });
             }
             else
@@ -77,7 +82,7 @@ public class PlaceManager : Singleton<PlaceManager>
         // Set Dict
         placeIdBtnGODict = new Dictionary<IDBtn, PlaceSet>();
         for (int i = 0; i < placeBtnList.Count; i++)
-        { placeIdBtnGODict.Add(placeBtnList[i], new PlaceSet(placeGOList[i], placeColorList[i])); }
+        { placeIdBtnGODict.Add(placeBtnList[i], placeSetList[i]); }
 
         // Spawn Room
         SetCurrent3DMap(placeBtnList[0]); 
@@ -94,6 +99,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
     public void SetCurrent3DMap(IDBtn idBtn)
     {
+        // Spawn Map
         foreach (KeyValuePair<IDBtn, PlaceSet> placeDict in placeIdBtnGODict)
         {
             if(placeDict.Key == idBtn)
@@ -101,6 +107,30 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeDict.Value.MapGO.SetActive(true);
                 placeDict.Value.MapGO.transform.position = new Vector3(0f, 0f, 0f);
                 mainCamera.backgroundColor = placeDict.Value.BGColor;
+                
+                // Spawn Map Object ( No Home )
+                if(placeDict.Key != placeBtnList[0])
+                {
+                    placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<BasicInteractObject>();
+                    placeIdBtnGODict[idBtn].Inevitable_InteractNPCs = new List<NpcInteractObject>();
+
+                    foreach (BasicInteractObject BIO in placeDict.Value.InteractObjects)
+                    {
+                        BIO.IsInteracted = false;
+                        if (DataManager.Instance.ChapterCSVDatas[10][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(BIO.ID))
+                        { BIO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractObjects.Add(BIO); }
+                        else
+                        { BIO.gameObject.SetActive(false); }
+                    }
+                    foreach (NpcInteractObject NIO in placeDict.Value.InteractNPCs)
+                    {
+                        NIO.IsInteracted = false;
+                        if (DataManager.Instance.ChapterCSVDatas[11][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(NIO.ID))
+                        { NIO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractNPCs.Add(NIO); }
+                        else
+                        { NIO.gameObject.SetActive(false); }
+                    }
+                }
             }
             else
             {
@@ -110,8 +140,11 @@ public class PlaceManager : Singleton<PlaceManager>
             
         }
 
-        HUD_currentPlactTxt.text = DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][idBtn.buttonID].ToString();
+        
+        // Set Text UI
+        HUD_currentPlactTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
 
+        // Reset
         PlayerController.Instance.ft_resetPlayerSpot();
         SetInteractionObjects.Instance.SetOn_InteractiveOB();
     }
@@ -132,8 +165,9 @@ public class PlaceManager : Singleton<PlaceManager>
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
     {
         // Set Loading Canvas
+        LanguageManager.Instance.SetLanguageTxt(currentPlaceTxt);
         currentPlaceTxt.text = 
-            $"\"{DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][idBtn.buttonID]}\"(으)로 이동합니다.";
+            $"\"{DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID]}\"";
         goingSomewhereloadingCG.alpha = 0f;
         goingSomewhereloadingCG.DOFade(1, delay);
         goingSomewhereloadingCG.gameObject.SetActive(true);
@@ -163,6 +197,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Gen Map
         SetCurrent3DMap(idBtn);
+
         yield return new WaitForSeconds(delay);
 
         // End
@@ -184,10 +219,15 @@ public class PlaceManager : Singleton<PlaceManager>
 
 }
 
+[Serializable]
 public class PlaceSet
 {
     public GameObject MapGO;
     public Color BGColor;
+    public List<BasicInteractObject> InteractObjects;
+    public List<BasicInteractObject> Inevitable_InteractObjects;
+    public List<NpcInteractObject> InteractNPCs;
+    public List<NpcInteractObject> Inevitable_InteractNPCs;
 
     public PlaceSet(GameObject mapGO, Color bgColor)
     {

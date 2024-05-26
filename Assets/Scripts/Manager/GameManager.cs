@@ -9,8 +9,6 @@ public class GameManager : Singleton<GameManager>
 
     [Header("=== Other")]
     [SerializeField] public string currentChapter = "A";
-    [SerializeField] public string languageID = "L00";
-    [SerializeField] public int languageNum = 0;
     [SerializeField] public MainInfo mainInfo = new MainInfo();
 
     // Other Value
@@ -29,8 +27,6 @@ public class GameManager : Singleton<GameManager>
 
         //temp
         currentChapter = "A";
-        languageID = "L00";
-        languageNum = GetLanguageNum(languageID);
 
         Alloffset();
     }
@@ -44,7 +40,6 @@ public class GameManager : Singleton<GameManager>
             Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[7][currentChapter]),
             Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[8][currentChapter])
             );
-
     }
 
     private void Alloffset()
@@ -54,21 +49,19 @@ public class GameManager : Singleton<GameManager>
         LoadingManager.Instance.Offset();
         PlaceManager.Instance.Offset();
         ActivityController.Instance.Offset();
+
+        Desktop.Instance.Offset();
+
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
+
         SetInteractionObjects.Instance.Offset();
+        LanguageManager.Instance.Offset();
     }
 
     #endregion
 
-    #region Other
-
-    private int GetLanguageNum(string languageID)
-    {
-        return Convert.ToInt32(languageID.Substring(1, 2));
-    }
-
-    #endregion
+    
 }
 
 [Serializable]

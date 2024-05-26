@@ -8,10 +8,10 @@ public class InteractObject : InteractCore
     #region Value
 
     [Header("==== ID")]
-    [SerializeField] public string objectID;
+    [SerializeField] public string ID;
 
     [Header("=== Interact")]
-    [SerializeField] bool IsInteracted = false;
+    [SerializeField] public bool IsInteracted = false;
 
     #endregion
 

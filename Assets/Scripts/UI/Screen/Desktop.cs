@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,17 +6,15 @@ using TMPro;
 using DG.Tweening;
 using System;
 
-public class Desktop : MonoBehaviour, IInteract
+public class Desktop : Singleton<Desktop>, IInteract
 {
     #region Value
 
+    [Header("=== Camera")]
+    [SerializeField] Camera DesktopCamera;
+
     [Header("*Manager")]
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] DataManager DataManager;
-    [SerializeField] WordManager WordManager;
-    [SerializeField] LoadingManager ActionEventManager;
     [SerializeField] StreamManager StreamManager;
-    [SerializeField] GameSystem GameSystem;
     [SerializeField] ComputerInteract computerInteract;
 
 
@@ -72,10 +69,11 @@ public class Desktop : MonoBehaviour, IInteract
 
     #endregion
 
-    #region Main
+    #region Framework & Base Set
 
-    private void Awake()
+    public void Offset()
     {
+        // Set Btn
         PSOpenBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -115,6 +113,16 @@ public class Desktop : MonoBehaviour, IInteract
                 //todoWindow.SetActive(false);
                 DisappearPopup(todoWindow);
             });
+
+
+        // Set Off
+        DesktopCamera.gameObject.SetActive(false);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
     }
 
     public void StartStream()
@@ -137,7 +145,7 @@ public class Desktop : MonoBehaviour, IInteract
     public void DisappearPopup(GameObject Popup)
     {
         EffectfulWindow.DisappearEffectful(Popup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
-        PlayerInputController.SetSectionBtns(new List<List<Button>>
+        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>>
         {
             new List<Button> { snsOpenBtn },
             new List<Button> { fancafeOpenBtn },
@@ -148,31 +156,26 @@ public class Desktop : MonoBehaviour, IInteract
         if(disposable != null) { disposable.Dispose(); }
     }
 
-    private void OnEnable()
-    {
-        TurnOn();
-    }
-
     public void Interact()
     {
         #region Open Btns
 
-        if (PlayerInputController.SelectBtn == snsOpenBtn) 
+        if (PlayerInputController.Instance.SelectBtn == snsOpenBtn) 
         { return; }
-        else if (PlayerInputController.SelectBtn == fancafeOpenBtn) 
+        else if (PlayerInputController.Instance.SelectBtn == fancafeOpenBtn) 
         { return; }
-        else if(PlayerInputController.SelectBtn == streamOpenBtn) 
+        else if(PlayerInputController.Instance.SelectBtn == streamOpenBtn) 
         {
             desktopSoftwere = DesktopSoftwere.Stream;
             ConfirmPopupSetting();
-            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
+            PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
             return;
         }
-        else if(PlayerInputController.SelectBtn == PSOpenBtn)
+        else if(PlayerInputController.Instance.SelectBtn == PSOpenBtn)
         {
             desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
             ConfirmPopupSetting();
-            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
+            PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
             return;
         }
 
@@ -180,12 +183,12 @@ public class Desktop : MonoBehaviour, IInteract
 
         #region Confirm Btns
 
-        if(PlayerInputController.SelectBtn == popupExitBtn)
+        if(PlayerInputController.Instance.SelectBtn == popupExitBtn)
         {
             EffectfulWindow.DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
             return;
         }
-        else if(PlayerInputController.SelectBtn == confirmBtn)
+        else if(PlayerInputController.Instance.SelectBtn == confirmBtn)
         {
             
         }
@@ -250,7 +253,7 @@ public class Desktop : MonoBehaviour, IInteract
         disposable = confirmBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                WordManager.TodoReset();
+                //WordManager.TodoReset();
                 //WordManager.InitWord();
 
                 confirmPopup.SetActive(false);
@@ -319,7 +322,7 @@ public class Desktop : MonoBehaviour, IInteract
 
     public void setDesktopSectionBtns()
     {
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { 
+        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { 
             new List<Button> { snsOpenBtn },
             new List<Button> { fancafeOpenBtn },
             new List<Button> { streamOpenBtn },
