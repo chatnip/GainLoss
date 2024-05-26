@@ -13,11 +13,9 @@ public class IDBtn : MonoBehaviour
     [Header("=== Component")]
     [SerializeField] Sprite basicImage;
     [SerializeField] public Button button;
-    [SerializeField] public TMP_Text buttonText;
+    [SerializeField] TMP_Text buttonText;
     [SerializeField] RectTransform rect;
-    [SerializeField] public ButtonType buttonType;
-
-    [HideInInspector] public bool isButton;
+    [SerializeField] ButtonType buttonType;
 
     #endregion
 
@@ -47,7 +45,7 @@ public class IDBtn : MonoBehaviour
     {
         buttonText.text = DataManager.Instance.PlaceCSVDatas[GameManager.Instance.languageNum][this.buttonID].ToString();
         rect.localScale = Vector3.one;
-        button.enabled = isButton;
+        button.enabled = true;
         button.image.sprite = basicImage;
     }
 

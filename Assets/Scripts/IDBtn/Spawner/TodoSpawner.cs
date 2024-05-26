@@ -54,7 +54,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     {
         if (PlayerInputController.SelectBtn.TryGetComponent(out IDBtn iDBtn))
         {
-            if(iDBtn.buttonType == ButtonType.WordType)
+            /*if(iDBtn.buttonType == ButtonType.WordType)
             {
                 //WordManager.WordBtnApply(iDBtn.buttonValue);
                 SetThisSectionBtns(wordActionParentObject);
@@ -67,7 +67,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
                 //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { WordManager.resetBtn, Desktop.streamStartBtn } }, this);
 
                 return;
-            }
+            }*/
         }
         else if (PlayerInputController.SelectBtn == Desktop.streamStartBtn && Desktop.streamStartBtn.interactable)
         {
@@ -86,7 +86,7 @@ public class TodoSpawner : IDBtnSpawner, IInteract
     protected override IDBtn CreateIDBtn(string ID)
     {
         IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
-        wordBtn.isButton = true;
+        //wordBtn.isButton = true;
         //wordBtn.buttonValue = word;
         //wordBtn.Rate = ;
         return wordBtn;
