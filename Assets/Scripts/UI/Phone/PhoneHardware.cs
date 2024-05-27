@@ -133,13 +133,14 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             .OnComplete(() =>
             {
                 circleEffectRT.gameObject.SetActive(false);
-                GameManager.Instance.canInput = true;
             }));
 
 
         turnOnExtraGODict[pse].gameObject.SetActive(true);
 
         yield return new WaitForEndOfFrame();
+
+        GameManager.Instance.canInput = true;
 
         if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf) 
         { PhoneSoftware.Instance.OpenMap(); }

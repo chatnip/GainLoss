@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UniRx;
 
 public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>, IInteract
 {
@@ -64,10 +63,10 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
 
         btn.TryGetComponent(out InteractObjectBtn IOB);
         IOB.TargetGO = targetGO;
-        if (IO is BasicInteractObject)
-        { IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
         if (IO is NpcInteractObject)
         { IOB.txt_name_left.text = DataManager.Instance.NpcCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
+        else
+        { IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
         allInteractionBtns.Add(btn);
     }
 

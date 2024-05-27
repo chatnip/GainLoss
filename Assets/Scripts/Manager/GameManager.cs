@@ -44,10 +44,13 @@ public class GameManager : Singleton<GameManager>
 
     private void Alloffset()
     {
-        Offset();
+        this.Offset();
+
+        LanguageManager.Instance.Offset();
         GameSystem.Instance.Offset();
         LoadingManager.Instance.Offset();
         PlaceManager.Instance.Offset();
+
         ActivityController.Instance.Offset();
 
         Desktop.Instance.Offset();
@@ -56,7 +59,7 @@ public class GameManager : Singleton<GameManager>
         PhoneHardware.Instance.Offset();
 
         SetInteractionObjects.Instance.Offset();
-        LanguageManager.Instance.Offset();
+        ObjectPooling.Instance.Offset();
     }
 
     #endregion
@@ -79,6 +82,9 @@ public class MainInfo
     public int ObservationalAbility = 0;
     public int PersuasiveAbility = 0;
     public int MentalStrengthAbility = 0;
+
+    //Place & Streaming
+    public int PositiveAndNegative = 0; 
 
     public MainInfo() { }
     public MainInfo(int day, int currentActivity, int d_Obse, int d_Pers, int d_Ment)

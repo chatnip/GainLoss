@@ -237,7 +237,7 @@ public class PlayerController : Singleton<PlayerController>
 
     public void resetAnime()
     {
-        Debug.Log("Anim Reset");
+        //Debug.Log("Anim Reset");
         //if (_animIDSpeed == 0) { AssignAnimationIDs(); }
         _animator.SetTrigger("Return");
         _animationBlend = 0;

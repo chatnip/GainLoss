@@ -94,6 +94,8 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
         // Set UI
         SetActivityGageUI(0.25f);
+        LanguageManager.Instance.SetLanguageTxt(questionContentTxt);
+        LanguageManager.Instance.SetLanguageTxt(kindOfGageByActivityTxt);
 
         activityQuestionWindowRT.anchoredPosition = new Vector2(1200, activityQuestionWindowRT.anchoredPosition.y);
         noBtn.interactable = false;
@@ -294,6 +296,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
         QuestionWindow_ActiveOff(0.25f);
         SetActivityGageUI(0.25f);
+        GameSystem.Instance.SetAbilityUI();
 
 #if UNITY_EDITOR
         Debug.Log(

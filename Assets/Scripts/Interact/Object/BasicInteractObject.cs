@@ -1,5 +1,4 @@
 //Refactoring v1.0
-using UnityEngine;
 
 public class BasicInteractObject : InteractObject
 {
@@ -12,7 +11,7 @@ public class BasicInteractObject : InteractObject
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
         if (GameSystem.Instance.npcPanelBtn.gameObject.activeSelf) { GameSystem.Instance.npcPanelBtn.gameObject.SetActive(false); }
 
-        GameSystem.Instance.ObjDescOn(""); 
+        GameSystem.Instance.ObjDescOn(this);
 
 
     }

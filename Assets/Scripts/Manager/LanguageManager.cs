@@ -10,7 +10,7 @@ public class LanguageManager : Singleton<LanguageManager>
 
     [Header("=== Data")]
     [SerializeField] public string languageID;
-    [SerializeField] public int languageNum;
+    [HideInInspector] public int languageNum;
 
     [Header("=== Font")]
     [SerializeField] List<TMP_FontAsset> fonts;
@@ -26,7 +26,6 @@ public class LanguageManager : Singleton<LanguageManager>
     public void Offset()
     {
         // Get Lanaguage ID
-        languageID = "L00";
         languageNum = GetLanguageNum(languageID);
     
         // Set Text by Lanaguage

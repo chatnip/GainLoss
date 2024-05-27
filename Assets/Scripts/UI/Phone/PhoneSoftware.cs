@@ -27,6 +27,14 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
     [SerializeField] TMP_Text DayOfWeekText;
     [SerializeField] TMP_Text realTimeText;
 
+    [Header("=== Popup")]
+    [SerializeField] Image popupBG;
+    [SerializeField] RectTransform popupRT;
+    [SerializeField] TMP_Text popupNameTxt;
+    [SerializeField] TMP_Text popupDescTxt;
+    [SerializeField] Button popupCancelBtn;
+    [SerializeField] Button popupMoveBtn;
+
     [Header("=== Other")]
     [SerializeField] Image appOpenBackgroundImg;
     [SerializeField] Image appIconImg;
@@ -47,10 +55,24 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
+                ClosePopup(0f);
                 PhoneHardware.Instance.PhoneOff();
+            });
+        popupCancelBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                ClosePopup(0.5f);
+            });
+        popupMoveBtn.OnClickAsObservable()
+            .Subscribe(btn =>
+            {
+                PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
             });
 
         #endregion
+
+        popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), 0.5f);
+        popupBG.gameObject.SetActive(false);
 
         this.visitPlaceScreen.gameObject.SetActive(false);
         this.optionScreen.gameObject.SetActive(false);
@@ -114,7 +136,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
         if (DOTween.IsTweening(OpenAppSeq)) { DOTween.Complete(OpenAppSeq); }
         OpenAppSeq = DOTween.Sequence();
-        OpenAppSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
 
         // BG 초기 설정
         if(appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT))
@@ -146,15 +167,13 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         OpenAppSeq.Append(appOpenBackgroundImg.DOFade(0, dotweenTime).OnComplete(() => { appOpenBackgroundImg.gameObject.SetActive(false); }));
         OpenAppSeq.Join(appIconImg.DOFade(0, dotweenTime).OnComplete(() => { appIconImg.gameObject.SetActive(false); }));
 
-        
+        OpenAppSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
     }
 
     public void OpenMap()
     {
-        Debug.Log("실행");
-        
+        GameManager.Instance.canInput = false;
         this.OpenMapSeq = DOTween.Sequence();
-        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
 
         List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
         PlayerInputController.Instance.SetSectionBtns(btns, this);
@@ -173,6 +192,40 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
                 .SetEase(Ease.OutBack));
             OpenMapSeq.Join(BtnCG.DOFade(1, 0.2f));
         }
+
+        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
+
+        
+    }
+
+    public void OpenPopup(IDBtn currentIdBtn, float alpha, float time)
+    {
+        int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
+
+        popupNameTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+        popupDescTxt.text = PlaceManager.Instance.visitReasons[index];
+
+
+        popupBG.color = new Color(0, 0, 0, 0);
+        popupBG.DOFade(alpha, time)
+            .OnStart(() =>
+            {
+                popupBG.gameObject.SetActive(true);
+            });
+        popupRT.DOAnchorPos(Vector2.zero, time)
+            .OnStart(() => { GameManager.Instance.canInput = false; })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
+    }
+    private void ClosePopup(float time)
+    {
+        popupBG.DOFade(0f, time)
+            .OnComplete(() =>
+            {
+                popupBG.gameObject.SetActive(false);
+            });
+        popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
+            .OnStart(() => { GameManager.Instance.canInput = false; })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
     }
 
     #endregion

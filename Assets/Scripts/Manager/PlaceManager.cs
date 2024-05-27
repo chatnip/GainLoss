@@ -32,8 +32,8 @@ public class PlaceManager : Singleton<PlaceManager>
 
     [Header("=== About Data")]
     [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
-
-
+    [SerializeField] public List<string> visitReasons = new List<string>();
+    IDBtn currentIdBtn;
     #endregion
 
     #region Framework & Base Set
@@ -53,6 +53,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     .Subscribe(btn =>
                     {
                         if (!GameManager.Instance.canInput) { return; }
+
                         PhoneHardware.Instance.PhoneOff();
                         PlayerInputController.Instance.CanMove = true;
                     });
@@ -63,16 +64,19 @@ public class PlaceManager : Singleton<PlaceManager>
                     .Subscribe(placeBV =>
                     {
                         if (!GameManager.Instance.canInput) { return; }
-                        StartGoingSomewhereLoading(placeBtn, 1.5f);
-                        placeBtn.button.interactable = false;
 
+                        currentIdBtn = placeBtn;
+                        PhoneSoftware.Instance.OpenPopup(currentIdBtn, 0.5f, 0.5f);
                     });
             }
             
             // Check Interactable
             canGoPlaceInChapter =
                 DataManager.Instance.ChapterCSVDatas[9][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
-            
+            visitReasons =
+                DataManager.Instance.ChapterCSVDatas[12 + LanguageManager.Instance.languageNum][GameManager.Instance.currentChapter].ToString().Split("/").ToList();
+
+
             if (canGoPlaceInChapter.Contains(placeBtn.buttonID))
             { placeBtn.button.interactable = true; }
             else 
@@ -153,13 +157,14 @@ public class PlaceManager : Singleton<PlaceManager>
 
     #region Going Somewhere
 
-    public void StartGoingSomewhereLoading(IDBtn idBtn, float delay)
+    public void StartGoingSomewhereLoading(float delay)
     {
         GameManager.Instance.canInput = false;
         PlayerInputController.Instance.StopMove();
         PhoneHardware.Instance.PhoneOff();
+        currentIdBtn.button.interactable = false;
 
-        StartCoroutine(GoingSomewhereLoading(idBtn, delay));
+        StartCoroutine(GoingSomewhereLoading(currentIdBtn, delay));
     }
 
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
@@ -192,8 +197,8 @@ public class PlaceManager : Singleton<PlaceManager>
         SetInteractionObjects.Instance.SetOff_InteractiveOB();
 
         // Desc Panel -> Off
-        GameSystem.Instance.NpcDescOff();
-        GameSystem.Instance.ObjDescOff();
+        GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
+        GameSystem.Instance.npcPanelBtn.gameObject.SetActive(false);
 
         // Gen Map
         SetCurrent3DMap(idBtn);
@@ -225,10 +230,9 @@ public class PlaceSet
     public GameObject MapGO;
     public Color BGColor;
     public List<BasicInteractObject> InteractObjects;
-    public List<BasicInteractObject> Inevitable_InteractObjects;
+    [HideInInspector] public List<BasicInteractObject> Inevitable_InteractObjects;
     public List<NpcInteractObject> InteractNPCs;
-    public List<NpcInteractObject> Inevitable_InteractNPCs;
-
+    [HideInInspector] public List<NpcInteractObject> Inevitable_InteractNPCs;
     public PlaceSet(GameObject mapGO, Color bgColor)
     {
         MapGO = mapGO;

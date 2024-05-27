@@ -4,25 +4,34 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using UniRx;
+using System.Collections.Generic;
 
 public class GameSystem : Singleton<GameSystem>
 {
     #region Value
 
     [Header("=== Main UI")]
-    [SerializeField] public Button pauseBtn;
+    [SerializeField] Button pauseBtn;
+    [SerializeField] List<TMP_Text> abilityTxts;
 
     [Header("=== Obj Panel")]
     [SerializeField] public Button objPanelBtn;
-    [SerializeField] public TMP_Text objText;
-    [SerializeField] public Button objPanelExitBtn;
+    [SerializeField] TMP_Text objText;
+    [SerializeField] Button objPanelExitBtn;
 
     [Header("=== Npc Panel")]
     [SerializeField] public Button npcPanelBtn;
-    [SerializeField] public TMP_Text npcName;
-    [SerializeField] public TMP_Text npcText;
-    [SerializeField] public Image npcImg;
-    [SerializeField] public Button npcPanelExitBtn;
+    [SerializeField] TMP_Text npcName;
+    [SerializeField] TMP_Text npcText;
+    [SerializeField] Image npcImg;
+    [SerializeField] Button npcPanelExitBtn;
+
+    [Header("=== Choice UI")]
+    [SerializeField] Image chioceImg;
+    [SerializeField] RectTransform btnsRT;
+    [SerializeField] List<IDBtn> choiceBtnList = new List<IDBtn>();
+    [SerializeField] TMP_Text needAbilityTxt;
+    [SerializeField] Sprite btnSprite;
 
     [Header("=== Animator")]
     [SerializeField] Animator playerAnimator;
@@ -38,7 +47,8 @@ public class GameSystem : Singleton<GameSystem>
     // Dotween
     Tween objTextingTween;
     Tween npcTextingTween;
-
+    InteractObject currentIO;
+    
     // Other Value
     ConversationBase conversations;
     bool conversationTweeningNow = false;
@@ -50,12 +60,14 @@ public class GameSystem : Singleton<GameSystem>
 
     public void Offset()
     {
-        //Player
-
+        // Player
         playerPos.position = new Vector3(0f, 0f, 0f);
         playerPos.rotation = Quaternion.identity;
 
-        //Btns
+        // Text
+        SetAbilityUI();
+
+        // Btns
         pauseBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -106,30 +118,58 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Obj Panel
 
-    public void ObjDescOn(string text)
+    public void ObjDescOn(InteractObject IO)
     {
+        currentIO = IO;
+        GameManager.Instance.canInput = false;
+        GameManager.Instance.canInteractObject = false;
         PlayerInputController.Instance.StopMove();
+
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
 
+
         objText.text = "";
-        objTextingTween = objText.DOText(text, text.Length / 10).SetEase(Ease.Linear).SetId("Obj_Description");
+        string writeText = "";
+        if (currentIO.IsInteracted) 
+        { 
+            writeText = DataManager.Instance.ObjectCSVDatas[3 + LanguageManager.Instance.languageNum][currentIO.ID].ToString();
+            objPanelExitBtn.interactable = true;
+        }
+        else 
+        {
+            writeText = DataManager.Instance.ObjectCSVDatas[6 + LanguageManager.Instance.languageNum][currentIO.ID].ToString();
+            objPanelExitBtn.interactable = false; 
+        }
+        objTextingTween = objText.DOText(writeText, writeText.Length / 10).SetEase(Ease.Linear);
         objPanelBtn.gameObject.SetActive(true);
+
     }
     
     public void ObjDescSkip()
     {
-        if (DOTween.IsTweening(objTextingTween)) { DOTween.Complete(objTextingTween); }
-        else { ObjDescOff(); }
+        if (DOTween.IsTweening(objTextingTween)) 
+        { DOTween.Complete(objTextingTween); }
+        else 
+        {
+            if (currentIO.IsInteracted)
+            { ObjDescOff(); }
+            else
+            { ShowChioceWindow(0.5f, 0.5f); }
+        }
     }
-    
+
+
     public void ObjDescOff()
     {
+        GameManager.Instance.canInput = true;
+        GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
+        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
+
         DOTween.Complete(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
         objText.text = null;
-
-        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
+        currentIO = null;
     }
 
     #endregion
@@ -226,4 +266,51 @@ public class GameSystem : Singleton<GameSystem>
 
     #endregion
 
+    #region Choice
+
+    private void ShowChioceWindow(float alpha, float time)
+    {
+        // Set On
+        chioceImg.gameObject.SetActive(true);
+        chioceImg.color = new Color(0, 0, 0, 0);
+        chioceImg.DOFade(alpha, time)
+            .OnStart(() => { GameManager.Instance.canInput = false; })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
+
+        // Set Btn by RT_Y
+        List<string> IDs = new List<string>();
+        foreach(KeyValuePair<string, object> dictDatas in DataManager.Instance.ChoiceCSVDatas[0])
+        {
+            if (dictDatas.Key != "ID" && dictDatas.Key.Substring(0, 4) == currentIO.ID)
+            { IDs.Add(dictDatas.Key); }
+        }
+        float RT_Y = btnsRT.rect.height;
+        for(int i = 0; i < IDs.Count; i++)
+        {
+            IDBtn Choice_IDBtn = ObjectPooling.Instance.GetIDBtn();
+            Choice_IDBtn.transform.SetParent(btnsRT);
+            Choice_IDBtn.buttonID = IDs[i];
+            Choice_IDBtn.gameObject.SetActive(true);
+            Choice_IDBtn.basicImage = btnSprite;
+        }
+        
+    }
+
+    private void ChoiceTab()
+    {
+        currentIO.IsInteracted = true;
+    }
+
+    #endregion
+
+    #region SetAbilityUI
+
+    public void SetAbilityUI()
+    {
+        abilityTxts[0].text = GameManager.Instance.mainInfo.ObservationalAbility.ToString();
+        abilityTxts[1].text = GameManager.Instance.mainInfo.PersuasiveAbility.ToString();
+        abilityTxts[2].text = GameManager.Instance.mainInfo.MentalStrengthAbility.ToString();
+    }
+
+    #endregion
 }

@@ -43,9 +43,6 @@ public class InteractObject : InteractCore
 
     public override void Interact()
     {
-        GameManager.Instance.canInput = false;
-        GameManager.Instance.canInteractObject = false;
-        IsInteracted = true;
         SetOff_colorAni();
     }
 

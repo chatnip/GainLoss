@@ -1,42 +1,49 @@
-using System.Collections;
+//Refactoring v1.0
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooling : Singleton<ObjectPooling>
 {
-    [Header("*Word Btn")]
-    [SerializeField] List<IDBtn> WordBtnObjectPrefabs = new List<IDBtn>();
-    [SerializeField] Queue<IDBtn> WordBtnObjectsQueue = new Queue<IDBtn>();
-    [SerializeField] RectTransform wordPool;
+    #region Value
 
-    /*[Header("*Norification Object")]
-    [SerializeField] public List<GameObject> NorificationObjectPrefabs = new List<GameObject>();*/
+    [Header("*Word Btn")]
+    [SerializeField] List<IDBtn> OP_IDBtn_Prefabs = new List<IDBtn>();
+    Queue<IDBtn> OP_IDBtn_Queue = new Queue<IDBtn>();
+    [SerializeField] RectTransform OP_IDBtn_ParentRT;
+
+    #endregion
+
+    #region Framework & Base Set
+    public void Offset()
+    {
+        for (int i = 0; i < OP_IDBtn_Prefabs.Count; i++)
+        {
+            OP_IDBtn_Queue.Enqueue(OP_IDBtn_Prefabs[i]);
+            OP_IDBtn_Prefabs[i].gameObject.SetActive(false);
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        Setup();
     }
 
-    private void Setup()
+    #endregion
+
+    #region Object Pooling _About Get
+
+    public IDBtn GetIDBtn()
     {
-        for (int i = 0; i < WordBtnObjectPrefabs.Count; i++)
-        {
-            WordBtnObjectsQueue.Enqueue(WordBtnObjectPrefabs[i]);
-            WordBtnObjectPrefabs[i].gameObject.SetActive(false);
-        }
+        var IDBtnObject = OP_IDBtn_Queue.Dequeue();
+        return IDBtnObject;
     }
 
-    public IDBtn WordBtnObjectPool()
+    public void GetBackIDBtn(IDBtn wordBtnObject)
     {
-        var wordBtnObject = WordBtnObjectsQueue.Dequeue();
-        return wordBtnObject;
-    }
-
-    public void WordObjectPick(IDBtn wordBtnObject)
-    {
-        WordBtnObjectsQueue.Enqueue(wordBtnObject);
-        wordBtnObject.transform.SetParent(wordPool);
+        OP_IDBtn_Queue.Enqueue(wordBtnObject);
+        wordBtnObject.transform.SetParent(OP_IDBtn_ParentRT);
         wordBtnObject.gameObject.SetActive(false);
     }
+
+    #endregion
 }

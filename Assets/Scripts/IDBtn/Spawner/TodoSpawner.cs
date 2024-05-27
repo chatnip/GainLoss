@@ -85,11 +85,12 @@ public class TodoSpawner : IDBtnSpawner, IInteract
 
     protected override IDBtn CreateIDBtn(string ID)
     {
-        IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
+        //IDBtn wordBtn = ObjectPooling.WordBtnObjectPool();
         //wordBtn.isButton = true;
         //wordBtn.buttonValue = word;
         //wordBtn.Rate = ;
-        return wordBtn;
+        //return wordBtn;
+        return null;
     }
 
     /*protected override void SpawnIDBtn()

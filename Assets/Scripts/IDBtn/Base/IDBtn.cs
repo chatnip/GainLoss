@@ -11,7 +11,7 @@ public class IDBtn : MonoBehaviour
     [SerializeField] public string buttonID;
 
     [Header("=== Component")]
-    [SerializeField] Sprite basicImage;
+    [SerializeField] public Sprite basicImage;
     [SerializeField] public Button button;
     [SerializeField] public TMP_Text buttonText;
     [SerializeField] RectTransform rect;
@@ -34,6 +34,9 @@ public class IDBtn : MonoBehaviour
             case ButtonType.PlaceType:
                 IDBtnSetup_PlaceType();
                 break;
+            case ButtonType.ChoiceType:
+                IDBtnSetup_ChoiceType();
+                break;
         }
     }
 
@@ -41,6 +44,11 @@ public class IDBtn : MonoBehaviour
 
     #region Set
 
+    private void IDBtnSetup_ChoiceType()
+    {
+        buttonText.text = DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
+        button.image.sprite = basicImage;
+    }
     private void IDBtnSetup_PlaceType()
     {
         buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
@@ -58,5 +66,7 @@ public enum ButtonType
 {
     WordType,
     WordActionType,
-    PlaceType
+
+    PlaceType,
+    ChoiceType
 }
