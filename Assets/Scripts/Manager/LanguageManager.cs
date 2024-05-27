@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,6 +9,7 @@ public class LanguageManager : Singleton<LanguageManager>
 
     [Header("=== Data")]
     [SerializeField] public string languageID;
+    [SerializeField] public int languageTypeAmount;
     [HideInInspector] public int languageNum;
 
     [Header("=== Font")]
@@ -73,6 +73,7 @@ public class LanguageManager : Singleton<LanguageManager>
     {
         tmpT.font = fonts[languageNum];
     }
+
     public void SetLanguageTxts(List<TMP_Text> tmpTs)
     {
         foreach(TMP_Text tmpT in tmpTs)

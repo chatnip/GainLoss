@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -34,11 +35,11 @@ public class GameManager : Singleton<GameManager>
     private void Offset()
     {
         mainInfo = new MainInfo(
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[4][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[3][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[6][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[7][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[8][currentChapter])
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 3][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 4][currentChapter]),
+            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 5][currentChapter])
             );
     }
 
@@ -82,7 +83,6 @@ public class MainInfo
     public int ObservationalAbility = 0;
     public int PersuasiveAbility = 0;
     public int MentalStrengthAbility = 0;
-
     //Place & Streaming
     public int PositiveAndNegative = 0; 
 
@@ -94,6 +94,15 @@ public class MainInfo
         ObservationalAbility = d_Obse;
         PersuasiveAbility = d_Pers;
         MentalStrengthAbility = d_Ment;
+    }
+    public bool IsEnoughAbility(int d_Obse, int d_Pers, int d_Ment)
+    {
+        if (ObservationalAbility <= d_Obse &&
+            PersuasiveAbility <= d_Pers &&
+            MentalStrengthAbility <= d_Ment)
+        { return true; }
+        else
+        { return false; }
     }
 
 

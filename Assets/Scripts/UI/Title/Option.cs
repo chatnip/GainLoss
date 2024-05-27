@@ -1,13 +1,10 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
-using System;
-using Unity.VisualScripting;
 
 public class Option : MonoBehaviour, IInteract
 {

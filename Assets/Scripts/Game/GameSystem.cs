@@ -5,6 +5,8 @@ using DG.Tweening;
 using TMPro;
 using UniRx;
 using System.Collections.Generic;
+using System;
+using UniRx.Triggers;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -27,7 +29,7 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] Button npcPanelExitBtn;
 
     [Header("=== Choice UI")]
-    [SerializeField] Image chioceImg;
+    [SerializeField] CanvasGroup chioceCG;
     [SerializeField] RectTransform btnsRT;
     [SerializeField] List<IDBtn> choiceBtnList = new List<IDBtn>();
     [SerializeField] TMP_Text needAbilityTxt;
@@ -53,7 +55,7 @@ public class GameSystem : Singleton<GameSystem>
     ConversationBase conversations;
     bool conversationTweeningNow = false;
     int currentOrder = 0;
-
+    List<IDisposable> iDisposables = new List<IDisposable>();
     #endregion
 
     #region Framework & Base Set
@@ -65,7 +67,16 @@ public class GameSystem : Singleton<GameSystem>
         playerPos.rotation = Quaternion.identity;
 
         // Text
-        SetAbilityUI();
+        SetAbilityUI(); 
+        if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
+        { CG.alpha = 0f; }
+        List<TMP_Text> systemTmpT = new List<TMP_Text> { objText, npcName, npcText, needAbilityTxt, cutsceneTxt };
+        LanguageManager.Instance.SetLanguageTxts(systemTmpT);
+        
+
+        // Choice
+        chioceCG.gameObject.SetActive(false);
+        chioceCG.alpha = 0f;
 
         // Btns
         pauseBtn.OnClickAsObservable()
@@ -154,7 +165,7 @@ public class GameSystem : Singleton<GameSystem>
             if (currentIO.IsInteracted)
             { ObjDescOff(); }
             else
-            { ShowChioceWindow(0.5f, 0.5f); }
+            { ShowChioceWindow(0.5f); }
         }
     }
 
@@ -268,30 +279,88 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Choice
 
-    private void ShowChioceWindow(float alpha, float time)
+    private void ShowChioceWindow(float time)
     {
         // Set On
-        chioceImg.gameObject.SetActive(true);
-        chioceImg.color = new Color(0, 0, 0, 0);
-        chioceImg.DOFade(alpha, time)
+        chioceCG.gameObject.SetActive(true);
+        chioceCG.DOFade(1f, time)
             .OnStart(() => { GameManager.Instance.canInput = false; })
             .OnComplete(() => { GameManager.Instance.canInput = true; });
 
-        // Set Btn by RT_Y
+        // Set Btn By ID
         List<string> IDs = new List<string>();
         foreach(KeyValuePair<string, object> dictDatas in DataManager.Instance.ChoiceCSVDatas[0])
         {
             if (dictDatas.Key != "ID" && dictDatas.Key.Substring(0, 4) == currentIO.ID)
             { IDs.Add(dictDatas.Key); }
         }
-        float RT_Y = btnsRT.rect.height;
-        for(int i = 0; i < IDs.Count; i++)
+
+        // Set UI
+        for (int i = 0; i < IDs.Count; i++)
         {
             IDBtn Choice_IDBtn = ObjectPooling.Instance.GetIDBtn();
+            Choice_IDBtn.buttonType = ButtonType.ChoiceType;
             Choice_IDBtn.transform.SetParent(btnsRT);
             Choice_IDBtn.buttonID = IDs[i];
-            Choice_IDBtn.gameObject.SetActive(true);
             Choice_IDBtn.basicImage = btnSprite;
+            Choice_IDBtn.sizeDelta = new Vector2(1000f, 100f);
+            LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
+
+            Choice_IDBtn.anchorPos = new Vector3(0f, i * -150f, 0f);
+            if (IDs.Count > 1) { Choice_IDBtn.anchorPos += Vector3.up * 75f * (IDs.Count - 1); }
+
+            Choice_IDBtn.gameObject.SetActive(true);
+            choiceBtnList.Add(Choice_IDBtn);
+        }
+
+        // Set Btn Subscribe
+        foreach (IDBtn idBtn in choiceBtnList)
+        {
+            IDisposable iDisEnter = idBtn.button.OnPointerEnterAsObservable()
+                .Subscribe(_ =>
+                {
+                    string _id = idBtn.buttonID;
+                    if (_id.Substring(4, 3) == "C99") { return; }
+                    needAbilityTxt.transform.parent.gameObject.SetActive(true);
+                    if(needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
+                    {
+                        DOTween.Kill(CG);
+                        CG.DOFade(1f, 0.25f);
+                    }
+                    needAbilityTxt.text =
+                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][_id].ToString() + " / " +
+                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][_id].ToString() + " / " +
+                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id].ToString();
+                    needAbilityTxt.color = Color.white;
+                });
+            IDisposable iDisExit = idBtn.button.OnPointerExitAsObservable()
+                .Subscribe(_ =>
+                {
+                    if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
+                    {
+                        DOTween.Kill(CG);
+                        CG.DOFade(0f, 0.25f)
+                        .OnComplete(() => { needAbilityTxt.transform.parent.gameObject.SetActive(false); });
+                    }
+                });
+            IDisposable iDisClick = idBtn.button.OnPointerEnterAsObservable()
+                .Subscribe(_ =>
+                {
+                    // 능력치 충분한지 체크
+                    string _id = idBtn.buttonID;
+                    int need_obse = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][_id]);
+                    int need_pers = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][_id]);
+                    int need_ment = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id]);
+                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment)) 
+                    { 
+
+                    }
+                    else
+                    {
+                        needAbilityTxt.color = Color.red;
+                    }
+                });
+            iDisposables.Add(iDisEnter); iDisposables.Add(iDisExit); iDisposables.Add(iDisClick);
         }
         
     }

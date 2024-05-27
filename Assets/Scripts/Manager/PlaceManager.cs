@@ -8,7 +8,6 @@ using DG.Tweening;
 using Spine.Unity;
 using System.Linq;
 using System;
-using Unity.VisualScripting;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -34,6 +33,7 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
     [SerializeField] public List<string> visitReasons = new List<string>();
     IDBtn currentIdBtn;
+
     #endregion
 
     #region Framework & Base Set
@@ -66,21 +66,23 @@ public class PlaceManager : Singleton<PlaceManager>
                         if (!GameManager.Instance.canInput) { return; }
 
                         currentIdBtn = placeBtn;
-                        PhoneSoftware.Instance.OpenPopup(currentIdBtn, 0.5f, 0.5f);
+                        PhoneSoftware.Instance.OpenPopup(currentIdBtn, 0.5f);
                     });
             }
             
             // Check Interactable
             canGoPlaceInChapter =
-                DataManager.Instance.ChapterCSVDatas[9][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+                DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
             visitReasons =
-                DataManager.Instance.ChapterCSVDatas[12 + LanguageManager.Instance.languageNum][GameManager.Instance.currentChapter].ToString().Split("/").ToList();
+                DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][GameManager.Instance.currentChapter].ToString().Split("/").ToList();
 
-
+            // Place Btn Set
             if (canGoPlaceInChapter.Contains(placeBtn.buttonID))
             { placeBtn.button.interactable = true; }
             else 
             { placeBtn.button.interactable = false; }
+
+            // 
         }
 
         // Set Dict
@@ -115,24 +117,15 @@ public class PlaceManager : Singleton<PlaceManager>
                 // Spawn Map Object ( No Home )
                 if(placeDict.Key != placeBtnList[0])
                 {
-                    placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<BasicInteractObject>();
-                    placeIdBtnGODict[idBtn].Inevitable_InteractNPCs = new List<NpcInteractObject>();
+                    placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
 
-                    foreach (BasicInteractObject BIO in placeDict.Value.InteractObjects)
+                    foreach (InteractObject IO in placeDict.Value.InteractObjects)
                     {
-                        BIO.IsInteracted = false;
-                        if (DataManager.Instance.ChapterCSVDatas[10][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(BIO.ID))
-                        { BIO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractObjects.Add(BIO); }
+                        IO.IsInteracted = false;
+                        if (DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 7][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(IO.ID))
+                        { IO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractObjects.Add(IO); }
                         else
-                        { BIO.gameObject.SetActive(false); }
-                    }
-                    foreach (NpcInteractObject NIO in placeDict.Value.InteractNPCs)
-                    {
-                        NIO.IsInteracted = false;
-                        if (DataManager.Instance.ChapterCSVDatas[11][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(NIO.ID))
-                        { NIO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractNPCs.Add(NIO); }
-                        else
-                        { NIO.gameObject.SetActive(false); }
+                        { IO.gameObject.SetActive(false); }
                     }
                 }
             }
@@ -229,10 +222,8 @@ public class PlaceSet
 {
     public GameObject MapGO;
     public Color BGColor;
-    public List<BasicInteractObject> InteractObjects;
-    [HideInInspector] public List<BasicInteractObject> Inevitable_InteractObjects;
-    public List<NpcInteractObject> InteractNPCs;
-    [HideInInspector] public List<NpcInteractObject> Inevitable_InteractNPCs;
+    public List<InteractObject> InteractObjects;
+    [HideInInspector] public List<InteractObject> Inevitable_InteractObjects;
     public PlaceSet(GameObject mapGO, Color bgColor)
     {
         MapGO = mapGO;

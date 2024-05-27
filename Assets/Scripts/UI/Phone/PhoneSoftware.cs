@@ -55,28 +55,40 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
+                if (!GameManager.Instance.canInput) { return; }
+
                 ClosePopup(0f);
                 PhoneHardware.Instance.PhoneOff();
+                PlayerInputController.Instance.CanMove = true;
             });
         popupCancelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                if (!GameManager.Instance.canInput) { return; }
+
                 ClosePopup(0.5f);
             });
         popupMoveBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                if (!GameManager.Instance.canInput) { return; }
+
                 PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
             });
 
         #endregion
 
         popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), 0.5f);
+        popupBG.color = new Color(0f, 0f, 0f, 0f);
         popupBG.gameObject.SetActive(false);
 
         this.visitPlaceScreen.gameObject.SetActive(false);
         this.optionScreen.gameObject.SetActive(false);
         this.gameObject.transform.parent.gameObject.SetActive(false);
+
+        List<TMP_Text> languageTmpT = new List<TMP_Text>
+        { DayText, DayOfWeekText, realTimeText, popupNameTxt, popupDescTxt };
+        LanguageManager.Instance.SetLanguageTxts(languageTmpT); 
     }
 
     protected override void Awake()
@@ -198,7 +210,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         
     }
 
-    public void OpenPopup(IDBtn currentIdBtn, float alpha, float time)
+    public void OpenPopup(IDBtn currentIdBtn, float time)
     {
         int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
 
@@ -207,7 +219,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
 
         popupBG.color = new Color(0, 0, 0, 0);
-        popupBG.DOFade(alpha, time)
+        popupBG.DOFade(1f, time)
             .OnStart(() =>
             {
                 popupBG.gameObject.SetActive(true);

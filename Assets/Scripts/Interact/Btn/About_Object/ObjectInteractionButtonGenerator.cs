@@ -1,3 +1,4 @@
+//Refactoring v1.0
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,28 +8,26 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
 {
     #region Value
 
-    [Header("*Property")]
-    [SerializeField] public PlayerInputController PlayerInputController;
-    [SerializeField] SetInteractionObjects SetInteractionObjects;
+    [Header("=== Virtual Things")]
     [SerializeField] GameObject phone2D;
     [SerializeField] GameObject computer2D;
 
-    [Header("*GameObject")]
+    [Header("=== Pad")]
     [SerializeField] Image pad_start;
 
-    [Header("*Component")]
+    [Header("=== Component")]
     [SerializeField] CanvasScaler thisScaler;
     [SerializeField] CanvasGroup thisGroup;
 
-    [Header("*Btn")]
-    [SerializeField] Button InteractionBtn;
+    [Header("=== Btn")]
+    [SerializeField] GameObject InteractionBtnPrefab;
     [SerializeField] GameObject parentGO;
 
+    // Other Value
     List<GameObject> allInteractionBtns = new List<GameObject>();
     List<GameObject> activeInteractionBtns = new List<GameObject>();
 
     [HideInInspector] public bool SectionIsThis = false;
-
 
     #endregion
 
@@ -56,17 +55,15 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     // 없다면 생성
     void GenBtn(GameObject targetGO)
     {
-        GameObject btn = Instantiate(InteractionBtn.gameObject, parentGO.transform);
+        GameObject btn = Instantiate(InteractionBtnPrefab, parentGO.transform);
         btn.SetActive(false);
         targetGO.TryGetComponent(out InteractObject IO);
         btn.name = targetGO.name + "Btn";
 
         btn.TryGetComponent(out InteractObjectBtn IOB);
         IOB.TargetGO = targetGO;
-        if (IO is NpcInteractObject)
-        { IOB.txt_name_left.text = DataManager.Instance.NpcCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
-        else
-        { IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString(); }
+        LanguageManager.Instance.SetLanguageTxt(IOB.txt_name_left);
+        IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString();
         allInteractionBtns.Add(btn);
     }
 
@@ -91,7 +88,8 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
         Vector3 v3_pos;
         for (int i = 0; i <= activeInteractionBtns.Count; i++)
         {
-            v3_pos = new Vector3(-50, (i * InteractionBtn.GetComponent<RectTransform>().rect.height) + ((i + 1) * 25), 0);
+            InteractionBtnPrefab.TryGetComponent(out RectTransform rectTransform);
+            v3_pos = new Vector3(-50, (i * rectTransform.rect.height) + ((i + 1) * 25), 0);
             if (i == activeInteractionBtns.Count)
             { 
                 pad_start.GetComponent<RectTransform>().anchoredPosition = v3_pos + new Vector3( -10, 10, 0);
@@ -123,6 +121,7 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     #endregion
     
     #region Interact
+
     public void SetOnOffInteractObjectBtn()
     {
         if (!phone2D.activeSelf && !computer2D.activeSelf)
@@ -130,9 +129,9 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
             // 오브젝트 상호작용으로 변경
             if (!SectionIsThis)
             {
-                PlayerInputController.interact = this;
+                PlayerInputController.Instance.interact = this;
                 SectionIsThis = true;
-                PlayerInputController.SetSectionBtns(SetSectionBtns(), this);
+                PlayerInputController.Instance.SetSectionBtns(SetSectionBtns(), this);
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(1920, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
                 
@@ -143,9 +142,9 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
             else
             {
                 SetOffAllOutline();
-                PlayerInputController.ClearSeletedBtns();
+                PlayerInputController.Instance.ClearSeletedBtns();
                 SectionIsThis = false;
-                PlayerInputController.SetSectionBtns(null, null);
+                PlayerInputController.Instance.SetSectionBtns(null, null);
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(3000, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 0.6f, 0.3f)
                     .OnComplete(() =>
@@ -160,9 +159,9 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     }
     public void Interact()
     {
-        if(PlayerInputController.SelectBtn != null) 
+        if(PlayerInputController.Instance.SelectBtn != null) 
         { 
-            if(PlayerInputController.SelectBtn.TryGetComponent(out InteractObjectBtn interactObjectBtn))
+            if(PlayerInputController.Instance.SelectBtn.TryGetComponent(out InteractObjectBtn interactObjectBtn))
             {
                 interactObjectBtn.interactObject();
             }
