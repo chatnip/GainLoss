@@ -22,14 +22,26 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] TMP_Text objName;
     [SerializeField] TMP_Text objText;
     [SerializeField] Image objImg;
+    [SerializeField] Animator anotherAnimator;
+
+    [Header("=== Check Things")]
+    [SerializeField] List<string> objWriteTexts = new List<string>();
+    [SerializeField] List<string> objNameTexts = new List<string>();
+    [SerializeField] List<Sprite> objSprites = new List<Sprite>();
+    [SerializeField] List<string> objAnimNames = new List<string>();
+
+    bool IsNpc;
+    InteractObject currentIO;
 
     Tween objTextingTween;
-    List<string> objWriteTexts = new List<string>();
-    List<string> objNameTexts = new List<string>();
-    bool IsNpc;
     int objWriteTexts_currentOrder = 0;
-    InteractObject currentIO;
+
+    
+
     List<IDisposable> iDisposables = new List<IDisposable>();
+
+    [Header("=== Character Sprite")]
+    [SerializeField] public List<SpriteModule> spriteModules;
 
     [Header("=== Choice UI")]
     [SerializeField] CanvasGroup chioceCG;
@@ -37,10 +49,6 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] List<IDBtn> choiceBtnList = new List<IDBtn>();
     [SerializeField] TMP_Text needAbilityTxt;
     [SerializeField] Sprite btnSprite;
-
-    [Header("=== Animator")]
-    [SerializeField] Animator playerAnimator;
-    [SerializeField] Animator anotherAnimator;
 
     [Header("=== Cutscene")]
     [SerializeField] public Image cutsceneImg;
@@ -61,12 +69,12 @@ public class GameSystem : Singleton<GameSystem>
         playerPos.rotation = Quaternion.identity;
 
         // Text
-        SetAbilityUI(); 
+        SetAbilityUI();
         if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
         { CG.alpha = 0f; }
         List<TMP_Text> systemTmpT = new List<TMP_Text> { objName, objText, needAbilityTxt, cutsceneTxt };
         LanguageManager.Instance.SetLanguageTxts(systemTmpT);
-        
+
 
         // Choice
         chioceCG.gameObject.SetActive(false);
@@ -88,6 +96,13 @@ public class GameSystem : Singleton<GameSystem>
                 ObjDescSkip();
             });
 
+        // Sprites
+        string Path = "talkingCharacter/";
+        foreach (SpriteModule SM in spriteModules)
+        {
+            SM.nameID = SM.texture.name;
+            SM.sprites = Resources.LoadAll<Sprite>(Path + SM.texture.name);
+        }
     }
 
     protected override void Awake()
@@ -113,17 +128,25 @@ public class GameSystem : Singleton<GameSystem>
     {
         return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / 5f)
                      .SetEase(Ease.Linear)
-                     .OnStart(() => 
-                     { 
-                         if (IsNpc) 
+                     .OnStart(() =>
+                     {
+                         if (IsNpc)
                          {
-                             objName.text = objNameTexts[i]; 
-
-                         } 
+                             objName.text = objNameTexts[i];
+                             objImg.sprite = objSprites[i];
+                             if (objAnimNames[i].Substring(0, 3) == "KAA")
+                             {
+                                 PlayerController.Instance._animator.Play(objAnimNames[i]);
+                             }
+                             else
+                             {
+                                 anotherAnimator.Play(objAnimNames[i]);
+                             }
+                         }
                      })
-                     .OnComplete(() => 
-                     { 
-                         objWriteTexts_currentOrder++; 
+                     .OnComplete(() =>
+                     {
+                         objWriteTexts_currentOrder++;
                      });
     }
 
@@ -131,6 +154,8 @@ public class GameSystem : Singleton<GameSystem>
     {
         // Set Base Data
         IsNpc = isNpc;
+        if(IsNpc && IO.TryGetComponent(out Animator animator)) 
+        { anotherAnimator = animator; }
         currentIO = IO;
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
@@ -142,49 +167,59 @@ public class GameSystem : Singleton<GameSystem>
         objText.text = "";
         objWriteTexts = null;
         objNameTexts = null;
+        objSprites = new List<Sprite>();
+
+        void SetData(string text, string name, string sprite, string anim)
+        {
+            // Text
+            objWriteTexts = text.Split('/').ToList();
+            if (IsNpc)
+            {
+                // Name
+                objNameTexts = name.Split('/').ToList();
+
+                // Sprite
+                List<string> objSpriteIDs = sprite.Split('/').ToList();
+                objSprites = GetCollectSprite(objSpriteIDs);
+
+                // Anim
+                objAnimNames = anim.Split("/").ToList();
+            }
+        }
 
         if (answerID != null) // 선택에 따른 답변
         {
-            objWriteTexts = DataManager.Instance.ChoiceCSVDatas
-               [LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum]
-               [answerID].ToString().Split('/').ToList();
-            if (IsNpc)
-            {
-                objNameTexts = DataManager.Instance.ChoiceCSVDatas
-                    [LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum]
-                    [answerID].ToString().Split('/').ToList();
-            }
+            SetData(
+                DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][answerID].ToString(),
+                DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum][answerID].ToString(), 
+                DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + 1][answerID].ToString(),
+                DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + 2][answerID].ToString()
+                );
         }
         else if (IO.IsInteracted) // 기본
         {
-            objWriteTexts = DataManager.Instance.ObjectCSVDatas
-                [LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum]
-                [IO.ID].ToString().Split('/').ToList();
-            if(IsNpc)
-            {
-                objNameTexts = DataManager.Instance.ObjectCSVDatas
-                    [LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum]
-                    [IO.ID].ToString().Split('/').ToList();
-            }
+            SetData(
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 0][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 2][IO.ID].ToString()
+                );
         }
         else // 상호작용 처음 시 (선택지 주어지는 상호작용)
         {
-            objWriteTexts = DataManager.Instance.ObjectCSVDatas
-                [LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum]
-                [IO.ID].ToString().Split('/').ToList();
-            if(IsNpc)
-            {
-                objNameTexts = DataManager.Instance.ObjectCSVDatas
-                    [LanguageManager.Instance.languageTypeAmount * 4 + LanguageManager.Instance.languageNum]
-                    [IO.ID].ToString().Split('/').ToList();
-            }
+            SetData(
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 1][IO.ID].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 3][IO.ID].ToString()
+                );
         }
-        
+
 
         // Check Npc
         objImg.gameObject.SetActive(IsNpc);
         objName.gameObject.SetActive(IsNpc);
-        if (IsNpc) { if(objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1100f, 180f); } }
+        if (IsNpc) { if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1100f, 180f); } }
         else { if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1400f, 250f); } }
 
         // Set Writting
@@ -192,20 +227,22 @@ public class GameSystem : Singleton<GameSystem>
         objWriteTexts_currentOrder = 0;
         objTextingTween = SetWrite(objWriteTexts_currentOrder);
 
+        
+
     }
-    
+
     public void ObjDescSkip()
     {
         // 글인 라이팅 중이면, 바로 완료
-        if (DOTween.IsTweening(objText)) 
+        if (DOTween.IsTweening(objText))
         {
             Debug.Log("라이팅 중");
-            DOTween.Complete(objText); 
+            DOTween.Complete(objText);
         }
-        else 
+        else
         {
             // 마지막 라이팅까지 완료가 안되어있다면, 새로운 라이팅 시작
-            if(objWriteTexts.Count > objWriteTexts_currentOrder)
+            if (objWriteTexts.Count > objWriteTexts_currentOrder)
             {
                 Debug.Log("넘기기");
                 objText.text = "";
@@ -236,6 +273,7 @@ public class GameSystem : Singleton<GameSystem>
         GameManager.Instance.canInput = true;
         GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
+        PlayerController.Instance._animator.SetTrigger("Return");
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
         DOTween.Complete(objTextingTween);
@@ -259,7 +297,7 @@ public class GameSystem : Singleton<GameSystem>
 
         // Set Btn By ID
         List<string> IDs = new List<string>();
-        foreach(KeyValuePair<string, object> dictDatas in DataManager.Instance.ChoiceCSVDatas[0])
+        foreach (KeyValuePair<string, object> dictDatas in DataManager.Instance.ChoiceCSVDatas[0])
         {
             if (dictDatas.Key != "ID" && dictDatas.Key.Substring(0, 4) == currentIO.ID)
             { IDs.Add(dictDatas.Key); }
@@ -293,21 +331,21 @@ public class GameSystem : Singleton<GameSystem>
                     string _id = idBtn.buttonID;
                     if (_id.Substring(4, 3) == "C99") { return; }
                     needAbilityTxt.transform.parent.gameObject.SetActive(true);
-                    if(needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
+                    if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
                     {
                         DOTween.Kill(CG);
                         CG.DOFade(1f, 0.25f);
                     }
                     string Anno = "";
-                    for(int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
+                    for (int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
                     {
                         Anno += DataManager.Instance.AbilityCSVDatas[LanguageManager.Instance.languageNum]["A0" + i.ToString()].ToString() + " " +
                         DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + i][_id].ToString();
                         if (i < DataManager.Instance.AbilityCSVDatas.Count - 1) { Anno += " / "; }
                     }
-                    needAbilityTxt.text = Anno; 
+                    needAbilityTxt.text = Anno;
                     needAbilityTxt.TryGetComponent(out RectTransform rt);
-                    if (DOTween.IsTweening(rt)) { DOTween.Kill(rt); } 
+                    if (DOTween.IsTweening(rt)) { DOTween.Kill(rt); }
                     if (DOTween.IsTweening(needAbilityTxt)) { DOTween.Kill(needAbilityTxt); }
                     rt.localScale = Vector3.one;
                     needAbilityTxt.color = Color.white;
@@ -332,14 +370,15 @@ public class GameSystem : Singleton<GameSystem>
                     int need_obse = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 0][_id]);
                     int need_pers = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 1][_id]);
                     int need_ment = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 2][_id]);
-                    
-                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment)) 
+
+                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment))
                     {
                         currentIO.IsInteracted = true;
                         chioceCG.DOFade(0f, time)
                             .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
-                            .OnComplete(() => { 
-                                GameManager.Instance.canSkipTalking = true; 
+                            .OnComplete(() =>
+                            {
+                                GameManager.Instance.canSkipTalking = true;
                                 ChoiceTab(_id);
                             });
                     }
@@ -353,7 +392,7 @@ public class GameSystem : Singleton<GameSystem>
                 });
             iDisposables.Add(iDisEnter); iDisposables.Add(iDisExit); iDisposables.Add(iDisClick);
         }
-        
+
     }
 
     private void ChoiceTab(string _id)
@@ -371,18 +410,18 @@ public class GameSystem : Singleton<GameSystem>
                             DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4][_id].ToString());
 
         // Obj Description Play
-        if(_id.Substring(0, 1) == "O")
+        if (_id.Substring(0, 1) == "O")
         {
             ObjDescOn(currentIO, false, _id);
         }
-        else if(_id.Substring(0, 1) == "N")
+        else if (_id.Substring(0, 1) == "N")
         {
             ObjDescOn(currentIO, true, _id);
         }
-        
+
 
         // Object Pooling
-        foreach(IDBtn idBtn in choiceBtnList)
+        foreach (IDBtn idBtn in choiceBtnList)
         { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
         choiceBtnList.Clear();
     }
@@ -399,4 +438,45 @@ public class GameSystem : Singleton<GameSystem>
     }
 
     #endregion
+
+    #region Sprite
+
+    private List<Sprite> GetAllCharacterSprite()
+    {
+        List<Sprite> allSprite = new List<Sprite>();
+        foreach(SpriteModule SM in spriteModules)
+        {
+            foreach(Sprite sprite in SM.sprites)
+            {
+                allSprite.Add(sprite);
+            }
+        }
+        return allSprite;
+    }
+    private List<Sprite> GetCollectSprite(List<string> spriteIDs)
+    {
+        List<Sprite> collects = new List<Sprite>();
+        foreach (string spriteID in spriteIDs)
+        {
+            foreach (Sprite sprite in GetAllCharacterSprite())
+            {
+                if (spriteID == sprite.name)
+                {
+                    collects.Add(sprite);
+                }
+            }
+        }
+        return collects;
+    }
+
+    #endregion
+
+}
+
+[System.Serializable]
+public class SpriteModule
+{
+    public string nameID;
+    public Texture2D texture;
+    public Sprite[] sprites;
 }

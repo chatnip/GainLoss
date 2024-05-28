@@ -79,7 +79,7 @@ public class DataManager : Singleton<DataManager>
         // (amount*3) + 0~2. Extra Text Eng / Kor / Jpn 
         // (amount*4) + 0~2. Extra Name Eng / Kor / Jpn 
         // (amount*5) + 0. Defualt Img ID / 1. Extra Img ID 
-        // (amount*5) + 3. Defualt Anim ID / 4. Extra Anim ID 
+        // (amount*5) + 2. Defualt Anim ID / 3. Extra Anim ID 
 
         ObjectCSVDatas = CSVReader.Read(this.ObjectCSV);
 
@@ -88,7 +88,7 @@ public class DataManager : Singleton<DataManager>
         // (amount*1) + 0~2. AnswerDesc Eng / Kor / Jpn
         // (amount*2) + 0~2. AnswerName Eng / Kor / Jpn
         // (amount*3) + 0~2. Need Observational / Persuasive / MentalStrength
-        // (amount*4) + 0. GetContents
+        // (amount*4) + 0. GetContents / 1. ImgID / 2. Anim ID
 
         ChoiceCSVDatas = CSVReader.Read(this.ChoiceCSV);
 
