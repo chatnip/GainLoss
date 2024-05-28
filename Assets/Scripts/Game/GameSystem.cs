@@ -339,9 +339,12 @@ public class GameSystem : Singleton<GameSystem>
                     string Anno = "";
                     for (int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
                     {
-                        Anno += DataManager.Instance.AbilityCSVDatas[LanguageManager.Instance.languageNum]["A0" + i.ToString()].ToString() + " " +
-                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + i][_id].ToString();
-                        if (i < DataManager.Instance.AbilityCSVDatas.Count - 1) { Anno += " / "; }
+                        int ability = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + i][_id]);
+                        if (ability > 0)
+                        {
+                            Anno += " " + DataManager.Instance.AbilityCSVDatas[LanguageManager.Instance.languageNum]["A0" + i.ToString()].ToString() + " " + ability + " ";
+                        }
+                        
                     }
                     needAbilityTxt.text = Anno;
                     needAbilityTxt.TryGetComponent(out RectTransform rt);
