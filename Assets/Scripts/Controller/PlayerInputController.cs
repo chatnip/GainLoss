@@ -249,7 +249,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
                 !PSWindow_E.gameObject.activeSelf)
             { 
                 Desktop.TurnOff();
-                ComputerInteract.StartCoroutine(ComputerInteract.ScreenZoomOut());
+                ComputerInteract.ScreenOff();
             }
             return;
         }
@@ -421,7 +421,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         }
         else if (ComputerCamera2D.activeSelf) //Computer Screen
         {
-            StartCoroutine(ComputerInteract.ScreenZoomOut());
+            ComputerInteract.ScreenOff();
             ClearSeletedBtns();
             return;
         }

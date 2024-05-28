@@ -15878,6 +15878,7 @@ MonoBehaviour:
   objText: {fileID: 1281144486}
   objImg: {fileID: 1756411825}
   anotherAnimator: {fileID: 640177189}
+  textingSpeed: 20
   objWriteTexts: []
   objNameTexts: []
   objSprites: []
@@ -21265,11 +21266,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e813e6e986f4de04aa18b6a39270397b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComputerInteract: {fileID: 1656715935}
   mainCamera: {fileID: 61803321}
   goingSomewhereloadingCG: {fileID: 144862818}
   currentPlaceTxt: {fileID: 432623449}
   step_SG: {fileID: 606783129}
   HUD_currentPlactTxt: {fileID: 1146806038}
+  activityGageGO: {fileID: 1021821698}
   comebackHomeBtn: {fileID: 332355073}
   placeBtnList:
   - {fileID: 444339185}
@@ -21282,7 +21285,10 @@ MonoBehaviour:
   placeSetList:
   - MapGO: {fileID: 464552000}
     BGColor: {r: 0.8, g: 0.8, b: 0.8, a: 0}
-    InteractObjects: []
+    InteractObjects:
+    - {fileID: 1187933860}
+    - {fileID: 1862712519}
+    - {fileID: 1004386963}
     Inevitable_InteractObjects: []
   - MapGO: {fileID: 894153929}
     BGColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
@@ -21319,6 +21325,7 @@ MonoBehaviour:
   canGoPlaceInChapter: []
   visitReasons: []
   currentIdBtn: {fileID: 0}
+  isStreamingTime: 0
 --- !u!1 &582192308
 GameObject:
   m_ObjectHideFlags: 0
@@ -35794,6 +35801,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003146099}
   m_CullTransparentMesh: 1
+--- !u!114 &1004386963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1659703588713968868, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+  m_PrefabInstance: {fileID: 1811456171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f6c5ad92ddfe246848d1404fba5ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1004501951
 GameObject:
   m_ObjectHideFlags: 0
@@ -42938,6 +42956,17 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
   m_EffectDistance: {x: 2, y: 2}
   m_UseGraphicAlpha: 1
+--- !u!114 &1187933860 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3685740560468843370, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+  m_PrefabInstance: {fileID: 1811456171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f6c5ad92ddfe246848d1404fba5ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1188817112 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7114314915197831208, guid: 02155a48bf139794ab958ef47b155786, type: 3}
@@ -70534,10 +70563,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Place_Room
       objectReference: {fileID: 0}
-    - target: {fileID: 253894022943864838, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 613477788002419241, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -70579,9 +70604,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: PhoneHardware
+      propertyPath: Panel_InfoGO
       value: 
-      objectReference: {fileID: 420522339}
+      objectReference: {fileID: 1066154377}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: InteractionUI3D
       value: 
@@ -70591,21 +70616,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 404626696}
     - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: IconCollectionGO
-      value: 
-      objectReference: {fileID: 175155596}
-    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: quarterViewCamera
       value: 
       objectReference: {fileID: 1023763536}
-    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: ActivityController
-      value: 
-      objectReference: {fileID: 34689100}
-    - target: {fileID: 4634675494103185702, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
-      propertyPath: ObjectInteractionButtonGenerator
-      value: 
-      objectReference: {fileID: 1637006480}
     - target: {fileID: 8111387001780349877, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
       propertyPath: screenCamera
       value: 
@@ -73700,6 +73713,17 @@ MonoBehaviour:
   thisImg: {fileID: 0}
   thisColl: {fileID: 0}
   thisRT: {fileID: 0}
+--- !u!114 &1862712519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4273669571529627264, guid: 19de55d9b2e9f2f46a5bf46133d12b16, type: 3}
+  m_PrefabInstance: {fileID: 1811456171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f6c5ad92ddfe246848d1404fba5ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1868949393
 GameObject:
   m_ObjectHideFlags: 0

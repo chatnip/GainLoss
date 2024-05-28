@@ -33,6 +33,8 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
     {
         if(OB.TryGetComponent(out InteractObject interactObject))
         {
+            if(interactObject is HomeInteractObject && PlaceManager.Instance.isStreamingTime)
+            { return; }
             interactObject.SetOn_outlineAni();
             interactObject.SetOn_colorAni();
 
@@ -49,12 +51,14 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
         }
     }
+
     private void OnTriggerExit(Collider OB)
     {
         if (OB.TryGetComponent(out InteractObject interactObject))
         {
             interactObject.SetOff_outlineAni();
             interactObject.SetOff_colorAni();
+
             activeInteractionGOs.Remove(OB.gameObject);
 
             ObjectInteractionButtonGenerator.Instance.SetActiveBtns(activeInteractionGOs);
@@ -66,7 +70,6 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
                     ObjectInteractionButtonGenerator.Instance); 
             }
         }
-
     }
 
     #endregion

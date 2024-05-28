@@ -1,80 +1,54 @@
+//Refactoring v1.0
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ComputerInteract : InteractObject
 {
     #region Value
 
-    [Header("*property")]
-    [SerializeField] PhoneHardware PhoneHardware;
-    [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] ActivityController ActivityController;
-
-    [Header("*Camera")]
-    [Tooltip("메인 가상 카메라")]
+    [Header("=== Camera")]
     [SerializeField] GameObject quarterViewCamera;
-    [Tooltip("스크린 카메라")]
     [SerializeField] GameObject screenViewCamera;
     [SerializeField] GameObject screenObject;
-    [Space(10)]
     [SerializeField] public GameObject Computer2DCamera;
 
-    [Header("*UICanvas")]
+    [Header("=== UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
-    [SerializeField] GameObject IconCollectionGO;
+    [SerializeField] GameObject Panel_InfoGO;
 
-    [Header("*Description")]
-    [TextArea] [SerializeField] public string description;
+    [Header("=== Other")]
+    [SerializeField] public bool canTurnOn = false;
 
     #endregion
 
     #region Screen
 
-    private IEnumerator ScreenZoomIn() // 컴퓨터 화면 잘 보이게 카메라 변경
+    public void ScreenOn()
     {
-        screenObject.SetActive(true);
-        quarterViewCamera.SetActive(false);
-        screenViewCamera.SetActive(true);
-
-
-        ScreenOn();
-
-        yield break;
-    }
-
-    public IEnumerator ScreenZoomOut() // 본래 카메라로 변경
-    {
-        ScreenOff();
-        quarterViewCamera.SetActive(true);
-        screenViewCamera.SetActive(false);
-        screenObject.SetActive(false);
-
-        yield break;
-    }
-
-    private void ScreenOn()
-    {
-        Computer2DCamera.SetActive(true);
+        Panel_InfoGO.gameObject.SetActive(false);
         InteractionUI3D.SetActive(false);
-
+        quarterViewCamera.SetActive(false);
+        ActivityController.Instance.gameObject.SetActive(false);
         PlayerInputController.Instance.StopMove();
 
-        ActivityController.gameObject.SetActive(false);
-        IconCollectionGO.gameObject.SetActive(false);
+        screenObject.SetActive(true);
+        screenViewCamera.SetActive(true);
+        Computer2DCamera.SetActive(true);
+
+
     }
 
-    private void ScreenOff()
+    public void ScreenOff()
     {
-        Computer2DCamera.SetActive(false);
+        Panel_InfoGO.gameObject.SetActive(true);
         InteractionUI3D.SetActive(true);
-
+        quarterViewCamera.SetActive(true);
+        ActivityController.Instance.gameObject.SetActive(true);
         PlayerInputController.Instance.CanMove = true;
 
-        ActivityController.gameObject.SetActive(true);
-        IconCollectionGO.gameObject.SetActive(true);
-        
+        screenObject.SetActive(false);
+        screenViewCamera.SetActive(false);
+        Computer2DCamera.SetActive(false);
     }
 
     #endregion
@@ -83,9 +57,15 @@ public class ComputerInteract : InteractObject
 
     public override void Interact()
     {
+        base.Interact();
+
+        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
+        if (canTurnOn)
+        { ScreenOn(); }
+        else
+        { GameSystem.Instance.ObjDescOn(this, false, null); }
         
-        //GameSystem.ObjectDescriptionOn(description); base.Interact();
-        StartCoroutine(ScreenZoomIn());
+
     }
 
     #endregion

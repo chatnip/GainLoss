@@ -13,8 +13,6 @@ public class BasicInteractObject : InteractObject
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
 
         GameSystem.Instance.ObjDescOn(this, false, null);
-        
-
     }
 
     #endregion

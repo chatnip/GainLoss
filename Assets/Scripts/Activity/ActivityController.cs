@@ -113,7 +113,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         yesBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameManager.Instance.canInput || GameManager.Instance.mainInfo.CurrentActivity <= 0) { return; }
 
                 if (currentQuestionWindowType == e_HomeInteractType.GoOutside)
                 { 

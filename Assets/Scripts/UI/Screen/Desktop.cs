@@ -140,7 +140,7 @@ public class Desktop : Singleton<Desktop>, IInteract
     {
         TurnOff();
         //ActionEventManager.TurnOnLoading();
-        computerInteract.StartCoroutine(computerInteract.ScreenZoomOut());
+        computerInteract.ScreenOff();
     }
     public void DisappearPopup(GameObject Popup)
     {

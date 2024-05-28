@@ -14,6 +14,9 @@ public class PlaceManager : Singleton<PlaceManager>
 {
     #region Value
 
+    [Header("=== Property")]
+    [SerializeField] ComputerInteract ComputerInteract;
+
     [Header("=== Camera")]
     [SerializeField] Camera mainCamera;
     
@@ -24,6 +27,7 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] SkeletonGraphic step_SG;
     [Header("-- Main UI")]
     [SerializeField] TMP_Text HUD_currentPlactTxt;
+    [SerializeField] GameObject activityGageGO;
     [SerializeField] Button comebackHomeBtn;
 
     [Header("=== Place Components")]
@@ -35,6 +39,7 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
     [SerializeField] public List<string> visitReasons = new List<string>();
     [SerializeField] public IDBtn currentIdBtn;
+    [SerializeField] public bool isStreamingTime = false;
 
     #endregion
 
@@ -58,6 +63,9 @@ public class PlaceManager : Singleton<PlaceManager>
                     StartGoingSomewhereLoading(1.5f);
                     comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
                     btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
+
+                    ComputerInteract.canTurnOn = true;
+                    isStreamingTime = true;
                 });
             if (placeBtn == placeBtnList[0])
             {
@@ -83,8 +91,9 @@ public class PlaceManager : Singleton<PlaceManager>
                     });
             }
 
-            
+
             // Check Interactable
+            ComputerInteract.canTurnOn = false;
             canGoPlaceInChapter =
                 DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
             visitReasons =
@@ -207,6 +216,8 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Desc Panel -> Off
         GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
+        if (idBtn.buttonID == "P00") { activityGageGO.SetActive(true); }
+        else { activityGageGO.SetActive(false); }
 
         // Gen Map
         SetCurrent3DMap(idBtn);

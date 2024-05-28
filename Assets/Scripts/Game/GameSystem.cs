@@ -23,6 +23,7 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] TMP_Text objText;
     [SerializeField] Image objImg;
     [SerializeField] Animator anotherAnimator;
+    [SerializeField] float textingSpeed = 20f;
 
     [Header("=== Check Things")]
     [SerializeField] List<string> objWriteTexts = new List<string>();
@@ -126,7 +127,7 @@ public class GameSystem : Singleton<GameSystem>
 
     private Tween SetWrite(int i)
     {
-        return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / 5f)
+        return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / textingSpeed)
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
@@ -289,11 +290,15 @@ public class GameSystem : Singleton<GameSystem>
 
     private void ShowChioceWindow(float time)
     {
+        // time Pause
+        Time.timeScale = 0f;
+
         // Set On
         chioceCG.gameObject.SetActive(true);
         chioceCG.DOFade(1f, time)
             .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
-            .OnComplete(() => { GameManager.Instance.canSkipTalking = true; });
+            .OnComplete(() => { GameManager.Instance.canSkipTalking = true; })
+            .SetUpdate(true);
 
         // Set Btn By ID
         List<string> IDs = new List<string>();
@@ -334,7 +339,7 @@ public class GameSystem : Singleton<GameSystem>
                     if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
                     {
                         DOTween.Kill(CG);
-                        CG.DOFade(1f, 0.25f);
+                        CG.DOFade(1f, 0.25f).SetUpdate(true);
                     }
                     string Anno = "";
                     for (int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
@@ -361,7 +366,8 @@ public class GameSystem : Singleton<GameSystem>
                     {
                         DOTween.Kill(CG);
                         CG.DOFade(0f, 0.25f)
-                            .OnComplete(() => { needAbilityTxt.transform.parent.gameObject.SetActive(false); });
+                            .OnComplete(() => { needAbilityTxt.transform.parent.gameObject.SetActive(false); })
+                            .SetUpdate(true);
                     }
                 });
             //Pointer Click 
@@ -378,19 +384,24 @@ public class GameSystem : Singleton<GameSystem>
                     {
                         currentIO.IsInteracted = true;
                         chioceCG.DOFade(0f, time)
-                            .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
+                            .OnStart(() => 
+                            {
+                                GameManager.Instance.canSkipTalking = false;
+                                Time.timeScale = 1f;
+                            })
                             .OnComplete(() =>
                             {
                                 GameManager.Instance.canSkipTalking = true;
                                 ChoiceTab(_id);
-                            });
+                            })
+                            .SetUpdate(true);
                     }
                     else
                     {
                         Debug.Log("∫“√Ê∫–");
                         needAbilityTxt.TryGetComponent(out RectTransform rt);
-                        rt.DOScale(1.2f, 0.2f);
-                        needAbilityTxt.DOColor(Color.red, 0.2f);
+                        rt.DOScale(1.2f, 0.2f).SetUpdate(true);
+                        needAbilityTxt.DOColor(Color.red, 0.2f).SetUpdate(true);
                     }
                 });
             iDisposables.Add(iDisEnter); iDisposables.Add(iDisExit); iDisposables.Add(iDisClick);
