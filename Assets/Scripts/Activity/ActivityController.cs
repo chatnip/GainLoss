@@ -65,22 +65,22 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
         { 
             { e_HomeInteractType.Observational, new QuestionWindowConfig(
-                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O003"].ToString(),
-                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O003"].ToString(), 
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount+ LNum]["O003"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O003"].ToString(), 
                 "observationalAnim", 
                 1, 1) },
             { e_HomeInteractType.Persuasive, new QuestionWindowConfig(
-                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O002"].ToString(),
-                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O002"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LNum]["O002"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O002"].ToString(),
                 "persuasiveAnim", 
                 1, 1) },
             { e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
-                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O001"].ToString(),
-                DataManager.Instance.ObjectCSVDatas[6 + LNum]["O001"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LNum]["O001"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O001"].ToString(),
                 "mentalStrengthAnim", 
                 1, 1) },
             { e_HomeInteractType.GoOutside, new QuestionWindowConfig(
-                DataManager.Instance.ObjectCSVDatas[3 + LNum]["O000"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LNum]["O000"].ToString(),
                 "",
                 "goOutsideAnim", 
                 0, 0) }
@@ -204,7 +204,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.mainInfo.CurrentActivity > 0)
         {
             questionContentTxt.text =
-                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + DataManager.Instance.ObjectCSVDatas[6 + LanguageManager.Instance.languageNum]["O000"].ToString() + "</size></color>";
+                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum]["O000"].ToString() + "</size></color>";
         }
         else
         {
@@ -297,15 +297,6 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         QuestionWindow_ActiveOff(0.25f);
         SetActivityGageUI(0.25f);
         GameSystem.Instance.SetAbilityUI();
-
-#if UNITY_EDITOR
-        Debug.Log(
-            $"\n행동력{GameManager.Instance.mainInfo.CurrentActivity}" +
-            $"\n관찰력{GameManager.Instance.mainInfo.ObservationalAbility}" +
-            $"\n설득력{GameManager.Instance.mainInfo.PersuasiveAbility}" +
-            $"\n정신력{GameManager.Instance.mainInfo.MentalStrengthAbility}"
-            );
-#endif
     }
 
     #endregion

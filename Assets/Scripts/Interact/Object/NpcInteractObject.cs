@@ -1,4 +1,5 @@
 //Refactoring v1.0
+using System.Linq;
 using UnityEngine;
 
 public class NpcInteractObject : InteractObject
@@ -37,10 +38,9 @@ public class NpcInteractObject : InteractObject
         base.Interact();
 
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
-        if (GameSystem.Instance.npcPanelBtn.gameObject.activeSelf) { GameSystem.Instance.npcPanelBtn.gameObject.SetActive(false); }
 
-        PlayerController.Instance.ft_setPlayerSpot(setPlayerPos.transform.position);
-        GameSystem.Instance.NpcDescOn(ConversationBase_SO, Animator);
+        GameSystem.Instance.ObjDescOn(this, true, null);
+        
     }
     #endregion
 }

@@ -161,7 +161,7 @@ public class PlayerController : Singleton<PlayerController>
         Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
         if (!Grounded)
-        { this.gameObject.transform.position += Vector3.down * Time.deltaTime; }
+        { this.gameObject.transform.position += Vector3.down * 0.2f * Time.deltaTime; }
         // update animator if using character
         /*
         if (_hasAnimator)

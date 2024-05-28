@@ -47,20 +47,20 @@ public class DataManager : Singleton<DataManager>
 
     public void Offset_ReadData_from_CSV()
     {
+        // amount = LanguageManager.Instance.LanguageTypeAmount
+
         #region Entire Play
 
-        // 0. Eng / 1. Kor / 2. Jpn 
-        // 3. VisitReason Eng / 4. VisitReason Kor / 5. VisitReason Jpn
-
-        // (a = LanguageAmount*2)
-        // a+0. Get Activitiy Each Day / a+1. Start Day / a+2. End Day
-        // a+3. Default Observational / a+4. Default Persuasive / a+5. Default MentalStength
-        // a+6. Visitable Place IDs / a+7. Interactable Object IDs
+        // (amount*0) + 0~2. Eng / Kor / Jpn 
+        // (amount*1) + 0~2. VisitReason Eng / Kor / Jpn
+        // (amount*2) + 0~2. Get Activitiy Each Day / Start Day / End Day
+        // (amount*3) + 0~2. Default Observational / Persuasive / MentalStength
+        // (amount*4) + 0. Visitable Place IDs / + 1. Interactable Object IDs
 
         ChapterCSVDatas = CSVReader.Read(this.ChapterCSV);
 
 
-        // 0. Eng / 1. Kor / 2. Jpn
+        // 0~2. Eng / Kor / Jpn
 
         AbilityCSVDatas = CSVReader.Read(this.AbilityCSV);
 
@@ -68,24 +68,27 @@ public class DataManager : Singleton<DataManager>
 
         #region Play
 
-        // 0. Eng / 1. Kor / 2. Jpn
+        // 0~2. Eng / Kor / Jpn
 
         PlaceCSVDatas = CSVReader.Read(this.PlaceCSV);
 
 
-        // 0. Eng / 1. Kor / 2. Jpn
-        // 3. Defualt Text Eng / 4. Defualt Text Kor / 5. Defualt Text Jpn
-        // 6. Extra Text Eng / 7. Extra Text Kor / 8. Extra Text Jpn 
+        // (amount*0) + 0~2. Eng / Kor / Jpn
+        // (amount*1) + 0~2. Defualt Text Eng / Kor / Jpn
+        // (amount*2) + 0~2. Defualt Name Eng / Kor / Jpn
+        // (amount*3) + 0~2. Extra Text Eng / Kor / Jpn 
+        // (amount*4) + 0~2. Extra Name Eng / Kor / Jpn 
+        // (amount*5) + 0. Defualt Img ID / 1. Extra Img ID 
+        // (amount*5) + 3. Defualt Anim ID / 4. Extra Anim ID 
 
         ObjectCSVDatas = CSVReader.Read(this.ObjectCSV);
 
 
-        // 0. Eng / 1. Kor / 2. Jpn
-        // 3. AnswerDesc Eng / 4. AnswerDesc Kor / 5.  AnswerDesc Jpn
-
-        // (a = LanguageAmount*2)
-        // a+0. NeedObservational / a+1. NeedPersuasive / a+2. NeedMentalStrength
-        // a+3. GetContents
+        // (amount*0) + 0~2. Eng / Kor / Jpn
+        // (amount*1) + 0~2. AnswerDesc Eng / Kor / Jpn
+        // (amount*2) + 0~2. AnswerName Eng / Kor / Jpn
+        // (amount*3) + 0~2. Need Observational / Persuasive / MentalStrength
+        // (amount*4) + 0. GetContents
 
         ChoiceCSVDatas = CSVReader.Read(this.ChoiceCSV);
 

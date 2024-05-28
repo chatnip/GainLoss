@@ -21,6 +21,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
     [Header("=== visit Place Btn")]
     [SerializeField] List<Button> PlaceBtns;
+    [SerializeField] RectTransform BG_RT;
 
     [Header("=== Base Info")]
     [SerializeField] TMP_Text DayText;
@@ -65,7 +66,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             .Subscribe(btn =>
             {
                 if (!GameManager.Instance.canInput) { return; }
-
+                ZoomOutPlaceMap(0.5f);
                 ClosePopup(0.5f);
             });
         popupMoveBtn.OnClickAsObservable()
@@ -73,6 +74,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             {
                 if (!GameManager.Instance.canInput) { return; }
 
+                ZoomOutPlaceMap(0.5f);
                 PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
             });
 
@@ -228,6 +230,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             .OnStart(() => { GameManager.Instance.canInput = false; })
             .OnComplete(() => { GameManager.Instance.canInput = true; });
     }
+
     private void ClosePopup(float time)
     {
         popupBG.DOFade(0f, time)
@@ -238,6 +241,27 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
             .OnStart(() => { GameManager.Instance.canInput = false; })
             .OnComplete(() => { GameManager.Instance.canInput = true; });
+    }
+
+    public void ZoomInPlaceMap(IDBtn currentIdBtn, float IncScale, float time)
+    {
+        if (DOTween.IsTweening(BG_RT)) { DOTween.Kill(BG_RT); }
+        Sequence seq = DOTween.Sequence();
+
+        currentIdBtn.TryGetComponent(out RectTransform btnRT);
+        seq.Append(BG_RT.DOAnchorPos(new Vector2(-btnRT.anchoredPosition.x, -btnRT.anchoredPosition.y), time)
+            .SetEase(Ease.OutCubic));
+        seq.Join(BG_RT.DOScale(IncScale, time).SetEase(Ease.OutCubic));
+    }
+
+    public void ZoomOutPlaceMap(float time)
+    {
+        if (DOTween.IsTweening(BG_RT)) { DOTween.Kill(BG_RT); }
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(BG_RT.DOAnchorPos(new Vector2(0, 0), time)
+            .SetEase(Ease.OutCubic));
+        seq.Join(BG_RT.DOScale(1f, time).SetEase(Ease.OutCubic));
     }
 
     #endregion

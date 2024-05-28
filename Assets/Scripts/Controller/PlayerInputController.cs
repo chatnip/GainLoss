@@ -258,11 +258,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
             GameSystem.Instance.ObjDescOff();
             return;
         }
-        else if (GameSystem.Instance.npcPanelBtn.gameObject.activeSelf)
-        {
-            GameSystem.Instance.NpcDescOff();
-            return;
-        }
 
         OnOffPause();
     }
@@ -408,8 +403,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
         //Panels
         if (Panel_Object.activeSelf) 
         { GameSystem.Instance.ObjDescOff(); return; }
-        else if (Panel_Npc.activeSelf) 
-        { GameSystem.Instance.NpcDescOff(); return; }
 
         //Computer
         if (ComputerOffWindow(Desktop.confirmPopup)) // Confirm ÆË¾÷Ã¢ÀÌ ÀÖ´Ù¸é ²ô±â
@@ -486,8 +479,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         if (Panel_Object.activeSelf)
         { GameSystem.Instance.ObjDescSkip(); return; }
-        else if (Panel_Npc.activeSelf)
-        { GameSystem.Instance.NpcDescSkip(); return; }
 
         if (PSWindow_FC.gameObject.activeSelf)
         {

@@ -8,6 +8,7 @@ using DG.Tweening;
 using Spine.Unity;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -23,6 +24,7 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] SkeletonGraphic step_SG;
     [Header("-- Main UI")]
     [SerializeField] TMP_Text HUD_currentPlactTxt;
+    [SerializeField] Button comebackHomeBtn;
 
     [Header("=== Place Components")]
     [SerializeField] public List<IDBtn> placeBtnList = new();
@@ -32,7 +34,7 @@ public class PlaceManager : Singleton<PlaceManager>
     [Header("=== About Data")]
     [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
     [SerializeField] public List<string> visitReasons = new List<string>();
-    IDBtn currentIdBtn;
+    [SerializeField] public IDBtn currentIdBtn;
 
     #endregion
 
@@ -46,7 +48,17 @@ public class PlaceManager : Singleton<PlaceManager>
             // Set Language Text
             LanguageManager.Instance.SetLanguageTxt(placeBtn.buttonText);
 
-            // Suvscribe Btn
+            // Subscribe Btn
+            comebackHomeBtn.OnClickAsObservable()
+                .Subscribe(_ =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    currentIdBtn = placeBtnList[0];
+                    StartGoingSomewhereLoading(1.5f);
+                    comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
+                    btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
+                });
             if (placeBtn == placeBtnList[0])
             {
                 placeBtn.button.OnClickAsObservable()
@@ -66,9 +78,11 @@ public class PlaceManager : Singleton<PlaceManager>
                         if (!GameManager.Instance.canInput) { return; }
 
                         currentIdBtn = placeBtn;
+                        PhoneSoftware.Instance.ZoomInPlaceMap(currentIdBtn, 1.2f, 0.5f);
                         PhoneSoftware.Instance.OpenPopup(currentIdBtn, 0.5f);
                     });
             }
+
             
             // Check Interactable
             canGoPlaceInChapter =
@@ -82,7 +96,9 @@ public class PlaceManager : Singleton<PlaceManager>
             else 
             { placeBtn.button.interactable = false; }
 
-            // 
+            comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
+            btnRT.anchoredPosition = new Vector2(-300f, 0f);
+
         }
 
         // Set Dict
@@ -137,7 +153,7 @@ public class PlaceManager : Singleton<PlaceManager>
             
         }
 
-        
+
         // Set Text UI
         HUD_currentPlactTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
 
@@ -191,7 +207,6 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Desc Panel -> Off
         GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
-        GameSystem.Instance.npcPanelBtn.gameObject.SetActive(false);
 
         // Gen Map
         SetCurrent3DMap(idBtn);
@@ -215,6 +230,24 @@ public class PlaceManager : Singleton<PlaceManager>
 
     #endregion
 
+    #region Place Object
+    
+    public void Exclude_InevitableIO(InteractObject ExcludeIO)
+    {
+        if (placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Contains(ExcludeIO))
+        { placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Remove(ExcludeIO); }
+        CheckCanGoHome();
+    }
+    public void CheckCanGoHome()
+    {
+        if(placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Count == 0)
+        {
+            comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
+            btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
+        }
+    }
+
+    #endregion
 }
 
 [Serializable]
@@ -223,7 +256,7 @@ public class PlaceSet
     public GameObject MapGO;
     public Color BGColor;
     public List<InteractObject> InteractObjects;
-    [HideInInspector] public List<InteractObject> Inevitable_InteractObjects;
+    [Tooltip("자동 초기화")] public List<InteractObject> Inevitable_InteractObjects;
     public PlaceSet(GameObject mapGO, Color bgColor)
     {
         MapGO = mapGO;

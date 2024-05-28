@@ -7,6 +7,7 @@ using UniRx;
 using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
+using System.Linq;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -18,15 +19,17 @@ public class GameSystem : Singleton<GameSystem>
 
     [Header("=== Obj Panel")]
     [SerializeField] public Button objPanelBtn;
+    [SerializeField] TMP_Text objName;
     [SerializeField] TMP_Text objText;
-    [SerializeField] Button objPanelExitBtn;
+    [SerializeField] Image objImg;
 
-    [Header("=== Npc Panel")]
-    [SerializeField] public Button npcPanelBtn;
-    [SerializeField] TMP_Text npcName;
-    [SerializeField] TMP_Text npcText;
-    [SerializeField] Image npcImg;
-    [SerializeField] Button npcPanelExitBtn;
+    Tween objTextingTween;
+    List<string> objWriteTexts = new List<string>();
+    List<string> objNameTexts = new List<string>();
+    bool IsNpc;
+    int objWriteTexts_currentOrder = 0;
+    InteractObject currentIO;
+    List<IDisposable> iDisposables = new List<IDisposable>();
 
     [Header("=== Choice UI")]
     [SerializeField] CanvasGroup chioceCG;
@@ -46,16 +49,7 @@ public class GameSystem : Singleton<GameSystem>
     [Header("=== Player")]
     public Transform playerPos;
 
-    // Dotween
-    Tween objTextingTween;
-    Tween npcTextingTween;
-    InteractObject currentIO;
-    
     // Other Value
-    ConversationBase conversations;
-    bool conversationTweeningNow = false;
-    int currentOrder = 0;
-    List<IDisposable> iDisposables = new List<IDisposable>();
     #endregion
 
     #region Framework & Base Set
@@ -70,7 +64,7 @@ public class GameSystem : Singleton<GameSystem>
         SetAbilityUI(); 
         if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
         { CG.alpha = 0f; }
-        List<TMP_Text> systemTmpT = new List<TMP_Text> { objText, npcName, npcText, needAbilityTxt, cutsceneTxt };
+        List<TMP_Text> systemTmpT = new List<TMP_Text> { objName, objText, needAbilityTxt, cutsceneTxt };
         LanguageManager.Instance.SetLanguageTxts(systemTmpT);
         
 
@@ -82,30 +76,16 @@ public class GameSystem : Singleton<GameSystem>
         pauseBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                PlayerInputController.Instance.OnOffPause();
-            });
+                if (!GameManager.Instance.canSkipTalking) { return; }
 
-        objPanelExitBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                ObjDescOff();
+                PlayerInputController.Instance.OnOffPause();
             });
         objPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
+                if (!GameManager.Instance.canSkipTalking) { return; }
+
                 ObjDescSkip();
-            });
-
-
-        npcPanelExitBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                NpcDescOff();
-            });
-        npcPanelBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                NpcDescSkip();
             });
 
     }
@@ -129,49 +109,130 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Obj Panel
 
-    public void ObjDescOn(InteractObject IO)
+    private Tween SetWrite(int i)
     {
+        return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / 5f)
+                     .SetEase(Ease.Linear)
+                     .OnStart(() => 
+                     { 
+                         if (IsNpc) 
+                         {
+                             objName.text = objNameTexts[i]; 
+
+                         } 
+                     })
+                     .OnComplete(() => 
+                     { 
+                         objWriteTexts_currentOrder++; 
+                     });
+    }
+
+    public void ObjDescOn(InteractObject IO, bool isNpc, string answerID)
+    {
+        // Set Base Data
+        IsNpc = isNpc;
         currentIO = IO;
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
+        GameManager.Instance.canSkipTalking = true;
         PlayerInputController.Instance.StopMove();
-
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
 
-
+        // Set Text Data
         objText.text = "";
-        string writeText = "";
-        if (currentIO.IsInteracted) 
-        { 
-            writeText = DataManager.Instance.ObjectCSVDatas[3 + LanguageManager.Instance.languageNum][currentIO.ID].ToString();
-            objPanelExitBtn.interactable = true;
-        }
-        else 
+        objWriteTexts = null;
+        objNameTexts = null;
+
+        if (answerID != null) // 선택에 따른 답변
         {
-            writeText = DataManager.Instance.ObjectCSVDatas[6 + LanguageManager.Instance.languageNum][currentIO.ID].ToString();
-            objPanelExitBtn.interactable = false; 
+            objWriteTexts = DataManager.Instance.ChoiceCSVDatas
+               [LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum]
+               [answerID].ToString().Split('/').ToList();
+            if (IsNpc)
+            {
+                objNameTexts = DataManager.Instance.ChoiceCSVDatas
+                    [LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum]
+                    [answerID].ToString().Split('/').ToList();
+            }
         }
-        objTextingTween = objText.DOText(writeText, writeText.Length / 10).SetEase(Ease.Linear);
+        else if (IO.IsInteracted) // 기본
+        {
+            objWriteTexts = DataManager.Instance.ObjectCSVDatas
+                [LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum]
+                [IO.ID].ToString().Split('/').ToList();
+            if(IsNpc)
+            {
+                objNameTexts = DataManager.Instance.ObjectCSVDatas
+                    [LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum]
+                    [IO.ID].ToString().Split('/').ToList();
+            }
+        }
+        else // 상호작용 처음 시 (선택지 주어지는 상호작용)
+        {
+            objWriteTexts = DataManager.Instance.ObjectCSVDatas
+                [LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum]
+                [IO.ID].ToString().Split('/').ToList();
+            if(IsNpc)
+            {
+                objNameTexts = DataManager.Instance.ObjectCSVDatas
+                    [LanguageManager.Instance.languageTypeAmount * 4 + LanguageManager.Instance.languageNum]
+                    [IO.ID].ToString().Split('/').ToList();
+            }
+        }
+        
+
+        // Check Npc
+        objImg.gameObject.SetActive(IsNpc);
+        objName.gameObject.SetActive(IsNpc);
+        if (IsNpc) { if(objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1100f, 180f); } }
+        else { if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1400f, 250f); } }
+
+        // Set Writting
         objPanelBtn.gameObject.SetActive(true);
+        objWriteTexts_currentOrder = 0;
+        objTextingTween = SetWrite(objWriteTexts_currentOrder);
 
     }
     
     public void ObjDescSkip()
     {
-        if (DOTween.IsTweening(objTextingTween)) 
-        { DOTween.Complete(objTextingTween); }
+        // 글인 라이팅 중이면, 바로 완료
+        if (DOTween.IsTweening(objText)) 
+        {
+            Debug.Log("라이팅 중");
+            DOTween.Complete(objText); 
+        }
         else 
         {
-            if (currentIO.IsInteracted)
-            { ObjDescOff(); }
+            // 마지막 라이팅까지 완료가 안되어있다면, 새로운 라이팅 시작
+            if(objWriteTexts.Count > objWriteTexts_currentOrder)
+            {
+                Debug.Log("넘기기");
+                objText.text = "";
+                SetWrite(objWriteTexts_currentOrder);
+            }
+            // 마지막 라이팅까지 완료가 되어있다면
             else
-            { ShowChioceWindow(0.5f); }
+            {
+                // 선택지를 주는 라이팅 이었다면
+                if (!currentIO.IsInteracted)
+                {
+                    Debug.Log("선택지");
+                    ShowChioceWindow(0.25f);
+                }
+                else // 아니라면(기본 라이팅)
+                {
+                    Debug.Log("종료");
+                    ObjDescOff();
+                }
+            }
         }
     }
 
-
     public void ObjDescOff()
     {
+        currentIO.IsInteracted = true;
+
         GameManager.Instance.canInput = true;
         GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
@@ -179,100 +240,9 @@ public class GameSystem : Singleton<GameSystem>
 
         DOTween.Complete(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
+        objWriteTexts_currentOrder = 0;
         objText.text = null;
         currentIO = null;
-    }
-
-    #endregion
-
-    #region Npc Panel
-
-    public void NpcDescOn(ConversationBase conversationBase, Animator animator)
-    {
-        PlayerController.Instance.setOnNpcInteractCamera(animator.gameObject);
-        PlayerInputController.Instance.StopMove();
-        PlayerController.Instance.isTalking = true;
-        anotherAnimator = animator;
-        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
-        this.conversations = conversationBase;
-        npcTextingTween = SetTween(0);
-
-        npcPanelBtn.gameObject.SetActive(true);
-    }
-
-    public void NpcDescSkip()
-    {
-        if (conversationTweeningNow)
-        {
-            DOTween.Complete(npcTextingTween);
-        }
-        else if (!conversationTweeningNow && (conversations.NpcConversations.Count > currentOrder))
-        {
-            if(!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
-            {
-                playerAnimator.SetTrigger("Return");
-            }
-            if (anotherAnimator != null)
-            {
-                if (!anotherAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                {
-                    anotherAnimator.SetTrigger("Return");
-                }
-
-            }
-
-            DOTween.Kill(npcTextingTween);
-            npcText.text = null;
-            npcTextingTween = SetTween(currentOrder);
-        }
-        else if (!conversationTweeningNow)
-        {
-            NpcDescOff();
-        }
-    }
-
-    public void NpcDescOff()
-    {
-        PlayerInputController.Instance.CanMove = true;
-        PlayerController.Instance.setOffNpcInteractCamera();
-        PlayerController.Instance.isTalking = false;
-        npcPanelBtn.gameObject.SetActive(false);
-        DOTween.Kill(npcText);
-        npcText.text = null;
-        conversationTweeningNow = false;
-        currentOrder = 0;
-        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
-
-        playerAnimator.SetTrigger("Return");
-        anotherAnimator.SetTrigger("Return");
-
-
-        anotherAnimator = playerAnimator;
-    }
-
-    private Tween SetTween(int i)
-    {
-        Tween tw = npcText.DOText(conversations.NpcConversations[i].conversation, conversations.NpcConversations[i].conversationDurTime)
-                     .SetEase(Ease.Linear)
-                     .OnStart(() =>
-                     {
-                         Debug.Log("NPC 상호작용의 데이터 적용");
-                         conversationTweeningNow = true;
-                         npcImg.sprite = conversations.NpcConversations[i].talkerSprite;
-                         npcName.text = conversations.NpcConversations[i].talkerName;
-                        
-
-                         if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.player)
-                         { playerAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
-                         else if (conversations.NpcConversations[i].targetGO == ConversationBase.targetGO.another)
-                         { anotherAnimator.SetTrigger(conversations.NpcConversations[i].AnimationTriggerName); }
-                     })
-                     .OnComplete(() =>
-                     {
-                         conversationTweeningNow = false;
-                         currentOrder++;
-                     });
-        return tw;
     }
 
     #endregion
@@ -284,8 +254,8 @@ public class GameSystem : Singleton<GameSystem>
         // Set On
         chioceCG.gameObject.SetActive(true);
         chioceCG.DOFade(1f, time)
-            .OnStart(() => { GameManager.Instance.canInput = false; })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
+            .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
+            .OnComplete(() => { GameManager.Instance.canSkipTalking = true; });
 
         // Set Btn By ID
         List<string> IDs = new List<string>();
@@ -316,6 +286,7 @@ public class GameSystem : Singleton<GameSystem>
         // Set Btn Subscribe
         foreach (IDBtn idBtn in choiceBtnList)
         {
+            // Pointer Enter
             IDisposable iDisEnter = idBtn.button.OnPointerEnterAsObservable()
                 .Subscribe(_ =>
                 {
@@ -327,12 +298,21 @@ public class GameSystem : Singleton<GameSystem>
                         DOTween.Kill(CG);
                         CG.DOFade(1f, 0.25f);
                     }
-                    needAbilityTxt.text =
-                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][_id].ToString() + " / " +
-                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][_id].ToString() + " / " +
-                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id].ToString();
+                    string Anno = "";
+                    for(int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
+                    {
+                        Anno += DataManager.Instance.AbilityCSVDatas[LanguageManager.Instance.languageNum]["A0" + i.ToString()].ToString() + " " +
+                        DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + i][_id].ToString();
+                        if (i < DataManager.Instance.AbilityCSVDatas.Count - 1) { Anno += " / "; }
+                    }
+                    needAbilityTxt.text = Anno; 
+                    needAbilityTxt.TryGetComponent(out RectTransform rt);
+                    if (DOTween.IsTweening(rt)) { DOTween.Kill(rt); } 
+                    if (DOTween.IsTweening(needAbilityTxt)) { DOTween.Kill(needAbilityTxt); }
+                    rt.localScale = Vector3.one;
                     needAbilityTxt.color = Color.white;
                 });
+            // Pointer Exit
             IDisposable iDisExit = idBtn.button.OnPointerExitAsObservable()
                 .Subscribe(_ =>
                 {
@@ -340,24 +320,35 @@ public class GameSystem : Singleton<GameSystem>
                     {
                         DOTween.Kill(CG);
                         CG.DOFade(0f, 0.25f)
-                        .OnComplete(() => { needAbilityTxt.transform.parent.gameObject.SetActive(false); });
+                            .OnComplete(() => { needAbilityTxt.transform.parent.gameObject.SetActive(false); });
                     }
                 });
-            IDisposable iDisClick = idBtn.button.OnPointerEnterAsObservable()
+            //Pointer Click 
+            IDisposable iDisClick = idBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
                     // 능력치 충분한지 체크
                     string _id = idBtn.buttonID;
-                    int need_obse = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][_id]);
-                    int need_pers = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][_id]);
-                    int need_ment = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id]);
+                    int need_obse = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 0][_id]);
+                    int need_pers = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 1][_id]);
+                    int need_ment = Convert.ToInt32(DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 2][_id]);
+                    
                     if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment)) 
-                    { 
-
+                    {
+                        currentIO.IsInteracted = true;
+                        chioceCG.DOFade(0f, time)
+                            .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
+                            .OnComplete(() => { 
+                                GameManager.Instance.canSkipTalking = true; 
+                                ChoiceTab(_id);
+                            });
                     }
                     else
                     {
-                        needAbilityTxt.color = Color.red;
+                        Debug.Log("불충분");
+                        needAbilityTxt.TryGetComponent(out RectTransform rt);
+                        rt.DOScale(1.2f, 0.2f);
+                        needAbilityTxt.DOColor(Color.red, 0.2f);
                     }
                 });
             iDisposables.Add(iDisEnter); iDisposables.Add(iDisExit); iDisposables.Add(iDisClick);
@@ -365,9 +356,35 @@ public class GameSystem : Singleton<GameSystem>
         
     }
 
-    private void ChoiceTab()
+    private void ChoiceTab(string _id)
     {
-        currentIO.IsInteracted = true;
+        chioceCG.gameObject.SetActive(false);
+
+        // set Inevitable
+        PlaceManager.Instance.Exclude_InevitableIO(currentIO);
+
+        // Sub Cancel
+        foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
+
+        // Get Reasoning Contents
+        GameManager.Instance.mainInfo.ReasoningContentsID.Add(
+                            DataManager.Instance.ChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4][_id].ToString());
+
+        // Obj Description Play
+        if(_id.Substring(0, 1) == "O")
+        {
+            ObjDescOn(currentIO, false, _id);
+        }
+        else if(_id.Substring(0, 1) == "N")
+        {
+            ObjDescOn(currentIO, true, _id);
+        }
+        
+
+        // Object Pooling
+        foreach(IDBtn idBtn in choiceBtnList)
+        { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
+        choiceBtnList.Clear();
     }
 
     #endregion

@@ -135,8 +135,15 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
                 circleEffectRT.gameObject.SetActive(false);
             }));
 
-
-        turnOnExtraGODict[pse].gameObject.SetActive(true);
+        // 상황에 맞는 프로그램 켜기
+        foreach(KeyValuePair<e_phoneStateExtra, GameObject> keyValuePair in turnOnExtraGODict)
+        {
+            if(keyValuePair.Value == turnOnExtraGODict[pse])
+            { keyValuePair.Value.gameObject.SetActive(true); }
+            else
+            { keyValuePair.Value.gameObject.SetActive(false); }
+        }
+        
 
         yield return new WaitForEndOfFrame();
 

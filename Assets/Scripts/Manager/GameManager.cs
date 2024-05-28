@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
 
     // Other Value
     public bool canInput = true;
+    public bool canSkipTalking = false;
     public bool canInteractObject = true;
 
     #endregion
@@ -83,8 +84,12 @@ public class MainInfo
     public int ObservationalAbility = 0;
     public int PersuasiveAbility = 0;
     public int MentalStrengthAbility = 0;
-    //Place & Streaming
-    public int PositiveAndNegative = 0; 
+
+    // Place & Streaming
+    public int PositiveAndNegative = 0;
+
+    // Reasoning
+    public List<string> ReasoningContentsID = new List<string>();
 
     public MainInfo() { }
     public MainInfo(int day, int currentActivity, int d_Obse, int d_Pers, int d_Ment)
@@ -97,9 +102,9 @@ public class MainInfo
     }
     public bool IsEnoughAbility(int d_Obse, int d_Pers, int d_Ment)
     {
-        if (ObservationalAbility <= d_Obse &&
-            PersuasiveAbility <= d_Pers &&
-            MentalStrengthAbility <= d_Ment)
+        if (ObservationalAbility >= d_Obse &&
+            PersuasiveAbility >= d_Pers &&
+            MentalStrengthAbility >= d_Ment)
         { return true; }
         else
         { return false; }
