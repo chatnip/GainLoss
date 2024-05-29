@@ -1,5 +1,4 @@
 //Refactoring v1.0
-using System.Collections;
 using UnityEngine;
 
 public class ComputerInteract : InteractObject
@@ -15,9 +14,6 @@ public class ComputerInteract : InteractObject
     [Header("=== UICanvas")]
     [SerializeField] GameObject InteractionUI3D;
     [SerializeField] GameObject Panel_InfoGO;
-
-    [Header("=== Other")]
-    [SerializeField] public bool canTurnOn = false;
 
     #endregion
 
@@ -59,9 +55,8 @@ public class ComputerInteract : InteractObject
     {
         base.Interact();
 
-        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
-        if (canTurnOn)
-        { ScreenOn(); }
+        if (PlaceManager.Instance.isStreamingTime)
+        { Desktop.Instance.TurnOn(); }
         else
         { GameSystem.Instance.ObjDescOn(this, false, null); }
         

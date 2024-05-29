@@ -33,8 +33,6 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
     {
         if(OB.TryGetComponent(out InteractObject interactObject))
         {
-            if(interactObject is HomeInteractObject && PlaceManager.Instance.isStreamingTime)
-            { return; }
             interactObject.SetOn_outlineAni();
             interactObject.SetOn_colorAni();
 

@@ -46,7 +46,6 @@ public class PreliminarySurveyChoose : MonoBehaviour, IInteract
             .Subscribe(btn =>
             {
                 EffectfulWindow.DisappearEffectful(this.gameObject.GetComponent<RectTransform>(), Desktop.DisappearTime, Desktop.DisappearLastSize, Ease.Linear);
-                Desktop.setDesktopSectionBtns();
             });
         
     }

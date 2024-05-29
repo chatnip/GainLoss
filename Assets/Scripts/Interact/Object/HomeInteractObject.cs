@@ -15,9 +15,16 @@ public class HomeInteractObject : InteractObject
     public override void Interact()
     {
         base.Interact();
-
-        ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
-        ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
+        if (PlaceManager.Instance.isStreamingTime)
+        {
+            GameSystem.Instance.ObjDescOn(this, false, null);
+        }
+        else
+        {
+            ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
+            ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
+        }
+        
     }
 
     #endregion

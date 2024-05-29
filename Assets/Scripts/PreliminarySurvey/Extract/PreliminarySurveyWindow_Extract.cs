@@ -65,7 +65,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         endBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                Desktop.EndScheduleThis();
                 PlayerInputController.SetSectionBtns(null, null);
                 resultWindowParentGO.SetActive(false);
                 this.gameObject.SetActive(false);
@@ -87,7 +86,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     {
         if (PlayerInputController.SelectBtn == endBtn && endBtn.interactable)
         {
-            Desktop.EndScheduleThis();
             PlayerInputController.SetSectionBtns(null, null);
             resultWindowParentGO.SetActive(false);
             this.gameObject.SetActive(false);

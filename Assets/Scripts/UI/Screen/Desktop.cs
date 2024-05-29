@@ -13,59 +13,32 @@ public class Desktop : Singleton<Desktop>, IInteract
     [Header("=== Camera")]
     [SerializeField] Camera DesktopCamera;
 
-    [Header("*Manager")]
-    [SerializeField] StreamManager StreamManager;
-    [SerializeField] ComputerInteract computerInteract;
+    [Header("=== Property")]
+    [SerializeField] ComputerInteract ComputerInteract;
+    [SerializeField] TaskBar TaskBar;
 
+    [Header("=== Confirm Popup")]
+    [SerializeField] string confirmID;
+    [SerializeField] RectTransform confirmPopupRT;
+    [SerializeField] Button confirmYesBtn;
+    [SerializeField] List<Button> confirmNoBtns;
+    [SerializeField] TMP_Text confirmText;
 
-    [Header("*Public")]
+    [Header("=== Base UI")]
     [SerializeField] Image BlackScreen;
 
-    [Header("*SNS")]
-    [SerializeField] Button snsOpenBtn;
-    [SerializeField] Button snsExitBtn;
-    [SerializeField] GameObject snsWindow;
-
-    [Header("*FanCafe")]
-    [SerializeField] Button fancafeOpenBtn;
-    [SerializeField] Button fancafeExitBtn;
-    [SerializeField] GameObject fancafeWindow;
-
-    [Header("*Stream")]
-    [SerializeField] public Button streamOpenBtn;
-    [SerializeField] public GameObject streamWindow;
-    [SerializeField] public GameObject resultWindow;
-    [SerializeField] public Button streamStartBtn;
-    [SerializeField] Button streamEndBtn;
-
-    [Header("*Todo")]
-    [SerializeField] Button todoExitBtn;
-    [SerializeField] public GameObject todoWindow;
-
-    [Header("*Preliminary Survey")] // = PS
-    [SerializeField] Button PSOpenBtn;
-    [SerializeField] GameObject PSPopupWindow;
-
-    [Header("*ConfirmPopup")]
-    [SerializeField] DesktopSoftwere desktopSoftwere;
-    [SerializeField] Button popupExitBtn;
-    [SerializeField] Button confirmBtn;
-    [SerializeField] TMP_Text confirmText;
-    [SerializeField] public GameObject confirmPopup;
-
-    [Header("*WindowFrame")]
+    [Header("=== WindowFrame")]
     [SerializeField] public float AppearTime;
     [SerializeField] public float AppearStartSize;
-
     [SerializeField] public float DisappearTime;
     [SerializeField] public float DisappearLastSize;
 
-    [Header("*Ext Btn")]
-    [SerializeField] List<Button> ExceptionBtns;
+    [Header("=== App Btn")]
+    [SerializeField] public List<IDBtn> AppBtn;
 
-    IDisposable disposable;
-
-    public bool CanUseThisSentence = true;
+    [Header("=== App Window")]
+    [SerializeField] public GameObject streamWindow;
+    [SerializeField] public GameObject resultWindow;
 
     #endregion
 
@@ -74,209 +47,69 @@ public class Desktop : Singleton<Desktop>, IInteract
     public void Offset()
     {
         // Set Btn
-        PSOpenBtn.OnClickAsObservable()
+        foreach(IDBtn idBtn in AppBtn)
+        {
+            LanguageManager.Instance.SetLanguageTxt(idBtn.buttonText);
+            idBtn.buttonText.text = DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
+            idBtn.button.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    string ID = idBtn.buttonID;
+                    confirmID = ID;
+                    OpenConfirmPopup(ID);
+                });
+        }
+        
+
+        foreach(Button popupExitBtn in confirmNoBtns)
+        {
+            popupExitBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    confirmID = null;
+                    EffectfulWindow.DisappearEffectful(confirmPopupRT, DisappearTime, DisappearLastSize, Ease.Linear);
+                });
+        }
+        confirmYesBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
-                ConfirmPopupSetting();
+                Debug.Log(confirmID);
+
             });
 
-        streamOpenBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                desktopSoftwere = DesktopSoftwere.Stream;
-                ConfirmPopupSetting();
-            });
-
-        streamStartBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                StartStream();
-            });
-
-        streamEndBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                EndScheduleThis();
-            });
-
-        popupExitBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                //confirmPopup.SetActive(false);
-                DisappearPopup(confirmPopup);
-            });
-
-        todoExitBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                //todoWindow.SetActive(false);
-                DisappearPopup(todoWindow);
-            });
-
-
-        // Set Off
+        // Set GameObject
         DesktopCamera.gameObject.SetActive(false);
+        confirmPopupRT.gameObject.SetActive(false);
     }
 
     protected override void Awake()
     {
         base.Awake();
-        
     }
 
-    public void StartStream()
-    {
-        EffectfulWindow.DisappearEffectful(todoWindow.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
-        //todoWindow.SetActive(false);
+    #endregion
 
-        EffectfulWindow.AppearEffectful(streamWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-        //streamWindow.SetActive(true);
-
-        //StreamManager.currentStreamEvent = WordManager.currentStreamEvent;
-        StreamManager.StartDialog(StreamManager.currentStreamEventID);
-    }
-    public void EndScheduleThis()
-    {
-        TurnOff();
-        //ActionEventManager.TurnOnLoading();
-        computerInteract.ScreenOff();
-    }
-    public void DisappearPopup(GameObject Popup)
-    {
-        EffectfulWindow.DisappearEffectful(Popup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
-        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>>
-        {
-            new List<Button> { snsOpenBtn },
-            new List<Button> { fancafeOpenBtn },
-            new List<Button> { streamOpenBtn },
-            new List<Button> { PSOpenBtn }
-        }, this);
-
-        if(disposable != null) { disposable.Dispose(); }
-    }
+    #region For Pad
 
     public void Interact()
     {
-        #region Open Btns
 
-        if (PlayerInputController.Instance.SelectBtn == snsOpenBtn) 
-        { return; }
-        else if (PlayerInputController.Instance.SelectBtn == fancafeOpenBtn) 
-        { return; }
-        else if(PlayerInputController.Instance.SelectBtn == streamOpenBtn) 
-        {
-            desktopSoftwere = DesktopSoftwere.Stream;
-            ConfirmPopupSetting();
-            PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
-            return;
-        }
-        else if(PlayerInputController.Instance.SelectBtn == PSOpenBtn)
-        {
-            desktopSoftwere = DesktopSoftwere.PreliminarySurvey;
-            ConfirmPopupSetting();
-            PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { confirmBtn } }, this);
-            return;
-        }
-
-        #endregion
-
-        #region Confirm Btns
-
-        if(PlayerInputController.Instance.SelectBtn == popupExitBtn)
-        {
-            EffectfulWindow.DisappearEffectful(confirmPopup.GetComponent<RectTransform>(), DisappearTime, DisappearLastSize, Ease.Linear);
-            return;
-        }
-        else if(PlayerInputController.Instance.SelectBtn == confirmBtn)
-        {
-            
-        }
-
-        #endregion
-    }
-
-    private void OnDisable()
-    {
-        ExceptionBtnsTurnOn();
     }
 
     #endregion
 
     #region Confirm
 
-    private void ConfirmPopupSetting()
+    private void OpenConfirmPopup(string desktopID)
     {
-        switch (desktopSoftwere)
-        {
-            case DesktopSoftwere.SNS:
-                SNSConfirm();
-                break;
-            case DesktopSoftwere.FanCafe:
-                FanCafeConfirm();
-                break;
-            case DesktopSoftwere.Stream:
-                StreamConfirm();
-                break;
-            case DesktopSoftwere.PreliminarySurvey:
-                PreliminarySurveyConfirm();
-                break;
-        }    
-    }
-
-    private void SNSConfirm()
-    {
-        confirmText.text = "";
-        disposable = confirmBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                confirmPopup.SetActive(false);
-
-                disposable.Dispose();
-            });
-    }
-
-    private void FanCafeConfirm()
-    {
-        disposable = confirmBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                confirmPopup.SetActive(false);
-                disposable.Dispose();
-            });
-        
-    }
-
-    private void StreamConfirm()
-    {
-        confirmText.text = "<size=150%>방송</size>을\n보시겠습니까?";
-        disposable = confirmBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                //WordManager.TodoReset();
-                //WordManager.InitWord();
-
-                confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(todoWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-
-                disposable.Dispose();
-            });
-
-        EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-    }
-
-    private void PreliminarySurveyConfirm()
-    {
-        confirmText.text = "<size=150%>사전 조사</size>를\n하시겠습니까?";
-        disposable = confirmBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                confirmPopup.SetActive(false);
-                EffectfulWindow.AppearEffectful(PSPopupWindow.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
-
-                disposable.Dispose();
-            });
-        EffectfulWindow.AppearEffectful(confirmPopup.GetComponent<RectTransform>(), AppearTime, AppearStartSize, Ease.Linear);
+        this.confirmText.text = 
+            "<size=150%>" + DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][desktopID].ToString() + "</size>\n" + 
+            DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageTypeAmount * 1 + LanguageManager.Instance.languageNum][desktopID].ToString();
+        EffectfulWindow.AppearEffectful(confirmPopupRT, AppearTime, AppearStartSize, Ease.Linear);
     }
 
     #endregion
@@ -285,73 +118,32 @@ public class Desktop : Singleton<Desktop>, IInteract
 
     public void TurnOff()
     {
-        BlackScreen.color = Color.black;
-        BlackScreen.gameObject.SetActive(true);
+        ComputerInteract.ScreenOff();
 
-        BlackScreen.DOFade(1, 1)
-            .OnComplete(() =>
-            {
-                BlackScreen.gameObject.SetActive(true);
-            });
+        // TaskBar
+        TaskBar.Offset();
     }
 
-    private void TurnOn()
+    public void TurnOn()
     {
-        ExceptionBtnsTurnOff();
-        List<Button> OpenBtns = new List<Button>() { streamOpenBtn, snsOpenBtn, fancafeOpenBtn, PSOpenBtn };
-        confirmPopup.SetActive(false);
-        resultWindow.SetActive(false);
-        streamWindow.SetActive(false);
-        todoWindow.SetActive(false);
+        ComputerInteract.ScreenOn();
+
+        // Black Screen
+        BlackScreen.gameObject.SetActive(true);
+        BlackScreen.color = Color.black;
         BlackScreen.DOFade(0, 1)
             .SetEase(Ease.InSine)
             .OnComplete(() =>
             {
                 BlackScreen.gameObject.SetActive(false);
             });
-        setDesktopSectionBtns();
-    }
-    private void setAbleInteractBtn(Button AbleBtn, List<Button> Btns)
-    {
-        foreach(Button btn in Btns)
-        {
-            if(btn == AbleBtn) { btn.interactable = true; }
-            else { btn.interactable = false; }
-        }
-    }
 
-    public void setDesktopSectionBtns()
-    {
-        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { 
-            new List<Button> { snsOpenBtn },
-            new List<Button> { fancafeOpenBtn },
-            new List<Button> { streamOpenBtn },
-            new List<Button> { PSOpenBtn } }, this);
+        // Set Special Btn
+        if (PlaceManager.Instance.isStreamingTime) { AppBtn[0].button.interactable = true; }
+        else { AppBtn[0].button.interactable = false; }
     }
 
     #endregion
-
-    public void ExceptionBtnsTurnOn()
-    {
-        foreach (Button btn in ExceptionBtns)
-        {
-            btn.interactable = true;
-        }
-    }
-    private void ExceptionBtnsTurnOff()
-    {
-        foreach (Button btn in ExceptionBtns)
-        {
-            btn.interactable = false;
-        }
-    }
 }
 
 
-public enum DesktopSoftwere
-{ 
-    SNS,
-    FanCafe,
-    Stream,
-    PreliminarySurvey
-}

@@ -102,7 +102,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
         endBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                Desktop.EndScheduleThis();
                 PlayerInputController.SetSectionBtns(null, null);
                 resultWindowParentGO.SetActive(false);
                 foreach (Transform child in clueImg)
@@ -269,7 +268,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     {
         if (PlayerInputController.SelectBtn == endBtn && endBtn.interactable)
         {
-            Desktop.EndScheduleThis();
             PlayerInputController.SetSectionBtns(null, null);
             resultWindowParentGO.SetActive(false);
             foreach (Transform child in clueImg)

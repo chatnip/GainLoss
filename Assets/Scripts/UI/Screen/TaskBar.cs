@@ -1,42 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
+//Refactoring v1.0
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
-using DG.Tweening;
 
 public class TaskBar : MonoBehaviour
 {
-    [SerializeField] GameManager GameManager;
-    [SerializeField] ComputerInteract ComputerInteract;
-    [Header("*UI")]
-    [SerializeField] Button windowButton;
+    #region Value
+
+    [Header("=== UI")]
+    [SerializeField] Button powerBtn;
     [SerializeField] TMP_Text CurrentDayText;
     [SerializeField] TMP_Text CurrentDayOfWeekText;
-    [SerializeField] Image BlackScreen;
+
+    #endregion
+
+    #region Framework & Base Set
+
+    public void Offset()
+    {
+        CurrentDayText.text = "DAY " + GameManager.Instance.mainInfo.Day;
+        CurrentDayOfWeekText.text = GameManager.Instance.mainInfo.TodayOfTheWeek;
+    }
 
     private void Awake()
     {   
-        windowButton.OnClickAsObservable()
+        powerBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                BlackScreen.color = Color.black;
-                BlackScreen.gameObject.SetActive(true);
-
-                BlackScreen.DOFade(1, 1)
-                    .OnComplete(() =>
-                    {
-                        BlackScreen.gameObject.SetActive(true);
-                    });
-                ComputerInteract.ScreenOff();
+                Desktop.Instance.TurnOff();
             });
     }
-    private void OnEnable()
-    {
-        CurrentDayText.text = "DAY " + GameManager.mainInfo.Day;
-        CurrentDayOfWeekText.text = GameManager.mainInfo.TodayOfTheWeek;
 
-
-    }
+    #endregion
 }
