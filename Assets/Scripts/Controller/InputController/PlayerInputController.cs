@@ -367,9 +367,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
             allLoadingGO.activeSelf) 
         { return; }
 
-        if(Desktop.streamWindow.activeSelf) 
-        { DialogManager.ft_allSkip(); }
-
         if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
         { PSWindow_FC.ft_tryToCombine(); }
 

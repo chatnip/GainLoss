@@ -13,22 +13,12 @@ public class DialogManager : Singleton<DialogManager>, IInteract
 {
     #region Value
 
-    [Header("Property")]
-    [SerializeField] GameManager GameManager;
-    [SerializeField] GameSystem GameSystem;
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] Desktop Desktop;
-
     [Header("*Dialog")]
-    [SerializeField] public TMP_Text streamURLText;
     [SerializeField] TMP_Text subscriberAmountText;
     [SerializeField] TMP_Text streamScriptText;
     [SerializeField] public Button dialogNextBtn;
     [SerializeField] InputAction click;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
-
-    [Header("*UI Component")]
-    [SerializeField] public Button allSkipBtn;
 
     [Header("*Animation")]
     [SerializeField] SkeletonGraphic skeletonGraphic;
@@ -59,10 +49,6 @@ public class DialogManager : Singleton<DialogManager>, IInteract
     [SerializeField] Button EndBtn;
     [HideInInspector] public bool turnOver = false;
 
-    //[HideInInspector] public StreamEvent currentStreamEvent = new StreamEvent();
-
-
-
     #endregion
 
     #region Main
@@ -85,38 +71,17 @@ public class DialogManager : Singleton<DialogManager>, IInteract
             {
                 StartCoroutine(DialogTexting(texting));
             });
-
-        allSkipBtn.OnClickAsObservable()
-                .Subscribe(btn =>
-                {
-                    ft_allSkip();
-                });
-
-
-        /*
-        ScenarioBase
-            .Where(Base => Base == null)
-            .Subscribe(_ =>
-            {
-                // 여긴 예외처리 안해도 될듯
-            });
-        */
-    }
-    public void ft_allSkip()
-    {
-        StopAllCoroutines();
-        StartCoroutine(ResultWindowOn());
     }
 
     public void Interact()
     {
-        if (PlayerInputController.SelectBtn == dialogNextBtn)
+        if (PlayerInputController.Instance.SelectBtn == dialogNextBtn)
         { turnOver = true; return; }
-        else if (PlayerInputController.SelectBtn == EndBtn)
+        else if (PlayerInputController.Instance.SelectBtn == EndBtn)
         { 
-            PlayerInputController.SetSectionBtns(null, null);
-            Desktop.streamWindow.SetActive(false);
-            Desktop.resultWindow.SetActive(false);
+            PlayerInputController.Instance.SetSectionBtns(null, null);
+            Desktop.Instance.streamWindow.SetActive(false);
+            Desktop.Instance.resultWindow.SetActive(false);
         }
 
     }
@@ -260,7 +225,7 @@ public class DialogManager : Singleton<DialogManager>, IInteract
     {
         DOTween.Kill("UpdateSubscriberAmountText");
 
-        PlayerInputController.SetSectionBtns(null, null);
+        PlayerInputController.Instance.SetSectionBtns(null, null);
         ClearGageAndText();
 
         CanvasGroup CG = resultWindow.GetComponent<CanvasGroup>();
@@ -271,7 +236,7 @@ public class DialogManager : Singleton<DialogManager>, IInteract
         // 다음날로 가는 버튼 출력
         EndBtn.gameObject.SetActive(true);
         EndBtn.image.DOFade(1, showTime).SetEase(Ease.OutSine);
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { EndBtn } }, this);
+        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { EndBtn } }, this);
 
         void ClearGageAndText()
         {

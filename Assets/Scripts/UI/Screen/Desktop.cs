@@ -34,9 +34,13 @@ public class Desktop : Singleton<Desktop>, IInteract
     [SerializeField] public float DisappearLastSize;
 
     [Header("=== App Btn")]
-    [SerializeField] public List<IDBtn> AppBtn;
+    [SerializeField] public List<IDBtn> appBtn;
 
-    [Header("=== App Window")]
+    [Header("=== App Controller")]
+    [SerializeField] List<DesktopController> appControllers;
+
+
+    [Header(" App Window")]
     [SerializeField] public GameObject streamWindow;
     [SerializeField] public GameObject resultWindow;
 
@@ -47,7 +51,7 @@ public class Desktop : Singleton<Desktop>, IInteract
     public void Offset()
     {
         // Set Btn
-        foreach(IDBtn idBtn in AppBtn)
+        foreach(IDBtn idBtn in appBtn)
         {
             LanguageManager.Instance.SetLanguageTxt(idBtn.buttonText);
             idBtn.buttonText.text = DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
@@ -62,7 +66,6 @@ public class Desktop : Singleton<Desktop>, IInteract
                 });
         }
         
-
         foreach(Button popupExitBtn in confirmNoBtns)
         {
             popupExitBtn.OnClickAsObservable()
@@ -74,11 +77,18 @@ public class Desktop : Singleton<Desktop>, IInteract
                     EffectfulWindow.DisappearEffectful(confirmPopupRT, DisappearTime, DisappearLastSize, Ease.Linear);
                 });
         }
+
         confirmYesBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
                 Debug.Log(confirmID);
-
+                foreach(DesktopController DC in appControllers)
+                {
+                    if(DC.desktopAppID == confirmID)
+                    {
+                        DC.ActiveOn();
+                    }
+                }
             });
 
         // Set GameObject
@@ -139,8 +149,8 @@ public class Desktop : Singleton<Desktop>, IInteract
             });
 
         // Set Special Btn
-        if (PlaceManager.Instance.isStreamingTime) { AppBtn[0].button.interactable = true; }
-        else { AppBtn[0].button.interactable = false; }
+        if (PlaceManager.Instance.isStreamingTime) { appBtn[0].button.interactable = true; }
+        else { appBtn[0].button.interactable = false; }
     }
 
     #endregion
