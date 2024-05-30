@@ -8,6 +8,7 @@ public class DataManager : Singleton<DataManager>
     #region Value
 
     [Header("=== CSV File")]
+
     [Header("-- About Entire Play")]
     [SerializeField] TextAsset ChapterCSV;
     [SerializeField] TextAsset AbilityCSV;
@@ -25,8 +26,11 @@ public class DataManager : Singleton<DataManager>
 
     [Header("-- About Desktop App")]
     [SerializeField] TextAsset DesktopAppCSV;
+    [SerializeField] TextAsset StreamCSV;
+    [SerializeField] TextAsset StreamModuleCSV;
     public List<Dictionary<string, object>> DesktopAppCSVDatas = new();
-
+    public List<Dictionary<string, object>> StreamCSVDatas = new();
+    public List<Dictionary<string, object>> StreamModuleCSVDatas = new();
 
     [Header("-- About Language")]
     [SerializeField] TextAsset LanguageCSV;
@@ -58,8 +62,8 @@ public class DataManager : Singleton<DataManager>
         // (amount*0) + 0~2. Eng / Kor / Jpn 
         // (amount*1) + 0~2. VisitReason Eng / Kor / Jpn
         // (amount*2) + 0~2. Get Activitiy Each Day / Start Day / End Day
-        // (amount*3) + 0~2. Default Observational / Persuasive / MentalStength
-        // (amount*4) + 0. Visitable Place IDs / + 1. Interactable Object IDs
+        // (amount*2) + 3~5. Default Observational / Persuasive / MentalStength
+        // (amount*2) + 6. Visitable Place IDs / + 7. Interactable Object IDs / + 8. Set Streaming IDs
 
         ChapterCSVDatas = CSVReader.Read(this.ChapterCSV);
 
@@ -82,8 +86,7 @@ public class DataManager : Singleton<DataManager>
         // (amount*2) + 0~2. Defualt Name Eng / Kor / Jpn
         // (amount*3) + 0~2. Extra Text Eng / Kor / Jpn 
         // (amount*4) + 0~2. Extra Name Eng / Kor / Jpn 
-        // (amount*5) + 0. Defualt Img ID / 1. Extra Img ID 
-        // (amount*5) + 2. Defualt Anim ID / 3. Extra Anim ID 
+        // (amount*5) + 0. Defualt Img ID / 1. Extra Img ID / 2. Defualt Anim ID / 3. Extra Anim ID  
 
         ObjectCSVDatas = CSVReader.Read(this.ObjectCSV);
 
@@ -92,7 +95,7 @@ public class DataManager : Singleton<DataManager>
         // (amount*1) + 0~2. AnswerDesc Eng / Kor / Jpn
         // (amount*2) + 0~2. AnswerName Eng / Kor / Jpn
         // (amount*3) + 0~2. Need Observational / Persuasive / MentalStrength
-        // (amount*4) + 0. GetContents / 1. ImgID / 2. Anim ID
+        // (amount*3) + 3. GetContents / 4. ImgID / 5. Anim ID / 6. Set Stream Quarter(MxxQxx)
 
         ObjectChoiceCSVDatas = CSVReader.Read(this.ObjectChoiceCSV);
 
@@ -102,7 +105,19 @@ public class DataManager : Singleton<DataManager>
 
         // (amount*0) + 0~2. Eng / Kor / Jpn
         // (amount*1) + 0~2. Confirm Eng / Kor / Jpn
+
         DesktopAppCSVDatas = CSVReader.Read(this.DesktopAppCSV);
+
+        // (amount*0) + 0~2. Title Eng / Kor / Jpn
+
+        StreamCSVDatas = CSVReader.Read(this.StreamCSV);
+
+
+        // (amount*0) + 0~2. Choice Eng / Kor / Jpn
+        // (amount*1) + 0~2. Dialog Eng / Kor / Jpn
+        // (amount*2) + 0. AnimeID / 1. Left or Right (Left = false | Right = true) / 2. Get Gage Value
+
+        StreamModuleCSVDatas = CSVReader.Read(this.StreamModuleCSV);
 
         #endregion
 

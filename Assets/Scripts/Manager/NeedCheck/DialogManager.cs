@@ -8,77 +8,68 @@ using UniRx;
 using TMPro;
 using Spine.Unity;
 using System;
+using System.Linq;
 
 public class DialogManager : Singleton<DialogManager>, IInteract
 {
     #region Value
 
+    [HideInInspector] public string currentStreamEventID;
+
+    [HideInInspector] public List<Dictionary<string, object>> currentStreamEventDatas = new();
+
     [Header("*Dialog")]
-    [SerializeField] TMP_Text subscriberAmountText;
     [SerializeField] TMP_Text streamScriptText;
     [SerializeField] public Button dialogNextBtn;
     [SerializeField] InputAction click;
+    [HideInInspector] public bool turnOver = false;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
 
-    [Header("*Animation")]
-    [SerializeField] SkeletonGraphic skeletonGraphic;
 
-    [Header("*Result")]
+    [Header("* Result")]
     [SerializeField] float showTime = 0.8f; //Dotween 시간값
     [SerializeField] GameObject resultWindow;
-    [SerializeField] Color baseColor;
-
-    [Header("*Gage")]
-    [SerializeField] Slider stressSlider;
-    [SerializeField] TMP_Text stressText;
-    [SerializeField] Color stressBarColor;
-
-    [SerializeField] Slider angerSlider;
-    [SerializeField] TMP_Text angerText;
-    [SerializeField] Color angerBarColor;
-
-    [SerializeField] Slider riskSlider;
-    [SerializeField] TMP_Text riskText;
-    [SerializeField] Color riskBarColor;
-
-    [SerializeField] Slider overloadSilder;
-    [SerializeField] TMP_Text overloadText;
-    [SerializeField] Color overloadBarColor;
-
-    [Header("*Other")]
     [SerializeField] Button EndBtn;
-    [HideInInspector] public bool turnOver = false;
+
+    [Header("=== Viewer")]
+    [SerializeField] TMP_Text viewerAmountTxt;
+
+    [Header("=== Stream Reservation")]
+    [SerializeField] public string streamReservationID;
+    [SerializeField] public List<string> streamQuarterID = new List<string>();
+    [SerializeField] List<string> completedStreamQuarterID = new List<string>();
+    [SerializeField] string currentStreamModultID;
+
+    [Header("=== Animation")]
+    [SerializeField] SkeletonGraphic skeletonGraphic;
 
     #endregion
 
-    #region Main
+    #region Framework & Base Set
 
-    private void OnEnable()
-    {
-        click.Enable();
-    }
-
-    private void OnDisable()
-    {
-        click.Disable();
-    }
-
-    private void Start()
+    public void Offset()
     {
         ScenarioBase
             .Where(Base => Base != null)
-            .Subscribe(texting =>
-            {
-                StartCoroutine(DialogTexting(texting));
-            });
+            .Subscribe(texting => { StartCoroutine(DialogTexting(texting)); });
     }
+
+    private void OnEnable()
+    { click.Enable(); }
+
+    private void OnDisable()
+    { click.Disable(); }
+
+    #endregion
+
+    #region For Pad
 
     public void Interact()
     {
         if (PlayerInputController.Instance.SelectBtn == dialogNextBtn)
         { turnOver = true; return; }
         else if (PlayerInputController.Instance.SelectBtn == EndBtn)
-        { 
+        {
             PlayerInputController.Instance.SetSectionBtns(null, null);
             Desktop.Instance.streamWindow.SetActive(false);
             Desktop.Instance.resultWindow.SetActive(false);
@@ -86,15 +77,84 @@ public class DialogManager : Singleton<DialogManager>, IInteract
 
     }
 
+
     #endregion
 
-    #region Animation
+    #region Stream
+
+    public void SetstreamReservationID(string PlaceID)
+    {
+        List<string> ChpaterPlaceIDs = DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+        List<string> ChapterStreamIDs = DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 8][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+        int index = ChpaterPlaceIDs.IndexOf(PlaceID);
+        streamReservationID = ChapterStreamIDs[index];
+        Debug.Log(streamReservationID);
+    }
+
+    public void StartStreaming()
+    {
+        for(int i = 0; i < streamQuarterID.Count; i++)
+        { completedStreamQuarterID.Add(streamReservationID + streamQuarterID[i]); }
+
+        ChooseAndPlay_BaseStreaming();
+    }
+
+    private void ChooseAndPlay_BaseStreaming()
+    {
+        if (completedStreamQuarterID.Count == 0 || completedStreamQuarterID == null)
+        { 
+            ShowResult();
+            return; 
+        }
+        else
+        {
+            // Local Data Set
+            int rand = UnityEngine.Random.Range(0, completedStreamQuarterID.Count);
+            currentStreamModultID = completedStreamQuarterID[rand];
+            completedStreamQuarterID.Remove(completedStreamQuarterID[rand]);
+
+            // Set EventID
+            string BaseID = currentStreamModultID.Substring(0, 7) + "B";
+            List<string> dialogTexts = 
+                DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][BaseID].ToString().Split("/").ToList();
+            List<string> AnimeIds =
+                DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][BaseID].ToString().Split('/').ToList();
+            List<string> leftOrRightstring =
+                DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][BaseID].ToString().Split('/').ToList();
+
+            // Set Scenario
+            List<Fragment> fragments = new();
+            for(int i = 0; i < dialogTexts.Count;i++)
+            {
+                fragments.Add(new Fragment(AnimeIds[i], dialogTexts[i], leftOrRightstring[i]));
+            }
+            ScenarioBase scenario = new(fragments);
+            ScenarioBase.Value = scenario;
+        }
+
+    }
+    private void ChoiceAndPlay_ChoiceStreaming()
+    {
+
+    }
+
+    private void ShowResult()
+    {
+
+    }
+
+    #endregion
+
+    #region Set Animation
 
     private void AnimationSetup(SpineAniState state)
     {
         // 애니메이션 출력
         switch (state)
         {
+            case SpineAniState.A00:
+                break;
+
             case SpineAniState.A01: // 인사 후, 기본
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 0, "Konnichiwa", loop: false);
                 skeletonGraphic.AnimationState.SetAnimation(trackIndex: 1, "idle", loop: true);
@@ -147,7 +207,7 @@ public class DialogManager : Singleton<DialogManager>, IInteract
 
     public enum SpineAniState
     {
-        A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, 
+        A00, A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, 
         A11, A12, A13, A14
     }
 
@@ -242,10 +302,6 @@ public class DialogManager : Singleton<DialogManager>, IInteract
         {
             EndBtn.gameObject.SetActive(false);
             EndBtn.image.color = new Color(0, 0, 0, 0);
-            stressText.alpha = 0;
-            angerText.alpha = 0;
-            riskText.alpha = 0;
-            overloadText.alpha = 0;
             resultWindow.SetActive(true); //결과창
         }
 /*
@@ -273,26 +329,26 @@ public class DialogManager : Singleton<DialogManager>, IInteract
 
     #endregion
 
-    #region Other
+    #region Subscriber
 
     public void SetUpdateSubscriberAmountText()
     {
         Sequence seq = DOTween.Sequence();
         int i = UnityEngine.Random.Range(4000, 5000 + 1);
-        subscriberAmountText.text = i.ToString();
+        viewerAmountTxt.text = i.ToString();
 
-        seq.Append(subscriberAmountText.DOFade(1f, 1f)
+        seq.Append(viewerAmountTxt.DOFade(1f, 1f)
             .OnComplete(() =>
             {
                 int j = UnityEngine.Random.Range(-10, 10 + 1);
-                int currentAmount = Convert.ToInt32(subscriberAmountText.text); 
+                int currentAmount = Convert.ToInt32(viewerAmountTxt.text); 
                 Debug.Log(currentAmount);
                 int result = currentAmount + j;
 
                 if (result < 4000) { result = 4000; }
                 else if (result > 5000) { result = 5000; }
 
-                subscriberAmountText.text = result.ToString();
+                viewerAmountTxt.text = result.ToString();
             }));
         seq.AppendInterval(1f);
 

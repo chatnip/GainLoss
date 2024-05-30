@@ -193,8 +193,8 @@ public class GameSystem : Singleton<GameSystem>
             SetData(
                 DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][answerID].ToString(),
                 DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum][answerID].ToString(), 
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + 1][answerID].ToString(),
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + 2][answerID].ToString()
+                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 4][answerID].ToString(),
+                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 5][answerID].ToString()
                 );
         }
         else if (IO.IsInteracted) // ±âº»
@@ -421,7 +421,11 @@ public class GameSystem : Singleton<GameSystem>
 
         // Get Reasoning Contents
         GameManager.Instance.mainInfo.ReasoningContentsID.Add(
-                            DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 4][_id].ToString());
+            DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 3][_id].ToString());
+
+        // Get Stream Quarter
+        DialogManager.Instance.streamQuarterID.Add(
+            DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 6][_id].ToString());
 
         // Obj Description Play
         if (_id.Substring(0, 1) == "O")

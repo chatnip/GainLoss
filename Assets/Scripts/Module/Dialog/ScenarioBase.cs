@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,22 +21,21 @@ public class ScenarioBase
 public class Fragment
 {
     public string animationID;
-    [TextArea]
     public string script;
+    public bool leftOrRight;
 
-    public Fragment(string id, string script)
+    public Fragment(string animeData, string scriptData, string leftOrRightData)
     {
-        this.animationID = id;
-        this.script = script;
+        this.animationID = animeData;
+        this.script = scriptData;
+        this.leftOrRight = Convert.ToBoolean(leftOrRightData);
     }
 
     public string AnimationID
-    {
-        get { return animationID; }
-    }
+    { get { return animationID; } }
     public string Script
-    {
-        get { return script; }
-    }
+    { get { return script; } }
+    public bool LeftOrRight
+    { get { return leftOrRight; } }
 }
 

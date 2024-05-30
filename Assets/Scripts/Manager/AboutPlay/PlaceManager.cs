@@ -137,10 +137,13 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeDict.Value.MapGO.SetActive(true);
                 placeDict.Value.MapGO.transform.position = new Vector3(0f, 0f, 0f);
                 mainCamera.backgroundColor = placeDict.Value.BGColor;
-                
+
+
                 // Spawn Map Object ( No Home )
-                if(placeDict.Key != placeBtnList[0])
+                if (placeDict.Key != placeBtnList[0])
                 {
+                    // Set Stream Reservation
+                    DialogManager.Instance.SetstreamReservationID(idBtn.buttonID);
                     placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
 
                     foreach (InteractObject IO in placeDict.Value.InteractObjects)

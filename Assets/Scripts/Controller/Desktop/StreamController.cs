@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class StreamingController : DesktopController
+public class StreamController : DesktopController
 {
     #region Value
 
@@ -31,6 +31,7 @@ public class StreamingController : DesktopController
             .OnComplete(() =>
             {
                 Debug.Log("Start Streaming");
+                DialogManager.Instance.StartStreaming();
             });
     }
 

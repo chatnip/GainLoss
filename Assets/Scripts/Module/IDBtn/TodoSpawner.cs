@@ -10,12 +10,6 @@ public class TodoSpawner : MonoBehaviour, IInteract
 {
     #region Value
 
-    [Header("*Property")]
-    [SerializeField] Desktop Desktop;
-    [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] StreamManager StreamManager;
-    [SerializeField] DialogManager DialogManager;
-
     [Header("*WordParentObj")]
     [SerializeField] public RectTransform wordParentObject;
     [SerializeField] public RectTransform wordActionParentObject;
@@ -45,12 +39,12 @@ public class TodoSpawner : MonoBehaviour, IInteract
             allBtnsList.Add(new List<Button> { allChildren[i] });
         }
         List<List<Button>> btns = new List<List<Button>>(allBtnsList);
-        PlayerInputController.SetSectionBtns(btns, this);
+        PlayerInputController.Instance.SetSectionBtns(btns, this);
     }
 
     public void Interact()
     {
-        if (PlayerInputController.SelectBtn.TryGetComponent(out IDBtn iDBtn))
+        if (PlayerInputController.Instance.SelectBtn.TryGetComponent(out IDBtn iDBtn))
         {
             /*if(iDBtn.buttonType == ButtonType.WordType)
             {
@@ -145,8 +139,7 @@ public class TodoSpawner : MonoBehaviour, IInteract
 
             foreach (string s in streamEventIDs)
             {
-                if (Convert.ToBoolean(StreamManager.currentStreamEventDatas[0][s]))
-                { return false; }
+               
             }
             return true;
         }
@@ -237,7 +230,7 @@ public class TodoSpawner : MonoBehaviour, IInteract
 
         // 활성화 버튼 찾기
         List<Button> OnBtnsList = new List<Button>();
-        foreach(List<Button> OnBtns in PlayerInputController.SectionBtns) 
+        foreach(List<Button> OnBtns in PlayerInputController.Instance.SectionBtns) 
         { OnBtnsList.AddRange(OnBtns); }
 
     }

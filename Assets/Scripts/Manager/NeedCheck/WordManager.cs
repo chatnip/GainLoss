@@ -8,13 +8,6 @@ public class WordManager : Singleton<WordManager>
 {
     #region Value
 
-    [Header("*Property")]
-    [SerializeField] StreamManager StreamManager;
-    [SerializeField] ObjectPooling ObjectPooling;
-    [SerializeField] DialogManager DialogManager;
-    [SerializeField] Desktop Desktop;
-    [SerializeField] PlayerInputController PlayerInputController;
-
     [Space(10)]
     [SerializeField] TodoSpawner todoWordBtnSpawner;
      

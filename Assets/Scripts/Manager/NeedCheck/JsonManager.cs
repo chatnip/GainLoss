@@ -23,9 +23,6 @@ public class JsonManager : Singleton<JsonManager>
 
     // public List<WordBase> myWords = new List<WordBase>();
 
-    [Header("*MainGame")]
-    [SerializeField] StreamManager StreamManager;
-    [SerializeField] PlaceManager PlaceManager;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] TutorialManager TutorialManager;
 
@@ -228,8 +225,8 @@ public class JsonManager : Singleton<JsonManager>
         //    JsonLoad_L(json_filePath, json_wordActionFileName);
 
         // Load -> Sentence Json
-        StreamManager.currentStreamEventDatas =
-            JsonLoad_LD(json_filePath, json_sentenceFileName);
+        //StreamManager.currentStreamEventDatas =
+        //    JsonLoad_LD(json_filePath, json_sentenceFileName);
 
         // Load -> schedule Json
         //ScheduleManager.currentHaveScheduleID =
@@ -383,7 +380,7 @@ public class JsonManager : Singleton<JsonManager>
         //JsonSave(json_wordActionFileName, WordManager.currentWordActionIDList);
 
         // Save -> Sentence Json
-        JsonSave(json_sentenceFileName, StreamManager.currentStreamEventDatas);
+        //JsonSave(json_sentenceFileName, StreamManager.currentStreamEventDatas);
 
         // Save -> Schedule Json
         //JsonSave(json_ScheduleFileName, ScheduleManager.currentHaveScheduleID);
