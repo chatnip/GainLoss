@@ -13,7 +13,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] GameSystem GameSystem;
-    [SerializeField] Desktop Desktop;
+    [SerializeField] DesktopController Desktop;
 
     [Header("*What Value is Changing")]
     [SerializeField] public PreliminarySurveySO_Extract SelectedPreliminarySurveySO;

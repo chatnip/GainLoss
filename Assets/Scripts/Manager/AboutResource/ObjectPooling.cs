@@ -16,6 +16,11 @@ public class ObjectPooling : Singleton<ObjectPooling>
     #region Framework & Base Set
     public void Offset()
     {
+        foreach(Transform OP_IDBtn in OP_IDBtn_ParentRT)
+        {
+            if (OP_IDBtn.TryGetComponent(out IDBtn idBtn)) 
+            { OP_IDBtn_Prefabs.Add(idBtn); }
+        }
         for (int i = 0; i < OP_IDBtn_Prefabs.Count; i++)
         {
             OP_IDBtn_Queue.Enqueue(OP_IDBtn_Prefabs[i]);

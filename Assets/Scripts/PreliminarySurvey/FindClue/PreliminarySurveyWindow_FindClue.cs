@@ -14,7 +14,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     [SerializeField] GameSystem GameSystem;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] Desktop Desktop;
+    [SerializeField] DesktopController Desktop;
 
     [Header("*What Value is Changing")]
     [SerializeField] public PreliminarySurveySO_FindClue SelectedPreliminarySurveySO;

@@ -10,7 +10,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     #region Value
 
     [Header("*Property")]
-    [SerializeField] DialogManager DialogManager;
     [HideInInspector] public bool isPause = false;
     [SerializeField] GameObject allLoadingGO;
 
@@ -24,7 +23,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     [Header("*Computer")]
     [SerializeField] ComputerInteract ComputerInteract;
-    [SerializeField] Desktop Desktop;
+    [SerializeField] DesktopController Desktop;
     [SerializeField] GameObject PSWindow_choose;
     [SerializeField] PreliminarySurveyWindow_FindClue PSWindow_FC;
     [SerializeField] PreliminarySurveyWindow_Extract PSWindow_E;

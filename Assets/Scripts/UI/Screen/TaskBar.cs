@@ -28,7 +28,7 @@ public class TaskBar : MonoBehaviour
         powerBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                Desktop.Instance.TurnOff();
+                DesktopController.Instance.TurnOff();
             });
     }
 

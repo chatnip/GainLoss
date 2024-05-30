@@ -11,7 +11,7 @@ public class PreliminarySurveyChoose : MonoBehaviour, IInteract
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
-    [SerializeField] Desktop Desktop;
+    [SerializeField] DesktopController Desktop;
     [SerializeField] PreliminarySurveyWindow_FindClue PSWindow_FindClue;
     [SerializeField] PreliminarySurveyWindow_Extract PSWindow_Extract;
     

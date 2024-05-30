@@ -15,7 +15,7 @@ public class HomeInteractObject : InteractObject
     public override void Interact()
     {
         base.Interact();
-        if (PlaceManager.Instance.isStreamingTime)
+        if (StreamController.Instance.isStreamingTime)
         {
             GameSystem.Instance.ObjDescOn(this, false, null);
         }

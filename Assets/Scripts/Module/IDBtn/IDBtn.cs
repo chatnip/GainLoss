@@ -26,14 +26,17 @@ public class IDBtn : MonoBehaviour
 
     #endregion
 
-    #region Main
+    #region Framework
 
     private void OnEnable()
     {
         switch (buttonType)
         {
-            case ButtonType.ChoiceType:
-                IDBtnSetup_ChoiceType();
+            case ButtonType.ChoiceType_Object3D:
+                IDBtnSetup_ChoiceType_Object3D();
+                break;
+            case ButtonType.ChoiceType_Stream2D:
+                IDBtnSetup_ChoiceType_Stream2D();
                 break;
 
             case ButtonType.PlaceType:
@@ -46,9 +49,19 @@ public class IDBtn : MonoBehaviour
 
     #region Set
 
+    private void IDBtnSetup_ChoiceType_Object3D()
+    {
+        buttonText.text = DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
+        IDBtnSetup_ChoiceType();
+    }
+    private void IDBtnSetup_ChoiceType_Stream2D()
+    {
+        buttonText.text = DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
+        IDBtnSetup_ChoiceType();
+    }
     private void IDBtnSetup_ChoiceType()
     {
-        buttonText.text = DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString(); rect.anchoredPosition3D = anchorPos;
+        rect.anchoredPosition3D = anchorPos;
         buttonText.color = Color.white;
         button.image.sprite = basicImage;
         rect.localScale = Vector3.one;
@@ -76,6 +89,7 @@ public class IDBtn : MonoBehaviour
 public enum ButtonType
 {
     PlaceType,
-    ChoiceType,
+    ChoiceType_Object3D,
+    ChoiceType_Stream2D,
     DesktopAppType
 }

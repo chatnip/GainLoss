@@ -39,7 +39,6 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
     [SerializeField] public List<string> visitReasons = new List<string>();
     [SerializeField] public IDBtn currentIdBtn;
-    [SerializeField] public bool isStreamingTime = false;
 
     #endregion
 
@@ -64,7 +63,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
                     btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
 
-                    isStreamingTime = true;
+                    StreamController.Instance.isStreamingTime = true;
                 });
             if (placeBtn == placeBtnList[0])
             {
@@ -92,7 +91,6 @@ public class PlaceManager : Singleton<PlaceManager>
 
 
             // Check Interactable
-            isStreamingTime = false;
             canGoPlaceInChapter =
                 DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
             visitReasons =
@@ -143,7 +141,7 @@ public class PlaceManager : Singleton<PlaceManager>
                 if (placeDict.Key != placeBtnList[0])
                 {
                     // Set Stream Reservation
-                    DialogManager.Instance.SetstreamReservationID(idBtn.buttonID);
+                    StreamController.Instance.SetstreamReservationID(idBtn.buttonID);
                     placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
 
                     foreach (InteractObject IO in placeDict.Value.InteractObjects)

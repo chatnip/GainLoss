@@ -55,8 +55,8 @@ public class ComputerInteract : InteractObject
     {
         base.Interact();
 
-        if (PlaceManager.Instance.isStreamingTime)
-        { Desktop.Instance.TurnOn(); }
+        if (StreamController.Instance.isStreamingTime)
+        { DesktopController.Instance.TurnOn(); }
         else
         { GameSystem.Instance.ObjDescOn(this, false, null); }
         
