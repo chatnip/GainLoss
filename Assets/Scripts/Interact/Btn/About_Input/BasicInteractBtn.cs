@@ -15,7 +15,7 @@ public class BasicInteractBtn : InteractCore
 
     #endregion
 
-    #region Main
+    #region Framework
 
     public virtual void Awake()
     {

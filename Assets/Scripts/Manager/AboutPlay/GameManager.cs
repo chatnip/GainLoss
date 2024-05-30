@@ -62,7 +62,6 @@ public class GameManager : Singleton<GameManager>
 
         SetInteractionObjects.Instance.Offset();
         ObjectPooling.Instance.Offset();
-
     }
 
     #endregion

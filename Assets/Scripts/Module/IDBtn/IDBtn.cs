@@ -1,9 +1,7 @@
+//Refactoring v1.0
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening;
-using LeTai.TrueShadow;
-using NaughtyAttributes.Test;
 
 public class IDBtn : MonoBehaviour
 {
@@ -17,11 +15,14 @@ public class IDBtn : MonoBehaviour
     [SerializeField] public RectTransform rect;
     [SerializeField] public Button button;
     [SerializeField] public TMP_Text buttonText;
+    [SerializeField] public BasicInteractBtn BasicInteractBtn;
 
     [Header("=== Need Input")]
-    [SerializeField] public Vector3 anchorPos;
-    [SerializeField] public Vector2 sizeDelta;
-    [SerializeField] public Sprite basicImage;
+    [SerializeField] public Vector3 inputAnchorPos;
+    [SerializeField] public Vector2 inputSizeDelta;
+    [SerializeField] public Sprite inputBasicImage;
+    [SerializeField] public bool inputIsRight;
+    [SerializeField] public string inputText;
 
 
     #endregion
@@ -42,6 +43,10 @@ public class IDBtn : MonoBehaviour
             case ButtonType.PlaceType:
                 IDBtnSetup_PlaceType();
                 break;
+
+            case ButtonType.SpeechBubble_Stream2D:
+                IDBtnSetup_SpeechBubble_Stream2D(inputIsRight);
+                break;
         }
     }
 
@@ -61,16 +66,23 @@ public class IDBtn : MonoBehaviour
     }
     private void IDBtnSetup_ChoiceType()
     {
-        rect.anchoredPosition3D = anchorPos;
-        buttonText.color = Color.white;
-        button.image.sprite = basicImage;
-        rect.localScale = Vector3.one;
-        rect.sizeDelta = sizeDelta;
-        button.enabled = true;
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+
+        button.image.sprite = inputBasicImage;
+
+        rect.anchoredPosition3D = inputAnchorPos;
+        rect.sizeDelta = inputSizeDelta;
         this.gameObject.transform.rotation = Camera.main.transform.rotation;
-        buttonText.fontStyle = FontStyles.Bold;
+
+        buttonText.color = Color.white;
         buttonText.alignment = TextAlignmentOptions.Center;
-        buttonText.alignment = TextAlignmentOptions.Midline;
+
+        rect.localScale = Vector3.one;
+
+        button.enabled = true;
+        BasicInteractBtn.enabled = true;
     }
 
     private void IDBtnSetup_PlaceType()
@@ -78,9 +90,39 @@ public class IDBtn : MonoBehaviour
         buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
         rect.localScale = Vector3.one;
         button.enabled = true;
-        button.image.sprite = basicImage;
+        button.image.sprite = inputBasicImage;
     }
 
+    private void IDBtnSetup_SpeechBubble_Stream2D(bool isRight)
+    {
+        if(!isRight)
+        {
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(0, 0);
+            rect.pivot = new Vector2(0, 0);
+            buttonText.alignment = TextAlignmentOptions.MidlineLeft;
+        }
+        else
+        {
+            rect.anchorMin = new Vector2(1, 0);
+            rect.anchorMax = new Vector2(1, 0);
+            rect.pivot = new Vector2(1, 0);
+            buttonText.alignment = TextAlignmentOptions.MidlineRight;
+        }
+
+        rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
+        rect.sizeDelta = inputSizeDelta;
+
+        button.image.sprite = inputBasicImage;
+
+        buttonText.color = Color.black;
+        buttonText.text = inputText;
+
+        rect.localScale = Vector3.one;
+
+        button.enabled = false;
+        BasicInteractBtn.enabled = false;
+    }
 
     #endregion
 }
@@ -91,5 +133,6 @@ public enum ButtonType
     PlaceType,
     ChoiceType_Object3D,
     ChoiceType_Stream2D,
-    DesktopAppType
+    DesktopAppType,
+    SpeechBubble_Stream2D
 }

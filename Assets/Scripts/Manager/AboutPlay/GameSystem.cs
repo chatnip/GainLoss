@@ -321,12 +321,12 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.buttonType = ButtonType.ChoiceType_Object3D;
             Choice_IDBtn.transform.SetParent(objectBtnParentRT);
             Choice_IDBtn.buttonID = IDs[i];
-            Choice_IDBtn.basicImage = btnSprite;
-            Choice_IDBtn.sizeDelta = new Vector2(1000f, 100f);
+            Choice_IDBtn.inputBasicImage = btnSprite;
+            Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
             LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
 
-            Choice_IDBtn.anchorPos = new Vector3(0f, i * -150f, 0f);
-            if (IDs.Count > 1) { Choice_IDBtn.anchorPos += Vector3.up * 75f * (IDs.Count - 1); }
+            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
+            if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }
 
             Choice_IDBtn.gameObject.SetActive(true);
             choiceBtnList.Add(Choice_IDBtn);
@@ -439,12 +439,12 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.buttonType = ButtonType.ChoiceType_Stream2D;
             Choice_IDBtn.transform.SetParent(streamBtnParentRT);
             Choice_IDBtn.buttonID = IDs[i];
-            Choice_IDBtn.basicImage = btnSprite;
-            Choice_IDBtn.sizeDelta = new Vector2(1000f, 100f);
+            Choice_IDBtn.inputBasicImage = btnSprite;
+            Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
             LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
 
-            Choice_IDBtn.anchorPos = new Vector3(0f, i * -150f, 0f);
-            if (IDs.Count > 1) { Choice_IDBtn.anchorPos += Vector3.up * 75f * (IDs.Count - 1); }
+            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
+            if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }
 
             Choice_IDBtn.gameObject.SetActive(true);
             choiceBtnList.Add(Choice_IDBtn);

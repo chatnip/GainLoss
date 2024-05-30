@@ -130,14 +130,14 @@ public class DesktopController : Singleton<DesktopController>, IInteract
     public void TurnOff()
     {
         ComputerInteract.ScreenOff();
-
-        // TaskBar
-        TaskBar.Offset();
     }
 
     public void TurnOn()
     {
         ComputerInteract.ScreenOn();
+
+        // TaskBar
+        TaskBar.Offset();
 
         // Black Screen
         BlackScreen.gameObject.SetActive(true);
