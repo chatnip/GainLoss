@@ -55,6 +55,7 @@ public class StreamController : Singleton<StreamController>, IInteract
     [SerializeField] SkeletonGraphic skeletonGraphic;
 
     [Header("=== Choice")]
+    [SerializeField] public float chooseLimitTime = 5f;
     [SerializeField] public int goodOrEvilGage = 0;
     [SerializeField] public bool isStreamingTime = false;
     [SerializeField] public string currentChooseID;

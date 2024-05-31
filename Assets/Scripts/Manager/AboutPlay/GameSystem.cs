@@ -25,6 +25,9 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] Animator anotherAnimator;
     [SerializeField] float textingSpeed = 20f;
 
+    [Header("=== Stream UI")]
+    [SerializeField] Image timeAttackFillImg;
+
     [Header("=== Check Things")]
     [SerializeField] List<string> objWriteTexts = new List<string>();
     [SerializeField] List<string> objNameTexts = new List<string>();
@@ -389,18 +392,7 @@ public class GameSystem : Singleton<GameSystem>
                     if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment))
                     {
                         currentIO.IsInteracted = true;
-                        objectChioceCG.DOFade(0f, time)
-                            .OnStart(() => 
-                            {
-                                GameManager.Instance.canSkipTalking = false;
-                                Time.timeScale = 1f;
-                            })
-                            .OnComplete(() =>
-                            {
-                                GameManager.Instance.canSkipTalking = true;
-                                ChoiceTab_Object3D(_id);
-                            })
-                            .SetUpdate(true);
+                        ChoiceTab_Object3D(_id);
                     }
                     else
                     {
@@ -457,17 +449,38 @@ public class GameSystem : Singleton<GameSystem>
             IDisposable iDisClick = idBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    streamChioceCG.DOFade(0f, time).OnComplete(() => { streamChioceCG.gameObject.SetActive(false); });
+
                     string id = idBtn.buttonID;
                     ChoiceTab_Stream2D(id);
                 });
             iDisposables.Add(iDisClick);
         }
+
+        // Set Time Attack
+        Sequence timeAttackSeq = DOTween.Sequence();
+        timeAttackFillImg.fillAmount = 1f;
+        timeAttackSeq.Append(timeAttackFillImg.DOFillAmount(0f, StreamController.Instance.chooseLimitTime).SetEase(Ease.Linear));
+        timeAttackSeq.OnComplete(() =>
+            {
+                ChoiceTab_Stream2D(choiceBtnList[choiceBtnList.Count - 1].buttonID);
+            });
     }
 
     private void ChoiceTab_Object3D(string _id)
     {
-        objectChioceCG.gameObject.SetActive(false);
+        objectChioceCG.DOFade(0f, 0.2f)
+            .OnStart(() =>
+            {
+                GameManager.Instance.canSkipTalking = false;
+                Time.timeScale = 1f;
+            })
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canSkipTalking = true;
+                objectChioceCG.gameObject.SetActive(false);
+            })
+            .SetUpdate(true);
+
 
         // set Inevitable
         PlaceManager.Instance.Exclude_InevitableIO(currentIO);
@@ -501,6 +514,8 @@ public class GameSystem : Singleton<GameSystem>
     }
     private void ChoiceTab_Stream2D(string _id)
     {
+        streamChioceCG.DOFade(0f, 0.2f).OnComplete(() => { streamChioceCG.gameObject.SetActive(false); });
+
         // Show Reaction
         streamChioceCG.gameObject.SetActive(false);
         StreamController.Instance.currentChooseID = _id;
@@ -510,6 +525,9 @@ public class GameSystem : Singleton<GameSystem>
         int incGage = Convert.ToInt32(DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id]);
         StreamController.Instance.goodOrEvilGage += incGage;
         Debug.Log(StreamController.Instance.goodOrEvilGage);
+
+        // iDisposables
+        foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
 
         // Object Pooling
         foreach (IDBtn idBtn in choiceBtnList)
