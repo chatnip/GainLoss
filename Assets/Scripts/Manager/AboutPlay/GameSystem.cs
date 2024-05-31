@@ -103,7 +103,7 @@ public class GameSystem : Singleton<GameSystem>
             });
 
         // Sprites
-        string Path = "talkingCharacter/";
+        string Path = "SpriteModule/";
         foreach (SpriteModule SM in spriteModules)
         {
             SM.nameID = SM.texture.name;
@@ -186,7 +186,7 @@ public class GameSystem : Singleton<GameSystem>
 
                 // Sprite
                 List<string> objSpriteIDs = sprite.Split('/').ToList();
-                objSprites = GetCollectSprite(objSpriteIDs);
+                objSprites = GetCollectSprites(objSpriteIDs);
 
                 // Anim
                 objAnimNames = anim.Split("/").ToList();
@@ -544,7 +544,7 @@ public class GameSystem : Singleton<GameSystem>
         }
         return allSprite;
     }
-    private List<Sprite> GetCollectSprite(List<string> spriteIDs)
+    public List<Sprite> GetCollectSprites(List<string> spriteIDs)
     {
         List<Sprite> collects = new List<Sprite>();
         foreach (string spriteID in spriteIDs)
@@ -559,6 +559,7 @@ public class GameSystem : Singleton<GameSystem>
         }
         return collects;
     }
+
 
     #endregion
 

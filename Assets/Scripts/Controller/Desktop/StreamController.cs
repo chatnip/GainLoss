@@ -37,6 +37,7 @@ public class StreamController : Singleton<StreamController>, IInteract
     [Header("-- Result 00")]
     [SerializeField] GameObject panelResultDescTxt;
     [SerializeField] TMP_Text resultTxt;
+    [SerializeField] Image resultIcon;
     [Header("-- Result 01")]
     [SerializeField] GameObject panelResultGetTxt;
     [SerializeField] TMP_Text getThingTxt;
@@ -204,22 +205,24 @@ public class StreamController : Singleton<StreamController>, IInteract
         DOTween.Kill(tween_SubscriberAmountTxt);
 
         // Get ID
-        int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamReservationID]);
+        int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamReservationID]);
         Debug.Log(typeKindAmount);
         for (int i = 0;  i < typeKindAmount; i++)
         {
             List<string> Data = 
-                DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 1][streamReservationID].ToString().Split('/').ToList();
+                DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamReservationID].ToString().Split('/').ToList();
             int min = Convert.ToInt32(Data[0]); Debug.Log(min);
             int max = Convert.ToInt32(Data[1]); Debug.Log(max);
 
             if (min <= goodOrEvilGage && goodOrEvilGage <= max)
             {
                 GameManager.Instance.mainInfo.ReasoningContentsID.Add(Data[2]);
-                
                 resultTxt.text = 
                     DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamReservationID]
                     .ToString().Split('/').ToList()[i];
+                resultIcon.sprite =
+                    GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamReservationID].ToString().Split('/').ToList())[i];
+
                 Debug.Log("추리 소재 CSV 필요");
                 getThingTxt.text = Data[2];
 

@@ -1306,6 +1306,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47349011}
   m_CullTransparentMesh: 1
+--- !u!1 &55697049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55697050}
+  - component: {fileID: 55697052}
+  - component: {fileID: 55697051}
+  m_Layer: 5
+  m_Name: Img_ExtraIcon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &55697050
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55697049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 819710396}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 225, y: 0}
+  m_SizeDelta: {x: -450, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &55697051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55697049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &55697052
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55697049}
+  m_CullTransparentMesh: 1
 --- !u!1 &57899306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2350,7 +2425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &89283849
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16016,6 +16091,9 @@ MonoBehaviour:
   - nameID: 
     texture: {fileID: 2800000, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     sprites: []
+  - nameID: 
+    texture: {fileID: 2800000, guid: a0566fcfdadf4524a9015438e252579a, type: 3}
+    sprites: []
   objectChioceCG: {fileID: 1559272288}
   objectBtnParentRT: {fileID: 805267314}
   needAbilityTxt: {fileID: 1417040686}
@@ -24734,8 +24812,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -85.00003, y: 0}
+  m_SizeDelta: {x: -169.99994, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &658307455
 MonoBehaviour:
@@ -29846,7 +29924,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &819710396
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29860,6 +29938,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 658307454}
+  - {fileID: 55697050}
   m_Father: {fileID: 1673899165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -50500,7 +50579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1361947565
 RectTransform:
   m_ObjectHideFlags: 0
@@ -81976,11 +82055,16 @@ MonoBehaviour:
   EndTxt: {fileID: 1899989015}
   panelResultDescTxt: {fileID: 819710395}
   resultTxt: {fileID: 658307455}
+  resultIcon: {fileID: 55697051}
   panelResultGetTxt: {fileID: 89283848}
   getThingTxt: {fileID: 1716809554}
   viewerAmountTxt: {fileID: 1676914563}
   streamReservationID: S001
-  streamQuarterID: []
+  streamQuarterID:
+  - M00Q00
+  - M01Q00
+  - M02Q00
+  - M03Q00
   completedStreamQuarterID: []
   currentStreamModultID: 
   skeletonGraphic: {fileID: 372941058}

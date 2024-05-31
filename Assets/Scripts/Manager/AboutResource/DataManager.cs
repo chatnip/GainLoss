@@ -110,7 +110,7 @@ public class DataManager : Singleton<DataManager>
 
         // (amount*0) + 0~2. Title Eng / Kor / Jpn
         // (amount*1) + 0~2. ResultTextByGetTypeKind Eng / Kor / Jpn
-        // (amount*2) + 0. Get TypeKind / 1~ Min-Max-ID
+        // (amount*2) + 0. Icon / 1. Get TypeKind / 2~ Min-Max-ID
 
         StreamCSVDatas = CSVReader.Read(this.StreamCSV);
 
