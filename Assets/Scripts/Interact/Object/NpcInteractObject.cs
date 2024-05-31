@@ -1,5 +1,4 @@
 //Refactoring v1.0
-using System.Linq;
 using UnityEngine;
 
 public class NpcInteractObject : InteractObject
@@ -30,11 +29,11 @@ public class NpcInteractObject : InteractObject
 
     public override void Interact()
     {
+        if (!Outline.enabled) { return; }
+
         base.Interact();
-
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
-
-        GameSystem.Instance.ObjDescOn(this, true, null);
+        GameSystem.Instance.ObjDescOn(this, null);
     }
     #endregion
 }

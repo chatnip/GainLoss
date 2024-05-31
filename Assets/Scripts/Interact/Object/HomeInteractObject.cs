@@ -14,10 +14,12 @@ public class HomeInteractObject : InteractObject
 
     public override void Interact()
     {
+        if (!Outline.enabled) { return; }
+
         base.Interact();
         if (StreamController.Instance.isStreamingTime)
         {
-            GameSystem.Instance.ObjDescOn(this, false, null);
+            GameSystem.Instance.ObjDescOn(this, null);
         }
         else
         {

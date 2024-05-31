@@ -129,12 +129,6 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    /*
-    private void LateUpdate()
-    {
-        CameraRotation();
-    }
-    */
 
     public void ft_setPlayerSpot(Vector3 pos)
     {
@@ -237,12 +231,12 @@ public class PlayerController : Singleton<PlayerController>
 
     public void resetAnime()
     {
-        //Debug.Log("Anim Reset");
-        //if (_animIDSpeed == 0) { AssignAnimationIDs(); }
+        _animator.SetFloat(_animIDSpeed, 0);
         _animator.SetTrigger("Return");
         _animationBlend = 0;
         _animator.SetFloat(_animIDSpeed, 0);
     }
+
 
     private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
     {

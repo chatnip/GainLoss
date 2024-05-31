@@ -192,6 +192,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     public void QuestionWindow_ActiveOn(e_HomeInteractType HI_Type, float time)
     {
         PlayerInputController.Instance.StopMove();
+        PlayerController.Instance.resetAnime();
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
 

@@ -69,6 +69,8 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         GameManager.Instance.canInput = false;
 
         PlayerInputController.Instance.StopMove();
+        PlayerController.Instance.resetAnime();
+
         PlayerInputController.Instance.SetSectionBtns(null, null);
 
         Sequence seq = DOTween.Sequence();

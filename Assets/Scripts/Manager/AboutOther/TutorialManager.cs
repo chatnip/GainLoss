@@ -107,7 +107,8 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
         tutorial_ScreenCG.DOFade(1f, 2f)
             .OnStart(() =>
             {
-                PlayerInputController.StopMove();
+                PlayerInputController.StopMove(); 
+                PlayerController.Instance.resetAnime();
             })
             .OnComplete(() =>
             {

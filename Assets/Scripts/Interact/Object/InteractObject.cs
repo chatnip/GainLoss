@@ -43,6 +43,8 @@ public class InteractObject : InteractCore
 
     public override void Interact()
     {
+        if (!Outline.enabled) { return; }
+
         SetOff_colorAni();
     }
 

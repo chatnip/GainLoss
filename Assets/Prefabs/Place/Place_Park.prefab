@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8750865885332367070
 Transform:
   m_ObjectHideFlags: 0
@@ -1617,9 +1617,7 @@ MonoBehaviour:
   Outline: {fileID: 8991369615496384357}
   ID: N100
   IsInteracted: 0
-  ConversationBase_SO: {fileID: 11400000, guid: 67f94dbe66979de4b8275f70e15a7c7a, type: 2}
   Animator: {fileID: 5366286113983608139}
-  setPlayerPos: {fileID: 9026169688742935931}
 --- !u!23 &8267948872719610699
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2343,9 +2341,7 @@ MonoBehaviour:
   Outline: {fileID: 1366457912280989534}
   ID: N101
   IsInteracted: 0
-  ConversationBase_SO: {fileID: 11400000, guid: 063aeb0be27702c41a413454f2489886, type: 2}
   Animator: {fileID: 1108292822863307227}
-  setPlayerPos: {fileID: 6307539219849377653}
 --- !u!65 &5543661997778984223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3622,6 +3618,10 @@ PrefabInstance:
       value: park_trash
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -3632,6 +3632,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5657049940819332915}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4393776169014860155}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3184568884096902534}
   m_SourcePrefab: {fileID: 100100000, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
 --- !u!4 &8485451076853309995 stripped
 Transform:
@@ -3665,6 +3671,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3049172315057216404, guid: fae0069e1c5516148b3bc77a3dc608a5, type: 3}
+--- !u!114 &4393776169014860155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118012878903605393}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &3184568884096902534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118012878903605393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13283115fa98ee5408cab7efb121d645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Outline: {fileID: 4393776169014860155}
+  ID: O105
+  IsInteracted: 1
 --- !u!1001 &8554549121027733041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4005,9 +4044,7 @@ MonoBehaviour:
   Outline: {fileID: 871785989152089277}
   ID: N102
   IsInteracted: 0
-  ConversationBase_SO: {fileID: 11400000, guid: e2a113b16da0cab42a9a9042864bcffb, type: 2}
   Animator: {fileID: 3145680604095787820}
-  setPlayerPos: {fileID: 6705694404688672829}
 --- !u!65 &5220316741181986219
 BoxCollider:
   m_ObjectHideFlags: 0

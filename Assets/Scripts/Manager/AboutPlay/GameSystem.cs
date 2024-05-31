@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
 using System.Linq;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -34,7 +35,6 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] List<Sprite> objSprites = new List<Sprite>();
     [SerializeField] List<string> objAnimNames = new List<string>();
 
-    bool IsNpc;
     InteractObject currentIO;
 
     Tween objTextingTween;
@@ -139,19 +139,51 @@ public class GameSystem : Singleton<GameSystem>
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
-                         if (IsNpc)
-                         {
+                         Vector2 panelSizeDelta = new Vector2();
+                         if (objNameTexts[i] != "null")
+                         { 
                              objName.text = objNameTexts[i];
+                             objName.gameObject.SetActive(true);
+                             panelSizeDelta.y = 180f;
+                         }
+                         else
+                         {
+                             objName.gameObject.SetActive(false);
+                             panelSizeDelta.y = 250f;
+                         }
+
+                         if (objSprites[i] != null) 
+                         { 
                              objImg.sprite = objSprites[i];
+                             objImg.gameObject.SetActive(true);
+                             panelSizeDelta.x = 1100f;
+                         }
+                         else
+                         {
+                             objImg.gameObject.SetActive(false);
+                             panelSizeDelta.x = 1400f;
+                         }
+
+                         if(objAnimNames[i] != "null")
+                         {
                              if (objAnimNames[i].Substring(0, 3) == "KAA")
                              {
+                                 Debug.Log("playerAnim");
                                  PlayerController.Instance._animator.Play(objAnimNames[i]);
                              }
                              else
                              {
+                                 Debug.Log("anotherAnim");
                                  anotherAnimator.Play(objAnimNames[i]);
                              }
                          }
+                         else
+                         {
+                             PlayerController.Instance.resetAnime();
+                         }
+
+
+                         if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = panelSizeDelta; }
                      })
                      .OnComplete(() =>
                      {
@@ -159,17 +191,17 @@ public class GameSystem : Singleton<GameSystem>
                      });
     }
 
-    public void ObjDescOn(InteractObject IO, bool isNpc, string answerID)
+    public void ObjDescOn(InteractObject IO, string answerID)
     {
         // Set Base Data
-        IsNpc = isNpc;
-        if(IsNpc && IO.TryGetComponent(out Animator animator)) 
+        if(IO.TryGetComponent(out Animator animator)) 
         { anotherAnimator = animator; }
+
         currentIO = IO;
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
         GameManager.Instance.canSkipTalking = true;
-        PlayerInputController.Instance.StopMove();
+        PlayerInputController.Instance.StopMove(); 
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
 
         // Set Text Data
@@ -182,18 +214,17 @@ public class GameSystem : Singleton<GameSystem>
         {
             // Text
             objWriteTexts = text.Split('/').ToList();
-            if (IsNpc)
-            {
-                // Name
-                objNameTexts = name.Split('/').ToList();
 
-                // Sprite
-                List<string> objSpriteIDs = sprite.Split('/').ToList();
-                objSprites = GetCollectSprites(objSpriteIDs);
+            // Name
+            objNameTexts = name.Split('/').ToList();
 
-                // Anim
-                objAnimNames = anim.Split("/").ToList();
-            }
+            // Sprite
+            List<string> objSpriteIDs = sprite.Split('/').ToList();
+            objSprites = GetCollectSprites(objSpriteIDs);
+
+            // Anim
+            objAnimNames = anim.Split("/").ToList();
+
         }
 
         if (answerID != null) // 선택에 따른 답변
@@ -224,20 +255,10 @@ public class GameSystem : Singleton<GameSystem>
                 );
         }
 
-
-        // Check Npc
-        objImg.gameObject.SetActive(IsNpc);
-        objName.gameObject.SetActive(IsNpc);
-        if (IsNpc) { if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1100f, 180f); } }
-        else { if (objText.TryGetComponent(out RectTransform rt)) { rt.sizeDelta = new Vector2(1400f, 250f); } }
-
         // Set Writting
         objPanelBtn.gameObject.SetActive(true);
         objWriteTexts_currentOrder = 0;
         objTextingTween = SetWrite(objWriteTexts_currentOrder);
-
-        
-
     }
 
     public void ObjDescSkip()
@@ -283,6 +304,7 @@ public class GameSystem : Singleton<GameSystem>
         GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
         PlayerController.Instance._animator.SetTrigger("Return");
+        PlayerController.Instance.resetAnime();
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
         DOTween.Complete(objTextingTween);
@@ -497,15 +519,7 @@ public class GameSystem : Singleton<GameSystem>
             DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 6][_id].ToString());
 
         // Obj Description Play
-        if (_id.Substring(0, 1) == "O")
-        {
-            ObjDescOn(currentIO, false, _id);
-        }
-        else if (_id.Substring(0, 1) == "N")
-        {
-            ObjDescOn(currentIO, true, _id);
-        }
-
+        ObjDescOn(currentIO, _id);
 
         // Object Pooling
         foreach (IDBtn idBtn in choiceBtnList)
@@ -567,6 +581,11 @@ public class GameSystem : Singleton<GameSystem>
         List<Sprite> collects = new List<Sprite>();
         foreach (string spriteID in spriteIDs)
         {
+            if(spriteID == "null")
+            {
+                collects.Add(null);
+                continue;
+            }
             foreach (Sprite sprite in GetAllCharacterSprite())
             {
                 if (spriteID == sprite.name)

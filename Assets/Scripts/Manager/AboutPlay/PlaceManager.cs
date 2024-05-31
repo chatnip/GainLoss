@@ -178,7 +178,8 @@ public class PlaceManager : Singleton<PlaceManager>
     public void StartGoingSomewhereLoading(float delay)
     {
         GameManager.Instance.canInput = false;
-        PlayerInputController.Instance.StopMove();
+        PlayerInputController.Instance.StopMove(); 
+        PlayerController.Instance.resetAnime();
         PhoneHardware.Instance.PhoneOff();
         currentIdBtn.button.interactable = false;
 

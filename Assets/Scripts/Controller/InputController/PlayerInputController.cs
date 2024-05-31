@@ -220,7 +220,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         CanMove = false;
         move = Vector2.zero;
-        PlayerController.Instance.resetAnime();
     }
 
     #endregion

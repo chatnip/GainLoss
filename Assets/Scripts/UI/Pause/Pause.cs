@@ -102,7 +102,7 @@ public class Pause : MonoBehaviour, IInteract
     {
         PlayerInputController.isPause = true;
         PlayerInputController.StopMove();
-
+        PlayerController.Instance.resetAnime();
 
         chooseBtn = null;
         anotherCamerasCanvasSet = new List<bool>();
