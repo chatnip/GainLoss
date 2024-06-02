@@ -8,7 +8,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [Header("Player")]
     [Tooltip("캐릭터의 속도")]
-    [SerializeField] float MoveSpeed = 2.0f;
+    [SerializeField] public float MoveSpeed = 2.0f;
 
     [Tooltip("캐릭터가 이동 방향을 향하여 회전하는 속도")]
     [Range(0.0f, 0.3f)]

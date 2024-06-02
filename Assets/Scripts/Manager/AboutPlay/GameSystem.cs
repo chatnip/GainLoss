@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
 using System.Linq;
-using static PhoneHardware;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -106,7 +105,7 @@ public class GameSystem : Singleton<GameSystem>
             {
                 if (!GameManager.Instance.canInput) { return; }
 
-                StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(e_phoneStateExtra.option));
+                StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.option));
             });
 
         // Sprites

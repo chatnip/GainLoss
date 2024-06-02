@@ -73,7 +73,6 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_ChoiceType_Object3D()
     {
-        this.gameObject.transform.rotation = Camera.main.transform.rotation;
         buttonText.text = DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
         IDBtnSetup_ChoiceType();
     }

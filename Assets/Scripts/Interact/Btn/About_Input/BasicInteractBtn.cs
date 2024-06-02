@@ -70,7 +70,7 @@ public class BasicInteractBtn : InteractCore
         // Base
         thisBtn.TryGetComponent(out RectTransform RT);
         DOTween.Kill(RT.localScale);
-        RT.DOScale(Vector3.one * 1.1f, 0.1f);
+        RT.DOScale(Vector3.one * 1.1f, 0.1f).SetUpdate(true);
 
 
     }
@@ -81,7 +81,7 @@ public class BasicInteractBtn : InteractCore
         // Base
         thisBtn.TryGetComponent(out RectTransform RT);
         DOTween.Kill(RT.localScale);
-        RT.DOScale(Vector3.one * 1.0f, 0.1f);
+        RT.DOScale(Vector3.one * 1.0f, 0.1f).SetUpdate(true);
     }
 
     #endregion

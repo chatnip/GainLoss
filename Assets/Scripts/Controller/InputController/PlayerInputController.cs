@@ -4,14 +4,17 @@ using UnityEngine.InputSystem;
 using UniRx;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class PlayerInputController : Singleton<PlayerInputController>
 {
     #region Value
 
+    [Header("=== Base UI")]
+    [SerializeField] public TMP_Text isRunModeTxt;
+
     [Header("*Property")]
     [HideInInspector] public bool isPause = false;
-    [SerializeField] GameObject allLoadingGO;
 
     [Header("*Tutorial")]
     [SerializeField] GameObject TutorialScreenGO;
@@ -31,9 +34,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     [Header("*Interact Object")]
     [SerializeField] ObjectInteractionButtonGenerator ObjectInteractionButtonGenerator;
-    [SerializeField] GameObject Panel_Object;
-    [SerializeField] GameObject Panel_Npc;
-    List<GameObject> Panels = new List<GameObject>();
 
     [Header("*Camera")]
     [SerializeField] GameObject QuarterViewCamera;
@@ -46,6 +46,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     [Header("*Character Input Values")]
     public bool CanMove = false;
+    public bool isRunMode = false;
     public Vector2 pointerMove;
     public Vector2 move;
     public Vector2 look;
@@ -68,32 +69,21 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     #endregion
 
-    #region Main
+    #region Framework & Base Set
+
+    public void Offset()
+    {
+        LanguageManager.Instance.SetLanguageTxt(isRunModeTxt);
+        isRunModeTxt.text = "OFF";
+
+        TryGetComponent(out _input);
+        _input.ObserveEveryValueChanged(x => x.currentControlScheme)
+            .Subscribe(OnControlSchemeChanged);
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        TryGetComponent(out _input);
-
-        _input.ObserveEveryValueChanged(x => x.currentControlScheme)
-            .Subscribe(OnControlSchemeChanged);
-
-        Panels = new List<GameObject>() { Panel_Object, Panel_Npc };
-
-        /*
-        interactMode
-            .Subscribe(x =>
-            {
-                if (x)
-                {
-                    DisablePlayerInput();
-                }
-                else
-                {
-                    EnablePlayerInput();
-                }
-            });
-        */
     }
 
     public void OnControlSchemeChanged(string _controlScheme)
@@ -126,9 +116,16 @@ public class PlayerInputController : Singleton<PlayerInputController>
     public void EnablePlayerInput()
     {
         var playerInput = _input.actions.FindActionMap("Player");
+
+        // Move
         playerInput["Move"].performed += OnMove;
         playerInput["Move"].canceled += OnMoveStop;
         playerInput["Look"].performed += OnLook;
+        playerInput["ToggleRun"].started += SetRunModeChange;
+
+
+
+        // Need Check
         playerInput["Pause"].started += OnOffPause;
 
         playerInput["ChangeSeletedBtn_Right"].started += RightSelectedBtn;
@@ -153,13 +150,17 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     }
 
-
-
     public void DisablePlayerInput()
     {
+        // Move
         _input.actions["Move"].performed -= OnMove;
         _input.actions["Move"].canceled -= OnMoveStop;
         _input.actions["Look"].performed -= OnLook;
+        _input.actions["ToggleRun"].started -= SetRunModeChange;
+
+
+
+        // Need Check
         _input.actions["Pause"].started -= OnOffPause;
 
         _input.actions["ChangeSeletedBtn_Right"].started -= RightSelectedBtn;
@@ -183,6 +184,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         //_input.actions["Interact"].started -= OnInteract;
         // _input.actions["InteractCancel"].started -= OnInteractCancel;
     }
+
     #endregion
 
     #region Player
@@ -203,17 +205,14 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     public void MoveInput(Vector2 newMoveDirection)
     {
-        if (PSWindow_E.gameObject.activeSelf)
-        { PSWindow_E.boardMoveDir = newMoveDirection; }
-
-        if (CanMove)
+        if (GameManager.Instance.canInput && CanMove)
         { move = newMoveDirection; }
-
     }
 
     public void LookInput(Vector2 newLookDirection)
     {
-        if (CanMove) { look = newLookDirection; }
+        if (GameManager.Instance.canInput && CanMove) 
+        { look = newLookDirection; }
     }
 
     public void StopMove()
@@ -296,14 +295,8 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (isPause ||
             !QuarterViewCamera.activeSelf ||
             GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
-            TutorialScreenGO.activeSelf ||
-            allLoadingGO.activeSelf) 
+            TutorialScreenGO.activeSelf)
         { return; }
-
-        foreach (GameObject Go in Panels)
-        {
-            if (Go.activeSelf) { return; }
-        }
 
         if (ObjectInteractionButtonGenerator.SectionIsThis)
         { ObjectInteractionButtonGenerator.SetOnOffInteractObjectBtn(); }
@@ -319,17 +312,12 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.canInput) { return; }
 
-        if (isPause || 
-            !QuarterViewCamera.activeSelf || 
+        if (isPause ||
+            !QuarterViewCamera.activeSelf ||
             GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
-            TutorialScreenGO.activeSelf ||
-            allLoadingGO.activeSelf) 
+            TutorialScreenGO.activeSelf)
         { return; }
 
-        foreach (GameObject Go in Panels)
-        {
-            if (Go.activeSelf) { return; }
-        }
 
         //if (SchedulePrograss.OnExplanation)
         //{ SchedulePrograss.OnOffVisibleSchedule(); }
@@ -340,9 +328,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // 스케쥴 표 보이기
     private void OnOffShowScheduleDetailBtn(InputAction.CallbackContext obj)
     {
-       
+
     }
-    
+
 
     // 무언가를 선택 (X키)
     private void SetSomething(InputAction.CallbackContext obj)
@@ -360,12 +348,11 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.canInput) { return; }
 
-        if (isPause || 
-            GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
-            allLoadingGO.activeSelf) 
+        if (isPause ||
+            GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
         { return; }
 
-        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf) 
+        if (PSWindow_FC.gameObject.activeSelf && !PSWindow_FC.resultWindowParentGO.activeSelf)
         { PSWindow_FC.ft_tryToCombine(); }
 
         if (ObjectInteractionButtonGenerator.SectionIsThis)
@@ -380,15 +367,10 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         // 본 오브젝트가 켜져있을 때, 이 키는 기능 X
         if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf ||
-            Desktop.streamWindow.activeSelf || 
+            Desktop.streamWindow.activeSelf ||
             PSWindow_E.gameObject.activeSelf ||
-            TutorialScreenGO.activeSelf ||
-            allLoadingGO.activeSelf)
+            TutorialScreenGO.activeSelf)
         { return; }
-
-        //Panels
-        if (Panel_Object.activeSelf) 
-        { GameSystem.Instance.ObjDescOff(); return; }
 
         else if (ComputerOffWindow(PSWindow_choose)) // 사전 조사 결정창이 있다면 끄기
         { return; }
@@ -443,21 +425,20 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
         if (PSWindow_FC.gameObject.activeSelf) { pointerMove = newPointerMoveDirection; }
     }
-    
+
 
     #endregion
 
     #region Selected Btns
 
+    // A Btn
     public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
         if (!GameManager.Instance.canInput) { return; }
 
+        // NEED CHECK
         if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
         { cutsceneSO.skipOrCompleteSeq(GameSystem.Instance.cutsceneImg, GameSystem.Instance.cutsceneTxt); return; }
-
-        if (Panel_Object.activeSelf)
-        { GameSystem.Instance.ObjDescSkip(); return; }
 
         if (PSWindow_FC.gameObject.activeSelf)
         {
@@ -472,26 +453,27 @@ public class PlayerInputController : Singleton<PlayerInputController>
                 interact.Interact();
             }
         }
-        
+
     }
 
+    // Cross Btn
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
         if (!GameManager.Instance.canInput) { return; }
 
-        if(SectionBtns != null && SectionBtns.Count >= 1)
+        if (SectionBtns != null && SectionBtns.Count >= 1)
         {
             List<Button> currentBtnList = new List<Button>();
-            foreach(List<Button> BtnList in SectionBtns)
+            foreach (List<Button> BtnList in SectionBtns)
             {
-                if(BtnList.Contains(SelectBtn))
+                if (BtnList.Contains(SelectBtn))
                 {
                     currentBtnList = BtnList;
                 }
             }
 
             int index = currentBtnList.IndexOf(SelectBtn);
-            if (index >= currentBtnList.Count - 1) 
+            if (index >= currentBtnList.Count - 1)
             {
                 SelectBtn = currentBtnList[0];
             }
@@ -557,9 +539,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
             int lineIndex = SectionBtns.IndexOf(currentBtnList);
             int index = currentBtnList.IndexOf(SelectBtn);
 
-            if(lineIndex >= SectionBtns.Count - 1)
+            if (lineIndex >= SectionBtns.Count - 1)
             {
-                if(index > SectionBtns[0].Count - 1)
+                if (index > SectionBtns[0].Count - 1)
                 {
                     SelectBtn = SectionBtns[0][0];
                 }
@@ -635,10 +617,10 @@ public class PlayerInputController : Singleton<PlayerInputController>
         }
     }
 
-
+    // Set
     public void SetSectionBtns(List<List<Button>> btns, IInteract inter)
     {
-        if(btns == null || inter == null || btns.Count == 0)
+        if (btns == null || inter == null || btns.Count == 0)
         {
             ClearSeletedBtns();
         }
@@ -649,14 +631,14 @@ public class PlayerInputController : Singleton<PlayerInputController>
             OnOffSelectedBtn(SelectBtn);
             this.interact = inter;
         }
-        
+
     }
     public void OnOffSelectedBtn(Button btn)
     {
-        if(SectionBtns == null || btn == null) { return; }
+        if (SectionBtns == null || btn == null) { return; }
 
         List<Button> allSectionList = new List<Button>();
-        foreach(List<Button> btns in SectionBtns)
+        foreach (List<Button> btns in SectionBtns)
         {
             allSectionList.AddRange(btns);
         }
@@ -671,10 +653,8 @@ public class PlayerInputController : Singleton<PlayerInputController>
                 if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
                 {
                     DOTween.Kill(RT.localScale);
-                    RT.DOScale(Vector3.one * 1.1f, 0.1f);
+                    RT.DOScale(Vector3.one * 1.1f, 0.1f).SetUpdate(true);
                 }
-                    
-                
             }
             else // 비선택 버튼들
             {
@@ -683,17 +663,40 @@ public class PlayerInputController : Singleton<PlayerInputController>
                 if (SectionBtn.gameObject.TryGetComponent(out RectTransform RT))
                 {
                     DOTween.Kill(RT.localScale);
-                    RT.DOScale(Vector3.one * 1.0f, 0.1f);
+                    RT.DOScale(Vector3.one * 1.0f, 0.1f).SetUpdate(true);
                 }
             }
         }
     }
-
     public void ClearSeletedBtns()
     {
         SectionBtns = null;
         SelectBtn = null;
         interact = null;
+    }
+
+    #endregion
+
+    #region Run Mode
+
+    private void SetRunModeChange(InputAction.CallbackContext obj)
+    {
+        if (!GameManager.Instance.canInput || !CanMove) { return; }
+
+        if(isRunMode)
+        {
+            isRunMode = false;
+            isRunModeTxt.text = "OFF";
+
+            PlayerController.Instance.MoveSpeed = 6f;
+        }
+        else
+        {
+            isRunMode = true;
+            isRunModeTxt.text = "ON";
+
+            PlayerController.Instance.MoveSpeed = 12f;
+        }
     }
 
     #endregion

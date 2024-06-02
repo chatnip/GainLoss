@@ -26,22 +26,17 @@ public class LoadingManager : Singleton<LoadingManager>
 
     #endregion
 
-    #region Framework
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
-    #endregion
-
-    #region Offset
-
+    #region Framework & Base Set
     public void Offset()
     {
         loading.gameObject.SetActive(true);
         loading.alpha = 1.0f;
         StartCoroutine(Post_ShowNextDayText(1f));
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
     #endregion

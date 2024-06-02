@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] public MainInfo mainInfo = new MainInfo();
 
     // Other Value
-    public bool canInput = true;
+    public bool canInput = false;
     public bool canSkipTalking = false;
     public bool canInteractObject = true;
 
@@ -20,7 +20,6 @@ public class GameManager : Singleton<GameManager>
 
     #region Framework & Base Set
 
-    
 
     protected override void Awake()
     {
@@ -63,6 +62,10 @@ public class GameManager : Singleton<GameManager>
 
         SetInteractionObjects.Instance.Offset();
         ObjectPooling.Instance.Offset();
+        PlayerInputController.Instance.Offset();
+
+        ReasoningController.Instance.Offset();
+        ReasoningManager.Instance.Offset();
     }
 
     #endregion
