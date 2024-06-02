@@ -50,6 +50,7 @@ public class GameManager : Singleton<GameManager>
         LanguageManager.Instance.Offset();
         GameSystem.Instance.Offset();
         LoadingManager.Instance.Offset();
+        MainOptionManager.Instance.Offset();
         PlaceManager.Instance.Offset();
 
         ActivityController.Instance.Offset();

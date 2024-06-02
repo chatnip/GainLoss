@@ -32,17 +32,17 @@ public class DataManager : Singleton<DataManager>
     public List<Dictionary<string, object>> StreamCSVDatas = new();
     public List<Dictionary<string, object>> StreamModuleCSVDatas = new();
 
+    [Header("-- About Phone App")]
+    [SerializeField] TextAsset PhoneOptionAppCSV;
+    public List<Dictionary<string, object>> PhoneOptionAppCSVDatas = new();
+
     [Header("-- About Language")]
     [SerializeField] TextAsset LanguageCSV;
     [SerializeField] TextAsset StaticTextCSV; 
     public List<Dictionary<string, object>> LanguageCSVDatas = new();
     public List<Dictionary<string, object>> StaticTextCSVDatas = new();
 
-    // Other Data
-
-
-
-
+    
     #endregion
 
     #region Framework & Base Set
@@ -120,6 +120,14 @@ public class DataManager : Singleton<DataManager>
         // (amount*2) + 0. AnimeID / 1. Left or Right (Left = false | Right = true) / 2. Get Gage Value
 
         StreamModuleCSVDatas = CSVReader.Read(this.StreamModuleCSV);
+
+        #endregion
+
+        #region Phone App
+
+        // (amount*0) + 0~2. Choice Eng / Kor / Jpn
+
+        PhoneOptionAppCSVDatas = CSVReader.Read(this.PhoneOptionAppCSV);
 
         #endregion
 

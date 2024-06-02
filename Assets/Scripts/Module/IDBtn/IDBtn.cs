@@ -34,19 +34,20 @@ public class IDBtn : MonoBehaviour
         switch (buttonType)
         {
             case ButtonType.ChoiceType_Object3D:
+                IDBtnSetup_Base();
                 IDBtnSetup_ChoiceType_Object3D();
                 break;
+
             case ButtonType.ChoiceType_Stream2D:
+                IDBtnSetup_Base();
                 IDBtnSetup_ChoiceType_Stream2D();
                 break;
 
-            case ButtonType.PlaceType:
-                IDBtnSetup_PlaceType();
-                break;
-
             case ButtonType.SpeechBubble_Stream2D:
+                IDBtnSetup_Base();
                 IDBtnSetup_SpeechBubble_Stream2D(inputIsRight);
                 break;
+
         }
     }
 
@@ -54,8 +55,25 @@ public class IDBtn : MonoBehaviour
 
     #region Set
 
+    private void IDBtnSetup_Base()
+    {
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        this.gameObject.transform.rotation = Quaternion.identity;
+
+        rect.localScale = Vector3.one;
+
+        buttonText.color = Color.black;
+        button.image.color = Color.white;   
+
+        button.enabled = true;
+        BasicInteractBtn.enabled = true;
+    }
+
     private void IDBtnSetup_ChoiceType_Object3D()
     {
+        this.gameObject.transform.rotation = Camera.main.transform.rotation;
         buttonText.text = DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
         IDBtnSetup_ChoiceType();
     }
@@ -66,36 +84,18 @@ public class IDBtn : MonoBehaviour
     }
     private void IDBtnSetup_ChoiceType()
     {
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-
         button.image.sprite = inputBasicImage;
 
         rect.anchoredPosition3D = inputAnchorPos;
         rect.sizeDelta = inputSizeDelta;
-        this.gameObject.transform.rotation = Camera.main.transform.rotation;
 
         buttonText.color = Color.white;
         buttonText.alignment = TextAlignmentOptions.Center;
-
-        rect.localScale = Vector3.one;
-
-        button.enabled = true;
-        BasicInteractBtn.enabled = true;
-    }
-
-    private void IDBtnSetup_PlaceType()
-    {
-        buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
-        rect.localScale = Vector3.one;
-        button.enabled = true;
-        button.image.sprite = inputBasicImage;
     }
 
     private void IDBtnSetup_SpeechBubble_Stream2D(bool isRight)
     {
-        if(!isRight)
+        if (!isRight)
         {
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(0, 0);
@@ -112,17 +112,17 @@ public class IDBtn : MonoBehaviour
 
         rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
         rect.sizeDelta = inputSizeDelta;
+        this.gameObject.transform.rotation = Quaternion.identity;
 
         button.image.sprite = inputBasicImage;
 
         buttonText.color = Color.black;
         buttonText.text = inputText;
 
-        rect.localScale = Vector3.one;
-
         button.enabled = false;
         BasicInteractBtn.enabled = false;
     }
+
 
     #endregion
 }
@@ -130,9 +130,8 @@ public class IDBtn : MonoBehaviour
 [System.Serializable]
 public enum ButtonType
 {
-    PlaceType,
+    IndividualType,
     ChoiceType_Object3D,
     ChoiceType_Stream2D,
-    DesktopAppType,
     SpeechBubble_Stream2D
 }

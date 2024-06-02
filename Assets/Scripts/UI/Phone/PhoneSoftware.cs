@@ -17,6 +17,10 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
     [SerializeField] public GameObject optionScreen;
 
     [Header("=== Main Btn")]
+    [SerializeField] Button resumeBtn;
+    [SerializeField] Button restartBtn;
+    [SerializeField] Button titleBtn;
+    [SerializeField] Button quitBtn;
     [SerializeField] Button phoneExitBtn;
 
     [Header("=== visit Place Btn")]
@@ -34,15 +38,13 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
     [SerializeField] TMP_Text popupNameTxt;
     [SerializeField] TMP_Text popupDescTxt;
     [SerializeField] Button popupCancelBtn;
-    [SerializeField] Button popupMoveBtn;
-
-    [Header("=== Other")]
-    [SerializeField] Image appOpenBackgroundImg;
-    [SerializeField] Image appIconImg;
+    [SerializeField] Button popupApplyBtn;
 
     // Dotween
-    Sequence OpenAppSeq;
     Sequence OpenMapSeq;
+
+    // Other Value
+    List<IDisposable> popupIDisList = new List<IDisposable>();
 
     #endregion
 
@@ -62,22 +64,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
                 PhoneHardware.Instance.PhoneOff();
                 PlayerInputController.Instance.CanMove = true;
             });
-        popupCancelBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                if (!GameManager.Instance.canInput) { return; }
-                ZoomOutPlaceMap(0.5f);
-                ClosePopup(0.5f);
-            });
-        popupMoveBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                if (!GameManager.Instance.canInput) { return; }
-
-                ZoomOutPlaceMap(0.5f);
-                PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
-            });
-
+        
         #endregion
 
         popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), 0.5f);
@@ -141,48 +128,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
 
     #endregion
 
-    #region Effectful
-
-    private void OpenApp(GameObject App, Image ClickImg, float dotweenTime)
-    {
-        if (!GameManager.Instance.canInput) { return; }
-        GameManager.Instance.canInput = false;
-
-        if (DOTween.IsTweening(OpenAppSeq)) { DOTween.Complete(OpenAppSeq); }
-        OpenAppSeq = DOTween.Sequence();
-
-        // BG 초기 설정
-        if(appOpenBackgroundImg.TryGetComponent(out RectTransform BGRT))
-        {
-            BGRT.localScale = Vector3.zero;
-            appOpenBackgroundImg.DOFade(0, 0); 
-            OpenAppSeq.Append(BGRT.DOScale(Vector3.one, dotweenTime)
-                .SetEase(Ease.OutCubic)
-                .OnComplete(() =>
-                {
-                    App.gameObject.SetActive(true);
-                }));
-        }
-
-        // Icon 초기 설정
-        appIconImg.DOFade(0, 0);
-        appIconImg.sprite = ClickImg.sprite;
-
-        // Dotween 애니메이션
-        appOpenBackgroundImg.gameObject.SetActive(true);
-        appIconImg.gameObject.SetActive(true);
-
-        
-        OpenAppSeq.Join(appOpenBackgroundImg.DOFade(1, dotweenTime));
-        OpenAppSeq.Join(appIconImg.DOFade(1, 0.1f));
-
-        OpenAppSeq.AppendInterval(dotweenTime);
-
-        OpenAppSeq.Append(appOpenBackgroundImg.DOFade(0, dotweenTime).OnComplete(() => { appOpenBackgroundImg.gameObject.SetActive(false); }));
-        OpenAppSeq.Join(appIconImg.DOFade(0, dotweenTime).OnComplete(() => { appIconImg.gameObject.SetActive(false); }));
-
-        OpenAppSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
-    }
+    #region About Map
 
     public void OpenMap()
     {
@@ -212,37 +158,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         
     }
 
-    public void OpenPopup(IDBtn currentIdBtn, float time)
-    {
-        int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
-
-        popupNameTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
-        popupDescTxt.text = PlaceManager.Instance.visitReasons[index];
-
-
-        popupBG.color = new Color(0, 0, 0, 0);
-        popupBG.DOFade(1f, time)
-            .OnStart(() =>
-            {
-                popupBG.gameObject.SetActive(true);
-            });
-        popupRT.DOAnchorPos(Vector2.zero, time)
-            .OnStart(() => { GameManager.Instance.canInput = false; })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
-    }
-
-    private void ClosePopup(float time)
-    {
-        popupBG.DOFade(0f, time)
-            .OnComplete(() =>
-            {
-                popupBG.gameObject.SetActive(false);
-            });
-        popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
-            .OnStart(() => { GameManager.Instance.canInput = false; })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
-    }
-
     public void ZoomInPlaceMap(IDBtn currentIdBtn, float IncScale, float time)
     {
         if (DOTween.IsTweening(BG_RT)) { DOTween.Kill(BG_RT); }
@@ -263,6 +178,111 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             .SetEase(Ease.OutCubic));
         seq.Join(BG_RT.DOScale(1f, time).SetEase(Ease.OutCubic));
     }
+
+    #endregion
+
+    #region Popup
+
+    public void OpenPopup(IDBtn currentIdBtn, float time)
+    {
+        popupBG.color = new Color(0, 0, 0, 0);
+        popupBG.DOFade(1f, time)
+            .OnStart(() =>
+            {
+                popupBG.gameObject.SetActive(true);
+            });
+        popupRT.DOAnchorPos(Vector2.zero, time)
+            .OnStart(() => { GameManager.Instance.canInput = false; })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
+
+
+        IDisposable cancelIDis = null;
+        IDisposable applyIDis = null;
+
+        #region Visit Place Type
+
+        if (PhoneHardware.Instance.PhoneStateExtra == PhoneHardware.e_phoneStateExtra.visitPlace)
+        {
+            int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
+
+            popupNameTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+            popupDescTxt.text = PlaceManager.Instance.visitReasons[index];
+
+            cancelIDis = popupCancelBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    // Main System
+                    ZoomOutPlaceMap(0.5f);
+                    ClosePopup(0.5f); 
+
+                    foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
+                });
+            applyIDis = popupApplyBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    // Main System
+                    ZoomOutPlaceMap(0f);
+                    ClosePopup(0f);
+                    PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
+
+                    foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
+                });
+        }
+
+        #endregion
+
+        #region Option Type
+
+        else if (PhoneHardware.Instance.PhoneStateExtra == PhoneHardware.e_phoneStateExtra.option)
+        {
+            popupNameTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+            popupDescTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+
+            cancelIDis = popupCancelBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    // Main System
+                    ClosePopup(0.5f);
+
+                    foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
+                });
+            applyIDis = popupApplyBtn.OnClickAsObservable()
+                .Subscribe(btn =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    // Main System
+                    MainOptionManager.Instance.mainOptionAppPlaysDict[currentIdBtn]();
+                    ClosePopup(0f);
+
+                    foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
+                });
+        }
+
+        #endregion
+
+
+        popupIDisList.Add(cancelIDis); popupIDisList.Add(applyIDis);
+    }
+
+    private void ClosePopup(float time)
+    {
+        popupBG.DOFade(0f, time)
+            .OnComplete(() =>
+            {
+                popupBG.gameObject.SetActive(false);
+            });
+        popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
+            .OnStart(() => { GameManager.Instance.canInput = false; })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
+    }
+
 
     #endregion
 

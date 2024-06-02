@@ -9,6 +9,7 @@ using Spine.Unity;
 using System.Linq;
 using System;
 using UnityEngine.UI;
+using NaughtyAttributes.Test;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -49,22 +50,14 @@ public class PlaceManager : Singleton<PlaceManager>
         // Set Place Btn
         foreach (IDBtn placeBtn in placeBtnList)
         {
+            // Set Btn Setting
+            placeBtn.buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][placeBtn.buttonID].ToString();
+            placeBtn.button.image.sprite = placeBtn.inputBasicImage;
+
             // Set Language Text
             LanguageManager.Instance.SetLanguageTxt(placeBtn.buttonText);
 
             // Subscribe Btn
-            comebackHomeBtn.OnClickAsObservable()
-                .Subscribe(_ =>
-                {
-                    if (!GameManager.Instance.canInput) { return; }
-
-                    currentIdBtn = placeBtnList[0];
-                    StartGoingSomewhereLoading(1.5f);
-                    comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
-                    btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
-
-                    StreamController.Instance.isStreamingTime = true;
-                });
             if (placeBtn == placeBtnList[0])
             {
                 placeBtn.button.OnClickAsObservable()
@@ -104,6 +97,21 @@ public class PlaceManager : Singleton<PlaceManager>
 
             comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
             btnRT.anchoredPosition = new Vector2(-300f, 0f);
+
+
+            // Set Btn Subs
+            comebackHomeBtn.OnClickAsObservable()
+                .Subscribe(_ =>
+                {
+                    if (!GameManager.Instance.canInput) { return; }
+
+                    currentIdBtn = placeBtnList[0];
+                    StartGoingSomewhereLoading(1.5f);
+                    comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
+                    btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
+
+                    StreamController.Instance.isStreamingTime = true;
+                });
 
         }
 

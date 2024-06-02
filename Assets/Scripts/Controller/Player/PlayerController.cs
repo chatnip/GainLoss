@@ -231,10 +231,16 @@ public class PlayerController : Singleton<PlayerController>
 
     public void resetAnime()
     {
-        _animator.SetFloat(_animIDSpeed, 0);
-        _animator.SetTrigger("Return");
-        _animationBlend = 0;
-        _animator.SetFloat(_animIDSpeed, 0);
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+        {
+            _animator.SetTrigger("Return");
+        }
+        if(_animationBlend != 0)
+        {
+            _animator.SetFloat(_animIDSpeed, 0);
+            _animationBlend = 0;
+        }
+        
     }
 
 

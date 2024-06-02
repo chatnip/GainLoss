@@ -8,7 +8,6 @@ public class PreliminarySurveyManager : Singleton<PreliminarySurveyManager>
 
     [Header("*Property")]
     [SerializeField] PreliminarySurveyWindow_FindClue PreliminarySurveyWindow;
-    [SerializeField] WordManager WordManager;
     [SerializeField] PlaceManager PlaceManager;
     [SerializeField] GameManager GameManager;
 
@@ -94,8 +93,8 @@ public class PreliminarySurveyManager : Singleton<PreliminarySurveyManager>
     {
         List<PreliminarySurveySO> removeSOs = new List<PreliminarySurveySO>();
         List<string> AllIDs = new List<string>();
-        AllIDs.AddRange(WordManager.currentWordActionIDList);
-        AllIDs.AddRange(WordManager.currentWordIDList);
+        //AllIDs.AddRange(WordManager.currentWordActionIDList);
+        //AllIDs.AddRange(WordManager.currentWordIDList);
 
         foreach (PreliminarySurveySO SO in APSSOs)
         {

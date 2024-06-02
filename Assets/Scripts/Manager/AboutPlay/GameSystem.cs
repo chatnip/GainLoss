@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
 using System.Linq;
-using UnityEngine.Rendering.PostProcessing;
+using static PhoneHardware;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -36,11 +36,8 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] List<string> objAnimNames = new List<string>();
 
     InteractObject currentIO;
-
     Tween objTextingTween;
     int objWriteTexts_currentOrder = 0;
-
-    
 
     List<IDisposable> iDisposables = new List<IDisposable>();
 
@@ -103,6 +100,13 @@ public class GameSystem : Singleton<GameSystem>
                 if (!GameManager.Instance.canSkipTalking) { return; }
 
                 ObjDescSkip();
+            });
+        pauseBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                if (!GameManager.Instance.canInput) { return; }
+
+                StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(e_phoneStateExtra.option));
             });
 
         // Sprites
@@ -174,6 +178,7 @@ public class GameSystem : Singleton<GameSystem>
                              else
                              {
                                  Debug.Log("anotherAnim");
+                                 PlayerController.Instance.resetAnime();
                                  anotherAnimator.Play(objAnimNames[i]);
                              }
                          }
@@ -464,6 +469,14 @@ public class GameSystem : Singleton<GameSystem>
             choiceBtnList.Add(Choice_IDBtn);
         }
 
+        // Set Time Attack
+        timeAttackFillImg.DOFillAmount(0f, StreamController.Instance.chooseLimitTime)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                ChoiceTab_Stream2D(choiceBtnList[choiceBtnList.Count - 1].buttonID);
+            });
+
         // Set Btn Subscribe
         foreach (IDBtn idBtn in choiceBtnList)
         {
@@ -471,21 +484,13 @@ public class GameSystem : Singleton<GameSystem>
             IDisposable iDisClick = idBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-
                     string id = idBtn.buttonID;
                     ChoiceTab_Stream2D(id);
                 });
             iDisposables.Add(iDisClick);
         }
 
-        // Set Time Attack
-        Sequence timeAttackSeq = DOTween.Sequence();
-        timeAttackFillImg.fillAmount = 1f;
-        timeAttackSeq.Append(timeAttackFillImg.DOFillAmount(0f, StreamController.Instance.chooseLimitTime).SetEase(Ease.Linear));
-        timeAttackSeq.OnComplete(() =>
-            {
-                ChoiceTab_Stream2D(choiceBtnList[choiceBtnList.Count - 1].buttonID);
-            });
+        
     }
 
     private void ChoiceTab_Object3D(string _id)
@@ -547,6 +552,12 @@ public class GameSystem : Singleton<GameSystem>
         foreach (IDBtn idBtn in choiceBtnList)
         { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
         choiceBtnList.Clear();
+
+
+        // Kill Tween
+        if (DOTween.IsTweening(timeAttackFillImg))
+        { DOTween.Kill(timeAttackFillImg); }
+        timeAttackFillImg.fillAmount = 1f;
     }
 
     #endregion

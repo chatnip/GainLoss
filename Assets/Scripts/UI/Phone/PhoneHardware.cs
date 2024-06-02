@@ -2,6 +2,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,14 +14,17 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
     [SerializeField] List<GameObject> identicalGOs;
     [SerializeField] List<GameObject> oppositeGOs;
 
+    [Header("=== UI")]
+    [SerializeField] Button pauseBtn;
+
     [Header("=== Effectful")]
     [SerializeField] RectTransform circleEffectRT;
     [SerializeField] RectTransform bellRT;
     [SerializeField] RectTransform waveRT;
 
     // Other Value
-    public Dictionary<e_phoneStateExtra, GameObject> turnOnExtraGODict;
-
+    [HideInInspector] public Dictionary<e_phoneStateExtra, GameObject> turnOnExtraGODict;
+    [HideInInspector] public e_phoneStateExtra PhoneStateExtra;
     #endregion
 
     #region Enum
@@ -36,6 +40,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
 
     public void Offset()
     {
+        // Dict
         turnOnExtraGODict = new Dictionary<e_phoneStateExtra, GameObject>
         {
             { e_phoneStateExtra.visitPlace,  PhoneSoftware.Instance.visitPlaceScreen },
@@ -76,6 +81,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         Sequence seq = DOTween.Sequence();
 
 
+        PhoneStateExtra = pse;
         circleEffectRT.sizeDelta = Vector2.zero;
         circleEffectRT.gameObject.SetActive(true); 
         circleEffectRT.TryGetComponent(out Image CEImg);
@@ -140,7 +146,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         // 상황에 맞는 프로그램 켜기
         foreach(KeyValuePair<e_phoneStateExtra, GameObject> keyValuePair in turnOnExtraGODict)
         {
-            if(keyValuePair.Value == turnOnExtraGODict[pse])
+            if(keyValuePair.Value == turnOnExtraGODict[PhoneStateExtra])
             { keyValuePair.Value.gameObject.SetActive(true); }
             else
             { keyValuePair.Value.gameObject.SetActive(false); }
