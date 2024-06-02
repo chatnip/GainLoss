@@ -63,7 +63,7 @@ public class DataManager : Singleton<DataManager>
         // (amount*1) + 0~2. VisitReason Eng / Kor / Jpn
         // (amount*2) + 0~2. Get Activitiy Each Day / Start Day / End Day
         // (amount*2) + 3~5. Default Observational / Persuasive / MentalStength
-        // (amount*2) + 6. Visitable Place IDs / + 7. Interactable Object IDs / + 8. Set Streaming IDs
+        // (amount*2) + 6. Visitable Place IDs / 7. Interactable Object IDs / 8. Set Streaming IDs / 9. ReasoningID
 
         ChapterCSVDatas = CSVReader.Read(this.ChapterCSV);
 

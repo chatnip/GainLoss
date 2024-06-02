@@ -130,11 +130,16 @@ public class DesktopController : Singleton<DesktopController>, IInteract
     public void TurnOff()
     {
         ComputerInteract.ScreenOff();
+
+        // Set GO
+        StreamController.Instance.gameObject.SetActive(false);
+        confirmPopupRT.gameObject .SetActive(false);    
     }
 
     public void TurnOn()
     {
         ComputerInteract.ScreenOn();
+
 
         // TaskBar
         TaskBar.Offset();

@@ -17377,6 +17377,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04907eca04878b145a6bed76149d6745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reasoningContentIDs: []
+  allReasoningCorkBoards:
+  - {fileID: 7542602774732059734, guid: f897697a5c64737479f617d8f26dcbbf, type: 3}
+  currentReasoningCorkBoard: {fileID: 0}
+  reasoningCorkBoardParentTF: {fileID: 1517926796}
 --- !u!1 &510184898
 GameObject:
   m_ObjectHideFlags: 0
@@ -53189,7 +53194,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1517926796}
-  - component: {fileID: 1517926797}
   m_Layer: 5
   m_Name: ReasoningRT
   m_TagString: Untagged
@@ -53216,18 +53220,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1517926797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1517926795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15dbf43d36eeb748a2e656208e7cdcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1524654592
 GameObject:
   m_ObjectHideFlags: 0
@@ -63651,7 +63643,6 @@ MonoBehaviour:
     PersuasiveAbility: 0
     MentalStrengthAbility: 0
     PositiveAndNegative: 0
-    ReasoningContentsID: []
     TodayOfTheWeek: Monday
   canInput: 1
   canSkipTalking: 0
@@ -75334,8 +75325,9 @@ MonoBehaviour:
   panelResultGetTxt: {fileID: 89283848}
   getThingTxt: {fileID: 1716809554}
   viewerAmountTxt: {fileID: 1676914563}
-  streamReservationID: 
-  streamQuarterID: []
+  streamReservationID: S001
+  streamQuarterID:
+  - M00Q00
   completedStreamQuarterID: []
   currentStreamModultID: 
   skeletonGraphic: {fileID: 372941058}

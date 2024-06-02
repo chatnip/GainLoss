@@ -51,8 +51,8 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     public enum e_HomeInteractType
     {
-        // 관찰력       // 설득력    // 정신력        //외출하기
-        Observational, Persuasive, MentalStrength, GoOutside
+        // 관찰력       // 설득력    // 정신력        //외출하기  //추리하기
+        Observational, Persuasive, MentalStrength, GoOutside, Reasoning
     }
 
     #endregion
@@ -65,26 +65,41 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         // Set Dict
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
         { 
-            { e_HomeInteractType.Observational, new QuestionWindowConfig(
+            {
+                e_HomeInteractType.Reasoning, new QuestionWindowConfig(
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LNum]["O005"].ToString(),
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O005"].ToString(),
+                "ReasoningAnim",
+                0, 0)
+            },
+            { 
+                e_HomeInteractType.Observational, new QuestionWindowConfig(
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LNum]["O003"].ToString(),
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O003"].ToString(), 
                 "observationalAnim", 
-                1, 1) },
-            { e_HomeInteractType.Persuasive, new QuestionWindowConfig(
+                1, 1) 
+            },
+            { 
+                e_HomeInteractType.Persuasive, new QuestionWindowConfig(
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LNum]["O002"].ToString(),
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O002"].ToString(),
                 "persuasiveAnim", 
-                1, 1) },
-            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
+                1, 1) 
+            },
+            { 
+                e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LNum]["O001"].ToString(),
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O001"].ToString(),
                 "mentalStrengthAnim", 
-                1, 1) },
-            { e_HomeInteractType.GoOutside, new QuestionWindowConfig(
+                1, 1) 
+            },
+            {
+                e_HomeInteractType.GoOutside, new QuestionWindowConfig(
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LNum]["O000"].ToString(),
-                "",
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LNum]["O000"].ToString(),
                 "goOutsideAnim", 
-                0, 0) }
+                0, 0) 
+            }
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
@@ -119,6 +134,10 @@ public class ActivityController : Singleton<ActivityController>, IInteract
                 if (currentQuestionWindowType == e_HomeInteractType.GoOutside)
                 { 
                     StartCoroutine(GoOutside()); 
+                }
+                else if(currentQuestionWindowType == e_HomeInteractType.Reasoning)
+                {
+                    ReasoningManager.Instance.SetOnCorkBoard();
                 }
                 else
                 {
@@ -204,20 +223,29 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { noBtn, yesBtn } }, this);
         
         // set Txt
-        if(currentQuestionWindowType == e_HomeInteractType.GoOutside && GameManager.Instance.mainInfo.CurrentActivity > 0)
+        if(currentQuestionWindowType == e_HomeInteractType.GoOutside // 외출하지만, 행동력이 남아있을 시
+            && GameManager.Instance.mainInfo.CurrentActivity > 0)
         {
             questionContentTxt.text =
-                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + DataManager.Instance.ObjectCSVDatas
-                [LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum]["O000"].ToString() + "</size></color>";
+                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + questionWindowConfigDict[e_HomeInteractType.GoOutside].ActivityKind + "</size></color>";
+            kindOfGageByActivityTxt.text = "";
+        }
+        else if (currentQuestionWindowType == e_HomeInteractType.Reasoning // 추리지만, 마지막 날짜가 아닐 경우
+            && GameManager.Instance.mainInfo.Day != Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][GameManager.Instance.currentChapter]))
+        {
+            questionContentTxt.text =
+                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + questionWindowConfigDict[e_HomeInteractType.Reasoning].ActivityKind + "</size></color>";
+            kindOfGageByActivityTxt.text = "";
         }
         else
         {
             questionContentTxt.text =
-                questionWindowConfigDict[HI_Type].QuestionContent;
+                questionWindowConfigDict[HI_Type].QuestionContent; 
+            kindOfGageByActivityTxt.text =
+                questionWindowConfigDict[HI_Type].ActivityKind + "+" + questionWindowConfigDict[HI_Type].IncAbility.ToString();
         }
         
-        kindOfGageByActivityTxt.text =
-            questionWindowConfigDict[HI_Type].ActivityKind + "+" + questionWindowConfigDict[HI_Type].IncAbility.ToString();
+        
         
         amountNumInWindowTxt.text = 
             GameManager.Instance.mainInfo.CurrentActivity.ToString() + "/" + GameManager.Instance.mainInfo.MaxActivity.ToString();
@@ -304,6 +332,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
     }
 
     #endregion
+
 }
 
 public class QuestionWindowConfig

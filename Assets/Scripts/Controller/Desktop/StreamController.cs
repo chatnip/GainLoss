@@ -87,10 +87,7 @@ public class StreamController : Singleton<StreamController>, IInteract
                 }
                 else if (panelResultGetTxt.gameObject.activeSelf)
                 {
-                    panelResultDescTxt.gameObject.SetActive(false);
-                    panelResultGetTxt.gameObject.SetActive(false);
-                    DesktopController.Instance.TurnOff();
-                    isStreamingTime = false;
+                    ActiveOff();
                 }
             });
 
@@ -217,7 +214,7 @@ public class StreamController : Singleton<StreamController>, IInteract
 
             if (min <= goodOrEvilGage && goodOrEvilGage <= max)
             {
-                GameManager.Instance.mainInfo.ReasoningContentsID.Add(Data[2]);
+                ReasoningManager.Instance.reasoningContentIDs.Add(Data[2]);
                 resultTxt.text = 
                     DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamReservationID]
                     .ToString().Split('/').ToList()[i];
@@ -507,5 +504,16 @@ public class StreamController : Singleton<StreamController>, IInteract
             }));
     }
 
+    private void ActiveOff()
+    {
+        DesktopController.Instance.TurnOff();
+        panelResultDescTxt.gameObject.SetActive(false);
+        panelResultGetTxt.gameObject.SetActive(false);
+
+        foreach (IDBtn idBtn in sb_IDBtns) { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
+        sb_IDBtns.Clear();
+
+        isStreamingTime = false;
+    }
     #endregion
 }

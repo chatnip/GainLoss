@@ -515,7 +515,7 @@ public class GameSystem : Singleton<GameSystem>
         foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
 
         // Get Reasoning Contents
-        GameManager.Instance.mainInfo.ReasoningContentsID.Add(
+        ReasoningManager.Instance.reasoningContentIDs.Add(
             DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 3][_id].ToString());
 
         // Get Stream Quarter

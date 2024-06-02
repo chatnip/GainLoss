@@ -64,7 +64,6 @@ public class GameManager : Singleton<GameManager>
         ObjectPooling.Instance.Offset();
         PlayerInputController.Instance.Offset();
 
-        ReasoningController.Instance.Offset();
         ReasoningManager.Instance.Offset();
     }
 
@@ -91,9 +90,6 @@ public class MainInfo
 
     // Place & Streaming
     public int PositiveAndNegative = 0;
-
-    // Reasoning
-    public List<string> ReasoningContentsID = new List<string>();
 
     public MainInfo() { }
     public MainInfo(int day, int currentActivity, int d_Obse, int d_Pers, int d_Ment)

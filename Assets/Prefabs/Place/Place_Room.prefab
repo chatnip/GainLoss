@@ -1889,16 +1889,90 @@ PrefabInstance:
       propertyPath: m_Name
       value: cork board
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5770890329253929109}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 484389456100588513}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3869819189428354151}
   m_SourcePrefab: {fileID: 100100000, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
 --- !u!4 &2572333618229024375 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
   m_PrefabInstance: {fileID: 2609970886717698460}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2952412336388197581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+  m_PrefabInstance: {fileID: 2609970886717698460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5770890329253929109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2952412336388197581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f6c5ad92ddfe246848d1404fba5ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Outline: {fileID: 3869819189428354151}
+  ID: O005
+  IsInteracted: 1
+  thisAbilityType: 4
+--- !u!64 &484389456100588513
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2952412336388197581}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1737268088155598118, guid: 5378ef706e170bd4fbf7371002b1cc0d, type: 3}
+--- !u!114 &3869819189428354151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2952412336388197581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 3
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &2762019926756692328
 PrefabInstance:
   m_ObjectHideFlags: 0
