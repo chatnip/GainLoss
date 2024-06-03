@@ -8,7 +8,7 @@ public class ReasoningArrow : MonoBehaviour
 
     [Header("=== Relation")]
     [SerializeField] ReasoningPhoto[] relationPhotos;
-    [SerializeField] bool isVisible = false;
+    [SerializeField] public bool isVisible = false;
 
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
@@ -17,7 +17,7 @@ public class ReasoningArrow : MonoBehaviour
 
     #region Active On
 
-    public void CheckVisible()
+    public void CheckVisible(float time)
     {
         if (relationPhotos[0].isVisible && relationPhotos[1].isVisible) { this.isVisible = true; }
 
@@ -27,7 +27,7 @@ public class ReasoningArrow : MonoBehaviour
 
             thisCG.alpha = 0f;
 
-            thisCG.DOFade(1f, 1f);
+            thisCG.DOFade(1f, time);
         }
     }
 

@@ -18,7 +18,7 @@ public class ReasoningPhoto : MonoBehaviour
 
     #region Active On
 
-    public void CheckVisible()
+    public void CheckVisible(float time)
     {
         if (!actualPhoto.gameObject.activeSelf && isVisible)
         {
@@ -28,7 +28,7 @@ public class ReasoningPhoto : MonoBehaviour
             color.a = 0f;
             actualPhoto.color = color;
 
-            actualPhoto.DOFade(1f, 1f);
+            actualPhoto.DOFade(1f, time);
         }    
     }
 

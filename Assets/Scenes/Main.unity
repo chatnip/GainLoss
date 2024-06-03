@@ -17377,7 +17377,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04907eca04878b145a6bed76149d6745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reasoningContentIDs: []
+  reasoningContentIDs:
+  - T00RC00
+  - T01RC00
+  - T01RC01
+  - T02RC00
+  - T02RC01
+  - T02RC02
+  - T03RC00
+  - T03RC01
+  - T03RC02
+  - T03RC03
   allReasoningCorkBoards:
   - {fileID: 7542602774732059734, guid: f897697a5c64737479f617d8f26dcbbf, type: 3}
   currentReasoningCorkBoard: {fileID: 0}
@@ -66489,6 +66499,7 @@ MonoBehaviour:
   StreamCSV: {fileID: 4900000, guid: 5224b00ef880a2a4cb1322feebb932af, type: 3}
   StreamModuleCSV: {fileID: 4900000, guid: 8577feb61dfc75e4cab30a99e9aa9255, type: 3}
   PhoneOptionAppCSV: {fileID: 4900000, guid: 1e281bd5337c4b049a1da796c639e955, type: 3}
+  ReasoningContentCSV: {fileID: 4900000, guid: b4a3e047d51c7bb4caa3f66a1c6eff77, type: 3}
   LanguageCSV: {fileID: 4900000, guid: b7407701f9bc231438a78c4e1cb377e7, type: 3}
   StaticTextCSV: {fileID: 4900000, guid: 0377b351a55621941bc5e9539b8e0d2c, type: 3}
 --- !u!1 &1875160940 stripped
@@ -75329,6 +75340,8 @@ MonoBehaviour:
   streamReservationID: S001
   streamQuarterID:
   - M00Q00
+  - M01Q00
+  - M02Q00
   completedStreamQuarterID: []
   currentStreamModultID: 
   skeletonGraphic: {fileID: 372941058}

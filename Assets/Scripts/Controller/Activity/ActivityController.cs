@@ -137,7 +137,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
                 }
                 else if(currentQuestionWindowType == e_HomeInteractType.Reasoning)
                 {
-                    ReasoningController.Instance.ActiveOn();
+                    ReasoningController.Instance.ActiveOn(1f);
                 }
                 else
                 {

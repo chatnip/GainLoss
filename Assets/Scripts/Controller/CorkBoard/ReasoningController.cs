@@ -1,4 +1,5 @@
 //Refactoring v1.0
+using DG.Tweening;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -18,6 +19,11 @@ public class ReasoningController : Singleton<ReasoningController>
     [Header("=== Arrow")]
     [SerializeField] Transform arrowParentTF;
     [SerializeField] List<ReasoningArrow> arrows = new List<ReasoningArrow>();
+
+    [Header("=== Answer")]
+    [SerializeField] Transform answerParentTF;
+    [SerializeField] List<ReasoningAnswer> answers = new List<ReasoningAnswer>();
+    [SerializeField] Image answerBG_Img;
 
     [Header("=== UI")]
     [SerializeField] Button exitBtn;
@@ -51,6 +57,13 @@ public class ReasoningController : Singleton<ReasoningController>
             if (photoTF.TryGetComponent(out ReasoningArrow RA))
             { arrows.Add(RA); }
         }
+        
+        // Answer
+        foreach (Transform answerTF in answerParentTF)
+        {
+            if (answerTF.TryGetComponent(out ReasoningAnswer RAW))
+            { answers.Add(RAW); }
+        }
 
         //Btn
         exitBtn.OnClickAsObservable()
@@ -69,21 +82,24 @@ public class ReasoningController : Singleton<ReasoningController>
 
     #region Active On/Off
 
-    public void ActiveOn()
+    public void ActiveOn(float time)
     {
         this.gameObject.SetActive(true);
-        
-        foreach(ReasoningPhoto RP in photos)
-        { RP.CheckVisible(); }
+        ActivityController.Instance.QuestionWindow_ActiveOff(0.25f);
+
+        foreach (ReasoningPhoto RP in photos)
+        { RP.CheckVisible(time); }
 
         foreach (ReasoningArrow RA in arrows)
-        { RA.CheckVisible(); }
+        { RA.CheckVisible(time); }
+
+        foreach (ReasoningAnswer RA in answers)
+        { RA.CheckVisible(time); }
     }
 
     public void ActiveOff()
     {
         this.gameObject.SetActive(false);
-        ActivityController.Instance.QuestionWindow_ActiveOff(0.25f);
 
         GameManager.Instance.canInput = true;
         PlayerInputController.Instance.CanMove = true;
@@ -99,6 +115,18 @@ public class ReasoningController : Singleton<ReasoningController>
         {
             if (RP.relationObejctID == objectID) { RP.isVisible = true; Debug.Log(RP.gameObject.name); }
         }
+    }
+
+    #endregion
+
+    #region Set Button Interact
+
+    public void SetReasoningBtn(List<string> iDs)
+    {
+        if (iDs.Count == 0 || iDs == null) { return; }
+
+        answerBG_Img.gameObject.SetActive(true);
+        answerBG_Img.DOFade(0.5f, 0.25f);
     }
 
     #endregion

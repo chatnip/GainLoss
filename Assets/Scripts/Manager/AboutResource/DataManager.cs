@@ -36,6 +36,10 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset PhoneOptionAppCSV;
     public List<Dictionary<string, object>> PhoneOptionAppCSVDatas = new();
 
+    [Header("-- About Reasoning")]
+    [SerializeField] TextAsset ReasoningContentCSV;
+    public List<Dictionary<string, object>> ReasoningContentCSVDatas = new();
+
     [Header("-- About Language")]
     [SerializeField] TextAsset LanguageCSV;
     [SerializeField] TextAsset StaticTextCSV; 
@@ -128,6 +132,14 @@ public class DataManager : Singleton<DataManager>
         // (amount*0) + 0~2. Choice Eng / Kor / Jpn
 
         PhoneOptionAppCSVDatas = CSVReader.Read(this.PhoneOptionAppCSV);
+
+        #endregion
+
+        #region Reasoning
+
+        // (amount*0) + 0~2. Choice Eng / Kor / Jpn
+
+        ReasoningContentCSVDatas = CSVReader.Read(ReasoningContentCSV);
 
         #endregion
 
