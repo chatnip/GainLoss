@@ -219,19 +219,42 @@ public class GameSystem : Singleton<GameSystem>
             // Text
             objWriteTexts = text.Split('/').ToList();
 
+
+            List<string> listNull = new List<string>();
+            for (int i = 0; i < objWriteTexts.Count; i++)
+            { listNull.Add("null"); }
+
             // Name
-            objNameTexts = name.Split('/').ToList();
+            if (name == null) 
+            { objNameTexts = listNull; Debug.Log("null"); }
+            else 
+            { objNameTexts = name.Split('/').ToList(); Debug.Log("not null"); }
 
             // Sprite
-            List<string> objSpriteIDs = sprite.Split('/').ToList();
-            objSprites = GetCollectSprites(objSpriteIDs);
+            if (sprite == null) 
+            { objSprites = GetCollectSprites(listNull); }
+            else
+            {
+                List<string> objSpriteIDs = sprite.Split('/').ToList();
+                objSprites = GetCollectSprites(objSpriteIDs);
+            }
 
             // Anim
-            objAnimNames = anim.Split("/").ToList();
+            if (anim == null) 
+            { objAnimNames = listNull; }
+            else
+            { objAnimNames = anim.Split("/").ToList(); }
 
         }
 
-        if (answerID != null) // 선택에 따른 답변
+        if(IO is HomeInteractObject) // 집에 있는 오브젝트일 경우
+        {
+            SetData(
+                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][IO.ID].ToString(),
+                null, null, null
+                );
+        }
+        else if (answerID != null) // 선택에 따른 답변
         {
             SetData(
                 DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][answerID].ToString(),
@@ -258,6 +281,8 @@ public class GameSystem : Singleton<GameSystem>
                 DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 3][IO.ID].ToString()
                 );
         }
+
+        
 
         // Set Writting
         objPanelBtn.gameObject.SetActive(true);
@@ -311,11 +336,16 @@ public class GameSystem : Singleton<GameSystem>
         PlayerController.Instance.resetAnime();
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
-        DOTween.Complete(objTextingTween);
+        DOTween.Kill(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
         objWriteTexts_currentOrder = 0;
         objText.text = null;
         currentIO = null;
+
+        objWriteTexts = null;
+        objNameTexts = null;
+        objSprites = null;
+        objAnimNames = null;
     }
 
     #endregion

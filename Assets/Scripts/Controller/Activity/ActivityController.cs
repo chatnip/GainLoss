@@ -137,7 +137,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
                 }
                 else if(currentQuestionWindowType == e_HomeInteractType.Reasoning)
                 {
-                    ReasoningManager.Instance.SetOnCorkBoard();
+                    ReasoningController.Instance.ActiveOn();
                 }
                 else
                 {
@@ -246,17 +246,16 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         }
         
         
-        
         amountNumInWindowTxt.text = 
             GameManager.Instance.mainInfo.CurrentActivity.ToString() + "/" + GameManager.Instance.mainInfo.MaxActivity.ToString();
 
         // Set Fill Gage
         SetActivityGageUI_Use(currentQuestionWindowType, 0.25f);
 
-        if (questionWindowConfigDict[HI_Type].ActivityKind != null && questionWindowConfigDict[HI_Type].ActivityKind != "")
-        { aboutAbilityPanelRT.gameObject.SetActive(true); }
-        else
+        if (HI_Type == e_HomeInteractType.Reasoning || HI_Type == e_HomeInteractType.GoOutside)
         { aboutAbilityPanelRT.gameObject.SetActive(false); }
+        else
+        { aboutAbilityPanelRT.gameObject.SetActive(true); }
 
         activityQuestionWindowRT.DOAnchorPos(new Vector2(720, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>

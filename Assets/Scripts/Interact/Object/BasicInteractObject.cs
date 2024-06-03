@@ -10,6 +10,7 @@ public class BasicInteractObject : InteractObject
         base.Interact();
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
         GameSystem.Instance.ObjDescOn(this, null);
+        ReasoningController.Instance.SetPhotoVisible(this.ID);
     }
 
     #endregion

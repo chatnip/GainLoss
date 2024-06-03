@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ReasoningManager : Singleton<ReasoningManager>
 {
@@ -14,7 +15,8 @@ public class ReasoningManager : Singleton<ReasoningManager>
     [SerializeField] List<GameObject> allReasoningCorkBoards;
     [SerializeField] GameObject currentReasoningCorkBoard;
     [SerializeField] Transform reasoningCorkBoardParentTF;
-    
+    [SerializeField] public CanvasScaler thisCanvasScaler;
+
     #endregion
 
     #region Framework & Base Set
@@ -40,12 +42,4 @@ public class ReasoningManager : Singleton<ReasoningManager>
 
     #endregion
 
-    #region
-
-    public void SetOnCorkBoard()
-    {
-        currentReasoningCorkBoard.gameObject.SetActive(true);
-    }
-
-    #endregion
 }
