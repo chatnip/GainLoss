@@ -36,7 +36,7 @@ public class ReasoningAnswer : MonoBehaviour
             {
                 ReasoningController.Instance.selectedAnswer = this;
                 ReasoningController.Instance.SetReasoningBtn(tagContentIDs);
-                ReasoningChooseContoller.Instance.ActiveOn(0.2f);
+                ReasoningChooseContoller.Instance.ActiveOn_ChooseBtn(0.2f);
             });
     }
 

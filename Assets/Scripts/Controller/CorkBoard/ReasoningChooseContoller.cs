@@ -1,14 +1,21 @@
 //Refactoring v1.0
 using DG.Tweening;
+using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
 {
     #region Value
 
-    [Header("=== Component")]
-    [SerializeField] CanvasGroup thisCG;
-    [SerializeField] RectTransform thisRT;
+    [Header("=== ChooseBtn")]
+    [SerializeField] public CanvasGroup chooseBtn_CG;
+    [SerializeField] RectTransform chooseBtn_RT;
+
+    [Header("=== Confirm Popup")]
+    [SerializeField] CanvasGroup confirmPopup_CG;
+    [SerializeField] Button confirmYesBtn;
+    [SerializeField] Button confirmNoBtn;
 
     #endregion
 
@@ -16,9 +23,25 @@ public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
 
     public void Offset()
     {
-        this.gameObject.SetActive(false);
-        thisCG.alpha = 0f;
-        thisRT.anchoredPosition = new Vector2(-thisRT.sizeDelta.x, thisRT.anchoredPosition.y);
+        // Set Component
+        chooseBtn_CG.gameObject.SetActive(false);
+        chooseBtn_CG.alpha = 0f;
+        chooseBtn_RT.anchoredPosition = new Vector2(-chooseBtn_RT.sizeDelta.x, chooseBtn_RT.anchoredPosition.y);
+
+        confirmPopup_CG.gameObject.SetActive(false);
+        confirmPopup_CG.alpha = 0f;
+
+        // Btn
+        confirmYesBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                ReasoningController.Instance.GetChapter();
+            });
+        confirmNoBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                ActiveOff_ConfirmPopup(0.2f);
+            });
     }
 
     protected override void Awake()
@@ -28,23 +51,38 @@ public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
 
     #endregion
 
-    #region Active On / Off
+    #region Panel Choose Btn
 
-    public void ActiveOn(float time)
+    public void ActiveOn_ChooseBtn(float time)
     {
-        this.gameObject.SetActive(true);
-        thisCG.DOFade(1f, time);
-        thisRT.DOAnchorPos(new Vector2(0f, thisRT.anchoredPosition.y), time);
+        chooseBtn_CG.gameObject.SetActive(true);
+        chooseBtn_CG.DOFade(1f, time);
+        chooseBtn_RT.DOAnchorPos(new Vector2(0f, chooseBtn_RT.anchoredPosition.y), time);
     }
 
-    public void ActiveOff(float time)
+    public void ActiveOff_ChooseBtn(float time)
     {
-        thisCG.DOFade(0f, time);
-        thisRT.DOAnchorPos(new Vector2(-thisRT.sizeDelta.x, thisRT.anchoredPosition.y), time)
+        chooseBtn_CG.DOFade(0f, time);
+        chooseBtn_RT.DOAnchorPos(new Vector2(-chooseBtn_RT.sizeDelta.x, chooseBtn_RT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
-                this.gameObject.SetActive(false);
+                chooseBtn_CG.gameObject.SetActive(false);
             });
+    }
+
+    #endregion
+
+    #region Panel Confirm Popup
+
+    public void ActiveOn_ConfirmPopup(float time)
+    {
+        confirmPopup_CG.gameObject.SetActive(true);
+        confirmPopup_CG.DOFade(1f, time);
+    }
+    public void ActiveOff_ConfirmPopup(float time)
+    {
+        confirmPopup_CG.DOFade(0f, time)
+            .OnComplete(() => { confirmPopup_CG.gameObject.SetActive(false); });
     }
 
     #endregion

@@ -2,6 +2,7 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,6 +42,10 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     [Header("=== OP")]
     [SerializeField] List<IDBtn> sectionContentIDBtns = new List<IDBtn>();
+
+    [Header("=== Get Chapter ID")]
+    [SerializeField] List<GetChapterID> specialGetChapterID;
+    [SerializeField] string defaultGetChapterID;
 
     // Other Value
     List<IDisposable> allIDBtnIDis = new List<IDisposable>();
@@ -92,7 +97,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         decideBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                Debug.Log("Deside Reasoning");
+                ReasoningChooseContoller.Instance.ActiveOn_ConfirmPopup(0.2f);
             });
 
         this.gameObject.transform.SetAsFirstSibling();
@@ -160,7 +165,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         }
         sectionContentIDBtns = new List<IDBtn>();
 
-        ReasoningChooseContoller.Instance.ActiveOff(time);
+        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(time);
     }
 
     #endregion
@@ -198,7 +203,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         {
             IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
             idBtn.buttonID = iDs[i];
-            idBtn.transform.SetParent(ReasoningChooseContoller.Instance.gameObject.transform);
+            idBtn.transform.SetParent(ReasoningChooseContoller.Instance.chooseBtn_CG.gameObject.transform);
             idBtn.buttonType = ButtonType.ChoiceType_Reasoning2D;
             idBtn.inputBasicImage = idBtnSprite;
             idBtn.inputAnchorPos = new Vector3(0f, (i * -130f) + Y_UP_fix, 0f);
@@ -224,7 +229,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     {
         if (!this.gameObject.activeSelf) { return; }
 
-        ReasoningChooseContoller.Instance.ActiveOff(0.2f);
+        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(0.2f);
 
         // Set Zoom
         currentZoom += (axis * 0.001f);
@@ -244,7 +249,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        ReasoningChooseContoller.Instance.ActiveOff(0.2f);
+        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(0.2f);
         currentMousePos = (Vector2)Input.mousePosition;
         Debug.Log(currentMousePos);
     }
@@ -277,4 +282,37 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     #endregion
 
+    #region Deside
+
+    public void GetChapter()
+    {
+        List<string> chosenAllID = new List<string>();
+        for(int i = 0; i < answers.Count; i++)
+        { chosenAllID.Add(answers[i].currentSelectedContentID); }
+
+        foreach(GetChapterID GCID in specialGetChapterID)
+        {
+            List<string> isEqualsIDs = new List<string>();
+            for (int i = 0; i < GCID.answerReasoningContentIDs.Count; i++)
+            { isEqualsIDs.Add(GCID.answerReasoningContentIDs[i]); }
+
+            if (chosenAllID.Except(isEqualsIDs).Count() == 0 )
+            {
+                Debug.Log(GCID.getChpaterID);
+                return;
+            }
+        }
+
+        Debug.Log(defaultGetChapterID);
+    }
+
+    #endregion
+
+}
+
+[System.Serializable]
+public class GetChapterID
+{
+    public List<string> answerReasoningContentIDs;
+    public string getChpaterID;
 }
