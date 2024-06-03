@@ -17,7 +17,8 @@ public class HomeInteractObject : InteractObject
         if (!Outline.enabled) { return; }
 
         base.Interact();
-        if (StreamController.Instance.isStreamingTime)
+        if (GameManager.Instance.currentActPart != GameManager.e_currentActPart.UseActivity &&
+            thisAbilityType != ActivityController.e_HomeInteractType.Reasoning)
         {
             GameSystem.Instance.ObjDescOn(this, null);
         }

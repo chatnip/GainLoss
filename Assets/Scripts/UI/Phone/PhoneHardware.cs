@@ -6,7 +6,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PhoneHardware : Singleton<PhoneHardware>, IInteract
+public class PhoneHardware : Singleton<PhoneHardware>
 {
     #region Value
 
@@ -56,16 +56,6 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
     
     #endregion
 
-    #region For Pad
-
-    public void Interact()
-    {
-        if (!GameManager.Instance.canInput) { return; }
-        
-    }
-
-    #endregion
-
     #region Effectful
 
     public IEnumerator Start_PhoneOn(e_phoneStateExtra pse)
@@ -73,7 +63,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
         if(!GameManager.Instance.canInput) { yield return null; }
         GameManager.Instance.canInput = false;
 
-        PlayerInputController.Instance.StopMove();
+        PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.resetAnime();
 
         PlayerInputController.Instance.SetSectionBtns(null, null);
@@ -141,6 +131,7 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             .OnComplete(() =>
             {
                 circleEffectRT.gameObject.SetActive(false);
+                GameManager.Instance.canInput = true;
             }));
 
         // 상황에 맞는 프로그램 켜기
@@ -151,11 +142,8 @@ public class PhoneHardware : Singleton<PhoneHardware>, IInteract
             else
             { keyValuePair.Value.gameObject.SetActive(false); }
         }
-        
 
         yield return new WaitForEndOfFrame();
-
-        GameManager.Instance.canInput = true;
 
         if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf) 
         { PhoneSoftware.Instance.OpenMap(); }

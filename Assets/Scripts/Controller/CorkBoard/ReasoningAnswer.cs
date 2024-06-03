@@ -17,6 +17,7 @@ public class ReasoningAnswer : MonoBehaviour
     
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
+    [SerializeField] Button thisBtn;
 
     [Header("=== Content")]
     [SerializeField] TMP_Text currentSelectedContentTxt;
@@ -52,6 +53,15 @@ public class ReasoningAnswer : MonoBehaviour
             }
         }
 
+        if(thisBtnIDis == null)
+        {
+            thisBtnIDis = thisBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                ReasoningController.Instance.SetReasoningBtn(tagContentIDs);
+            });
+        }
+        
     }
 
     #endregion

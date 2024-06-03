@@ -10,7 +10,7 @@ using UnityEngine.UI;
 using static PhoneHardware;
 
 
-public class ActivityController : Singleton<ActivityController>, IInteract
+public class ActivityController : Singleton<ActivityController>
 {
     #region Value
 
@@ -138,6 +138,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
                 else if(currentQuestionWindowType == e_HomeInteractType.Reasoning)
                 {
                     ReasoningController.Instance.ActiveOn(1f);
+                    ReasoningChooseContoller.Instance.ActiveOn(1f);
                 }
                 else
                 {
@@ -211,7 +212,7 @@ public class ActivityController : Singleton<ActivityController>, IInteract
 
     public void QuestionWindow_ActiveOn(e_HomeInteractType HI_Type, float time)
     {
-        PlayerInputController.Instance.StopMove();
+        PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.resetAnime();
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
@@ -219,8 +220,6 @@ public class ActivityController : Singleton<ActivityController>, IInteract
         // Exp
         if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
         { ObjectInteractionButtonGenerator.Instance.SetOnOffInteractObjectBtn(); }
-
-        PlayerInputController.Instance.SetSectionBtns(new List<List<Button>> { new List<Button> { noBtn, yesBtn } }, this);
         
         // set Txt
         if(currentQuestionWindowType == e_HomeInteractType.GoOutside // 외출하지만, 행동력이 남아있을 시

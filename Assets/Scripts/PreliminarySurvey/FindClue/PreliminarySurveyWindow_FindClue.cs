@@ -6,13 +6,12 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
+public class PreliminarySurveyWindow_FindClue : MonoBehaviour
 {
     #region Value
 
     [Header("*Property")]
     [SerializeField] GameSystem GameSystem;
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] DesktopController Desktop;
 
@@ -55,7 +54,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     [SerializeField] Button endBtn;
 
 
-    float pointerSpeed = 1.0f;
 
     #endregion
 
@@ -114,7 +112,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     private void OnEnable()
     {
         ft_setData(); // Set Clue Reduction Img
-
+/*
         ft_setPadSection(new List<List<Button>> {
             new List<Button> { clueReductionBtns[0] },
             new List<Button> { clueReductionBtns[1] },
@@ -124,7 +122,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             new List<Button> { clueReductionBtns[5] },
             new List<Button> { clueReductionBtns[6] },
             new List<Button> { clueReductionBtns[7] }});
-
+*/
         clueReduction.anchoredPosition = new Vector2(clueReduction.anchoredPosition.x, clueReduction.rect.height * -1);
         clueReduction.DOAnchorPos(new Vector2(clueReduction.anchoredPosition.x, 0), 0.5f); // 필름 나오게하는 연출
     }
@@ -152,8 +150,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
         { X.gameObject.SetActive(false); }
         foreach(TMP_Text num in ChooseClueNumTxts)
         { num.text = ""; }
-
-        SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS_FindClue(); // Set Selected PSSO
 
         for (int i = 0; i < clueReductionBtns.Length; i++) // Set Reduction Img
         {
@@ -194,10 +190,10 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     #endregion
 
     #region Pad
-    private void ft_setPadSection(List<List<Button>> BtnList)
+    /*private void ft_setPadSection(List<List<Button>> BtnList)
     {
         PlayerInputController.SetSectionBtns(BtnList , this);
-    }
+    }*/
     #endregion
 
     #region Data
@@ -296,12 +292,12 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
             {
                 showResult();
                 endBtn.interactable = true; 
-                PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+                //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
                 return;
             }
 
             endBtn.interactable = false;
-            PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+            //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 
             if(cutsceneSO.currentCSSO != null) { return; }
             
@@ -370,7 +366,6 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
 
         resultWindowParentGO.SetActive(true);
         Debug.Log(SelectedPreliminarySurveySO.name);
-        PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
     
@@ -382,7 +377,7 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
 
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
         resultWindowParentGO.SetActive(true);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);
     }
@@ -394,9 +389,9 @@ public class PreliminarySurveyWindow_FindClue : MonoBehaviour, IInteract
     private void ft_pointerMove()
     {
         // Move
-        if (PlayerInputController.pointerMove != Vector2.zero) 
+        /*if (PlayerInputController.pointerMove != Vector2.zero) 
         { targetPointer.anchoredPosition += PlayerInputController.pointerMove.normalized * pointerSpeed; }
-
+*/
         //Move Limit
         if (targetPointer.anchoredPosition.x > clueImg.rect.width / 2) { targetPointer.anchoredPosition = new Vector2(clueImg.rect.width / 2, targetPointer.anchoredPosition.y); }
         if (targetPointer.anchoredPosition.x < - clueImg.rect.width / 2) { targetPointer.anchoredPosition = new Vector2(- clueImg.rect.width / 2, targetPointer.anchoredPosition.y); }

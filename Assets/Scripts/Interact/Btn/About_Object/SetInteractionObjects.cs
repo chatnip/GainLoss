@@ -42,9 +42,9 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
             if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
             { 
-                PlayerInputController.Instance.SetSectionBtns(
+                /*PlayerInputController.Instance.SetSectionBtns(
                     ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
-                    ObjectInteractionButtonGenerator.Instance); 
+                    ObjectInteractionButtonGenerator.Instance);*/
             }
 
         }
@@ -63,9 +63,9 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
             if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
             {
-                PlayerInputController.Instance.SetSectionBtns(
+                /*PlayerInputController.Instance.SetSectionBtns(
                     ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
-                    ObjectInteractionButtonGenerator.Instance); 
+                    ObjectInteractionButtonGenerator.Instance); */
             }
         }
     }

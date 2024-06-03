@@ -23,7 +23,6 @@ public class JsonManager : Singleton<JsonManager>
 
     // public List<WordBase> myWords = new List<WordBase>();
 
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] TutorialManager TutorialManager;
 
     [Header("*Setting")]
@@ -238,8 +237,8 @@ public class JsonManager : Singleton<JsonManager>
         //    JsonLoad_D(json_filePath, json_PlaceFileName);
 
         // Load -> got PreliminarySurvey Json
-        PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[0];
-        PreliminarySurveyManager.PSSO_Extract_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[1];
+        //PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[0];
+        //PreliminarySurveyManager.PSSO_Extract_ExceptionIDs = JsonLoad_LL(json_filePath, json_PSFileName)[1];
 
         // Load -> Setting
         GameSettingManager.GameSetting = JsonLoad_S(json_filePath, json_SettingFileName);
@@ -389,10 +388,10 @@ public class JsonManager : Singleton<JsonManager>
         //JsonSave(json_PlaceFileName, PlaceManager.currentPlaceID_Dict);
 
         // Save -> Got PreliminarySurvey Json
-        JsonSave(json_PSFileName, new PSBase(
+        /*JsonSave(json_PSFileName, new PSBase(
             PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs,
             PreliminarySurveyManager.PSSO_Extract_ExceptionIDs
-        ));
+        ));*/
 
         // Save -> Setting
         JsonSave(json_SettingFileName, GameSettingManager.GameSetting);

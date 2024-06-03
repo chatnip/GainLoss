@@ -12,6 +12,10 @@ public class ReasoningController : Singleton<ReasoningController>
     [Header("=== ID")]
     [SerializeField] public string reasoningID;
 
+    [Header("=== Component")]
+    [SerializeField] CanvasGroup thisCG;
+    [SerializeField] Sprite idBtnSprite;
+
     [Header("=== Photo")]
     [SerializeField] Transform photoParentTF;
     [SerializeField] List<ReasoningPhoto> photos = new List<ReasoningPhoto>();
@@ -23,10 +27,12 @@ public class ReasoningController : Singleton<ReasoningController>
     [Header("=== Answer")]
     [SerializeField] Transform answerParentTF;
     [SerializeField] List<ReasoningAnswer> answers = new List<ReasoningAnswer>();
-    [SerializeField] Image answerBG_Img;
 
     [Header("=== UI")]
     [SerializeField] Button exitBtn;
+
+    [Header("=== OP")]
+    [SerializeField] List<IDBtn> sectionContentIDBtns = new List<IDBtn>();
     
 
     #endregion
@@ -69,8 +75,12 @@ public class ReasoningController : Singleton<ReasoningController>
         exitBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                ActiveOff();
+                if (!GameManager.Instance.canInput) { return; }
+                ActiveOff(1f);
             });
+
+        this.gameObject.transform.SetAsFirstSibling();
+        thisCG.alpha = 0f;
     }
     protected override void Awake()
     {
@@ -84,8 +94,18 @@ public class ReasoningController : Singleton<ReasoningController>
 
     public void ActiveOn(float time)
     {
+        GameManager.Instance.canInput = false;
+        PlayerInputController.Instance.CanMove = false;
+
         this.gameObject.SetActive(true);
-        ActivityController.Instance.QuestionWindow_ActiveOff(0.25f);
+
+        thisCG.DOFade(1f, time)
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canInput = true;
+            });
+
+        ReasoningChooseContoller.Instance.ActiveOn(time);
 
         foreach (ReasoningPhoto RP in photos)
         { RP.CheckVisible(time); }
@@ -93,16 +113,33 @@ public class ReasoningController : Singleton<ReasoningController>
         foreach (ReasoningArrow RA in arrows)
         { RA.CheckVisible(time); }
 
-        foreach (ReasoningAnswer RA in answers)
-        { RA.CheckVisible(time); }
+        foreach (ReasoningAnswer RAW in answers)
+        { RAW.CheckVisible(time); }
     }
 
-    public void ActiveOff()
+    public void ActiveOff(float time)
     {
-        this.gameObject.SetActive(false);
+        GameManager.Instance.canInput = false;
+        PlayerInputController.Instance.CanMove = true;
+
+        thisCG.DOFade(0f, time)
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canInput = true;
+                this.gameObject.SetActive(false);
+
+            });
+
+        ReasoningChooseContoller.Instance.ActiveOff(time);
+        ActivityController.Instance.QuestionWindow_ActiveOff(0f);
 
         GameManager.Instance.canInput = true;
-        PlayerInputController.Instance.CanMove = true;
+
+        foreach (IDBtn sectionIDBtn in sectionContentIDBtns)
+        {
+            ObjectPooling.Instance.GetBackIDBtn(sectionIDBtn);
+        }
+        sectionContentIDBtns = new List<IDBtn>();
     }
 
     #endregion
@@ -125,8 +162,27 @@ public class ReasoningController : Singleton<ReasoningController>
     {
         if (iDs.Count == 0 || iDs == null) { return; }
 
-        answerBG_Img.gameObject.SetActive(true);
-        answerBG_Img.DOFade(0.5f, 0.25f);
+        foreach(IDBtn sectionIDBtn in sectionContentIDBtns)
+        {
+            ObjectPooling.Instance.GetBackIDBtn(sectionIDBtn);
+        }
+        sectionContentIDBtns = new List<IDBtn>();
+
+        float Y_UP_fix = ((iDs.Count - 1) * 130f) / 2f;
+
+        for (int i = 0; i < iDs.Count; i++)
+        {
+            IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
+            idBtn.buttonID = iDs[i];
+            idBtn.transform.SetParent(ReasoningChooseContoller.Instance.gameObject.transform);
+            idBtn.buttonType = ButtonType.ChoiceType_Reasoning2D;
+            idBtn.inputBasicImage = idBtnSprite;
+            idBtn.inputAnchorPos = new Vector3(0f, (i * -130f) + Y_UP_fix, 0f);
+            idBtn.inputSizeDelta = new Vector2(225f, 100f);
+            idBtn.gameObject.SetActive(true);
+
+            sectionContentIDBtns.Add(idBtn);
+        }
     }
 
     #endregion

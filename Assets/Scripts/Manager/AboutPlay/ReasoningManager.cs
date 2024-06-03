@@ -1,5 +1,4 @@
 //Refactoring v1.0
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +27,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
             if (allReasoningCorkBoard.TryGetComponent(out ReasoningController reasoningController) &&
                 reasoningController.reasoningID == DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 9][GameManager.Instance.currentChapter].ToString())
             {
-                GameObject genReasoningCorkBoard = Instantiate(allReasoningCorkBoard, Vector3.one, Quaternion.identity, reasoningCorkBoardParentTF);
+                GameObject genReasoningCorkBoard = Instantiate(allReasoningCorkBoard, Vector3.zero, Quaternion.identity, reasoningCorkBoardParentTF);
                 currentReasoningCorkBoard = genReasoningCorkBoard;
             }
         }

@@ -110,7 +110,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
                     btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
 
-                    StreamController.Instance.isStreamingTime = true;
+                    GameManager.Instance.currentActPart = GameManager.e_currentActPart.StreamingTime;
                 });
 
         }
@@ -186,7 +186,7 @@ public class PlaceManager : Singleton<PlaceManager>
     public void StartGoingSomewhereLoading(float delay)
     {
         GameManager.Instance.canInput = false;
-        PlayerInputController.Instance.StopMove(); 
+        PlayerInputController.Instance.MoveStop(); 
         PlayerController.Instance.resetAnime();
         PhoneHardware.Instance.PhoneOff();
         currentIdBtn.button.interactable = false;
@@ -225,8 +225,10 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Desc Panel -> Off
         GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
-        if (idBtn.buttonID == "P00") { activityGageGO.SetActive(true); }
-        else { activityGageGO.SetActive(false); }
+        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.UseActivity) 
+        { activityGageGO.SetActive(true); }
+        else 
+        { activityGageGO.SetActive(false); }
 
         // Gen Map
         SetCurrent3DMap(idBtn);

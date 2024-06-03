@@ -8,7 +8,7 @@ using DG.Tweening;
 using System;
 using System.Linq;
 
-public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
+public class PhoneSoftware : Singleton<PhoneSoftware>
 {
     #region Value
 
@@ -90,24 +90,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         realTimeText.text = ft_getRealTimeString_H_M();
     }
 
-    public void Interact()
-    {
-        #region Site Survey
-
-        if (PlayerInputController.Instance.SelectBtn.gameObject.name == "Home")
-        { 
-            PhoneHardware.Instance.PhoneOff(); 
-            PlayerInputController.Instance.ClearSeletedBtns(); return; 
-        }
-        else
-        {
-            PlayerInputController.Instance.ClearSeletedBtns(); 
-            return; 
-        }
-
-        #endregion
-    }
-
     #endregion
 
     #region Base Info
@@ -116,7 +98,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
     {
         #region Base Info
 
-        PlayerInputController.Instance.interact = this;
+        //PlayerInputController.Instance.interact = this;
 
         DayText.text = "DAY " + GameManager.Instance.mainInfo.Day;
         DayOfWeekText.text = GameManager.Instance.mainInfo.TodayOfTheWeek;
@@ -136,7 +118,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         this.OpenMapSeq = DOTween.Sequence();
 
         List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
-        PlayerInputController.Instance.SetSectionBtns(btns, this);
+        //PlayerInputController.Instance.SetSectionBtns(btns, this);
 
         OpenMapSeq.AppendInterval(2f);
         for (int i = 0; i < PlaceBtns.Count; i++)
@@ -153,7 +135,9 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
             OpenMapSeq.Join(BtnCG.DOFade(1, 0.2f));
         }
 
-        this.OpenMapSeq.OnComplete(() => { GameManager.Instance.canInput = true; });
+        this.OpenMapSeq
+            .OnUpdate(() => { if (GameManager.Instance.canInput) { GameManager.Instance.canInput = false; } })
+            .OnComplete(() => { GameManager.Instance.canInput = true; });
 
         
     }
@@ -228,6 +212,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
                     ZoomOutPlaceMap(0f);
                     ClosePopup(0f);
                     PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
+                    GameManager.Instance.currentActPart = GameManager.e_currentActPart.VisitPlace;
 
                     foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
                 });
@@ -271,7 +256,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>, IInteract
         popupIDisList.Add(cancelIDis); popupIDisList.Add(applyIDis);
     }
 
-    private void ClosePopup(float time)
+    public void ClosePopup(float time)
     {
         popupBG.DOFade(0f, time)
             .OnComplete(() =>

@@ -6,12 +6,12 @@ using UniRx;
 using TMPro;
 using DG.Tweening;
 
-public class DesktopController : Singleton<DesktopController>, IInteract
+public class DesktopController : Singleton<DesktopController>
 {
     #region Value
 
     [Header("=== Camera")]
-    [SerializeField] Camera DesktopCamera;
+    [SerializeField] public Camera DesktopCamera;
 
     [Header("=== Property")]
     [SerializeField] ComputerInteract ComputerInteract;
@@ -104,15 +104,6 @@ public class DesktopController : Singleton<DesktopController>, IInteract
 
     #endregion
 
-    #region For Pad
-
-    public void Interact()
-    {
-
-    }
-
-    #endregion
-
     #region Confirm
 
     private void OpenConfirmPopup(IDBtn idBtn)
@@ -155,7 +146,7 @@ public class DesktopController : Singleton<DesktopController>, IInteract
             });
 
         // Set Special Btn
-        if (StreamController.Instance.isStreamingTime) { appBtn[0].button.interactable = true; }
+        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.StreamingTime) { appBtn[0].button.interactable = true; }
         else { appBtn[0].button.interactable = false; }
     }
 

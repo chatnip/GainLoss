@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PointerMove",
-                    "type": "Value",
-                    "id": "36327272-a808-4d7d-850f-97e97f77e213",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Look",
                     "type": "Value",
                     "id": "2690c379-f54d-45be-a724-414123833eb4",
@@ -33,27 +24,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Sprint",
-                    "type": "PassThrough",
-                    "id": "980e881e-182c-404c-8cbf-3d09fdb48fef",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Pause",
+                    "name": "ToggleRun",
                     "type": "Button",
-                    "id": "b796ed34-6ac9-41e7-b8d4-d8b6fc5d717b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Phone",
-                    "type": "Button",
-                    "id": "79abf92b-342a-4ad0-917c-b9520a803b7f",
+                    "id": "7fa4068b-99ad-4643-ac3e-a81293798a8c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -117,42 +90,6 @@
                     "name": "InteractObjectBtn",
                     "type": "Button",
                     "id": "8d0b8c0b-0f17-47c5-aaf2-67821e9f2a05",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ShowScheduleDetailBtn",
-                    "type": "Button",
-                    "id": "b46b99a5-4f8d-4985-8fdf-33dddc664aee",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "TerminatePart",
-                    "type": "Button",
-                    "id": "c786319d-2559-4fc8-9bde-83ba54235f29",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SetSomething",
-                    "type": "Button",
-                    "id": "03fd85ad-c94d-464c-8432-a0956ef7ef8a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleRun",
-                    "type": "Button",
-                    "id": "7fa4068b-99ad-4643-ac3e-a81293798a8c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -283,67 +220,12 @@
                 },
                 {
                     "name": "",
-                    "id": "dc65b89f-9bd3-43fb-92af-d0d87ba5faa4",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c8fcd86e-dcfd-4f88-8e93-b638cdbf3320",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0a689f8e-3995-4026-ab03-6485b34bc79c",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "908e9b9f-ac66-429d-9f40-e2f31eac4050",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "63b45043-1702-4b3a-8f50-c1e4dc960945",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox Controller;Gamepad;PS4 Controller;Switch Pro Controller",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8a72ae2e-1637-4cc4-a32b-97869b807914",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "Phone",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -393,50 +275,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ece64941-6fcf-49f8-bcee-a446e29a7461",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "ShowScheduleDetailBtn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ca8570bd-6518-4cf2-b9ed-a6d8ca54e286",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "TerminatePart",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "26afc3af-ed25-4d93-b4fe-3224b63e7efc",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "StickDeadzone",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "PointerMove",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f91116fd-a618-4969-a750-02fb74ecfdc0",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
-                    "action": "SetSomething",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "8b041971-8ca4-442d-af76-ea400556d38b",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
@@ -465,6 +303,17 @@
                     "processors": "",
                     "groups": "Gamepad;Xbox Controller;PS4 Controller;Switch Pro Controller",
                     "action": "ChangeSeletedBtn_Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "908e9b9f-ac66-429d-9f40-e2f31eac4050",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "BackBtn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

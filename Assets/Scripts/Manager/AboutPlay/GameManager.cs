@@ -10,11 +10,22 @@ public class GameManager : Singleton<GameManager>
     [Header("=== Other")]
     [SerializeField] public string currentChapter = "A";
     [SerializeField] public MainInfo mainInfo = new MainInfo();
+    
 
     // Other Value
     public bool canInput = false;
     public bool canSkipTalking = false;
     public bool canInteractObject = true;
+    public e_currentActPart currentActPart = e_currentActPart.UseActivity;
+
+    #endregion
+
+    #region Enum
+
+    public enum e_currentActPart
+    {
+        UseActivity, VisitPlace, StreamingTime, EndDay
+    }
 
     #endregion
 
@@ -51,20 +62,22 @@ public class GameManager : Singleton<GameManager>
         LoadingManager.Instance.Offset();
         MainOptionManager.Instance.Offset();
         PlaceManager.Instance.Offset();
+        ReasoningManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
 
-        DesktopController.Instance.Offset();
-        StreamController.Instance.Offset();
 
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
 
+        DesktopController.Instance.Offset();
+        StreamController.Instance.Offset();
+
+        ReasoningChooseContoller.Instance.Offset();
         SetInteractionObjects.Instance.Offset();
         ObjectPooling.Instance.Offset();
         PlayerInputController.Instance.Offset();
 
-        ReasoningManager.Instance.Offset();
     }
 
     #endregion

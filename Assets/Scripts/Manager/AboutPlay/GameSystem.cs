@@ -86,13 +86,6 @@ public class GameSystem : Singleton<GameSystem>
         objectChioceCG.alpha = 0f;
 
         // Btns
-        pauseBtn.OnClickAsObservable()
-            .Subscribe(btn =>
-            {
-                if (!GameManager.Instance.canSkipTalking) { return; }
-
-                PlayerInputController.Instance.OnOffPause();
-            });
         objPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
@@ -205,7 +198,7 @@ public class GameSystem : Singleton<GameSystem>
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
         GameManager.Instance.canSkipTalking = true;
-        PlayerInputController.Instance.StopMove(); 
+        PlayerInputController.Instance.MoveStop(); 
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
 
         // Set Text Data
@@ -392,6 +385,14 @@ public class GameSystem : Singleton<GameSystem>
         }
 
         // Set Btn Subscribe
+        needAbilityTxt.text = null;
+        if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
+        {
+            DOTween.Kill(CG);
+            CG.alpha = 0f;
+            needAbilityTxt.transform.parent.gameObject.SetActive(false);
+        }
+
         foreach (IDBtn idBtn in choiceBtnList)
         {
             // Pointer Enter

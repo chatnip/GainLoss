@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Collections;
 
-public class StreamController : Singleton<StreamController>, IInteract
+public class StreamController : Singleton<StreamController>
 {
     #region Value
 
@@ -57,7 +57,6 @@ public class StreamController : Singleton<StreamController>, IInteract
     [Header("=== Choice")]
     [SerializeField] public float chooseLimitTime = 5f;
     [SerializeField] public int goodOrEvilGage = 0;
-    [SerializeField] public bool isStreamingTime = false;
     [SerializeField] public string currentChooseID;
     bool isChoiceTime = false;
 
@@ -95,7 +94,6 @@ public class StreamController : Singleton<StreamController>, IInteract
         // Set Base
         List<TMP_Text> lang = new List<TMP_Text> { EndTxt, resultTxt, getThingTxt };
         LanguageManager.Instance.SetLanguageTxts(lang);
-        isStreamingTime = false;
         this.gameObject.SetActive(false);
     }
 
@@ -113,16 +111,6 @@ public class StreamController : Singleton<StreamController>, IInteract
     { 
         click.Disable(); 
     }
-
-    #endregion
-
-    #region For Pad
-
-    public void Interact()
-    {
-        
-    }
-
 
     #endregion
 
@@ -481,7 +469,7 @@ public class StreamController : Singleton<StreamController>, IInteract
 
     public void ActiveOn()
     {
-        if (!isStreamingTime) { return; }
+        if (GameManager.Instance == null || GameManager.Instance.currentActPart != GameManager.e_currentActPart.StreamingTime) { return; }
 
         click.Enable();
         this.gameObject.SetActive(true);
@@ -513,7 +501,7 @@ public class StreamController : Singleton<StreamController>, IInteract
         foreach (IDBtn idBtn in sb_IDBtns) { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
         sb_IDBtns.Clear();
 
-        isStreamingTime = false;
+        GameManager.Instance.currentActPart = GameManager.e_currentActPart.EndDay;
     }
     #endregion
 }

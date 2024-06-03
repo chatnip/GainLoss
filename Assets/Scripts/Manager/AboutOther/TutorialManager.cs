@@ -7,7 +7,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TutorialManager : Singleton<TutorialManager>, IInteract
+public class TutorialManager : Singleton<TutorialManager>
 {
     #region Value
     [Header("*Property")]
@@ -96,7 +96,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
         GameManager.Instance.canInput = false;
         GameObject tutorialWindow_type = tutorialsDict[scheduleID];
 
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
+        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
 
         //TutorialNameTxt.text = "<size=80%>" + DataManager.ScheduleDatas[3][scheduleID].ToString() + "</size> <#323232>TUTORIAL</color>";
         closeTutorialBtn.interactable = false;
@@ -107,7 +107,7 @@ public class TutorialManager : Singleton<TutorialManager>, IInteract
         tutorial_ScreenCG.DOFade(1f, 2f)
             .OnStart(() =>
             {
-                PlayerInputController.StopMove(); 
+                PlayerInputController.MoveStop(); 
                 PlayerController.Instance.resetAnime();
             })
             .OnComplete(() =>

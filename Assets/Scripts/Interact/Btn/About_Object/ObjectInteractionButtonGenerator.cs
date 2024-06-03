@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>, IInteract
+public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>
 {
     #region Value
 
@@ -129,9 +129,9 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
             // 오브젝트 상호작용으로 변경
             if (!SectionIsThis)
             {
-                PlayerInputController.Instance.interact = this;
+                //PlayerInputController.Instance.interact = this;
                 SectionIsThis = true;
-                PlayerInputController.Instance.SetSectionBtns(SetSectionBtns(), this);
+                //PlayerInputController.Instance.SetSectionBtns(SetSectionBtns(), this);
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(1920, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
                 
@@ -142,7 +142,6 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
             else
             {
                 SetOffAllOutline();
-                PlayerInputController.Instance.ClearSeletedBtns();
                 SectionIsThis = false;
                 PlayerInputController.Instance.SetSectionBtns(null, null);
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(3000, 1080), 0.3f);

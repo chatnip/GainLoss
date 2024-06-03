@@ -7,7 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using Spine.Unity;
 
-public class Title : MonoBehaviour, IInteract
+public class Title : MonoBehaviour
 {
     #region Value
 
@@ -133,7 +133,7 @@ public class Title : MonoBehaviour, IInteract
         setEffectful_RotateByPointer(getMousePos());
     }
 
-    public void Interact()
+   /* public void Interact()
     {
         if(TitleInputController.SelectBtn == newGameBtn && newGameBtn.interactable)
         {
@@ -168,7 +168,7 @@ public class Title : MonoBehaviour, IInteract
             Application.Quit();
         }
 
-    }
+    }*/
 
     #endregion
 
@@ -226,7 +226,7 @@ public class Title : MonoBehaviour, IInteract
 
     public void SetButtonThisTitle()
     {
-        TitleInputController.SetSectionBtns(btns, this);
+        //TitleInputController.SetSectionBtns(btns, this);
     }
 
     #endregion

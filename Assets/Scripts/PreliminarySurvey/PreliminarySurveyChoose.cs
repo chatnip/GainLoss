@@ -1,16 +1,14 @@
 using DG.Tweening;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PreliminarySurveyChoose : MonoBehaviour, IInteract
+public class PreliminarySurveyChoose : MonoBehaviour
 {
     #region Value
 
     [Header("*Property")]
     [SerializeField] PlayerInputController PlayerInputController;
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] DesktopController Desktop;
     [SerializeField] PreliminarySurveyWindow_FindClue PSWindow_FindClue;
     [SerializeField] PreliminarySurveyWindow_Extract PSWindow_Extract;
@@ -53,7 +51,7 @@ public class PreliminarySurveyChoose : MonoBehaviour, IInteract
     private void OnEnable()
     {
         SetEachOnOffBtn();
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { FindClueBtn, ExtractBtn } }, this);
+        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { FindClueBtn, ExtractBtn } }, this);
     }
 
     private void SetEachOnOffBtn()
@@ -61,10 +59,6 @@ public class PreliminarySurveyChoose : MonoBehaviour, IInteract
         FindClueBtn.interactable = true;
         ExtractBtn.interactable= true;
 
-        if (PreliminarySurveyManager.PSSOs_FindClue_Available == null || PreliminarySurveyManager.PSSOs_FindClue_Available.Count == 0)
-        { FindClueBtn.interactable = false; }
-        if (PreliminarySurveyManager.PSSOs_Extract_Available == null || PreliminarySurveyManager.PSSOs_Extract_Available.Count == 0)
-        { ExtractBtn.interactable = false; }
     }
 
     public void Interact()

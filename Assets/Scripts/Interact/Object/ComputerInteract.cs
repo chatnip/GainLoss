@@ -25,7 +25,7 @@ public class ComputerInteract : InteractObject
         InteractionUI3D.SetActive(false);
         quarterViewCamera.SetActive(false);
         ActivityController.Instance.gameObject.SetActive(false);
-        PlayerInputController.Instance.StopMove();
+        PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.resetAnime();
 
         screenObject.SetActive(true);
@@ -57,7 +57,7 @@ public class ComputerInteract : InteractObject
         if (!Outline.enabled) { return; }
 
         base.Interact();
-        if (StreamController.Instance.isStreamingTime)
+        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.StreamingTime)
         { DesktopController.Instance.TurnOn(); }
         else
         { GameSystem.Instance.ObjDescOn(this, null); }

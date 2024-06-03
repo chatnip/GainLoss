@@ -6,11 +6,10 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
+public class PreliminarySurveyWindow_Extract : MonoBehaviour
 {
     #region Value
     [Header("*Property")]
-    [SerializeField] PreliminarySurveyManager PreliminarySurveyManager;
     [SerializeField] PlayerInputController PlayerInputController;
     [SerializeField] GameSystem GameSystem;
     [SerializeField] DesktopController Desktop;
@@ -98,10 +97,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
 
     private void ft_setData()
     {
-        PlayerInputController.SetSectionBtns(null, this);
-
-        Debug.Log("세팅 -> 바꿔야함 임시임");
-        SelectedPreliminarySurveySO = PreliminarySurveyManager.ft_startPS_Extract();
+        //PlayerInputController.SetSectionBtns(null, this);
        
         #region Set Gage
 
@@ -274,7 +270,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         OnlyFail.gameObject.SetActive(true);
         OnlyComplete.gameObject.SetActive(false);
 
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
         resultWindowParentGO.SetActive(true);
 
         DOTween.Kill(gageEffectfulRT);
@@ -302,7 +298,7 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         }
 
         endBtn.interactable = false;
-        PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
+        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { endBtn } }, this);
 
         if (cutsceneSO.currentCSSO != null) { return; }
         cutsceneSO.currentCSSO = SelectedPreliminarySurveySO.cutsceneSO;
@@ -331,8 +327,6 @@ public class PreliminarySurveyWindow_Extract : MonoBehaviour, IInteract
         OnlyComplete.gameObject.SetActive(true);
 
         resultWindowParentGO.SetActive(true);
-        Debug.Log(SelectedPreliminarySurveySO.name);
-        PreliminarySurveyManager.PSSO_FindClue_ExceptionIDs.Add(SelectedPreliminarySurveySO.name);
 
         DOTween.Kill(gageEffectfulRT);
         EffectfulWindow.AppearEffectful(resultWindowRT, 0.2f, 0.7f, Ease.OutSine);

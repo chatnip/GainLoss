@@ -6,7 +6,7 @@ using UniRx;
 using TMPro;
 using DG.Tweening;
 
-public class Option : MonoBehaviour, IInteract
+public class Option : MonoBehaviour
 {
     #region Value
 
@@ -149,7 +149,7 @@ public class Option : MonoBehaviour, IInteract
                     ButtonByGODict[SettingBtn].gameObject.SetActive(true);
                     IsInteractable(CancelBtn, true);
                     IsInteractable(ApplyBtn, false);
-                    Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[SettingBtn]], this);
+                    //Title.TitleInputController.SetSectionBtns(GOByBtns[ButtonByGODict[SettingBtn]], this);
 
                     WhenTurnOn_DeleByGODict[ButtonByGODict[SettingBtn]]();
                     //FindAndTurnOn_Setting(ButtonByGODict[SettingBtn]);
@@ -180,7 +180,7 @@ public class Option : MonoBehaviour, IInteract
         
     }
 
-    public void Interact()
+    /*public void Interact()
     {
         // 적용 or 적용안됨 창이 켜져있을 때
         if(Title.TitleInputController.SelectBtn == OkBtn && OkBtn.interactable)
@@ -223,7 +223,7 @@ public class Option : MonoBehaviour, IInteract
                 //FindAndTurnOn_Setting(ButtonByGODict[selected]);
             }
         }
-    }
+    }*/
 
     private void OnEnable()
     {
@@ -239,13 +239,13 @@ public class Option : MonoBehaviour, IInteract
 
         }
 
-        Title.TitleInputController.SetSectionBtns(new List<List<Button>>
+        /*Title.TitleInputController.SetSectionBtns(new List<List<Button>>
         { 
             new List<Button> { GameBtn },
             new List<Button> { AudioBtn },
             new List<Button> { VideoBtn },
             new List<Button> { CreditBtn }
-        }, this);
+        }, this);*/
     }
 
     #endregion
@@ -407,7 +407,7 @@ public class Option : MonoBehaviour, IInteract
                 OkBtn.interactable = true;  
             });
 
-        Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { OkBtn } }, this);
+        //Title.TitleInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { OkBtn } }, this);
     }
     private void Appear_Window_WhenCancel()
     {
