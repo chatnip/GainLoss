@@ -8,6 +8,7 @@ public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
 
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
+    [SerializeField] RectTransform thisRT;
 
     #endregion
 
@@ -17,6 +18,7 @@ public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
     {
         this.gameObject.SetActive(false);
         thisCG.alpha = 0f;
+        thisRT.anchoredPosition = new Vector2(-thisRT.sizeDelta.x, thisRT.anchoredPosition.y);
     }
 
     protected override void Awake()
@@ -31,13 +33,14 @@ public class ReasoningChooseContoller : Singleton<ReasoningChooseContoller>
     public void ActiveOn(float time)
     {
         this.gameObject.SetActive(true);
-        thisCG.alpha = 0f;
         thisCG.DOFade(1f, time);
+        thisRT.DOAnchorPos(new Vector2(0f, thisRT.anchoredPosition.y), time);
     }
 
     public void ActiveOff(float time)
     {
-        thisCG.DOFade(0f, time)
+        thisCG.DOFade(0f, time);
+        thisRT.DOAnchorPos(new Vector2(-thisRT.sizeDelta.x, thisRT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
                 this.gameObject.SetActive(false);

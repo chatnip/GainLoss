@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,21 +14,31 @@ public class ReasoningAnswer : MonoBehaviour
 
     [Header("=== Data")]
     [SerializeField] string thisTagID;
-    [SerializeField] ReasoningArrow relationRA; 
-    
+    [SerializeField] ReasoningArrow relationRA;
+
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
     [SerializeField] Button thisBtn;
 
     [Header("=== Content")]
-    [SerializeField] TMP_Text currentSelectedContentTxt;
+    [SerializeField] public TMP_Text currentSelectedContentTxt;
     [SerializeField] List<string> tagContentIDs;
     [SerializeField] public string currentSelectedContentID;
 
-    public IDisposable thisBtnIDis = null;
     #endregion
 
     #region Active On
+
+    public void Offset()
+    {
+        thisBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                ReasoningController.Instance.selectedAnswer = this;
+                ReasoningController.Instance.SetReasoningBtn(tagContentIDs);
+                ReasoningChooseContoller.Instance.ActiveOn(0.2f);
+            });
+    }
 
     public void CheckVisible(float time)
     {
@@ -45,23 +56,24 @@ public class ReasoningAnswer : MonoBehaviour
 
         // Set Tag IDs
         tagContentIDs = new List<string>();
-        foreach(string id in ReasoningManager.Instance.reasoningContentIDs)
+        foreach (string id in ReasoningManager.Instance.reasoningContentIDs)
         {
-            if(id.Substring(0, 3) == thisTagID)
+            if (id.Substring(0, 3) == thisTagID)
             {
                 tagContentIDs.Add(id);
             }
         }
 
-        if(thisBtnIDis == null)
-        {
-            thisBtnIDis = thisBtn.OnClickAsObservable()
-            .Subscribe(_ =>
-            {
-                ReasoningController.Instance.SetReasoningBtn(tagContentIDs);
-            });
-        }
-        
+    }
+
+    #endregion
+
+    #region Set
+
+    public void SetContent(string id)
+    {
+        currentSelectedContentID = id;
+        currentSelectedContentTxt.text = DataManager.Instance.ReasoningContentCSVDatas[LanguageManager.Instance.languageNum][currentSelectedContentID].ToString();
     }
 
     #endregion

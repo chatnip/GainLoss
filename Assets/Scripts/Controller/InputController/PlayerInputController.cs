@@ -82,6 +82,9 @@ public class PlayerInputController : Singleton<PlayerInputController>
         playerInput["ChangeSeletedBtn_Down"].started += DownSelectedBtn;
         playerInput["ChangeSeletedBtn_Up"].started += UpSelectedBtn;
 
+        //Wheel
+        playerInput["Zoom"].performed += Wheel;
+        playerInput["Zoom"].canceled += Wheel_Stop;
 
         //playerInput["PointerMove"].performed += OnPointerMove;
         //playerInput["PointerMove"].canceled += OnPointerMoveStop;
@@ -107,7 +110,10 @@ public class PlayerInputController : Singleton<PlayerInputController>
         _input.actions["ChangeSeletedBtn_Left"].started -= LeftSelectedBtn;
         _input.actions["ChangeSeletedBtn_Down"].started -= DownSelectedBtn;
         _input.actions["ChangeSeletedBtn_Up"].started -= UpSelectedBtn;
-        
+
+        //Wheel
+        _input.actions["Zoom"].performed -= Wheel;
+        _input.actions["Zoom"].canceled -= Wheel_Stop;
 
         //_input.actions["PointerMove"].performed -= OnPointerMove;
         //_input.actions["PointerMove"].canceled -= OnPointerMoveStop;
@@ -162,16 +168,15 @@ public class PlayerInputController : Singleton<PlayerInputController>
         }
     }
 
-    /*private void OnLook(InputAction.CallbackContext obj)
+    // Wheel
+    private void Wheel(InputAction.CallbackContext obj)
     {
-        LookInput(obj.ReadValue<Vector2>());
-    }*/
-
-    /*public void LookInput(Vector2 newLookDirection)
+        ReasoningController.Instance.ZoomInOut(obj.ReadValue<float>());
+    }
+    private void Wheel_Stop(InputAction.CallbackContext obj)
     {
-        if (GameManager.Instance.canInput && CanMove) 
-        { look = newLookDirection; }
-    }*/
+        ReasoningController.Instance.ZoomInOut(0f);
+    }
 
     #endregion
 
@@ -191,6 +196,10 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if (DesktopController.Instance.DesktopCamera.gameObject.activeSelf)
         {
             DesktopController.Instance.TurnOff(); Debug.Log("Desktop Off");
+        }
+        else if (ReasoningController.Instance.gameObject.activeSelf)
+        {
+            ReasoningController.Instance.ActiveOff(0.5f);
         }
         // 휴대폰이 켜져있을 경우
         else if (PhoneHardware.Instance.gameObject.activeSelf)

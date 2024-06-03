@@ -1,6 +1,5 @@
 //Refactoring v1.0
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>

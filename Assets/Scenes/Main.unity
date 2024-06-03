@@ -12313,6 +12313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisCG: {fileID: 689750233}
+  thisRT: {fileID: 689750229}
 --- !u!225 &689750233
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12321,7 +12322,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689750228}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -34072,10 +34073,6 @@ MonoBehaviour:
     m_ActionName: Player/InteractObjectBtn[/XInputControllerWindows/rightShoulder]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 36327272-a808-4d7d-850f-97e97f77e213
-    m_ActionName: Player/PointerMove[/XInputControllerWindows/rightStick]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 0c2a0ef0-c2d0-4979-a645-3dc24eb22390
     m_ActionName: Player/ChangeSeletedBtn_Right[/XInputControllerWindows/dpad/right]
   - m_PersistentCalls:
@@ -34086,6 +34083,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 7fa4068b-99ad-4643-ac3e-a81293798a8c
     m_ActionName: Player/ToggleRun[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2909d52a-815b-424e-973b-41a45b764721
+    m_ActionName: Player/Zoom[/Mouse/middleButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
