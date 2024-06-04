@@ -15,6 +15,7 @@ public class ReasoningAnswer : MonoBehaviour
     [Header("=== Data")]
     [SerializeField] string thisTagID;
     [SerializeField] ReasoningArrow relationRA;
+    [SerializeField] ReasoningPhoto relationPT;
 
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
@@ -42,7 +43,7 @@ public class ReasoningAnswer : MonoBehaviour
 
     public void CheckVisible(float time)
     {
-        if (!this.gameObject.activeSelf && relationRA.isVisible)
+        if (relationRA != null && !this.gameObject.activeSelf && relationRA.isVisible)
         {
             currentSelectedContentTxt.text = null;
 
@@ -51,7 +52,16 @@ public class ReasoningAnswer : MonoBehaviour
             thisCG.alpha = 0f;
 
             thisCG.DOFade(1f, time);
+        }
+        else if (relationPT != null && !this.gameObject.activeSelf && relationPT.isVisible)
+        {
+            currentSelectedContentTxt.text = null;
 
+            this.gameObject.SetActive(true);
+
+            thisCG.alpha = 0f;
+
+            thisCG.DOFade(1f, time);
         }
 
         // Set Tag IDs

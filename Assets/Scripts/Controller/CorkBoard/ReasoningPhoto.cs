@@ -1,5 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,22 @@ public class ReasoningPhoto : MonoBehaviour
     [SerializeField] public string relationObejctID;
     [SerializeField] public bool isVisible = false;
 
+    [Header("=== Name")]
+    [SerializeField] string nameID;
+    [SerializeField] bool isVisibleName = false;
+    [SerializeField] TMP_Text nameTxt;
+
     [Header("=== Component")]
-    [SerializeField] public Image actualPhoto;
+    [SerializeField] public CanvasGroup actualPhotoCG;
+
+    #endregion
+
+    #region Base Set
+
+    public void Offset()
+    {
+        LanguageManager.Instance.SetLanguageTxt(nameTxt);
+    }
 
     #endregion
 
@@ -20,16 +35,23 @@ public class ReasoningPhoto : MonoBehaviour
 
     public void CheckVisible(float time)
     {
-        if (!actualPhoto.gameObject.activeSelf && isVisible)
+        if (!actualPhotoCG.gameObject.activeSelf && isVisible)
         {
-            actualPhoto.gameObject.SetActive(true);
+            actualPhotoCG.gameObject.SetActive(true);
 
-            Color color = actualPhoto.color;
-            color.a = 0f;
-            actualPhoto.color = color;
+            actualPhotoCG.alpha = 0f;
 
-            actualPhoto.DOFade(1f, time);
-        }    
+            actualPhotoCG.DOFade(1f, time);
+        }
+
+        if(!isVisibleName)
+        {
+            nameTxt.text = "???";
+        }
+        else
+        {
+            nameTxt.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][nameID].ToString();
+        }
     }
 
     #endregion

@@ -70,7 +70,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         foreach (Transform photoTF in photoParentTF)
         {
             if (photoTF.TryGetComponent(out ReasoningPhoto RP))
-            { photos.Add(RP); }
+            { RP.Offset(); photos.Add(RP); }
         }
 
         // Arrow
