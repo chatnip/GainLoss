@@ -46,12 +46,12 @@ public class PhoneHardware : Singleton<PhoneHardware>
             { e_phoneStateExtra.visitPlace,  PhoneSoftware.Instance.visitPlaceScreen },
             { e_phoneStateExtra.option, PhoneSoftware.Instance.optionScreen }
         };
+        this.gameObject.SetActive(false);
     }
 
     protected override void Awake()
     {
         base.Awake();
-        this.gameObject.SetActive(false);
     }
     
     #endregion

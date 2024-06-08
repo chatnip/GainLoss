@@ -8,9 +8,9 @@ public class GameManager : Singleton<GameManager>
     #region Value
 
     [Header("=== Other")]
-    [SerializeField] public string currentChapter = "A";
-    [SerializeField] public MainInfo mainInfo = new MainInfo();
-    
+    [SerializeField] public string currentChapter = "1";
+    [SerializeField] public MainInfo mainInfo = new MainInfo(0, 2, 0, 0, 0);
+    [SerializeField] public string languageID = "1";
 
     // Other Value
     public bool canInput = false;
@@ -36,53 +36,43 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
 
-        //temp
-        currentChapter = "A";
+    }
+    private void OnEnable()
+    {
+        currentChapter = "1";
+        mainInfo = new MainInfo(1, 2, 0, 0, 0);
+        languageID = "1";
 
         Alloffset();
     }
 
-    private void Offset()
-    {
-        mainInfo = new MainInfo(
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 0][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 3][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 4][currentChapter]),
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 5][currentChapter])
-            );
-    }
-
     private void Alloffset()
     {
-        this.Offset();
-
-        LanguageManager.Instance.Offset();
-        GameSystem.Instance.Offset();
         LoadingManager.Instance.Offset();
-        MainOptionManager.Instance.Offset();
         PlaceManager.Instance.Offset();
-        ReasoningManager.Instance.Offset();
+        //LanguageManager.Instance.Offset();
+        //GameSystem.Instance.Offset();
+        //MainOptionManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
-
 
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
 
-        DesktopController.Instance.Offset();
+        //DesktopController.Instance.Offset();
         StreamController.Instance.Offset();
 
-        ReasoningChooseContoller.Instance.Offset();
         SetInteractionObjects.Instance.Offset();
-        ObjectPooling.Instance.Offset();
-        PlayerInputController.Instance.Offset();
+        //ReasoningChooseContoller.Instance.Offset();
+        //ObjectPooling.Instance.Offset();
+        //PlayerInputController.Instance.Offset();
+        //ReasoningManager.Instance.Offset();
 
     }
 
     #endregion
 
-    
+
 }
 
 [Serializable]

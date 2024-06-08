@@ -40,7 +40,7 @@ public class MainOptionManager : Singleton<MainOptionManager>
         {
             // Set Btn Setting
             LanguageManager.Instance.SetLanguageTxt(mainOptionBtn.buttonText);
-            mainOptionBtn.buttonText.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][mainOptionBtn.buttonID].ToString();
+            //mainOptionBtn.buttonText.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][mainOptionBtn.buttonID].ToString();
 
             // Set Language Text
             LanguageManager.Instance.SetLanguageTxt(mainOptionBtn.buttonText);

@@ -117,7 +117,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
         GameManager.Instance.canInput = false;
         this.OpenMapSeq = DOTween.Sequence();
 
-        List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
+        //List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
         //PlayerInputController.Instance.SetSectionBtns(btns, this);
 
         OpenMapSeq.AppendInterval(2f);
@@ -189,8 +189,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
         {
             int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
 
-            popupNameTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
-            popupDescTxt.text = PlaceManager.Instance.visitReasons[index];
+            popupNameTxt.text = DataManager.Instance.Get_LocationName(currentIdBtn.buttonID);
+            popupDescTxt.text = DataManager.Instance.Get_LocationDesc(GameManager.Instance.currentChapter, currentIdBtn.buttonID);
 
             cancelIDis = popupCancelBtn.OnClickAsObservable()
                 .Subscribe(btn =>
@@ -224,8 +224,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
 
         else if (PhoneHardware.Instance.PhoneStateExtra == PhoneHardware.e_phoneStateExtra.option)
         {
-            popupNameTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
-            popupDescTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+            //popupNameTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+            //popupDescTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
 
             cancelIDis = popupCancelBtn.OnClickAsObservable()
                 .Subscribe(btn =>

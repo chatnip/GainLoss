@@ -9,7 +9,6 @@ using Spine.Unity;
 using System.Linq;
 using System;
 using UnityEngine.UI;
-using NaughtyAttributes.Test;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -51,7 +50,7 @@ public class PlaceManager : Singleton<PlaceManager>
         foreach (IDBtn placeBtn in placeBtnList)
         {
             // Set Btn Setting
-            placeBtn.buttonText.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][placeBtn.buttonID].ToString();
+            placeBtn.buttonText.text = DataManager.Instance.Get_LocationName(placeBtn.buttonID);
             placeBtn.button.image.sprite = placeBtn.inputBasicImage;
 
             // Set Language Text
@@ -85,9 +84,9 @@ public class PlaceManager : Singleton<PlaceManager>
 
             // Check Interactable
             canGoPlaceInChapter =
-                DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+                DataManager.Instance.Get_AllLocationIDChapter(GameManager.Instance.currentChapter);
             visitReasons =
-                DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][GameManager.Instance.currentChapter].ToString().Split("/").ToList();
+                DataManager.Instance.Get_AllLocationDescChapter(GameManager.Instance.currentChapter);
 
             // Place Btn Set
             if (canGoPlaceInChapter.Contains(placeBtn.buttonID))
@@ -152,14 +151,16 @@ public class PlaceManager : Singleton<PlaceManager>
                     StreamController.Instance.SetstreamReservationID(idBtn.buttonID);
                     placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
 
-                    foreach (InteractObject IO in placeDict.Value.InteractObjects)
+
+                    // 오브젝트 판별 후 키고 끄기
+                    /*foreach (InteractObject IO in placeDict.Value.InteractObjects)
                     {
                         IO.IsInteracted = false;
                         if (DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 7][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(IO.ID))
                         { IO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractObjects.Add(IO); }
                         else
                         { IO.gameObject.SetActive(false); }
-                    }
+                    }*/
                 }
             }
             else
@@ -172,7 +173,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
 
         // Set Text UI
-        HUD_currentPlactTxt.text = DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
+        HUD_currentPlactTxt.text = DataManager.Instance.Get_LocationName(idBtn.buttonID);
 
         // Reset
         PlayerController.Instance.ft_resetPlayerSpot();
@@ -199,7 +200,7 @@ public class PlaceManager : Singleton<PlaceManager>
         // Set Loading Canvas
         LanguageManager.Instance.SetLanguageTxt(currentPlaceTxt);
         currentPlaceTxt.text = 
-            $"\"{DataManager.Instance.PlaceCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID]}\"";
+            $"\"{DataManager.Instance.Get_LocationName(idBtn.buttonID)}\"";
         goingSomewhereloadingCG.alpha = 0f;
         goingSomewhereloadingCG.DOFade(1, delay);
         goingSomewhereloadingCG.gameObject.SetActive(true);

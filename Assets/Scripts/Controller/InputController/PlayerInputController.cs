@@ -171,11 +171,11 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // Wheel
     private void Wheel(InputAction.CallbackContext obj)
     {
-        ReasoningController.Instance.ZoomInOut(obj.ReadValue<float>());
+        //ReasoningController.Instance.ZoomInOut(obj.ReadValue<float>());
     }
     private void Wheel_Stop(InputAction.CallbackContext obj)
     {
-        ReasoningController.Instance.ZoomInOut(0f);
+        //ReasoningController.Instance.ZoomInOut(0f);
     }
 
     #endregion

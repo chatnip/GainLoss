@@ -119,7 +119,7 @@ public class StreamController : Singleton<StreamController>
     // Data
     public void SetstreamReservationID(string PlaceID)
     {
-        List<string> ChpaterPlaceIDs = DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 6][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
+        List<string> ChpaterPlaceIDs = DataManager.Instance.Get_AllLocationIDChapter(GameManager.Instance.currentChapter);
         List<string> ChapterStreamIDs = DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 8][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
         int index = ChpaterPlaceIDs.IndexOf(PlaceID);
         streamReservationID = ChapterStreamIDs[index];

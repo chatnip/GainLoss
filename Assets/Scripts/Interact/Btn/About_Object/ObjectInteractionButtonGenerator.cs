@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>
 {
@@ -63,7 +64,11 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
         btn.TryGetComponent(out InteractObjectBtn IOB);
         IOB.TargetGO = targetGO;
         LanguageManager.Instance.SetLanguageTxt(IOB.txt_name_left);
-        IOB.txt_name_left.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][IO.ID].ToString();
+        if (IO is HomeInteractObject || IO is ComputerInteract)
+        { IOB.txt_name_left.text = DataManager.Instance.Get_HomeObjectName(IO.ID); }
+        else if (IO is BasicInteractObject)
+        { IOB.txt_name_left.text = DataManager.Instance.Get_ObjectName(IO.ID); }
+        
         allInteractionBtns.Add(btn);
     }
 

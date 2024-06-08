@@ -14,6 +14,7 @@ public class HomeInteractObject : InteractObject
 
     public override void Interact()
     {
+        Debug.Log("Act");
         if (!Outline.enabled) { return; }
 
         base.Interact();
@@ -24,6 +25,7 @@ public class HomeInteractObject : InteractObject
         }
         else
         {
+            
             ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
             ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
         }

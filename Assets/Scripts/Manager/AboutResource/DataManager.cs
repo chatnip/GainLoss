@@ -1,6 +1,10 @@
 //Refactoring v1.0
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -44,29 +48,43 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset StaticTextCSV; 
     public List<Dictionary<string, object>> LanguageCSVDatas = new();
     public List<Dictionary<string, object>> StaticTextCSVDatas = new();
+    [Space(50)]
 
-    
+    #endregion
+
+    #region New CSV Data
+
+    [SerializeField] TextAsset Location_CSV;
+    [SerializeField] TextAsset HomeObject_CSV;
+    [SerializeField] TextAsset Object_CSV;
+
+    #endregion
+
+    #region Other
+    static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+    static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
+    static int dataReadLine = 3;
     #endregion
 
     #region Framework & Base Set
 
     protected override void Awake()
     {
-        Offset_ReadData_from_CSV();
         base.Awake();
+        //Offset_ReadData_from_CSV();
     }
 
-    public void Offset_ReadData_from_CSV()
+    private void Offset_ReadData_from_CSV()
     {
         // amount = LanguageManager.Instance.LanguageTypeAmount
 
         #region Entire Play
 
         // (amount*0) + 0~2. Eng / Kor / Jpn 
-        // (amount*1) + 0~2. VisitReason Eng / Kor / Jpn
+        // (amount*1) + 0~2. ???-VisitReason Eng / Kor / Jpn
         // (amount*2) + 0~2. Get Activitiy Each Day / Start Day / End Day
-        // (amount*2) + 3~5. Default Observational / Persuasive / MentalStength
-        // (amount*2) + 6. Visitable Place IDs / 7. Interactable Object IDs / 8. Set Streaming IDs / 9. ReasoningID
+        // (amount*2) + 3~5. ???-Default Observational / ???-Persuasive / ???-MentalStength
+        // (amount*2) + 6. ???-Visitable Place IDs / 7. Interactable Object IDs / 8. Set Streaming IDs / 9. ReasoningID
 
         ChapterCSVDatas = CSVReader.Read(this.ChapterCSV);
 
@@ -157,8 +175,226 @@ public class DataManager : Singleton<DataManager>
 
     }
 
+    #endregion
+
+    #region About Location
+
+    // 챕터에 갈 수 있는 모든 장소 ID
+    public List<string> Get_AllLocationIDChapter(string chapterID)
+    {
+        List<string> result = new List<string>();
+        string[] lines = Get_lines(Location_CSV);
+        int ChapterIndex = Get_Index(lines[dataReadLine], "Chapter");
+
+        int locationIndex = Get_Index(lines[dataReadLine], "Idx_Location");
+
+        foreach(string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if(lineData[ChapterIndex] == chapterID)
+            {
+                result.Add(lineData[locationIndex]);
+            }
+        }
+        return result.Distinct().ToList();
+
+    }
+
+    // 챕터에 갈 수 있는 모든 장소 Desc
+    public List<string> Get_AllLocationDescChapter(string chapterID)
+    {
+        List<string> result = new List<string>();
+        string[] lines = Get_lines(Location_CSV);
+        int ChapterIndex = Get_Index(lines[dataReadLine], "Chapter");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int descIndex = Get_Index(lines[dataReadLine], "Description");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[ChapterIndex] == chapterID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                result.Add(lineData[descIndex]);
+            }
+        }
+        return result;
+    }
+
+    // 장소 설명
+    public string Get_LocationDesc(string chapterID, string locationID)
+    {
+        string[] lines = Get_lines(Location_CSV);
+        int ChapterIndex = Get_Index(lines[dataReadLine], "Chapter");
+        int locationIndex = Get_Index(lines[dataReadLine], "Idx_Location");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int descIndex = Get_Index(lines[dataReadLine], "Description");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[ChapterIndex] == chapterID &&
+                lineData[locationIndex] == locationID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                return lineData[descIndex];
+            }
+        }
+        return "";
+    }
+
+    // 장소 이름
+    public string Get_LocationName(string locationID)
+    {
+        string[] lines = Get_lines(Location_CSV);
+        int locationIndex = Get_Index(lines[dataReadLine], "Idx_Location");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int nameIndex = Get_Index(lines[dataReadLine], "Name");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[locationIndex] == locationID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                return lineData[nameIndex];
+            }
+        }
+        return "";
+    }
+
+    #endregion
+
+    #region About Object
+
+    // 오브젝트 이름
+    public string Get_ObjectName(string objectID)
+    {
+        string[] lines = Get_lines(Object_CSV);
+        int objectIndex = Get_Index(lines[dataReadLine], "Idx_Object");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int nameIndex = Get_Index(lines[dataReadLine], "Name");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[objectIndex] == objectID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                Debug.Log(lineData[nameIndex]);
+                return lineData[nameIndex];
+            }
+        }
+        return null;
+    }
+
+    #endregion
+
+    #region About Home Object
+
+    // 집 오브젝트 이름
+    public string Get_HomeObjectName(string homeObjectID)
+    {
+        string[] lines = Get_lines(HomeObject_CSV);
+        int homeObjectIndex = Get_Index(lines[dataReadLine], "Idx_HomeObject");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int nameIndex = Get_Index(lines[dataReadLine], "Name");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[homeObjectIndex] == homeObjectID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                return lineData[nameIndex];
+            }
+        }
+        return null;
+    }
+
+    // 집 오브젝트 재확인 질문
+    public string Get_HomeObjectReconfirm(string homeObjectID)
+    {
+        string[] lines = Get_lines(HomeObject_CSV);
+        int homeObjectIndex = Get_Index(lines[dataReadLine], "Idx_HomeObject");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int reconfirmIndex = Get_Index(lines[dataReadLine], "Reconfirm");
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[homeObjectIndex] == homeObjectID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                return lineData[reconfirmIndex];
+            }
+        }
+        return null;
+    }
+
+    // 집 오브젝트 추가(수치 표시 또는, 경고문)
+    public string Get_HomeObjectExtra(string homeObjectID)
+    {
+        string[] lines = Get_lines(HomeObject_CSV);
+        int homeObjectIndex = Get_Index(lines[dataReadLine], "Idx_HomeObject");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int extraIndex = Get_Index(lines[dataReadLine], "Extra");
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[homeObjectIndex] == homeObjectID &&
+                lineData[languageIndex] == GameManager.Instance.languageID)
+            {
+                return lineData[extraIndex];
+            }
+        }
+        return null;
+    }
+
+    #endregion
+
+    #region About Streaming
+
+    // 장소에 따른 방송 시작 다이얼로그 
+    public string Get_StartStreamingDialog(string locationID)
+    {
+        string[] lines = Get_lines(Location_CSV);
+        int locationIndex = Get_Index(lines[dataReadLine], "Idx_Location");
+
+        int sDialogIndex = Get_Index(lines[dataReadLine], "Idx_SDialog");
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[locationIndex] == locationID)
+            {
+                Debug.Log(lineData[sDialogIndex]);
+                return lineData[sDialogIndex];
+            }
+        }
+        return null;
+    }
 
 
+    #endregion
+
+    #region Cacul
+
+    public string[] Get_lines(TextAsset dataTextAsset)
+    {
+        return Regex.Split(dataTextAsset.text, LINE_SPLIT_RE);
+    }
+    private int Get_Index(string line, string indexName)
+    {
+        string[] lineData = Regex.Split(line, SPLIT_RE);
+        return lineData.ToList().IndexOf(indexName);
+    }
+    
     #endregion
 
 }

@@ -40,7 +40,7 @@ public class LanguageManager : Singleton<LanguageManager>
             foreach (TMP_Text tmpTs in MultipleLanguageTxts[i].LanguageTxts)
             {
                 tmpTs.font = fonts[languageNum];
-                tmpTs.text = DataManager.Instance.StaticTextCSVDatas[languageNum][id].ToString();
+                //tmpTs.text = DataManager.Instance.StaticTextCSVDatas[languageNum][id].ToString();
             } 
         }
     }
@@ -71,7 +71,7 @@ public class LanguageManager : Singleton<LanguageManager>
 
     public void SetLanguageTxt(TMP_Text tmpT)
     {
-        tmpT.font = fonts[languageNum];
+        tmpT.font = fonts[Convert.ToInt32(GameManager.Instance.languageID)];
     }
 
     public void SetLanguageTxts(List<TMP_Text> tmpTs)
