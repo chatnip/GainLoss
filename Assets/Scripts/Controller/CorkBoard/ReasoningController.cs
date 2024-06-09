@@ -138,8 +138,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         foreach (ReasoningAnswer RAW in answers)
         { RAW.CheckVisible(time); }
 
-        if(GameManager.Instance.mainInfo.Day == 
-            Convert.ToInt32(DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][GameManager.Instance.currentChapter]))
+        if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
         { decideBtn.interactable = true; }
         else
         { decideBtn.interactable = false; }

@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager>
         LoadingManager.Instance.Offset();
         GameSystem.Instance.Offset();
         PlaceManager.Instance.Offset();
-        //ReasoningManager.Instance.Offset();
+        ReasoningManager.Instance.Offset();
         //MainOptionManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
@@ -68,7 +68,7 @@ public class GameManager : Singleton<GameManager>
         StreamController.Instance.Offset();
 
         SetInteractionObjects.Instance.Offset();
-        //ReasoningChooseContoller.Instance.Offset();
+        ReasoningChooseContoller.Instance.Offset();
         ObjectPooling.Instance.Offset();
 
     }

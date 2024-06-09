@@ -9,6 +9,7 @@ using Spine.Unity;
 using System.Linq;
 using System;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -31,14 +32,15 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] Button comebackHomeBtn;
 
     [Header("=== Place Components")]
-    [SerializeField] public List<IDBtn> placeBtnList = new();
+    [SerializeField] List<IDBtn> placeBtnList = new();
     [SerializeField] List<PlaceSet> placeSetList = new();
     Dictionary<IDBtn, PlaceSet> placeIdBtnGODict;
 
     [Header("=== About Data")]
-    [SerializeField] public List<string> canGoPlaceInChapter = new List<string>();
-    [SerializeField] public List<string> visitReasons = new List<string>();
-    [SerializeField] public IDBtn currentIdBtn;
+    [SerializeField] List<string> canGoPlaceInChapter = new List<string>();
+    [SerializeField] public List<InteractObject> needInteractIOs = new List<InteractObject>();
+   
+    [SerializeField] IDBtn currentIdBtn;
 
     #endregion
 
@@ -85,8 +87,6 @@ public class PlaceManager : Singleton<PlaceManager>
             // Check Interactable
             canGoPlaceInChapter =
                 DataManager.Instance.Get_AllLocationIDChapter(GameManager.Instance.currentChapter);
-            visitReasons =
-                DataManager.Instance.Get_AllLocationDescChapter(GameManager.Instance.currentChapter);
 
             // Place Btn Set
             if (canGoPlaceInChapter.Contains(placeBtn.buttonID))
@@ -144,23 +144,10 @@ public class PlaceManager : Singleton<PlaceManager>
                 mainCamera.backgroundColor = placeDict.Value.BGColor;
 
 
-                // Spawn Map Object ( No Home )
+                Debug.Log("Spawn Map Object ( No Home )"); 
                 if (placeDict.Key != placeBtnList[0])
                 {
-                    // Set Stream Reservation
-                    //StreamController.Instance.SetstreamReservationID(idBtn.buttonID);
-                    placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
-
-
-                    // 오브젝트 판별 후 키고 끄기
-                    /*foreach (InteractObject IO in placeDict.Value.InteractObjects)
-                    {
-                        IO.IsInteracted = false;
-                        if (DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 7][GameManager.Instance.currentChapter].ToString().Split('/').ToList().Contains(IO.ID))
-                        { IO.gameObject.SetActive(true); placeIdBtnGODict[idBtn].Inevitable_InteractObjects.Add(IO); }
-                        else
-                        { IO.gameObject.SetActive(false); }
-                    }*/
+                    needInteractIOs = GetAllIO(placeDict.Value.MapGO.transform);
                 }
             }
             else
@@ -254,19 +241,29 @@ public class PlaceManager : Singleton<PlaceManager>
 
     #region Place Object
     
-    public void Exclude_InevitableIO(InteractObject ExcludeIO)
+    private List<InteractObject> GetAllIO(Transform PlaceGO)
     {
-        if (placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Contains(ExcludeIO))
-        { placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Remove(ExcludeIO); }
-        CheckCanGoHome();
+        List<InteractObject > list = new List<InteractObject>();
+        Transform[] allChildren = PlaceGO.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren)
+        {
+            if(child.TryGetComponent(out InteractObject io))
+            {
+                io.IsInteracted = false;
+                list.Add(io);
+            }
+
+        }
+        return list;
     }
     public void CheckCanGoHome()
     {
-        if(placeIdBtnGODict[currentIdBtn].Inevitable_InteractObjects.Count == 0)
+        if (needInteractIOs.Count == 0)
         {
             comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
             btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
         }
+        
     }
 
     #endregion
@@ -277,8 +274,6 @@ public class PlaceSet
 {
     public GameObject MapGO;
     public Color BGColor;
-    public List<InteractObject> InteractObjects;
-    [Tooltip("자동 초기화")] public List<InteractObject> Inevitable_InteractObjects;
     public PlaceSet(GameObject mapGO, Color bgColor)
     {
         MapGO = mapGO;

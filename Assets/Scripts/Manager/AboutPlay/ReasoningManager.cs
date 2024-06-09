@@ -25,7 +25,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
         foreach(GameObject allReasoningCorkBoard in allReasoningCorkBoards)
         { 
             if (allReasoningCorkBoard.TryGetComponent(out ReasoningController reasoningController) &&
-                reasoningController.reasoningID == DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 9][GameManager.Instance.currentChapter].ToString())
+                reasoningController.reasoningID == GameManager.Instance.currentChapter)
             {
                 GameObject genReasoningCorkBoard = Instantiate(allReasoningCorkBoard, Vector3.zero, Quaternion.identity, reasoningCorkBoardParentTF);
                 currentReasoningCorkBoard = genReasoningCorkBoard;

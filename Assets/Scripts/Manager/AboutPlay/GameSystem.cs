@@ -63,7 +63,7 @@ public class GameSystem : Singleton<GameSystem>
     public Transform playerPos;
 
     // Other Value
-    bool isHaveChoice = false;
+    string haveChoiceDialogID;
     #endregion
 
     #region Framework & Base Set
@@ -140,7 +140,7 @@ public class GameSystem : Singleton<GameSystem>
         objNameTexts = new List<string>();
         objSprites = new List<Sprite>();
         objAnimNames = new List<string>();
-        this.isHaveChoice = false;
+        haveChoiceDialogID = null;
 
         string dialog = DataManager.Instance.Get_DialogText(startDialogID);
         objWriteTexts.Add(dialog);
@@ -149,7 +149,10 @@ public class GameSystem : Singleton<GameSystem>
         string dialogAnim = DataManager.Instance.Get_DialogAnim(startDialogID);
         objAnimNames.Add(dialogAnim);
         objSprites.Add(null);
+        if (DataManager.Instance.Get_DialogHasChoice(startDialogID))
+        { this.haveChoiceDialogID = startDialogID; }
 
+        currentIO.endDialogID = startDialogID;
         string nextDialogID = DataManager.Instance.Get_NextDialogID(startDialogID);
         if (nextDialogID == null || nextDialogID.Length == 0)
         { return; }
@@ -166,10 +169,9 @@ public class GameSystem : Singleton<GameSystem>
             objSprites.Add(null);
 
             if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
-            {
-                this.isHaveChoice = true;
-            }
+            { this.haveChoiceDialogID = nextDialogID; }
 
+            currentIO.endDialogID = nextDialogID;
             nextDialogID = DataManager.Instance.Get_NextDialogID(nextDialogID);
             i++;
             if(nextDialogID == null || nextDialogID.Length == 0 || i > 100)
@@ -281,7 +283,7 @@ public class GameSystem : Singleton<GameSystem>
             else
             {
                 // 선택지를 주는 라이팅 이었다면
-                if (isHaveChoice)
+                if (haveChoiceDialogID != null)
                 {
                     Debug.Log("선택지");
                     ShowChioceWindow_Object3D(0.25f);
@@ -298,7 +300,12 @@ public class GameSystem : Singleton<GameSystem>
     public void ObjDescOff()
     {
         if (currentIO != null)
-        { currentIO.IsInteracted = true; currentIO = null; }
+        {
+            if (PlaceManager.Instance.needInteractIOs.Contains(currentIO))
+            { PlaceManager.Instance.needInteractIOs.Remove(currentIO); } 
+            currentIO.IsInteracted = true;
+            currentIO = null; 
+        }
 
         GameManager.Instance.canInput = true;
         GameManager.Instance.canInteractObject = true;
@@ -310,8 +317,9 @@ public class GameSystem : Singleton<GameSystem>
         DOTween.Kill(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
         objWriteTexts_currentOrder = 0;
-        
 
+        if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
+        { PlaceManager.Instance.CheckCanGoHome(); }
     }
 
     #endregion
@@ -331,26 +339,20 @@ public class GameSystem : Singleton<GameSystem>
             .SetUpdate(true);
 
         // Set Btn By ID
-        List<string> IDs = new List<string>();
-
-        foreach (KeyValuePair<string, object> dictDatas in DataManager.Instance.ObjectChoiceCSVDatas[0])
-        {
-            if (dictDatas.Key.Length > 4 && dictDatas.Key.Substring(0, 4) == currentIO.ID)
-            { IDs.Add(dictDatas.Key); }
-        }
+        List<string> choiceIDs = DataManager.Instance.Get_ChoiceIDs(haveChoiceDialogID);
 
         // Set UI
-        for (int i = 0; i < IDs.Count; i++)
+        for (int i = 0; i < choiceIDs.Count; i++)
         {
             IDBtn Choice_IDBtn = ObjectPooling.Instance.GetIDBtn();
             Choice_IDBtn.buttonType = ButtonType.ChoiceType_Object3D;
             Choice_IDBtn.transform.SetParent(objectBtnParentRT);
-            Choice_IDBtn.buttonID = IDs[i];
+            Choice_IDBtn.buttonID = choiceIDs[i];
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
 
             Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
-            if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }
+            if (choiceIDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (choiceIDs.Count - 1); }
 
             Choice_IDBtn.gameObject.SetActive(true);
             choiceBtnList.Add(Choice_IDBtn);
@@ -372,24 +374,20 @@ public class GameSystem : Singleton<GameSystem>
                 .Subscribe(_ =>
                 {
                     string _id = idBtn.buttonID;
-                    if (_id.Substring(4, 3) == "C99") { return; }
+                    if (DataManager.Instance.Get_ChoiceNeedAbility(_id) == "") 
+                    { return; }
+
+                    string type = DataManager.Instance.abilityTypeLanguage[DataManager.Instance.Get_ChoiceNeedAbility(_id)][Convert.ToInt32(LanguageManager.Instance.languageID)];
+                    int amount = DataManager.Instance.Get_ChoiceNeedAbilityAmount(_id);
+
                     needAbilityTxt.transform.parent.gameObject.SetActive(true);
                     if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
                     {
                         DOTween.Kill(CG);
                         CG.DOFade(1f, 0.25f).SetUpdate(true);
                     }
-                    string Anno = "";
-                    for (int i = 0; i < DataManager.Instance.AbilityCSVDatas.Count; i++)
-                    {
-                        int ability = Convert.ToInt32(DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + i][_id]);
-                        if (ability > 0)
-                        {
-                            Anno += " " + DataManager.Instance.AbilityCSVDatas[LanguageManager.Instance.languageNum]["A0" + i.ToString()].ToString() + " " + ability + " ";
-                        }
-                        
-                    }
-                    needAbilityTxt.text = Anno;
+                    
+                    needAbilityTxt.text = type + " : " + amount;
                     needAbilityTxt.TryGetComponent(out RectTransform rt);
                     if (DOTween.IsTweening(rt)) { DOTween.Kill(rt); }
                     if (DOTween.IsTweening(needAbilityTxt)) { DOTween.Kill(needAbilityTxt); }
@@ -412,13 +410,31 @@ public class GameSystem : Singleton<GameSystem>
             IDisposable iDisClick = idBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    // 능력치 충분한지 체크
                     string _id = idBtn.buttonID;
-                    int need_obse = Convert.ToInt32(DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 0][_id]);
-                    int need_pers = Convert.ToInt32(DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 1][_id]);
-                    int need_ment = Convert.ToInt32(DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 2][_id]);
 
-                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obse, need_pers, need_ment))
+                    // 능력치 충분한지 체크
+                    int need_obs = 0;
+                    int need_soc = 0;
+                    int need_men = 0;
+
+                    if (DataManager.Instance.Get_ChoiceNeedAbility(_id) != "")
+                    {
+                        int need_ = DataManager.Instance.Get_ChoiceNeedAbilityAmount(_id);
+                        switch (DataManager.Instance.Get_ChoiceNeedAbility(_id))
+                        {
+                            case "observation":
+                                need_obs = need_;
+                                break;
+                            case "sociability":
+                                need_obs = need_;
+                                break;
+                            case "mentality":
+                                need_obs = need_;
+                                break;
+                        }
+                    }
+
+                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obs, need_soc, need_men))
                     {
                         currentIO.IsInteracted = true;
                         ChoiceTab_Object3D(_id);
@@ -510,22 +526,17 @@ public class GameSystem : Singleton<GameSystem>
             .SetUpdate(true);
 
 
-        // set Inevitable
-        PlaceManager.Instance.Exclude_InevitableIO(currentIO);
-
         // Sub Cancel
         foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
 
         // Get Reasoning Contents
-        ReasoningManager.Instance.reasoningContentIDs.Add(
-            DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 3][_id].ToString());
+        ReasoningManager.Instance.reasoningContentIDs.Add(DataManager.Instance.Get_NextDialogByChoice(_id));
 
         // Get Stream Quarter
-        StreamController.Instance.streamQuarterID.Add(
-            DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 6][_id].ToString());
+        StreamController.Instance.streamQuarterID.Add(DataManager.Instance.Get_SDialogByChoice(_id));
 
         // Obj Description Play
-        ObjDescOn(currentIO, _id);
+        ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id));
 
         // Object Pooling
         foreach (IDBtn idBtn in choiceBtnList)

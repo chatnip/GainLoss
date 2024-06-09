@@ -184,8 +184,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
 
         if (PhoneHardware.Instance.PhoneStateExtra == PhoneHardware.e_phoneStateExtra.visitPlace)
         {
-            int index = PlaceManager.Instance.placeBtnList.IndexOf(currentIdBtn);
-
             popupNameTxt.text = DataManager.Instance.Get_LocationName(currentIdBtn.buttonID);
             popupDescTxt.text = DataManager.Instance.Get_LocationDesc(GameManager.Instance.currentChapter, currentIdBtn.buttonID);
 

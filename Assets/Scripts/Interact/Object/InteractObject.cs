@@ -9,6 +9,7 @@ public class InteractObject : InteractCore
 
     [Header("==== ID")]
     [SerializeField] public string ID;
+    [HideInInspector] public string endDialogID;
 
     [Header("=== Interact")]
     [SerializeField] public bool IsInteracted = false;

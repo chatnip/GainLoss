@@ -24,7 +24,6 @@ public class HomeInteractObject : InteractObject
         }
         else
         {
-            
             ActivityController.Instance.currentQuestionWindowType = thisAbilityType;
             ActivityController.Instance.QuestionWindow_ActiveOn(thisAbilityType, 0.25f);
         }

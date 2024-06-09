@@ -209,7 +209,7 @@ public class ActivityController : Singleton<ActivityController>
         }
         else if (currentQuestionWindowType == e_HomeInteractType.Reasoning) // 추리일 때
         {
-            ReasoningController.Instance.ActiveOn(0.5f);
+            ReasoningController.Instance.ActiveOn(0.5f); return;
         }
         else
         {

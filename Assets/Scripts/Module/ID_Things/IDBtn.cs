@@ -78,7 +78,7 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_ChoiceType_Object3D()
     {
-        buttonText.text = DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
+        buttonText.text = DataManager.Instance.Get_ChoiceText(buttonID);
         IDBtnSetup_ChoiceType();
     }
 

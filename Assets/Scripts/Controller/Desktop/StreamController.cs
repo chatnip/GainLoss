@@ -46,9 +46,7 @@ public class StreamController : Singleton<StreamController>
     [SerializeField] TMP_Text viewerAmountTxt;
 
     [Header("=== Stream Reservation")]
-    [SerializeField] public string streamReservationID;
     [SerializeField] public List<string> streamQuarterID = new List<string>();
-    [SerializeField] List<string> completedStreamQuarterID = new List<string>();
     [SerializeField] string currentStreamModultID;
 
     [Header("=== Animation")]
@@ -114,23 +112,10 @@ public class StreamController : Singleton<StreamController>
 
     #region Stream
 
-    // Data
-    public void SetstreamReservationID(string PlaceID)
-    {
-        List<string> ChpaterPlaceIDs = DataManager.Instance.Get_AllLocationIDChapter(GameManager.Instance.currentChapter);
-        List<string> ChapterStreamIDs = DataManager.Instance.ChapterCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 8][GameManager.Instance.currentChapter].ToString().Split('/').ToList();
-        int index = ChpaterPlaceIDs.IndexOf(PlaceID);
-        streamReservationID = ChapterStreamIDs[index];
-        Debug.Log(streamReservationID);
-    }
-
     // Start
     public void StartStreaming()
     {
         goodOrEvilGage = 0;
-        for (int i = 0; i < streamQuarterID.Count; i++)
-        { completedStreamQuarterID.Add(streamReservationID + streamQuarterID[i]); }
-
 
         tween_SubscriberAmountTxt = SetUpdateSubscriberAmountText();
         ChooseAndPlay_BaseStreaming();
@@ -139,9 +124,9 @@ public class StreamController : Singleton<StreamController>
     // Start Base
     private void ChooseAndPlay_BaseStreaming()
     {
-        if (completedStreamQuarterID.Count == 0 || completedStreamQuarterID == null)
+        if (streamQuarterID.Count == 0 || streamQuarterID == null)
         {
-            ShowResult();
+            //ShowResult();
             return;
         }
         else
@@ -149,9 +134,9 @@ public class StreamController : Singleton<StreamController>
             isChoiceTime = true;
 
             // Local Data Set
-            int rand = UnityEngine.Random.Range(0, completedStreamQuarterID.Count);
-            currentStreamModultID = completedStreamQuarterID[rand];
-            completedStreamQuarterID.Remove(completedStreamQuarterID[rand]);
+            int rand = UnityEngine.Random.Range(0, streamQuarterID.Count);
+            currentStreamModultID = streamQuarterID[rand];
+            streamQuarterID.Remove(streamQuarterID[rand]);
 
             SetScenarioBase(currentStreamModultID.Substring(0, 7) + "B");
             return;
@@ -183,18 +168,18 @@ public class StreamController : Singleton<StreamController>
     #endregion
 
     #region Result
-
+/*
     private void ShowResult()
     {
         DOTween.Kill(tween_SubscriberAmountTxt);
 
         // Get ID
-        int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamReservationID]);
+        int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamQuarterID]);
         Debug.Log(typeKindAmount);
         for (int i = 0;  i < typeKindAmount; i++)
         {
             List<string> Data = 
-                DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamReservationID].ToString().Split('/').ToList();
+                DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamQuarterID].ToString().Split('/').ToList();
             int min = Convert.ToInt32(Data[0]); Debug.Log(min);
             int max = Convert.ToInt32(Data[1]); Debug.Log(max);
 
@@ -202,10 +187,10 @@ public class StreamController : Singleton<StreamController>
             {
                 ReasoningManager.Instance.reasoningContentIDs.Add(Data[2]);
                 resultTxt.text = 
-                    DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamReservationID]
+                    DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamQuarterID]
                     .ToString().Split('/').ToList()[i];
                 resultIcon.sprite =
-                    GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamReservationID].ToString().Split('/').ToList())[i];
+                    GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamQuarterID].ToString().Split('/').ToList())[i];
 
                 Debug.Log("추리 소재 CSV 필요");
                 getThingTxt.text = Data[2];
@@ -234,7 +219,7 @@ public class StreamController : Singleton<StreamController>
                 GameManager.Instance.canInput = true;
             });
     }
-
+*/
     private void ShowJournal()
     {
         EndTxt.text = DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageNum]["ID"].ToString().Split('/')[0];

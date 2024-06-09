@@ -58,6 +58,7 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset HomeObject_CSV;
     [SerializeField] TextAsset Object_CSV;
     [SerializeField] TextAsset Dialog_CSV;
+    [SerializeField] TextAsset Choice_CSV;
 
     #endregion
 
@@ -271,7 +272,7 @@ public class DataManager : Singleton<DataManager>
                 result.Add(lineData[descIndex]);
             }
         }
-        return result;
+        return result.Distinct().ToList();
     }
 
     // 장소 설명
@@ -452,6 +453,76 @@ public class DataManager : Singleton<DataManager>
         return Get_Bool(lines, DialogID, "Idx_Dialog", "HasChoices");
     }
 
+    // 오브젝트 ID로 다이얼로그 시작 ID 가져오기 
+    public string Get_DialogID(string ObjectID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, ObjectID, "Idx_Object", "Idx_Dialog");
+    }
+
+    #endregion
+
+    #region About Choice
+
+    // 다이얼로그ID로 선택지 가져오기
+    public List<string> Get_ChoiceIDs(string DialogID)
+    {
+        List<string> result = new List<string>();
+
+        string[] lines = Get_lines(Choice_CSV);
+
+        int comparisonIndex = Get_Index(lines[dataReadLine], "Idx_Dialog");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], "Idx_Choice");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == DialogID &&
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
+            {
+                result.Add(lineData[getIdxValueIndex]);
+            }
+        }
+        return result.Distinct().ToList();
+    }
+
+    // 선택지ID로 선택지Text 가져오기
+    public string Get_ChoiceText(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_String(lines, ChoiceID, "Idx_Choice", "ChoiceText");
+    }
+
+    // 선택지에 필요한 요소 이름
+    public string Get_ChoiceNeedAbility(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_String(lines, ChoiceID, "Idx_Choice", "RequiredPointType");
+    }
+
+    // 선택지에 필요한 요소 양
+    public int Get_ChoiceNeedAbilityAmount(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_Int(lines, ChoiceID, "Idx_Choice", "RequiredPoints");
+    }
+
+    // 선택지 다음 Dialog ID
+    public string Get_NextDialogByChoice(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_String(lines, ChoiceID, "Idx_Choice", "NextDialogID");
+    }
+
+    // 선택지 SDialog ID
+    public string Get_SDialogByChoice(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_String(lines, ChoiceID, "Idx_Choice", "Idx_SDialog");
+    }
+
     #endregion
 
     #region Cacul
@@ -521,4 +592,14 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
+    #region Other
+
+    public Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
+    {
+        { "observation", new List<string> { "observation", "관찰력" } },
+        { "sociability", new List<string> { "sociability", "설득력" } },
+        { "mentality", new List<string> { "mentality", "정신력" } }
+    };
+
+    #endregion
 }
