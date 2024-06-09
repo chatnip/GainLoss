@@ -10,7 +10,6 @@ public class GameManager : Singleton<GameManager>
     [Header("=== Other")]
     [SerializeField] public string currentChapter = "1";
     [SerializeField] public MainInfo mainInfo = new MainInfo(0, 2, 0, 0, 0);
-    [SerializeField] public string languageID = "1";
 
     // Other Value
     public bool canInput = false;
@@ -40,18 +39,23 @@ public class GameManager : Singleton<GameManager>
     private void OnEnable()
     {
         currentChapter = "1";
-        mainInfo = new MainInfo(1, 2, 0, 0, 0);
-        languageID = "1";
+        mainInfo = new MainInfo(
+            DataManager.Instance.Get_ChapterStartDay(currentChapter),
+            DataManager.Instance.Get_GiveActivity(currentChapter),
+            DataManager.Instance.Get_Obs(currentChapter), 
+            DataManager.Instance.Get_Soc(currentChapter),
+            DataManager.Instance.Get_Men(currentChapter));
 
         Alloffset();
     }
 
     private void Alloffset()
     {
+        LanguageManager.Instance.Offset();
         LoadingManager.Instance.Offset();
+        GameSystem.Instance.Offset();
         PlaceManager.Instance.Offset();
-        //LanguageManager.Instance.Offset();
-        //GameSystem.Instance.Offset();
+        //ReasoningManager.Instance.Offset();
         //MainOptionManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
@@ -59,14 +63,13 @@ public class GameManager : Singleton<GameManager>
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
 
-        //DesktopController.Instance.Offset();
+        PlayerInputController.Instance.Offset();
+        DesktopController.Instance.Offset();
         StreamController.Instance.Offset();
 
         SetInteractionObjects.Instance.Offset();
         //ReasoningChooseContoller.Instance.Offset();
-        //ObjectPooling.Instance.Offset();
-        //PlayerInputController.Instance.Offset();
-        //ReasoningManager.Instance.Offset();
+        ObjectPooling.Instance.Offset();
 
     }
 

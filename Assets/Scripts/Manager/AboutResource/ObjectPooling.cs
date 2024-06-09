@@ -40,6 +40,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
     public IDBtn GetIDBtn()
     {
         var IDBtnObject = OP_IDBtn_Queue.Dequeue();
+        LanguageManager.Instance.SetLanguageTxt(IDBtnObject.buttonText);
         return IDBtnObject;
     }
 

@@ -75,9 +75,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
         this.optionScreen.gameObject.SetActive(false);
         this.gameObject.transform.parent.gameObject.SetActive(false);
 
-        List<TMP_Text> languageTmpT = new List<TMP_Text>
-        { DayText, DayOfWeekText, realTimeText, popupNameTxt, popupDescTxt };
-        LanguageManager.Instance.SetLanguageTxts(languageTmpT); 
     }
 
     protected override void Awake()

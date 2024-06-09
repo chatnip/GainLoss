@@ -33,7 +33,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     public void Offset()
     {
-        LanguageManager.Instance.SetLanguageTxt(isRunModeTxt);
         isRunModeTxt.text = "OFF";
 
         TryGetComponent(out _input);

@@ -14,14 +14,13 @@ public class HomeInteractObject : InteractObject
 
     public override void Interact()
     {
-        Debug.Log("Act");
         if (!Outline.enabled) { return; }
 
         base.Interact();
         if (GameManager.Instance.currentActPart != GameManager.e_currentActPart.UseActivity &&
             thisAbilityType != ActivityController.e_HomeInteractType.Reasoning)
         {
-            GameSystem.Instance.ObjDescOn(this, null);
+            GameSystem.Instance.ObjDescOn(this, "199");
         }
         else
         {

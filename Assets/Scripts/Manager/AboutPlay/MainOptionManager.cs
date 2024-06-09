@@ -39,11 +39,7 @@ public class MainOptionManager : Singleton<MainOptionManager>
         foreach (IDBtn mainOptionBtn in mainOptionAppIDBtns)
         {
             // Set Btn Setting
-            LanguageManager.Instance.SetLanguageTxt(mainOptionBtn.buttonText);
             //mainOptionBtn.buttonText.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][mainOptionBtn.buttonID].ToString();
-
-            // Set Language Text
-            LanguageManager.Instance.SetLanguageTxt(mainOptionBtn.buttonText);
 
             mainOptionBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>

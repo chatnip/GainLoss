@@ -121,6 +121,11 @@ public class LoadingManager : Singleton<LoadingManager>
             loading.gameObject.SetActive(false);
             GameManager.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
+            if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter))
+            {
+                Debug.Log("나중에 풀어야함");
+                //GameSystem.Instance.ObjDescOn(null, "101");
+            }
         });
     }
 

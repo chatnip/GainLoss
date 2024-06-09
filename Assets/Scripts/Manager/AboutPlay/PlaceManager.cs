@@ -46,15 +46,15 @@ public class PlaceManager : Singleton<PlaceManager>
 
     public void Offset()
     {
+        // Off
+        goingSomewhereloadingCG.gameObject.SetActive(false);
+
         // Set Place Btn
         foreach (IDBtn placeBtn in placeBtnList)
         {
             // Set Btn Setting
             placeBtn.buttonText.text = DataManager.Instance.Get_LocationName(placeBtn.buttonID);
             placeBtn.button.image.sprite = placeBtn.inputBasicImage;
-
-            // Set Language Text
-            LanguageManager.Instance.SetLanguageTxt(placeBtn.buttonText);
 
             // Subscribe Btn
             if (placeBtn == placeBtnList[0])
@@ -148,7 +148,7 @@ public class PlaceManager : Singleton<PlaceManager>
                 if (placeDict.Key != placeBtnList[0])
                 {
                     // Set Stream Reservation
-                    StreamController.Instance.SetstreamReservationID(idBtn.buttonID);
+                    //StreamController.Instance.SetstreamReservationID(idBtn.buttonID);
                     placeIdBtnGODict[idBtn].Inevitable_InteractObjects = new List<InteractObject>();
 
 
@@ -198,7 +198,6 @@ public class PlaceManager : Singleton<PlaceManager>
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
     {
         // Set Loading Canvas
-        LanguageManager.Instance.SetLanguageTxt(currentPlaceTxt);
         currentPlaceTxt.text = 
             $"\"{DataManager.Instance.Get_LocationName(idBtn.buttonID)}\"";
         goingSomewhereloadingCG.alpha = 0f;

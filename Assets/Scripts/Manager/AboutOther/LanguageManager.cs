@@ -7,17 +7,14 @@ public class LanguageManager : Singleton<LanguageManager>
 {
     #region Value
 
-    [Header("=== Data")]
-    [SerializeField] public string languageID;
-    [SerializeField] public int languageTypeAmount;
-    [HideInInspector] public int languageNum;
-
     [Header("=== Font")]
+    [SerializeField] public string languageID = "1";
     [SerializeField] List<TMP_FontAsset> fonts;
 
-    [Header("=== Scene Component")]
+    [Header("=== Need Check")]
+    [SerializeField] public int languageTypeAmount;
+    [HideInInspector] public int languageNum;
     [SerializeField] List<SameLanguageTxts> MultipleLanguageTxts;
-
 
     #endregion
 
@@ -25,24 +22,8 @@ public class LanguageManager : Singleton<LanguageManager>
 
     public void Offset()
     {
-        // Get Lanaguage ID
-        languageNum = GetLanguageNum(languageID);
-    
-        // Set Text by Lanaguage
-        for(int i = 0; i < MultipleLanguageTxts.Count; i++)
-        { 
-            // Set Text
-            int numLength = GetNumOfDigits(i);
-            string id = "ST";
-            for (int j = 0; j < 3 - numLength; j++) { id += "0"; }
-            id += i.ToString();
-
-            foreach (TMP_Text tmpTs in MultipleLanguageTxts[i].LanguageTxts)
-            {
-                tmpTs.font = fonts[languageNum];
-                //tmpTs.text = DataManager.Instance.StaticTextCSVDatas[languageNum][id].ToString();
-            } 
-        }
+        TMP_Text[] allTmp_t = FindObjectsOfType<TMP_Text>();
+        foreach(TMP_Text t in allTmp_t) { SetLanguageTxt(t); }
     }
 
     protected override void Awake()
@@ -64,22 +45,9 @@ public class LanguageManager : Singleton<LanguageManager>
 
     #region Set Lanaguage
 
-    private int GetLanguageNum(string languageID)
-    {
-        return Convert.ToInt32(languageID.Substring(1, 2));
-    }
-
     public void SetLanguageTxt(TMP_Text tmpT)
     {
-        tmpT.font = fonts[Convert.ToInt32(GameManager.Instance.languageID)];
-    }
-
-    public void SetLanguageTxts(List<TMP_Text> tmpTs)
-    {
-        foreach(TMP_Text tmpT in tmpTs)
-        {
-            SetLanguageTxt(tmpT);
-        }
+        tmpT.font = fonts[Convert.ToInt32(languageID)];
     }
 
     #endregion

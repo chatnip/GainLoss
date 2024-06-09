@@ -63,6 +63,7 @@ public class GameSystem : Singleton<GameSystem>
     public Transform playerPos;
 
     // Other Value
+    bool isHaveChoice = false;
     #endregion
 
     #region Framework & Base Set
@@ -78,12 +79,9 @@ public class GameSystem : Singleton<GameSystem>
         if (needAbilityTxt.transform.parent.TryGetComponent(out CanvasGroup CG))
         { CG.alpha = 0f; }
         List<TMP_Text> systemTmpT = new List<TMP_Text> { objName, objText, needAbilityTxt, cutsceneTxt };
-        LanguageManager.Instance.SetLanguageTxts(systemTmpT);
 
 
-        // Choice
-        objectChioceCG.gameObject.SetActive(false);
-        objectChioceCG.alpha = 0f;
+        
 
         // Btns
         objPanelBtn.OnClickAsObservable()
@@ -100,6 +98,13 @@ public class GameSystem : Singleton<GameSystem>
 
                 StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.option));
             });
+
+        // Desc Panel
+        objPanelBtn.gameObject.SetActive(false);
+
+        // Choice
+        objectChioceCG.gameObject.SetActive(false);
+        objectChioceCG.alpha = 0f;
 
         // Sprites
         string Path = "SpriteModule/";
@@ -129,15 +134,58 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Obj Panel
 
+    public void GetDialogs(string startDialogID)
+    {
+        objWriteTexts = new List<string>();
+        objNameTexts = new List<string>();
+        objSprites = new List<Sprite>();
+        objAnimNames = new List<string>();
+        this.isHaveChoice = false;
+
+        string dialog = DataManager.Instance.Get_DialogText(startDialogID);
+        objWriteTexts.Add(dialog);
+        string dialogSpeaker = DataManager.Instance.Get_DialogSpeaker(startDialogID);
+        objNameTexts.Add(dialogSpeaker);
+        string dialogAnim = DataManager.Instance.Get_DialogAnim(startDialogID);
+        objAnimNames.Add(dialogAnim);
+        objSprites.Add(null);
+
+        string nextDialogID = DataManager.Instance.Get_NextDialogID(startDialogID);
+        if (nextDialogID == null || nextDialogID.Length == 0)
+        { return; }
+
+        int i = 0;
+        while (true)
+        {
+            dialog = DataManager.Instance.Get_DialogText(nextDialogID);
+            objWriteTexts.Add(dialog);
+            dialogSpeaker = DataManager.Instance.Get_DialogSpeaker(nextDialogID);
+            objNameTexts.Add(dialogSpeaker);
+            dialogAnim = DataManager.Instance.Get_DialogAnim(nextDialogID);
+            objAnimNames.Add(dialogAnim);
+            objSprites.Add(null);
+
+            if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
+            {
+                this.isHaveChoice = true;
+            }
+
+            nextDialogID = DataManager.Instance.Get_NextDialogID(nextDialogID);
+            i++;
+            if(nextDialogID == null || nextDialogID.Length == 0 || i > 100)
+            { break; }
+        }
+    }
+
     private Tween SetWrite(int i)
     {
         return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / textingSpeed)
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
-                         Vector2 panelSizeDelta = new Vector2();
-                         if (objNameTexts[i] != "null")
-                         { 
+                         Vector2 panelSizeDelta = new Vector2(0, 0);
+                         if (objNameTexts[i] != "" && objNameTexts[i] != null)
+                         {
                              objName.text = objNameTexts[i];
                              objName.gameObject.SetActive(true);
                              panelSizeDelta.y = 180f;
@@ -160,7 +208,7 @@ public class GameSystem : Singleton<GameSystem>
                              panelSizeDelta.x = 1400f;
                          }
 
-                         if(objAnimNames[i] != "null")
+                         if (objAnimNames[i] != "" && objAnimNames[i] != null)
                          {
                              if (objAnimNames[i].Substring(0, 3) == "KAA")
                              {
@@ -188,10 +236,10 @@ public class GameSystem : Singleton<GameSystem>
                      });
     }
 
-    public void ObjDescOn(InteractObject IO, string answerID)
+    public void ObjDescOn(InteractObject IO, string startDialogID)
     {
         // Set Base Data
-        if(IO.TryGetComponent(out Animator animator)) 
+        if(IO != null && IO.TryGetComponent(out Animator animator)) 
         { anotherAnimator = animator; }
 
         currentIO = IO;
@@ -203,83 +251,12 @@ public class GameSystem : Singleton<GameSystem>
 
         // Set Text Data
         objText.text = "";
-        objWriteTexts = null;
-        objNameTexts = null;
-        objSprites = new List<Sprite>();
-
-        void SetData(string text, string name, string sprite, string anim)
-        {
-            // Text
-            objWriteTexts = text.Split('/').ToList();
-
-
-            List<string> listNull = new List<string>();
-            for (int i = 0; i < objWriteTexts.Count; i++)
-            { listNull.Add("null"); }
-
-            // Name
-            if (name == null) 
-            { objNameTexts = listNull; Debug.Log("null"); }
-            else 
-            { objNameTexts = name.Split('/').ToList(); Debug.Log("not null"); }
-
-            // Sprite
-            if (sprite == null) 
-            { objSprites = GetCollectSprites(listNull); }
-            else
-            {
-                List<string> objSpriteIDs = sprite.Split('/').ToList();
-                objSprites = GetCollectSprites(objSpriteIDs);
-            }
-
-            // Anim
-            if (anim == null) 
-            { objAnimNames = listNull; }
-            else
-            { objAnimNames = anim.Split("/").ToList(); }
-
-        }
-
-        if(IO is HomeInteractObject) // 집에 있는 오브젝트일 경우
-        {
-            SetData(
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][IO.ID].ToString(),
-                null, null, null
-                );
-        }
-        else if (answerID != null) // 선택에 따른 답변
-        {
-            SetData(
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][answerID].ToString(),
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum][answerID].ToString(), 
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 4][answerID].ToString(),
-                DataManager.Instance.ObjectChoiceCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + 5][answerID].ToString()
-                );
-        }
-        else if (IO.IsInteracted) // 기본
-        {
-            SetData(
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 0][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 2][IO.ID].ToString()
-                );
-        }
-        else // 상호작용 처음 시 (선택지 주어지는 상호작용)
-        {
-            SetData(
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 3 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 4 + LanguageManager.Instance.languageNum][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 1][IO.ID].ToString(),
-                DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageTypeAmount * 5 + 3][IO.ID].ToString()
-                );
-        }
-
-        
+        objName.text = "";
+        objWriteTexts_currentOrder = 0;
+        GetDialogs(startDialogID);
 
         // Set Writting
         objPanelBtn.gameObject.SetActive(true);
-        objWriteTexts_currentOrder = 0;
         objTextingTween = SetWrite(objWriteTexts_currentOrder);
     }
 
@@ -304,7 +281,7 @@ public class GameSystem : Singleton<GameSystem>
             else
             {
                 // 선택지를 주는 라이팅 이었다면
-                if (!currentIO.IsInteracted)
+                if (isHaveChoice)
                 {
                     Debug.Log("선택지");
                     ShowChioceWindow_Object3D(0.25f);
@@ -320,7 +297,8 @@ public class GameSystem : Singleton<GameSystem>
 
     public void ObjDescOff()
     {
-        currentIO.IsInteracted = true;
+        if (currentIO != null)
+        { currentIO.IsInteracted = true; currentIO = null; }
 
         GameManager.Instance.canInput = true;
         GameManager.Instance.canInteractObject = true;
@@ -332,13 +310,8 @@ public class GameSystem : Singleton<GameSystem>
         DOTween.Kill(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
         objWriteTexts_currentOrder = 0;
-        objText.text = null;
-        currentIO = null;
+        
 
-        objWriteTexts = null;
-        objNameTexts = null;
-        objSprites = null;
-        objAnimNames = null;
     }
 
     #endregion
@@ -375,7 +348,6 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.buttonID = IDs[i];
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
-            LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
 
             Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
             if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }
@@ -490,7 +462,6 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.buttonID = IDs[i];
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
-            LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
 
             Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
             if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }

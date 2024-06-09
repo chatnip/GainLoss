@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -54,9 +53,11 @@ public class DataManager : Singleton<DataManager>
 
     #region New CSV Data
 
+    [SerializeField] TextAsset Chapter_CSV;
     [SerializeField] TextAsset Location_CSV;
     [SerializeField] TextAsset HomeObject_CSV;
     [SerializeField] TextAsset Object_CSV;
+    [SerializeField] TextAsset Dialog_CSV;
 
     #endregion
 
@@ -177,6 +178,57 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
+    #region About Chapter
+
+    // 챕터 이름 가져오기
+    public string Get_ChapterName(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_String(lines, chapterID, "Idx_Chapter", "Name");
+    }
+
+    // 챕터 시작 날짜
+    public int Get_ChapterStartDay(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "StartDay");
+    }
+    
+    // 챕터 마지막 날짜
+    public int Get_ChapterEndDay(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "EndDay");
+    }
+
+    // 챕터 매일 주는 행동력 판별
+    public int Get_GiveActivity(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "GiveActivity");
+    }
+
+    // 챕터 정신력, 설득력, 관찰력 초기값
+    public int Get_Men(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "Men");
+    }
+    public int Get_Obs(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "Obs");
+    }
+    public int Get_Soc(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_Int(lines, chapterID, "Idx_Chapter", "Soc");
+    }
+
+
+
+    #endregion
+
     #region About Location
 
     // 챕터에 갈 수 있는 모든 장소 ID
@@ -214,7 +266,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[ChapterIndex] == chapterID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 result.Add(lineData[descIndex]);
             }
@@ -237,7 +289,7 @@ public class DataManager : Singleton<DataManager>
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[ChapterIndex] == chapterID &&
                 lineData[locationIndex] == locationID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 return lineData[descIndex];
             }
@@ -258,7 +310,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[locationIndex] == locationID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 return lineData[nameIndex];
             }
@@ -283,7 +335,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[objectIndex] == objectID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 Debug.Log(lineData[nameIndex]);
                 return lineData[nameIndex];
@@ -309,7 +361,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[homeObjectIndex] == homeObjectID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 return lineData[nameIndex];
             }
@@ -329,7 +381,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[homeObjectIndex] == homeObjectID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 return lineData[reconfirmIndex];
             }
@@ -349,7 +401,7 @@ public class DataManager : Singleton<DataManager>
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[homeObjectIndex] == homeObjectID &&
-                lineData[languageIndex] == GameManager.Instance.languageID)
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
                 return lineData[extraIndex];
             }
@@ -361,25 +413,44 @@ public class DataManager : Singleton<DataManager>
 
     #region About Streaming
 
-    // 장소에 따른 방송 시작 다이얼로그 
-    public string Get_StartStreamingDialog(string locationID)
-    {
-        string[] lines = Get_lines(Location_CSV);
-        int locationIndex = Get_Index(lines[dataReadLine], "Idx_Location");
+    #endregion
 
-        int sDialogIndex = Get_Index(lines[dataReadLine], "Idx_SDialog");
-        foreach (string line in lines)
-        {
-            string[] lineData = Regex.Split(line, SPLIT_RE);
-            if (lineData[locationIndex] == locationID)
-            {
-                Debug.Log(lineData[sDialogIndex]);
-                return lineData[sDialogIndex];
-            }
-        }
-        return null;
+    #region About Dialog
+
+    // 다이얼로그 Text
+    public string Get_DialogText(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, DialogID, "Idx_Dialog", "DialogText");
     }
 
+    // 다음 다이얼로그 ID
+    public string Get_NextDialogID(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, DialogID, "Idx_Dialog", "NextDialogID");
+    }
+
+    // 다이얼로그 화자
+    public string Get_DialogSpeaker(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, DialogID, "Idx_Dialog", "Name");
+    }
+
+    // 다이얼로그 Anim Name
+    public string Get_DialogAnim(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, DialogID, "Idx_Dialog", "Idx_Animation");
+    }
+
+    // 다이얼로그가 선택지를 가지고 있는가
+    public bool Get_DialogHasChoice(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_Bool(lines, DialogID, "Idx_Dialog", "HasChoices");
+    }
 
     #endregion
 
@@ -389,12 +460,65 @@ public class DataManager : Singleton<DataManager>
     {
         return Regex.Split(dataTextAsset.text, LINE_SPLIT_RE);
     }
+
     private int Get_Index(string line, string indexName)
     {
         string[] lineData = Regex.Split(line, SPLIT_RE);
         return lineData.ToList().IndexOf(indexName);
     }
-    
+
+    private bool Get_Bool(string[] lines, string findID, string comparisonIdx, string getIdxValue)
+    {
+        int comparisonIndex = Get_Index(lines[dataReadLine], comparisonIdx);
+
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], getIdxValue);
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == findID)
+            {
+                return Convert.ToBoolean(lineData[getIdxValueIndex]);
+            }
+        }
+        return false;
+    }
+
+    private int Get_Int(string[] lines, string findID, string comparisonIdx, string getIdxValue)
+    {
+        int comparisonIndex = Get_Index(lines[dataReadLine], comparisonIdx);
+
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], getIdxValue);
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == findID)
+            {
+                return Convert.ToInt32(lineData[getIdxValueIndex]);
+            }
+        }
+        return 0;
+    }
+
+    private string Get_String(string[] lines, string findID, string comparisonIdx, string getIdxValue)
+    {
+        int comparisonIndex = Get_Index(lines[dataReadLine], comparisonIdx);
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], getIdxValue);
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == findID &&
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
+            {
+                return lineData[getIdxValueIndex];
+            }
+        }
+        return "";
+    }
+
     #endregion
 
 }

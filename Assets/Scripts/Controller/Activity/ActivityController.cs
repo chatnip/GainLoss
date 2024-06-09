@@ -103,8 +103,6 @@ public class ActivityController : Singleton<ActivityController>
 
         // Set UI
         SetActivityGageUI(0.25f);
-        LanguageManager.Instance.SetLanguageTxt(questionContentTxt);
-        LanguageManager.Instance.SetLanguageTxt(kindOfGageByActivityTxt);
 
         activityQuestionWindowRT.anchoredPosition = new Vector2(1200, activityQuestionWindowRT.anchoredPosition.y);
         noBtn.interactable = false;

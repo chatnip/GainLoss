@@ -62,8 +62,7 @@ public class DesktopController : Singleton<DesktopController>
         // Set Btn
         foreach (IDBtn idBtn in appBtn)
         {
-            LanguageManager.Instance.SetLanguageTxt(idBtn.buttonText);
-            idBtn.buttonText.text = DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
+            //idBtn.buttonText.text = DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
             idBtn.button.OnClickAsObservable()
                 .Subscribe(btn =>
                 {

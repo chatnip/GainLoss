@@ -92,8 +92,6 @@ public class StreamController : Singleton<StreamController>
 
 
         // Set Base
-        List<TMP_Text> lang = new List<TMP_Text> { EndTxt, resultTxt, getThingTxt };
-        LanguageManager.Instance.SetLanguageTxts(lang);
         this.gameObject.SetActive(false);
     }
 
@@ -283,7 +281,7 @@ public class StreamController : Singleton<StreamController>
             { Choice_IDBtn.inputSizeDelta = new Vector2(newFragment.Script.Length * 40, 100f); }
             else
             { Choice_IDBtn.inputSizeDelta = new Vector2(450, 100f); }
-            LanguageManager.Instance.SetLanguageTxt(Choice_IDBtn.buttonText);
+
             Choice_IDBtn.gameObject.SetActive(true);
             sb_IDBtns.Insert(0, Choice_IDBtn);
 
