@@ -47,7 +47,7 @@ public class StreamController : Singleton<StreamController>
 
     [Header("=== Stream Reservation")]
     [SerializeField] public List<string> streamQuarterID = new List<string>();
-    [SerializeField] string currentStreamModultID;
+    [SerializeField] string currentStartStreamID;
 
     [Header("=== Animation")]
     [SerializeField] SkeletonGraphic skeletonGraphic;
@@ -56,6 +56,7 @@ public class StreamController : Singleton<StreamController>
     [SerializeField] public float chooseLimitTime = 5f;
     [SerializeField] public int goodOrEvilGage = 0;
     [SerializeField] public string currentChooseID;
+    string haveChoiceDialogID = "";
     bool isChoiceTime = false;
 
     // Other Value
@@ -133,93 +134,115 @@ public class StreamController : Singleton<StreamController>
         {
             isChoiceTime = true;
 
+            Debug.Log("랜덤 섞기");
             // Local Data Set
             int rand = UnityEngine.Random.Range(0, streamQuarterID.Count);
-            currentStreamModultID = streamQuarterID[rand];
+            currentStartStreamID = streamQuarterID[rand];
             streamQuarterID.Remove(streamQuarterID[rand]);
 
-            SetScenarioBase(currentStreamModultID.Substring(0, 7) + "B");
+            SetScenarioBase(currentStartStreamID);
             return;
         }
 
     }
 
     // Set Scenario
-    public void SetScenarioBase(string id)
+    public void SetScenarioBase(string SDialogID)
     {
-        // Set EventID
-        List<string> dialogTexts =
-            DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][id].ToString().Split("/").ToList();
-        List<string> AnimeIds =
-            DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][id].ToString().Split('/').ToList();
-        List<string> leftOrRightstring =
-            DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][id].ToString().Split('/').ToList();
-
         // Set Scenario
-        List<Fragment> fragments = new();
-        for (int i = 0; i < dialogTexts.Count; i++)
-        {
-            fragments.Add(new Fragment(AnimeIds[i], dialogTexts[i], leftOrRightstring[i]));
-        }
+        List<Fragment> fragments = GetSDialogs(SDialogID);
         ScenarioBase scenario = new(fragments);
         ScenarioBase.Value = scenario;
+    }
+
+    public List<Fragment> GetSDialogs(string startDialogID)
+    {
+        List<Fragment> fragments = new();
+
+        string name = DataManager.Instance.Get_SDialogName(startDialogID);
+        string dialog = DataManager.Instance.Get_SDialogText(startDialogID);
+        string dialogAnim = DataManager.Instance.Get_SDialogAnim(startDialogID);
+        string nextSDialogID = DataManager.Instance.Get_NextSDialogID(startDialogID);
+        Debug.Log(name + "/" + dialog + "/" + dialogAnim);
+        fragments.Add(new Fragment(name, dialog, dialogAnim));
+        if (nextSDialogID == null || nextSDialogID == "")
+        { return fragments; }
+
+        int i = 0;
+        while (true)
+        {
+            name = DataManager.Instance.Get_SDialogName(nextSDialogID);
+            dialog = DataManager.Instance.Get_SDialogText(nextSDialogID);
+            dialogAnim = DataManager.Instance.Get_SDialogAnim(nextSDialogID);
+
+            fragments.Add(new Fragment(name, dialog, dialogAnim));
+            Debug.Log(name + "/" + dialog + "/" + dialogAnim);
+
+            if (DataManager.Instance.Get_SDialogHasChoice(nextSDialogID))
+            { this.haveChoiceDialogID = nextSDialogID; }
+
+            nextSDialogID = DataManager.Instance.Get_NextSDialogID(nextSDialogID);
+            i++;
+            if (nextSDialogID == null || nextSDialogID == "" || i > 100)
+            { return fragments; }
+        }
     }
 
     #endregion
 
     #region Result
-/*
-    private void ShowResult()
-    {
-        DOTween.Kill(tween_SubscriberAmountTxt);
-
-        // Get ID
-        int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamQuarterID]);
-        Debug.Log(typeKindAmount);
-        for (int i = 0;  i < typeKindAmount; i++)
+    /*
+        private void ShowResult()
         {
-            List<string> Data = 
-                DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamQuarterID].ToString().Split('/').ToList();
-            int min = Convert.ToInt32(Data[0]); Debug.Log(min);
-            int max = Convert.ToInt32(Data[1]); Debug.Log(max);
+            DOTween.Kill(tween_SubscriberAmountTxt);
 
-            if (min <= goodOrEvilGage && goodOrEvilGage <= max)
+            // Get ID
+            int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamQuarterID]);
+            Debug.Log(typeKindAmount);
+            for (int i = 0;  i < typeKindAmount; i++)
             {
-                ReasoningManager.Instance.reasoningContentIDs.Add(Data[2]);
-                resultTxt.text = 
-                    DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamQuarterID]
-                    .ToString().Split('/').ToList()[i];
-                resultIcon.sprite =
-                    GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamQuarterID].ToString().Split('/').ToList())[i];
+                List<string> Data = 
+                    DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamQuarterID].ToString().Split('/').ToList();
+                int min = Convert.ToInt32(Data[0]); Debug.Log(min);
+                int max = Convert.ToInt32(Data[1]); Debug.Log(max);
 
-                Debug.Log("추리 소재 CSV 필요");
-                getThingTxt.text = Data[2];
+                if (min <= goodOrEvilGage && goodOrEvilGage <= max)
+                {
+                    ReasoningManager.Instance.reasoningContentIDs.Add(Data[2]);
+                    resultTxt.text = 
+                        DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamQuarterID]
+                        .ToString().Split('/').ToList()[i];
+                    resultIcon.sprite =
+                        GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamQuarterID].ToString().Split('/').ToList())[i];
 
-                break; 
+                    Debug.Log("추리 소재 CSV 필요");
+                    getThingTxt.text = Data[2];
+
+                    break; 
+                }
             }
+
+            Sequence seq = DOTween.Sequence();
+
+            // On GameObject
+            resultWindowCG.gameObject.SetActive(true);
+            resultWindowCG.alpha = 0f;
+            ShowJournal();
+
+            seq.Append(resultWindowCG.DOFade(1f, 0.2f));
+
+
+            seq
+                .OnStart(() => 
+                {
+                    GameManager.Instance.canInput = false; 
+                })
+                .OnComplete(() =>
+                {
+                    GameManager.Instance.canInput = true;
+                });
         }
-
-        Sequence seq = DOTween.Sequence();
-
-        // On GameObject
-        resultWindowCG.gameObject.SetActive(true);
-        resultWindowCG.alpha = 0f;
-        ShowJournal();
-
-        seq.Append(resultWindowCG.DOFade(1f, 0.2f));
-
-
-        seq
-            .OnStart(() => 
-            {
-                GameManager.Instance.canInput = false; 
-            })
-            .OnComplete(() =>
-            {
-                GameManager.Instance.canInput = true;
-            });
-    }
-*/
+    */
     private void ShowJournal()
     {
         EndTxt.text = DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageNum]["ID"].ToString().Split('/')[0];
@@ -239,14 +262,15 @@ public class StreamController : Singleton<StreamController>
 
     public IEnumerator DialogTexting(ScenarioBase scenarioBase)
     {
-
+        Debug.Log("Play 수정");
         for (int i = 0; i < scenarioBase.Fragments.Count; i++)
         {
             int temp = i;
             Sequence sequence = DOTween.Sequence();
 
-            
-            if (scenarioBase.Fragments[temp].animationID != "A00")
+
+
+            if (scenarioBase.Fragments[temp].animationID != "")
             { 
                 skeletonGraphic.AnimationState.SetEmptyAnimations(0); 
                 AnimationSetup((SpineAniState)System.Enum.Parse(typeof(SpineAniState), scenarioBase.Fragments[temp].animationID)); 
@@ -260,10 +284,10 @@ public class StreamController : Singleton<StreamController>
             Choice_IDBtn.buttonType = ButtonType.SpeechBubble_Stream2D;
             Choice_IDBtn.transform.SetParent(chattingNextBtn.transform);
             Choice_IDBtn.inputBasicImage = speechBubbleSprite;
-            Choice_IDBtn.inputText = newFragment.Script;
-            Choice_IDBtn.inputIsRight = newFragment.LeftOrRight;
-            if (newFragment.Script.Length * 40 < 450f)
-            { Choice_IDBtn.inputSizeDelta = new Vector2(newFragment.Script.Length * 40, 100f); }
+            Choice_IDBtn.inputText = newFragment.script;
+            Choice_IDBtn.inputIsRight = false;
+            if (newFragment.script.Length * 40 < 450f)
+            { Choice_IDBtn.inputSizeDelta = new Vector2(newFragment.script.Length * 40, 100f); }
             else
             { Choice_IDBtn.inputSizeDelta = new Vector2(450, 100f); }
 
@@ -339,7 +363,7 @@ public class StreamController : Singleton<StreamController>
         if (isChoiceTime)
         {
             isChoiceTime = false;
-            GameSystem.Instance.ShowChioceWindow_Stream2D(currentStreamModultID, 0.25f);
+            GameSystem.Instance.ShowChioceWindow_Stream2D(currentStartStreamID, 0.25f);
         }
         else
         {

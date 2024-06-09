@@ -107,9 +107,7 @@ public class DesktopController : Singleton<DesktopController>
 
     private void OpenConfirmPopup(IDBtn idBtn)
     {
-        this.confirmText.text = 
-            "<size=150%>" + DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageNum][idBtn.buttonID].ToString() + "</size>\n" + 
-            DataManager.Instance.DesktopAppCSVDatas[LanguageManager.Instance.languageTypeAmount * 1 + LanguageManager.Instance.languageNum][idBtn.buttonID].ToString();
+        this.confirmText.text = "<size=150%>" + idBtn.buttonText.text + "</size>" + "\nAre you Sure?";
         EffectfulWindow.AppearEffectful(confirmPopupRT, AppearTime, AppearStartSize, Ease.Linear);
     }
 

@@ -28,7 +28,7 @@ public class GameSystem : Singleton<GameSystem>
     [Header("=== Stream UI")]
     [SerializeField] Image timeAttackFillImg;
 
-    [Header("=== Check Things")]
+    [Header("=== Dialog")]
     [SerializeField] List<string> objWriteTexts = new List<string>();
     [SerializeField] List<string> objNameTexts = new List<string>();
     [SerializeField] List<Sprite> objSprites = new List<Sprite>();
@@ -148,13 +148,15 @@ public class GameSystem : Singleton<GameSystem>
         objNameTexts.Add(dialogSpeaker);
         string dialogAnim = DataManager.Instance.Get_DialogAnim(startDialogID);
         objAnimNames.Add(dialogAnim);
-        objSprites.Add(null);
+        string dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
+        objSprites.Add(GetCharacterSprite(dialogSprite));
+
         if (DataManager.Instance.Get_DialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
 
         currentIO.endDialogID = startDialogID;
         string nextDialogID = DataManager.Instance.Get_NextDialogID(startDialogID);
-        if (nextDialogID == null || nextDialogID.Length == 0)
+        if (nextDialogID == null || nextDialogID == "")
         { return; }
 
         int i = 0;
@@ -166,7 +168,8 @@ public class GameSystem : Singleton<GameSystem>
             objNameTexts.Add(dialogSpeaker);
             dialogAnim = DataManager.Instance.Get_DialogAnim(nextDialogID);
             objAnimNames.Add(dialogAnim);
-            objSprites.Add(null);
+            dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
+            objSprites.Add(GetCharacterSprite(dialogSprite));
 
             if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
             { this.haveChoiceDialogID = nextDialogID; }
@@ -174,11 +177,11 @@ public class GameSystem : Singleton<GameSystem>
             currentIO.endDialogID = nextDialogID;
             nextDialogID = DataManager.Instance.Get_NextDialogID(nextDialogID);
             i++;
-            if(nextDialogID == null || nextDialogID.Length == 0 || i > 100)
+            if(nextDialogID == null || nextDialogID == "" || i > 100)
             { break; }
         }
     }
-
+    
     private Tween SetWrite(int i)
     {
         return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / textingSpeed)
@@ -530,10 +533,14 @@ public class GameSystem : Singleton<GameSystem>
         foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
 
         // Get Reasoning Contents
-        ReasoningManager.Instance.reasoningContentIDs.Add(DataManager.Instance.Get_NextDialogByChoice(_id));
+        string contentID = DataManager.Instance.Get_ReasoningMaterial(_id);
+        if (contentID != "")
+        { ReasoningManager.Instance.reasoningContentIDs.Add(contentID); }
 
         // Get Stream Quarter
-        StreamController.Instance.streamQuarterID.Add(DataManager.Instance.Get_SDialogByChoice(_id));
+        string quarterID = DataManager.Instance.Get_SDialogByChoice(_id);
+        if (quarterID != "")
+        { StreamController.Instance.streamQuarterID.Add(quarterID); }
 
         // Obj Description Play
         ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id));
@@ -599,25 +606,18 @@ public class GameSystem : Singleton<GameSystem>
         }
         return allSprite;
     }
-    public List<Sprite> GetCollectSprites(List<string> spriteIDs)
+    
+    private Sprite GetCharacterSprite(string IllustID)
     {
-        List<Sprite> collects = new List<Sprite>();
-        foreach (string spriteID in spriteIDs)
+        List<Sprite> allIllust = GetAllCharacterSprite();
+        foreach(Sprite sprite in allIllust)
         {
-            if(spriteID == "null")
+            if(sprite.name == IllustID)
             {
-                collects.Add(null);
-                continue;
-            }
-            foreach (Sprite sprite in GetAllCharacterSprite())
-            {
-                if (spriteID == sprite.name)
-                {
-                    collects.Add(sprite);
-                }
+                return sprite;
             }
         }
-        return collects;
+        return null;
     }
 
 

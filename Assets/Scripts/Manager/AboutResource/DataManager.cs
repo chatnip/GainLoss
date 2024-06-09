@@ -59,6 +59,8 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset Object_CSV;
     [SerializeField] TextAsset Dialog_CSV;
     [SerializeField] TextAsset Choice_CSV;
+    [SerializeField] TextAsset SDialog_CSV;
+    [SerializeField] TextAsset SChoice_CSV;
 
     #endregion
 
@@ -440,6 +442,13 @@ public class DataManager : Singleton<DataManager>
     }
 
     // 다이얼로그 Anim Name
+    public string Get_DialogIllust(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_String(lines, DialogID, "Idx_Dialog", "Idx_Illust");
+    }
+
+    // 다이얼로그 Anim Name
     public string Get_DialogAnim(string DialogID)
     {
         string[] lines = Get_lines(Dialog_CSV);
@@ -521,6 +530,95 @@ public class DataManager : Singleton<DataManager>
     {
         string[] lines = Get_lines(Choice_CSV);
         return Get_String(lines, ChoiceID, "Idx_Choice", "Idx_SDialog");
+    }
+
+    // 선택지로 추리소재 얻기
+    public string Get_ReasoningMaterial(string ChoiceID)
+    {
+        string[] lines = Get_lines(Choice_CSV);
+        return Get_String(lines, ChoiceID, "Idx_Choice", "Idx_Material");
+    }
+
+    #endregion
+
+    #region Streaming Dialog
+
+    // S다이얼로그 Text
+    public string Get_SDialogText(string SDialogID)
+    {
+        string[] lines = Get_lines(SDialog_CSV);
+        return Get_String(lines, SDialogID, "Idx_SDialog", "ChatingText");
+    }
+
+    // S다이얼로그 Name
+    public string Get_SDialogName(string SDialogID)
+    {
+        string[] lines = Get_lines(SDialog_CSV);
+        return Get_String(lines, SDialogID, "Idx_SDialog", "Name");
+    }
+
+    // S다이얼로그 Anim Name
+    public string Get_SDialogAnim(string DialogID)
+    {
+        string[] lines = Get_lines(SDialog_CSV);
+        return Get_String(lines, DialogID, "Idx_SDialog", "Idx_SAnimation");
+    }
+
+    // 다음 S다이얼로그 ID
+    public string Get_NextSDialogID(string SDialogID)
+    {
+        string[] lines = Get_lines(SDialog_CSV);
+        return Get_String(lines, SDialogID, "Idx_SDialog", "NextDialogID");
+    }
+
+    // 다이얼로그가 선택지를 가지고 있는가
+    public bool Get_SDialogHasChoice(string SDialogID)
+    {
+        string[] lines = Get_lines(SDialog_CSV);
+        return Get_Bool(lines, SDialogID, "Idx_SDialog", "HasChoices");
+    }
+
+    #endregion
+
+    #region Streaming Choice
+
+    // 선택지 다음 SDialog ID
+    public string Get_NextSDialogBySChoice(string SChoiceID)
+    {
+        string[] lines = Get_lines(SChoice_CSV);
+        return Get_String(lines, SChoiceID, "Idx_SChoices", "NextDialogID");
+    }
+
+    // S다이얼로그ID로 선택지 가져오기
+    public List<string> Get_SChoiceIDs(string SDialogID)
+    {
+        List<string> result = new List<string>();
+
+        string[] lines = Get_lines(SChoice_CSV);
+
+        int comparisonIndex = Get_Index(lines[dataReadLine], "Idx_SDialog");
+        int languageIndex = Get_Index(lines[dataReadLine], "Language");
+
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], "Idx_SChoices");
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == SDialogID &&
+                lineData[languageIndex] == LanguageManager.Instance.languageID)
+            {
+                result.Add(lineData[getIdxValueIndex]);
+            }
+        }
+        return result.Distinct().ToList();
+    }
+
+
+    // 선택지ID로 선택지Text 가져오기
+    public string Get_SChoiceText(string SChoiceID)
+    {
+        string[] lines = Get_lines(SChoice_CSV);
+        return Get_String(lines, SChoiceID, "Idx_SChoices", "ChoiceText");
     }
 
     #endregion

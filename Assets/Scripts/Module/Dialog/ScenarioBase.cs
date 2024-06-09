@@ -20,22 +20,16 @@ public class ScenarioBase
 [System.Serializable]
 public class Fragment
 {
-    public string animationID;
+    public string name;
     public string script;
-    public bool leftOrRight;
+    public string animationID;
 
-    public Fragment(string animeData, string scriptData, string leftOrRightData)
+    public Fragment(string _name, string _script, string _animationID)
     {
-        this.animationID = animeData;
-        this.script = scriptData;
-        this.leftOrRight = Convert.ToBoolean(leftOrRightData);
+        name = _name;
+        this.script = _script;
+        this.animationID = _animationID;
     }
 
-    public string AnimationID
-    { get { return animationID; } }
-    public string Script
-    { get { return script; } }
-    public bool LeftOrRight
-    { get { return leftOrRight; } }
 }
 
