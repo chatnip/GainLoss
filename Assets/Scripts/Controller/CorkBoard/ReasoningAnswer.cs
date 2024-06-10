@@ -1,13 +1,10 @@
 //Refactoring v1.0
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
 using TMPro;
-using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ReasoningAnswer : MonoBehaviour
+public class ReasoningAnswer : ReasoningModule
 {
     #region Value
 
@@ -18,10 +15,10 @@ public class ReasoningAnswer : MonoBehaviour
 
     [Header("=== Component")]
     [SerializeField] CanvasGroup thisCG;
-    [SerializeField] Button thisBtn;
+    [SerializeField] TMP_Dropdown thisDropdown;
+
 
     [Header("=== Content")]
-    [SerializeField] public TMP_Text currentSelectedContentTxt;
     [SerializeField] List<string> tagContentIDs;
     [SerializeField] public string currentSelectedContentID;
 
@@ -31,21 +28,13 @@ public class ReasoningAnswer : MonoBehaviour
 
     public void Offset()
     {
-        thisBtn.OnClickAsObservable()
-            .Subscribe(_ =>
-            {
-                ReasoningController.Instance.selectedAnswer = this;
-                ReasoningController.Instance.SetReasoningBtn(tagContentIDs);
-                ReasoningChooseContoller.Instance.ActiveOn_ChooseBtn(0.2f);
-            });
+        
     }
 
     public void CheckVisible(float time)
     {
         if (relationRA != null && !this.gameObject.activeSelf && relationRA.isVisible)
         {
-            currentSelectedContentTxt.text = null;
-
             this.gameObject.SetActive(true);
 
             thisCG.alpha = 0f;
@@ -54,8 +43,6 @@ public class ReasoningAnswer : MonoBehaviour
         }
         else if (relationPT != null && !this.gameObject.activeSelf && relationPT.isVisible)
         {
-            currentSelectedContentTxt.text = null;
-
             this.gameObject.SetActive(true);
 
             thisCG.alpha = 0f;
@@ -82,7 +69,6 @@ public class ReasoningAnswer : MonoBehaviour
     public void SetContent(string id)
     {
         currentSelectedContentID = id;
-        currentSelectedContentTxt.text = DataManager.Instance.ReasoningContentCSVDatas[LanguageManager.Instance.languageNum][currentSelectedContentID].ToString();
     }
 
     #endregion

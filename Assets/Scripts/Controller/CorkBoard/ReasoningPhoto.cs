@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class ReasoningPhoto : MonoBehaviour
+public class ReasoningPhoto : ReasoningModule
 {
     #region Value
 

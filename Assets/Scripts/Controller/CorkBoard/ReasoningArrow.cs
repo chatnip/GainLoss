@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ReasoningArrow : MonoBehaviour
+public class ReasoningArrow : ReasoningModule
 {
     #region Value
 

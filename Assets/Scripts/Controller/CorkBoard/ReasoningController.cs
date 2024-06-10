@@ -47,10 +47,6 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     [SerializeField] List<GetChapterID> specialGetChapterID;
     [SerializeField] string defaultGetChapterID;
 
-    // Other Value
-    List<IDisposable> allIDBtnIDis = new List<IDisposable>();
-
-
     #endregion
 
     #region Framework & Base Set
@@ -97,7 +93,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         decideBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                ReasoningChooseContoller.Instance.ActiveOn_ConfirmPopup(0.2f);
+                ReasoningManager.Instance.ActiveOn_ConfirmPopup(0.2f);
             });
 
         this.gameObject.transform.SetAsFirstSibling();
@@ -163,8 +159,6 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
             ObjectPooling.Instance.GetBackIDBtn(sectionIDBtn);
         }
         sectionContentIDBtns = new List<IDBtn>();
-
-        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(time);
     }
 
     #endregion
@@ -185,39 +179,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     public void SetReasoningBtn(List<string> iDs)
     {
-        if (iDs.Count == 0 || iDs == null) { return; }
-
-        foreach (IDBtn sectionIDBtn in sectionContentIDBtns)
-        { ObjectPooling.Instance.GetBackIDBtn(sectionIDBtn); }
-        sectionContentIDBtns = new List<IDBtn>();
-
-        foreach (IDisposable idBtnIDis in allIDBtnIDis)
-        { idBtnIDis.Dispose(); }
-        allIDBtnIDis = new List<IDisposable>();
-
-
-        float Y_UP_fix = ((iDs.Count - 1) * 130f) / 2f;
-
-        for (int i = 0; i < iDs.Count; i++)
-        {
-            IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
-            idBtn.buttonID = iDs[i];
-            idBtn.transform.SetParent(ReasoningChooseContoller.Instance.chooseBtn_CG.gameObject.transform);
-            idBtn.buttonType = ButtonType.ChoiceType_Reasoning2D;
-            idBtn.inputBasicImage = idBtnSprite;
-            idBtn.inputAnchorPos = new Vector3(0f, (i * -130f) + Y_UP_fix, 0f);
-            idBtn.inputSizeDelta = new Vector2(225f, 100f);
-            idBtn.gameObject.SetActive(true);
-            IDisposable iDis = idBtn.button.OnClickAsObservable()
-                .Subscribe(_ =>
-                {
-                    string id = idBtn.buttonID;
-                    selectedAnswer.SetContent(id);
-                });
-
-            allIDBtnIDis.Add(iDis);
-            sectionContentIDBtns.Add(idBtn);
-        }
+        
     }
 
     #endregion
@@ -227,8 +189,6 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     public void ZoomInOut(float axis)
     {
         if (!this.gameObject.activeSelf) { return; }
-
-        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(0.2f);
 
         // Set Zoom
         currentZoom += (axis * 0.001f);
@@ -248,7 +208,6 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        ReasoningChooseContoller.Instance.ActiveOff_ChooseBtn(0.2f);
         currentMousePos = (Vector2)Input.mousePosition;
         Debug.Log(currentMousePos);
     }

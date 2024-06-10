@@ -67,7 +67,6 @@ public class GameManager : Singleton<GameManager>
         StreamController.Instance.Offset();
 
         SetInteractionObjects.Instance.Offset();
-        ReasoningChooseContoller.Instance.Offset();
         ObjectPooling.Instance.Offset();
 
     }
