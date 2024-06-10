@@ -45,10 +45,9 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     {
         foreach (GameObject CanInterationBtn in allInteractionBtns) 
         {
-            if(CanInterationBtn.GetComponent<InteractObjectBtn>().TargetGO == targetGO)
-            {
-                return false;
-            }
+            if(CanInterationBtn.TryGetComponent(out InteractObjectBtn interactObjectBtn) &&
+                interactObjectBtn.TargetGO == targetGO)
+            { return false; }
         }
         return true;
     }
@@ -58,18 +57,24 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     {
         GameObject btn = Instantiate(InteractionBtnPrefab, parentGO.transform);
         btn.SetActive(false);
-        targetGO.TryGetComponent(out InteractObject IO);
-        btn.name = targetGO.name + "Btn";
+        if(targetGO.TryGetComponent(out InteractObject IO))
+        {
+            btn.name = targetGO.name + "Btn";
 
-        btn.TryGetComponent(out InteractObjectBtn IOB);
-        IOB.TargetGO = targetGO;
-        LanguageManager.Instance.SetLanguageTxt(IOB.txt_name_left);
-        if (IO is HomeInteractObject || IO is ComputerInteract)
-        { IOB.txt_name_left.text = DataManager.Instance.Get_HomeObjectName(IO.ID); }
-        else if (IO is BasicInteractObject)
-        { IOB.txt_name_left.text = DataManager.Instance.Get_ObjectName(IO.ID); }
-        
-        allInteractionBtns.Add(btn);
+            if(btn.TryGetComponent(out InteractObjectBtn IOB))
+            {
+                IOB.TargetGO = targetGO;
+                IOB.id = IO.ID;
+
+                LanguageManager.Instance.SetLanguageTxt(IOB.txt_name_left);
+                if (IO is HomeInteractObject || IO is ComputerInteract)
+                { IOB.txt_name_left.text = DataManager.Instance.Get_HomeObjectName(IO.ID); }
+                else if (IO is BasicInteractObject)
+                { IOB.txt_name_left.text = DataManager.Instance.Get_ObjectName(IO.ID); } 
+            }
+            allInteractionBtns.Add(btn);
+        }
+
     }
 
     // 활성화 버튼 판별 및 적용
@@ -80,11 +85,23 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
             activeInteractionBtns[i].SetActive(false);
         }
         activeInteractionBtns.Clear();
+
         foreach (GameObject Btn in allInteractionBtns)
         {
+            // 버튼 ID
+            string id = "";
+            if (Btn.TryGetComponent(out InteractObjectBtn IOB))
+            { id = IOB.id; }
+
             foreach (GameObject activeGO in activeGOs)
             {
-                if (activeGO.name + "Btn" == Btn.name)
+                // 오브젝트 ID
+                string objectId = "";
+                if (activeGO.TryGetComponent(out InteractObject IO))
+                { objectId = IO.ID; }
+
+                // 비교
+                if (objectId == id)
                 {
                     activeInteractionBtns.Add(Btn);
                 }

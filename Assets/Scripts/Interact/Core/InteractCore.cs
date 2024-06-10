@@ -14,7 +14,7 @@ public class InteractCore : MonoBehaviour, IInteract, IPointerEnterHandler, IPoi
     #region Pointer
 
     public virtual void OnPointerDown(PointerEventData eventData)
-    { Debug.Log("click!"); }
+    { }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     { }

@@ -353,7 +353,6 @@ public class DataManager : Singleton<DataManager>
             if (lineData[objectIndex] == objectID &&
                 lineData[languageIndex] == LanguageManager.Instance.languageID)
             {
-                Debug.Log(lineData[nameIndex]);
                 return lineData[nameIndex];
             }
         }

@@ -8,6 +8,7 @@ public class InteractObjectBtn : InteractCore
     #region Value
 
     [Header("=== Set")]
+    [SerializeField] public string id;
     [SerializeField] public TMP_Text txt_name_left;
     [SerializeField] public GameObject TargetGO;
     [SerializeField] public Button thisBtn;
