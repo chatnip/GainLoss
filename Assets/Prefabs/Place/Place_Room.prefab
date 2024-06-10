@@ -1582,6 +1582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 7368396462996336470}
   ID: 103
+  endDialogID: 
   IsInteracted: 1
   thisAbilityType: 0
 --- !u!114 &7368396462996336470
@@ -1728,6 +1729,96 @@ MeshCollider:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 81fd818f56f06824b9858738ad7a178a, type: 3}
   m_PrefabInstance: {fileID: 2176245574520321453}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2352955214846693750
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5746722113891495926}
+    m_Modifications:
+    - target: {fileID: 4659915450775723566, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4902822880080513763, guid: f8663d44b00686443b254f7623248dba, type: 3}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957469787368721201, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_Name
+      value: doorFrame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957469787368721201, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957469787368721201, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+--- !u!4 &6315141454697021693 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+  m_PrefabInstance: {fileID: 2352955214846693750}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2489047779077489133
 PrefabInstance:
@@ -1931,6 +2022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 3869819189428354151}
   ID: 106
+  endDialogID: 
   IsInteracted: 1
   thisAbilityType: 4
 --- !u!64 &484389456100588513
@@ -2097,6 +2189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 2992107193130317893}
   ID: 104
+  endDialogID: 
   IsInteracted: 1
   thisAbilityType: 2
 --- !u!114 &2992107193130317893
@@ -2437,6 +2530,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 613477788002419241}
     m_Modifications:
+    - target: {fileID: 4659915450775723566, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -9011844139117686708, guid: 16a9652cf19e7ea4dab3a94dea08ceaa, type: 3}
     - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.8
@@ -2459,7 +2556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.239
+      value: 1.256
       objectReference: {fileID: 0}
     - target: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2507,7 +2604,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8576124710936924555, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6315141454697021693}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8957469787368721201, guid: d87450fb947745a42bc25ff23f5559e0, type: 3}
       insertIndex: -1
@@ -2535,6 +2635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 7489402839388318256}
   ID: 101
+  endDialogID: 
   IsInteracted: 1
   thisAbilityType: 3
 --- !u!114 &7489402839388318256
@@ -2549,7 +2650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 1
+  outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 3
   precomputeOutline: 0
@@ -3624,6 +3725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Outline: {fileID: 6263210716653914331}
   ID: 105
+  endDialogID: 
   IsInteracted: 1
   thisAbilityType: 1
 --- !u!114 &6263210716653914331
