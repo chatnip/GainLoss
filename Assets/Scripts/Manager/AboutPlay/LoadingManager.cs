@@ -123,7 +123,7 @@ public class LoadingManager : Singleton<LoadingManager>
             PlayerInputController.Instance.CanMove = true;
             if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter))
             {
-                Debug.Log("나중에 풀어야함");
+                Debug.Log("처음 시작 시 Texting -> 나중에 풀어야함");
                 //GameSystem.Instance.ObjDescOn(null, "101");
             }
         });

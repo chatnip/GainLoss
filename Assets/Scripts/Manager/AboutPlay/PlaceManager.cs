@@ -6,10 +6,8 @@ using TMPro;
 using UniRx;
 using DG.Tweening;
 using Spine.Unity;
-using System.Linq;
 using System;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class PlaceManager : Singleton<PlaceManager>
 {
@@ -147,6 +145,11 @@ public class PlaceManager : Singleton<PlaceManager>
                 Debug.Log("Spawn Map Object ( No Home )"); 
                 if (placeDict.Key != placeBtnList[0])
                 {
+                    // 방송 시작, 끝 다이얼로그 ID 저장
+                    StreamController.Instance.startSDialogID = DataManager.Instance.Get_StartSDialog(idBtn.buttonID);
+                    StreamController.Instance.endSDialogID = DataManager.Instance.Get_EndSDialog(idBtn.buttonID);
+
+                    // 상호작용해야하는 오브젝트들
                     needInteractIOs = GetAllIO(placeDict.Value.MapGO.transform);
                 }
             }

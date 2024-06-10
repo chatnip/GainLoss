@@ -41,12 +41,15 @@ public class StreamController : Singleton<StreamController>
     [Header("-- Result 01")]
     [SerializeField] GameObject panelResultGetTxt;
     [SerializeField] TMP_Text getThingTxt;
+    [SerializeField] Image getThingIcon;
 
     [Header("=== Viewer")]
     [SerializeField] TMP_Text viewerAmountTxt;
 
     [Header("=== Stream Reservation")]
-    [SerializeField] public List<string> streamQuarterID = new List<string>();
+    [SerializeField] public string startSDialogID;
+    [SerializeField] public string endSDialogID;
+    [SerializeField] public List<string> playSDialogIDs = new List<string>();
     [SerializeField] string currentStartStreamID;
 
     [Header("=== Animation")]
@@ -55,12 +58,12 @@ public class StreamController : Singleton<StreamController>
     [Header("=== Choice")]
     [SerializeField] public float chooseLimitTime = 5f;
     [SerializeField] public int goodOrEvilGage = 0;
-    [SerializeField] public string currentChooseID;
-    string haveChoiceDialogID = "";
-    bool isChoiceTime = false;
+    [SerializeField] public string haveChoiceDialogID = "";
 
     // Other Value
+    IDBtn iDBtn = null;
     Sequence tween_SubscriberAmountTxt;
+    Sequence StreamSeq;
 
     #endregion
 
@@ -119,26 +122,42 @@ public class StreamController : Singleton<StreamController>
         goodOrEvilGage = 0;
 
         tween_SubscriberAmountTxt = SetUpdateSubscriberAmountText();
+
+        playSDialogIDs = Shuffle(playSDialogIDs);
+
+        playSDialogIDs.Insert(0, startSDialogID);
+        playSDialogIDs.Add(endSDialogID);
+
         ChooseAndPlay_BaseStreaming();
+    }
+
+    // Shuffle
+    public static List<string> Shuffle(List<string> values)
+    {
+        System.Random rand = new System.Random();
+        var shuffled = values.OrderBy(_ => rand.Next()).ToList();
+
+        return shuffled;
     }
 
     // Start Base
     private void ChooseAndPlay_BaseStreaming()
     {
-        if (streamQuarterID.Count == 0 || streamQuarterID == null)
+        if (playSDialogIDs.Count == 0 || playSDialogIDs == null)
         {
-            //ShowResult();
+            Debug.Log("방송 종료");
+
+            playSDialogIDs = new List<string>();
+            startSDialogID = null;
+            endSDialogID = null;
+
+            ShowResult();
             return;
         }
         else
         {
-            isChoiceTime = true;
-
-            Debug.Log("랜덤 섞기");
-            // Local Data Set
-            int rand = UnityEngine.Random.Range(0, streamQuarterID.Count);
-            currentStartStreamID = streamQuarterID[rand];
-            streamQuarterID.Remove(streamQuarterID[rand]);
+            currentStartStreamID = playSDialogIDs[0];
+            playSDialogIDs.Remove(playSDialogIDs[0]);
 
             SetScenarioBase(currentStartStreamID);
             return;
@@ -162,9 +181,14 @@ public class StreamController : Singleton<StreamController>
         string name = DataManager.Instance.Get_SDialogName(startDialogID);
         string dialog = DataManager.Instance.Get_SDialogText(startDialogID);
         string dialogAnim = DataManager.Instance.Get_SDialogAnim(startDialogID);
-        string nextSDialogID = DataManager.Instance.Get_NextSDialogID(startDialogID);
-        Debug.Log(name + "/" + dialog + "/" + dialogAnim);
         fragments.Add(new Fragment(name, dialog, dialogAnim));
+
+        if (DataManager.Instance.Get_SDialogHasChoice(startDialogID))
+        { this.haveChoiceDialogID = startDialogID; }
+
+        string nextSDialogID = DataManager.Instance.Get_NextSDialogID(startDialogID);
+
+        
         if (nextSDialogID == null || nextSDialogID == "")
         { return fragments; }
 
@@ -174,14 +198,14 @@ public class StreamController : Singleton<StreamController>
             name = DataManager.Instance.Get_SDialogName(nextSDialogID);
             dialog = DataManager.Instance.Get_SDialogText(nextSDialogID);
             dialogAnim = DataManager.Instance.Get_SDialogAnim(nextSDialogID);
-
             fragments.Add(new Fragment(name, dialog, dialogAnim));
-            Debug.Log(name + "/" + dialog + "/" + dialogAnim);
 
             if (DataManager.Instance.Get_SDialogHasChoice(nextSDialogID))
             { this.haveChoiceDialogID = nextSDialogID; }
 
             nextSDialogID = DataManager.Instance.Get_NextSDialogID(nextSDialogID);
+
+
             i++;
             if (nextSDialogID == null || nextSDialogID == "" || i > 100)
             { return fragments; }
@@ -191,67 +215,63 @@ public class StreamController : Singleton<StreamController>
     #endregion
 
     #region Result
-    /*
-        private void ShowResult()
+
+    private void ShowResult()
+    {
+        DOTween.Kill(tween_SubscriberAmountTxt);
+
+        // Get ID
+        Debug.Log(goodOrEvilGage);
+        string GetMaterialID = "";
+        if (GetMaterialID != "")
         {
-            DOTween.Kill(tween_SubscriberAmountTxt);
+            ReasoningManager.Instance.reasoningContentIDs.Add(GetMaterialID);
 
-            // Get ID
-            int typeKindAmount = Convert.ToInt32(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 1][streamQuarterID]);
-            Debug.Log(typeKindAmount);
-            for (int i = 0;  i < typeKindAmount; i++)
-            {
-                List<string> Data = 
-                    DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + i + 2][streamQuarterID].ToString().Split('/').ToList();
-                int min = Convert.ToInt32(Data[0]); Debug.Log(min);
-                int max = Convert.ToInt32(Data[1]); Debug.Log(max);
+            resultTxt.text = ""; // 결과 마린 이야기
+            resultIcon.sprite = GameSystem.Instance.GetCharacterSprite(""); // 결과 마린 이미지
 
-                if (min <= goodOrEvilGage && goodOrEvilGage <= max)
-                {
-                    ReasoningManager.Instance.reasoningContentIDs.Add(Data[2]);
-                    resultTxt.text = 
-                        DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][streamQuarterID]
-                        .ToString().Split('/').ToList()[i];
-                    resultIcon.sprite =
-                        GameSystem.Instance.GetCollectSprites(DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageTypeAmount * 2][streamQuarterID].ToString().Split('/').ToList())[i];
-
-                    Debug.Log("추리 소재 CSV 필요");
-                    getThingTxt.text = Data[2];
-
-                    break; 
-                }
-            }
-
-            Sequence seq = DOTween.Sequence();
-
-            // On GameObject
-            resultWindowCG.gameObject.SetActive(true);
-            resultWindowCG.alpha = 0f;
-            ShowJournal();
-
-            seq.Append(resultWindowCG.DOFade(1f, 0.2f));
-
-
-            seq
-                .OnStart(() => 
-                {
-                    GameManager.Instance.canInput = false; 
-                })
-                .OnComplete(() =>
-                {
-                    GameManager.Instance.canInput = true;
-                });
+            getThingTxt.text = GetMaterialID; // 추리소재 이름
+            getThingIcon.sprite = GameSystem.Instance.GetCharacterSprite(""); // 추리소재 이미지
         }
-    */
+        else
+        {
+            resultTxt.text = "None"; // 결과 마린 이야기
+            resultIcon.sprite = null; // 결과 마린 이미지
+
+            getThingTxt.text = "None"; // 추리소재 이름
+            getThingIcon.sprite = null; // 추리소재 이미
+        }
+
+        Sequence seq = DOTween.Sequence();
+
+        // On GameObject
+        resultWindowCG.gameObject.SetActive(true);
+        resultWindowCG.alpha = 0f;
+        ShowJournal();
+
+        seq.Append(resultWindowCG.DOFade(1f, 0.2f));
+
+
+        seq
+            .OnStart(() =>
+            {
+                GameManager.Instance.canInput = false;
+            })
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canInput = true;
+            });
+    }
+
     private void ShowJournal()
     {
-        EndTxt.text = DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageNum]["ID"].ToString().Split('/')[0];
+        EndTxt.text = "Next";
         panelResultDescTxt.gameObject.SetActive(true);
         panelResultGetTxt.gameObject.SetActive(false);
     }
     private void ShowGetReasoningContent()
     {
-        EndTxt.text = DataManager.Instance.StreamCSVDatas[LanguageManager.Instance.languageNum]["ID"].ToString().Split('/')[1];
+        EndTxt.text = "Exit";
         panelResultDescTxt.gameObject.SetActive(false);
         panelResultGetTxt.gameObject.SetActive(true);
     }
@@ -266,61 +286,28 @@ public class StreamController : Singleton<StreamController>
         for (int i = 0; i < scenarioBase.Fragments.Count; i++)
         {
             int temp = i;
-            Sequence sequence = DOTween.Sequence();
-
+            StreamSeq = DOTween.Sequence();
 
 
             if (scenarioBase.Fragments[temp].animationID != "")
             { 
                 skeletonGraphic.AnimationState.SetEmptyAnimations(0); 
-                AnimationSetup((SpineAniState)System.Enum.Parse(typeof(SpineAniState), scenarioBase.Fragments[temp].animationID)); 
+                AnimationSetup((SpineAniState)Enum.Parse(typeof(SpineAniState), scenarioBase.Fragments[temp].animationID)); 
             }
 
             Fragment newFragment = scenarioBase.Fragments[temp];
 
             // Set Speech Bubble
-            IDBtn Choice_IDBtn = ObjectPooling.Instance.GetIDBtn();
-            Choice_IDBtn.rect.localScale = Vector3.zero;
-            Choice_IDBtn.buttonType = ButtonType.SpeechBubble_Stream2D;
-            Choice_IDBtn.transform.SetParent(chattingNextBtn.transform);
-            Choice_IDBtn.inputBasicImage = speechBubbleSprite;
-            Choice_IDBtn.inputText = newFragment.script;
-            Choice_IDBtn.inputIsRight = false;
-            if (newFragment.script.Length * 40 < 450f)
-            { Choice_IDBtn.inputSizeDelta = new Vector2(newFragment.script.Length * 40, 100f); }
-            else
-            { Choice_IDBtn.inputSizeDelta = new Vector2(450, 100f); }
+            IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
+            GenSpeechBubble(idBtn, newFragment.script, newFragment.name, false);
 
-            Choice_IDBtn.gameObject.SetActive(true);
-            sb_IDBtns.Insert(0, Choice_IDBtn);
-
-            int removeIndex = -1;
-            if(sb_IDBtns != null && sb_IDBtns.Count > 0)
-            {
-                foreach (IDBtn idBtn in sb_IDBtns)
-                {
-                    int index = sb_IDBtns.IndexOf(idBtn);
-
-                    if(index >= sb_IDBtns_Y.Count - 1)
-                    { removeIndex = index; break; }
-
-                    if (removeIndex == -1)
-                    { sequence.Join(sb_IDBtns[index].rect.DOAnchorPos3D(new Vector3(0, sb_IDBtns_Y[1 + index], 0), 0.15f)); }
-                }
-            }
-            if(removeIndex != -1)
-            {
-                ObjectPooling.Instance.GetBackIDBtn(sb_IDBtns[removeIndex]);
-                sb_IDBtns.RemoveAt(removeIndex); 
-            }
-
-            sequence
+            StreamSeq
                    .SetEase(Ease.Linear)
                    .OnUpdate(() =>
                    {
                        if (click.triggered || turnOver)
                        {
-                           sequence.Complete();
+                           StreamSeq.Complete();
                            turnOver = false;
                        }
                    });
@@ -328,7 +315,7 @@ public class StreamController : Singleton<StreamController>
 
             yield return new WaitUntil(() =>
             {
-                if (Choice_IDBtn.rect.anchoredPosition3D == new Vector3(0, sb_IDBtns_Y[1], 0))
+                if (iDBtn.rect.anchoredPosition3D == new Vector3(0, sb_IDBtns_Y[1], 0))
                 {
                     return true;
                 }
@@ -360,15 +347,61 @@ public class StreamController : Singleton<StreamController>
 
         turnOver = false;
 
-        if (isChoiceTime)
-        {
-            isChoiceTime = false;
-            GameSystem.Instance.ShowChioceWindow_Stream2D(currentStartStreamID, 0.25f);
-        }
-        else
+        if(haveChoiceDialogID == "")
         {
             ChooseAndPlay_BaseStreaming();
         }
+        else
+        {
+            GameSystem.Instance.ShowChioceWindow_Stream2D(haveChoiceDialogID, 0.25f);
+        }
+        
+    }
+
+    public void GenSpeechBubble(IDBtn Choice_IDBtn, string script, string name, bool isRight)
+    {
+        if(StreamSeq != null)
+        {
+            StreamSeq = DOTween.Sequence();
+        }
+
+        iDBtn = Choice_IDBtn;
+        iDBtn.rect.localScale = Vector3.zero;
+        iDBtn.buttonType = ButtonType.SpeechBubble_Stream2D;
+        iDBtn.transform.SetParent(chattingNextBtn.transform);
+        iDBtn.inputBasicImage = speechBubbleSprite;
+        iDBtn.inputText = script;
+        iDBtn.inputExtraText = name;
+        iDBtn.inputIsRight = isRight;
+        if (script.Length * 40 < 475f)
+        { iDBtn.inputSizeDelta = new Vector2(script.Length * 40, 100f); }
+        else
+        { iDBtn.inputSizeDelta = new Vector2(450, 100f); }
+
+        iDBtn.gameObject.SetActive(true);
+        sb_IDBtns.Insert(0, iDBtn);
+
+        int removeIndex = -1;
+        if (sb_IDBtns != null && sb_IDBtns.Count > 0)
+        {
+            foreach (IDBtn idBtn in sb_IDBtns)
+            {
+                int index = sb_IDBtns.IndexOf(idBtn);
+
+                if (index >= sb_IDBtns_Y.Count - 1)
+                { removeIndex = index; break; }
+
+                if (removeIndex == -1)
+                { StreamSeq.Join(sb_IDBtns[index].rect.DOAnchorPos3D(new Vector3(0, sb_IDBtns_Y[1 + index], 0), 0.15f)); }
+            }
+        }
+        if (removeIndex != -1)
+        {
+            ObjectPooling.Instance.GetBackIDBtn(sb_IDBtns[removeIndex]);
+            sb_IDBtns.RemoveAt(removeIndex);
+        }
+
+
     }
 
     #endregion
@@ -481,6 +514,9 @@ public class StreamController : Singleton<StreamController>
         click.Enable();
         this.gameObject.SetActive(true);
         resultWindowCG.gameObject.SetActive(false);
+        resultWindowCG.alpha = 0f;
+        GameSystem.Instance.streamChioceCG.gameObject.SetActive(false);
+        GameSystem.Instance.streamChioceCG.alpha = 0f;
 
         // Loading Screen
         loadingScreenCG.gameObject.SetActive(true);

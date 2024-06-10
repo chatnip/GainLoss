@@ -321,6 +321,19 @@ public class DataManager : Singleton<DataManager>
         return "";
     }
 
+    // 장소에 따른 방송 시작과 끝 Dialog
+    public string Get_StartSDialog(string locationID)
+    {
+        string[] lines = Get_lines(Location_CSV);
+        return Get_String(lines, locationID, "Idx_Location", "Idx_SDialog_Start");
+    }
+    public string Get_EndSDialog(string locationID)
+    {
+        string[] lines = Get_lines(Location_CSV);
+        return Get_String(lines, locationID, "Idx_Location", "Idx_SDialog_End");
+    }
+
+
     #endregion
 
     #region About Object
@@ -620,7 +633,13 @@ public class DataManager : Singleton<DataManager>
         string[] lines = Get_lines(SChoice_CSV);
         return Get_String(lines, SChoiceID, "Idx_SChoices", "ChoiceText");
     }
-
+    
+    // 선택지ID로 선택지Text 가져오기
+    public string Get_GEPoint(string SChoiceID)
+    {
+        string[] lines = Get_lines(SChoice_CSV);
+        return Get_String(lines, SChoiceID, "Idx_SChoices", "GEPoint");
+    }
     #endregion
 
     #region Cacul

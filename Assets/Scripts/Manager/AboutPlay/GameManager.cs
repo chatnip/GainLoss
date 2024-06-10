@@ -1,7 +1,6 @@
 //Refactoring v1.0
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager>
 {

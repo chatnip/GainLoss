@@ -49,7 +49,7 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] RectTransform objectBtnParentRT;
     [SerializeField] TMP_Text needAbilityTxt;
     [Header("-- 2D Stream")]
-    [SerializeField] CanvasGroup streamChioceCG;
+    [SerializeField] public CanvasGroup streamChioceCG;
     [SerializeField] RectTransform streamBtnParentRT;
 
     [SerializeField] List<IDBtn> choiceBtnList = new List<IDBtn>();
@@ -354,8 +354,8 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
 
-            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
-            if (choiceIDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (choiceIDs.Count - 1); }
+            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -120f, 0f);
+            if (choiceIDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 60f * (choiceIDs.Count - 1); }
 
             Choice_IDBtn.gameObject.SetActive(true);
             choiceBtnList.Add(Choice_IDBtn);
@@ -454,7 +454,7 @@ public class GameSystem : Singleton<GameSystem>
         }
 
     }
-    public void ShowChioceWindow_Stream2D(string currentStreamID, float time)
+    public void ShowChioceWindow_Stream2D(string currentSChoiceID, float time)
     {
         // Set On
         streamChioceCG.gameObject.SetActive(true);
@@ -464,26 +464,20 @@ public class GameSystem : Singleton<GameSystem>
             .SetUpdate(true);
 
         // Set Btn By ID
-        List<string> IDs = new List<string>();
-
-        foreach (KeyValuePair<string, object> dictDatas in DataManager.Instance.StreamModuleCSVDatas[0])
-        {
-            if (dictDatas.Key.Length > 10 && dictDatas.Key.Substring(0, 10) == currentStreamID)
-            { IDs.Add(dictDatas.Key); Debug.Log(dictDatas.Key); }
-        }
+        List<string> SChoiceIDs = DataManager.Instance.Get_SChoiceIDs(currentSChoiceID);
 
         // Set UI
-        for (int i = 0; i < IDs.Count; i++)
+        for (int i = 0; i < SChoiceIDs.Count; i++)
         {
             IDBtn Choice_IDBtn = ObjectPooling.Instance.GetIDBtn();
             Choice_IDBtn.buttonType = ButtonType.ChoiceType_Stream2D;
             Choice_IDBtn.transform.SetParent(streamBtnParentRT);
-            Choice_IDBtn.buttonID = IDs[i];
+            Choice_IDBtn.buttonID = SChoiceIDs[i];
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
 
-            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -150f, 0f);
-            if (IDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 75f * (IDs.Count - 1); }
+            Choice_IDBtn.inputAnchorPos = new Vector3(0f, i * -120f, 0f);
+            if (SChoiceIDs.Count > 1) { Choice_IDBtn.inputAnchorPos += Vector3.up * 60f * (SChoiceIDs.Count - 1); }
 
             Choice_IDBtn.gameObject.SetActive(true);
             choiceBtnList.Add(Choice_IDBtn);
@@ -540,7 +534,7 @@ public class GameSystem : Singleton<GameSystem>
         // Get Stream Quarter
         string quarterID = DataManager.Instance.Get_SDialogByChoice(_id);
         if (quarterID != "")
-        { StreamController.Instance.streamQuarterID.Add(quarterID); }
+        { StreamController.Instance.playSDialogIDs.Add(quarterID); }
 
         // Obj Description Play
         ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id));
@@ -553,14 +547,22 @@ public class GameSystem : Singleton<GameSystem>
     private void ChoiceTab_Stream2D(string _id)
     {
         streamChioceCG.DOFade(0f, 0.2f).OnComplete(() => { streamChioceCG.gameObject.SetActive(false); });
-
+        StreamController.Instance.haveChoiceDialogID = "";
         // Show Reaction
+        string PC_Chatting = DataManager.Instance.Get_SChoiceText(_id);
+        string PC_Name = DataManager.Instance.Get_ObjectName("1000");
+        if (PC_Chatting != "")
+        { 
+            IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
+            StreamController.Instance.GenSpeechBubble(idBtn, PC_Chatting, PC_Name, true);
+        }
+
+        //GenSpeechBubble
         streamChioceCG.gameObject.SetActive(false);
-        StreamController.Instance.currentChooseID = _id;
-        StreamController.Instance.SetScenarioBase(_id);
+        StreamController.Instance.SetScenarioBase(DataManager.Instance.Get_NextSDialogBySChoice(_id));
 
         // Get Gage
-        int incGage = Convert.ToInt32(DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageTypeAmount * 2 + 2][_id]);
+        int incGage = Convert.ToInt32(DataManager.Instance.Get_GEPoint(_id));
         StreamController.Instance.goodOrEvilGage += incGage;
         Debug.Log(StreamController.Instance.goodOrEvilGage);
 
@@ -607,7 +609,7 @@ public class GameSystem : Singleton<GameSystem>
         return allSprite;
     }
     
-    private Sprite GetCharacterSprite(string IllustID)
+    public Sprite GetCharacterSprite(string IllustID)
     {
         List<Sprite> allIllust = GetAllCharacterSprite();
         foreach(Sprite sprite in allIllust)

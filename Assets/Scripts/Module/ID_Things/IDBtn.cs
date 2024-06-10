@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using NaughtyAttributes.Test;
 
 public class IDBtn : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class IDBtn : MonoBehaviour
     [SerializeField] public RectTransform rect;
     [SerializeField] public Button button;
     [SerializeField] public TMP_Text buttonText;
+    [SerializeField] public TMP_Text extraText;
     [SerializeField] public BasicInteractBtn BasicInteractBtn;
 
     [Header("=== Need Input")]
@@ -23,6 +25,7 @@ public class IDBtn : MonoBehaviour
     [SerializeField] public Sprite inputBasicImage;
     [SerializeField] public bool inputIsRight;
     [SerializeField] public string inputText;
+    [SerializeField] public string inputExtraText;
 
 
     #endregion
@@ -45,7 +48,7 @@ public class IDBtn : MonoBehaviour
 
             case ButtonType.SpeechBubble_Stream2D:
                 IDBtnSetup_Base();
-                IDBtnSetup_SpeechBubble_Stream2D(inputIsRight);
+                IDBtnSetup_SpeechBubble_Stream2D();
                 break;
 
             case ButtonType.ChoiceType_Reasoning2D:
@@ -62,6 +65,12 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_Base()
     {
+        buttonText.rectTransform.offsetMin = new Vector2(buttonText.rectTransform.offsetMin.x, 25);
+        buttonText.rectTransform.offsetMax = new Vector2(buttonText.rectTransform.offsetMax.x, -25);
+
+        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, 25);
+        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, -25);
+
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
@@ -69,11 +78,19 @@ public class IDBtn : MonoBehaviour
 
         rect.localScale = Vector3.one;
 
+        buttonText.text = "";
+        extraText.text = "";
         buttonText.color = Color.black;
+        extraText.color = Color.black;
+        buttonText.fontSizeMax = 50f;
+        extraText.fontSizeMax = 35f;
         button.image.color = Color.white;   
 
         button.enabled = true;
         BasicInteractBtn.enabled = true;
+
+        LanguageManager.Instance.SetLanguageTxt(buttonText);
+        LanguageManager.Instance.SetLanguageTxt(extraText);
     }
 
     private void IDBtnSetup_ChoiceType_Object3D()
@@ -84,7 +101,8 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_ChoiceType_Stream2D()
     {
-        buttonText.text = DataManager.Instance.StreamModuleCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
+        buttonText.text = DataManager.Instance.Get_SChoiceText(buttonID);
+        if (buttonText.text == "") { buttonText.text = ". . ."; }
         IDBtnSetup_ChoiceType();
     }
 
@@ -105,14 +123,16 @@ public class IDBtn : MonoBehaviour
         buttonText.alignment = TextAlignmentOptions.Center;
     }
 
-    private void IDBtnSetup_SpeechBubble_Stream2D(bool isRight)
+    private void IDBtnSetup_SpeechBubble_Stream2D()
     {
-        if (!isRight)
+
+        if (!inputIsRight)
         {
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(0, 0);
             rect.pivot = new Vector2(0, 0);
             buttonText.alignment = TextAlignmentOptions.MidlineLeft;
+            extraText.alignment = TextAlignmentOptions.MidlineLeft;
         }
         else
         {
@@ -120,6 +140,7 @@ public class IDBtn : MonoBehaviour
             rect.anchorMax = new Vector2(1, 0);
             rect.pivot = new Vector2(1, 0);
             buttonText.alignment = TextAlignmentOptions.MidlineRight;
+            extraText.alignment = TextAlignmentOptions.MidlineRight;
         }
 
         rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
@@ -129,10 +150,20 @@ public class IDBtn : MonoBehaviour
         button.image.sprite = inputBasicImage;
 
         buttonText.color = Color.black;
+        extraText.color = Color.black;
         buttonText.text = inputText;
+        extraText.text = inputExtraText;
 
         button.enabled = false;
         BasicInteractBtn.enabled = false;
+
+        buttonText.fontSizeMax = 27f;
+
+        buttonText.rectTransform.offsetMin = new Vector2(buttonText.rectTransform.offsetMin.x, 0);
+        buttonText.rectTransform.offsetMax = new Vector2(buttonText.rectTransform.offsetMax.x, -rect.sizeDelta.y * 1f / 3f);
+
+        extraText.rectTransform.offsetMin = new Vector2(extraText.rectTransform.offsetMin.x, rect.sizeDelta.y * 2f / 3f);
+        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, 0);
     }
 
     
