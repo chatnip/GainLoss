@@ -65,11 +65,11 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_Base()
     {
-        buttonText.rectTransform.offsetMin = new Vector2(buttonText.rectTransform.offsetMin.x, 25);
-        buttonText.rectTransform.offsetMax = new Vector2(buttonText.rectTransform.offsetMax.x, -25);
+        buttonText.rectTransform.offsetMin = new Vector2(25, 25);
+        buttonText.rectTransform.offsetMax = new Vector2(-25, -25);
 
-        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, 25);
-        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, -25);
+        extraText.rectTransform.offsetMax = new Vector2(25, 25);
+        extraText.rectTransform.offsetMax = new Vector2(-25, -25);
 
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
@@ -125,28 +125,39 @@ public class IDBtn : MonoBehaviour
 
     private void IDBtnSetup_SpeechBubble_Stream2D()
     {
+        rect.sizeDelta = inputSizeDelta;
+        this.gameObject.transform.rotation = Quaternion.identity;
 
         if (!inputIsRight)
         {
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(0, 0);
             rect.pivot = new Vector2(0, 0);
-            buttonText.alignment = TextAlignmentOptions.MidlineLeft;
-            extraText.alignment = TextAlignmentOptions.MidlineLeft;
+            buttonText.alignment = TextAlignmentOptions.CaplineLeft;
+            extraText.alignment = TextAlignmentOptions.BottomLeft;
+
+            extraText.rectTransform.offsetMin = new Vector2(10f, rect.sizeDelta.y * 0.5f);
+            extraText.rectTransform.offsetMax = new Vector2(-25f, 0f);
+
+            buttonText.rectTransform.offsetMin = new Vector2(25f, 0f);
+            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.5f);
         }
         else
         {
             rect.anchorMin = new Vector2(1, 0);
             rect.anchorMax = new Vector2(1, 0);
             rect.pivot = new Vector2(1, 0);
-            buttonText.alignment = TextAlignmentOptions.MidlineRight;
-            extraText.alignment = TextAlignmentOptions.MidlineRight;
+            buttonText.alignment = TextAlignmentOptions.BottomRight;
+            extraText.alignment = TextAlignmentOptions.CaplineRight;
+
+            extraText.rectTransform.offsetMin = new Vector2(25f, rect.sizeDelta.y * 0.5f);
+            extraText.rectTransform.offsetMax = new Vector2(-10f, 0f);
+
+            buttonText.rectTransform.offsetMin = new Vector2(25f, 0f);
+            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.5f);
         }
 
         rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
-        rect.sizeDelta = inputSizeDelta;
-        this.gameObject.transform.rotation = Quaternion.identity;
-
         button.image.sprite = inputBasicImage;
 
         buttonText.color = Color.black;
@@ -157,13 +168,10 @@ public class IDBtn : MonoBehaviour
         button.enabled = false;
         BasicInteractBtn.enabled = false;
 
-        buttonText.fontSizeMax = 27f;
+        buttonText.fontSizeMax = 25f;
+        extraText.fontSizeMax = 35f;
 
-        buttonText.rectTransform.offsetMin = new Vector2(buttonText.rectTransform.offsetMin.x, 0);
-        buttonText.rectTransform.offsetMax = new Vector2(buttonText.rectTransform.offsetMax.x, -rect.sizeDelta.y * 1f / 3f);
-
-        extraText.rectTransform.offsetMin = new Vector2(extraText.rectTransform.offsetMin.x, rect.sizeDelta.y * 2f / 3f);
-        extraText.rectTransform.offsetMax = new Vector2(extraText.rectTransform.offsetMax.x, 0);
+        
     }
 
     
