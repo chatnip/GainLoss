@@ -225,7 +225,7 @@ public class StreamController : Singleton<StreamController>
         string GetMaterialID = "";
         if (GetMaterialID != "")
         {
-            ReasoningManager.Instance.reasoningContentIDs.Add(GetMaterialID);
+            ReasoningManager.Instance.reasoningMaterialIDs.Add(GetMaterialID);
 
             resultTxt.text = ""; // 결과 마린 이야기
             resultIcon.sprite = GameSystem.Instance.GetCharacterSprite(""); // 결과 마린 이미지

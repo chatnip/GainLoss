@@ -1,76 +1,82 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class ReasoningAnswer : ReasoningModule
 {
     #region Value
 
     [Header("=== Data")]
-    [SerializeField] string thisTagID;
+    [SerializeField] string thisSelectedMaterialID = "";
+    [SerializeField] List<string> thisMaterialIDs = new List<string>();
     [SerializeField] ReasoningArrow relationRA;
     [SerializeField] ReasoningPhoto relationPT;
 
     [Header("=== Component")]
-    [SerializeField] CanvasGroup thisCG;
     [SerializeField] TMP_Dropdown thisDropdown;
 
 
-    [Header("=== Content")]
-    [SerializeField] List<string> tagContentIDs;
-    [SerializeField] public string currentSelectedContentID;
-
     #endregion
 
-    #region Active On
+    #region OnEnable
 
-    public void Offset()
+    public override void SetEachTime(float time)
     {
-        
+        // Set Visible
+        if (relationRA != null && !this.gameObject.activeSelf && relationRA.isActive)
+        { base.isActive = true; }
+        else if (relationPT != null && !this.gameObject.activeSelf && relationPT.isActive)
+        { base.isActive = true; }
+
+        base.SetEachTime(time);
     }
 
-    public void CheckVisible(float time)
+    public void SetDropDownOption(List<string> reasoningMaterialIDs)
     {
-        if (relationRA != null && !this.gameObject.activeSelf && relationRA.isVisible)
+        // Set Base
+        thisDropdown.onValueChanged.RemoveAllListeners();
+        thisMaterialIDs.Clear();
+
+        // 적용 가능한 추리 소재 ID 모두 찾기
+        foreach (string id in DataManager.Instance.Get_MaterialIDs(thisID))
         {
-            this.gameObject.SetActive(true);
-
-            thisCG.alpha = 0f;
-
-            thisCG.DOFade(1f, time);
-        }
-        else if (relationPT != null && !this.gameObject.activeSelf && relationPT.isVisible)
-        {
-            this.gameObject.SetActive(true);
-
-            thisCG.alpha = 0f;
-
-            thisCG.DOFade(1f, time);
+            if (reasoningMaterialIDs.Contains(id))
+            { thisMaterialIDs.Add(id); }
         }
 
-        // Set Tag IDs
-        tagContentIDs = new List<string>();
-        foreach (string id in ReasoningManager.Instance.reasoningContentIDs)
+        // DropDown 옵션 추가
+        thisDropdown.ClearOptions();
+        thisDropdown.AddOptions(thisMaterialIDs);
+        for(int i = 0; i < thisDropdown.options.Count; i++)
         {
-            if (id.Substring(0, 3) == thisTagID)
+            if (thisDropdown.options[i].text == thisSelectedMaterialID)
             {
-                tagContentIDs.Add(id);
+                thisDropdown.value = i;
             }
         }
 
+        // 처음 소재가 생길시
+        if (thisSelectedMaterialID == "" && thisDropdown.options.Count > 0) 
+        {
+            thisDropdown.value = 0;
+            setSelectedID();
+        }
+
+        // Set DropDown
+        thisDropdown.onValueChanged.AddListener(delegate { setSelectedID(); });
     }
 
-    #endregion
-
-    #region Set
-
-    public void SetContent(string id)
+    private void setSelectedID()
     {
-        currentSelectedContentID = id;
+        thisSelectedMaterialID = thisDropdown.options[thisDropdown.value].text;
     }
 
-    #endregion
 
+    #endregion
 }

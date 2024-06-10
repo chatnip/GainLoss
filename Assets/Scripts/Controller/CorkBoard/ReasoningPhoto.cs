@@ -1,5 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,50 +8,27 @@ public class ReasoningPhoto : ReasoningModule
 {
     #region Value
 
-    [Header("=== Relation")]
-    [SerializeField] public string relationObejctID;
-    [SerializeField] public bool isVisible = false;
-
     [Header("=== Name")]
     [SerializeField] string nameID;
     [SerializeField] bool isVisibleName = false;
     [SerializeField] TMP_Text nameTxt;
 
-    [Header("=== Component")]
-    [SerializeField] public CanvasGroup actualPhotoCG;
-
     #endregion
 
-    #region Base Set
+    #region OnEnable
 
-    public void Offset()
+    public override void SetEachTime(float time)
     {
-        LanguageManager.Instance.SetLanguageTxt(nameTxt);
-    }
+        // Set Visible
+        if (!this.gameObject.activeSelf && base.isActive)
+        { base.isActive = true; }
 
-    #endregion
+        base.SetEachTime(time);
 
-    #region Active On
-
-    public void CheckVisible(float time)
-    {
-        if (!actualPhotoCG.gameObject.activeSelf && isVisible)
-        {
-            actualPhotoCG.gameObject.SetActive(true);
-
-            actualPhotoCG.alpha = 0f;
-
-            actualPhotoCG.DOFade(1f, time);
-        }
-
-        if(!isVisibleName)
-        {
-            nameTxt.text = "???";
-        }
+        if (!isVisibleName)
+        { nameTxt.text = "???"; }
         else
-        {
-            nameTxt.text = DataManager.Instance.ObjectCSVDatas[LanguageManager.Instance.languageNum][nameID].ToString();
-        }
+        { nameTxt.text = "π∫∞° ¿÷¿Ω"; }
     }
 
     #endregion

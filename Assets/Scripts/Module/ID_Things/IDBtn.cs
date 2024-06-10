@@ -51,11 +51,6 @@ public class IDBtn : MonoBehaviour
                 IDBtnSetup_SpeechBubble_Stream2D();
                 break;
 
-            case ButtonType.ChoiceType_Reasoning2D:
-                IDBtnSetup_Base();
-                IDBtnSetup_ChoiceType_Reasoning2D();
-                break;
-
         }
     }
 
@@ -103,12 +98,6 @@ public class IDBtn : MonoBehaviour
     {
         buttonText.text = DataManager.Instance.Get_SChoiceText(buttonID);
         if (buttonText.text == "") { buttonText.text = ". . ."; }
-        IDBtnSetup_ChoiceType();
-    }
-
-    private void IDBtnSetup_ChoiceType_Reasoning2D()
-    {
-        buttonText.text = DataManager.Instance.ReasoningContentCSVDatas[LanguageManager.Instance.languageNum][this.buttonID].ToString();
         IDBtnSetup_ChoiceType();
     }
 
@@ -184,6 +173,5 @@ public enum ButtonType
     IndividualType,
     ChoiceType_Object3D,
     ChoiceType_Stream2D,
-    SpeechBubble_Stream2D,
-    ChoiceType_Reasoning2D
+    SpeechBubble_Stream2D
 }

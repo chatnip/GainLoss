@@ -503,8 +503,6 @@ public class GameSystem : Singleton<GameSystem>
                 });
             iDisposables.Add(iDisClick);
         }
-
-        
     }
 
     private void ChoiceTab_Object3D(string _id)
@@ -529,7 +527,7 @@ public class GameSystem : Singleton<GameSystem>
         // Get Reasoning Contents
         string contentID = DataManager.Instance.Get_ReasoningMaterial(_id);
         if (contentID != "")
-        { ReasoningManager.Instance.reasoningContentIDs.Add(contentID); }
+        { ReasoningManager.Instance.reasoningMaterialIDs.Add(contentID); }
 
         // Get Stream Quarter
         string quarterID = DataManager.Instance.Get_SDialogByChoice(_id);

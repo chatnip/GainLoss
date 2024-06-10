@@ -10,7 +10,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
     #region Value
 
     [Header("=== Contents")]
-    [SerializeField] public List<string> reasoningContentIDs = new List<string>();
+    [SerializeField] public List<string> reasoningMaterialIDs = new List<string>();
 
     [Header("=== Cork Board")]
     [SerializeField] List<GameObject> allReasoningCorkBoards;
@@ -32,14 +32,13 @@ public class ReasoningManager : Singleton<ReasoningManager>
         foreach(GameObject allReasoningCorkBoard in allReasoningCorkBoards)
         { 
             if (allReasoningCorkBoard.TryGetComponent(out ReasoningController reasoningController) &&
-                reasoningController.reasoningID == GameManager.Instance.currentChapter)
+                reasoningController.chapterID == GameManager.Instance.currentChapter)
             {
                 GameObject genReasoningCorkBoard = Instantiate(allReasoningCorkBoard, Vector3.zero, Quaternion.identity, reasoningCorkBoardParentTF);
                 currentReasoningCorkBoard = genReasoningCorkBoard;
             }
         }
 
-        currentReasoningCorkBoard.gameObject.SetActive(false);
 
         // Set Component
         confirmPopup_CG.gameObject.SetActive(false);
@@ -49,13 +48,19 @@ public class ReasoningManager : Singleton<ReasoningManager>
         confirmYesBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                ReasoningController.Instance.GetChapter();
+                ReasoningController.Instance.Deside();
             });
         confirmNoBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 ActiveOff_ConfirmPopup(0.2f);
             });
+
+        Debug.Log("지워야함 -> 모든 소재 얻은 상태 테스트");
+        reasoningMaterialIDs = new List<string> { "201", "202", "203", "204", "205", "206", "207", "208", "209" };
+        // 챕터에서 기본으로 얻는 소재 획득
+        List<string> getBaseIDs = DataManager.Instance.Get_MaterialIDsByChapter(GameManager.Instance.currentChapter);
+        reasoningMaterialIDs.AddRange(getBaseIDs);
     }
     protected override void Awake()
     {

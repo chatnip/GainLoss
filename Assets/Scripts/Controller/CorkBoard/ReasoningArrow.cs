@@ -1,5 +1,7 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ReasoningArrow : ReasoningModule
@@ -8,27 +10,19 @@ public class ReasoningArrow : ReasoningModule
 
     [Header("=== Relation")]
     [SerializeField] ReasoningPhoto[] relationPhotos;
-    [SerializeField] public bool isVisible = false;
 
-    [Header("=== Component")]
-    [SerializeField] CanvasGroup thisCG;
 
     #endregion
 
-    #region Active On
+    #region OnEnable
 
-    public void CheckVisible(float time)
+    public override void SetEachTime(float time)
     {
-        if (relationPhotos[0].isVisible && relationPhotos[1].isVisible) { this.isVisible = true; }
+        // Set Visible
+        if (relationPhotos[0].isActive && relationPhotos[1].isActive) 
+        { this.isActive = true; }
 
-        if(!this.gameObject.activeSelf && this.isVisible) 
-        {
-            this.gameObject.SetActive(true);
-
-            thisCG.alpha = 0f;
-
-            thisCG.DOFade(1f, time);
-        }
+        base.SetEachTime(time);
     }
 
     #endregion

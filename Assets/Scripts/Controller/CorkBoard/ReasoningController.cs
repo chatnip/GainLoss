@@ -1,8 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,14 +11,11 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     #region Value
 
     [Header("=== ID")]
-    [SerializeField] public string reasoningID;
+    [SerializeField] public string chapterID;
 
     [Header("=== Component")]
     [SerializeField] RectTransform thisRT;
-    float zoomMin = 1f; float zoomMax = 2f; float currentZoom;
-    float roundX = 0f; float roundY = 0f; Vector2 currentMousePos;
     [SerializeField] CanvasGroup thisCG;
-    [SerializeField] Sprite idBtnSprite;
 
     [Header("=== Photo")]
     [SerializeField] Transform photoParentTF;
@@ -33,19 +28,18 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     [Header("=== Answer")]
     [SerializeField] Transform answerParentTF;
     [SerializeField] List<ReasoningAnswer> answers = new List<ReasoningAnswer>();
-    [SerializeField] public ReasoningAnswer selectedAnswer;
 
     [Header("=== UI")]
     [SerializeField] Button exitBtn;
     [SerializeField] Button decideBtn;
-    [SerializeField] float zoomInOutValue;
 
-    [Header("=== OP")]
-    [SerializeField] List<IDBtn> sectionContentIDBtns = new List<IDBtn>();
-
-    [Header("=== Get Chapter ID")]
-    [SerializeField] List<GetChapterID> specialGetChapterID;
-    [SerializeField] string defaultGetChapterID;
+    //Other Value
+    float zoomMin = 1f;
+    float zoomMax = 2f;
+    float currentZoom;
+    float roundX = 0f;
+    float roundY = 0f;
+    Vector2 currentMousePos;
 
     #endregion
 
@@ -54,19 +48,17 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     public void Offset()
     {
         this.gameObject.SetActive(false);
-
         if (this.TryGetComponent(out RectTransform rectTransform))
         {
             rectTransform.sizeDelta = ReasoningManager.Instance.thisCanvasScaler.referenceResolution;
             rectTransform.anchoredPosition3D = new Vector3(0, 0, 0);
         }
 
-
         // Photo
         foreach (Transform photoTF in photoParentTF)
         {
             if (photoTF.TryGetComponent(out ReasoningPhoto RP))
-            { RP.Offset(); photos.Add(RP); }
+            { photos.Add(RP); }
         }
 
         // Arrow
@@ -80,26 +72,36 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         foreach (Transform answerTF in answerParentTF)
         {
             if (answerTF.TryGetComponent(out ReasoningAnswer RAW))
-            { RAW.Offset(); answers.Add(RAW); }
+            { answers.Add(RAW); }
         }
 
-        //Btn
+        // All setting TMP_text
+        Debug.Log("지워야함 -> 모든 추리 요소 보여주기");
+        foreach (ReasoningModule RM in AllRM())
+        { RM.SetThisTmp(); RM.isActive = true; }
+
+        // Btn
         exitBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 if (!GameManager.Instance.canInput) { return; }
+
                 ActiveOff(0.5f);
             });
         decideBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
+                if (!GameManager.Instance.canInput) { return; }
+
                 ReasoningManager.Instance.ActiveOn_ConfirmPopup(0.2f);
             });
 
+        // Other Set
         this.gameObject.transform.SetAsFirstSibling();
         currentZoom = 1f;
         thisRT.localScale = Vector3.one * currentZoom;
         thisCG.alpha = 0f;
+        this.gameObject.SetActive(false);
     }
 
     protected override void Awake()
@@ -115,8 +117,8 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     public void ActiveOn(float time)
     {
         GameManager.Instance.canInput = false;
-        PlayerInputController.Instance.CanMove = false;
 
+        PlayerInputController.Instance.CanMove = false;
         this.gameObject.SetActive(true);
 
         thisCG.DOFade(1f, time)
@@ -125,15 +127,14 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
                 GameManager.Instance.canInput = true;
             });
 
-        foreach (ReasoningPhoto RP in photos)
-        { RP.CheckVisible(time); }
+        // 각각의 class 세팅
+        List<ReasoningModule> RMs = AllRM();
+        foreach (ReasoningModule RM in RMs)
+        { RM.SetEachTime(time); }
+        foreach (ReasoningAnswer RA in answers)
+        { RA.SetDropDownOption(ReasoningManager.Instance.reasoningMaterialIDs); }
 
-        foreach (ReasoningArrow RA in arrows)
-        { RA.CheckVisible(time); }
-
-        foreach (ReasoningAnswer RAW in answers)
-        { RAW.CheckVisible(time); }
-
+        // 추리 결정을 할 수 있는가
         if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
         { decideBtn.interactable = true; }
         else
@@ -143,49 +144,24 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
     public void ActiveOff(float time)
     {
         GameManager.Instance.canInput = false;
-        PlayerInputController.Instance.CanMove = true;
 
         thisCG.DOFade(0f, time)
             .OnComplete(() =>
             {
                 GameManager.Instance.canInput = true;
+
+                PlayerInputController.Instance.CanMove = true;
                 this.gameObject.SetActive(false);
+
+                GameManager.Instance.canInteractObject = true;
             });
-
-        ActivityController.Instance.QuestionWindow_ActiveOff(time);
-
-        foreach (IDBtn sectionIDBtn in sectionContentIDBtns)
-        {
-            ObjectPooling.Instance.GetBackIDBtn(sectionIDBtn);
-        }
-        sectionContentIDBtns = new List<IDBtn>();
     }
 
     #endregion
 
-    #region Set Photo Visible
+    #region Zoom
 
-    public void SetPhotoVisible(string objectID)
-    {
-        foreach (ReasoningPhoto RP in photos)
-        {
-            if (RP.relationObejctID == objectID) { RP.isVisible = true; Debug.Log(RP.gameObject.name); }
-        }
-    }
-
-    #endregion
-
-    #region Set Button Interact
-
-    public void SetReasoningBtn(List<string> iDs)
-    {
-        
-    }
-
-    #endregion
-
-    #region Zoom & Drag
-
+    // 줌 인/아웃
     public void ZoomInOut(float axis)
     {
         if (!this.gameObject.activeSelf) { return; }
@@ -206,12 +182,29 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
         CheckRound();
     }
+
+    // 영역을 빠져나가지 않게
+    private void CheckRound()
+    {
+        if (thisRT.anchoredPosition.x > roundX) { thisRT.anchoredPosition = new Vector2(roundX, thisRT.anchoredPosition.y); }
+        else if (thisRT.anchoredPosition.x < -roundX) { thisRT.anchoredPosition = new Vector2(-roundX, thisRT.anchoredPosition.y); }
+
+        if (thisRT.anchoredPosition.y > roundY) { thisRT.anchoredPosition = new Vector2(thisRT.anchoredPosition.x, roundY); }
+        else if (thisRT.anchoredPosition.y < -roundY) { thisRT.anchoredPosition = new Vector2(thisRT.anchoredPosition.x, -roundY); }
+    }
+
+    #endregion
+
+    #region Drag
+
+    // 드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
         currentMousePos = (Vector2)Input.mousePosition;
         Debug.Log(currentMousePos);
     }
-
+    
+    // 드래그 중
     public void OnDrag(PointerEventData eventData)
     {
         if(currentMousePos != (Vector2)Input.mousePosition)
@@ -224,44 +217,32 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         }
     }
 
+    // 드래그 끝
     public void OnEndDrag(PointerEventData eventData)
     {
         currentMousePos = Vector2.zero;
-    }
-
-    private void CheckRound()
-    {
-        if (thisRT.anchoredPosition.x > roundX) { thisRT.anchoredPosition = new Vector2(roundX, thisRT.anchoredPosition.y); }
-        else if (thisRT.anchoredPosition.x < -roundX) { thisRT.anchoredPosition = new Vector2(-roundX, thisRT.anchoredPosition.y); }
-
-        if (thisRT.anchoredPosition.y > roundY) { thisRT.anchoredPosition = new Vector2(thisRT.anchoredPosition.x, roundY); }
-        else if (thisRT.anchoredPosition.y < -roundY) { thisRT.anchoredPosition = new Vector2(thisRT.anchoredPosition.x, -roundY); }
     }
 
     #endregion
 
     #region Deside
 
-    public void GetChapter()
+    public void Deside()
     {
-        List<string> chosenAllID = new List<string>();
-        for(int i = 0; i < answers.Count; i++)
-        { chosenAllID.Add(answers[i].currentSelectedContentID); }
+        
+    }
 
-        foreach(GetChapterID GCID in specialGetChapterID)
-        {
-            List<string> isEqualsIDs = new List<string>();
-            for (int i = 0; i < GCID.answerReasoningContentIDs.Count; i++)
-            { isEqualsIDs.Add(GCID.answerReasoningContentIDs[i]); }
+    #endregion
 
-            if (chosenAllID.Except(isEqualsIDs).Count() == 0 )
-            {
-                Debug.Log(GCID.getChpaterID);
-                return;
-            }
-        }
+    #region Other
 
-        Debug.Log(defaultGetChapterID);
+    private List<ReasoningModule> AllRM()
+    {
+        List<ReasoningModule> allRMs = new List<ReasoningModule>();
+        allRMs.AddRange(photos);
+        allRMs.AddRange(arrows);
+        allRMs.AddRange(answers);
+        return allRMs;
     }
 
     #endregion
