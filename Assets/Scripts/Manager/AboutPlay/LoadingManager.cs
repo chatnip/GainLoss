@@ -46,6 +46,7 @@ public class LoadingManager : Singleton<LoadingManager>
     public void StartLoading()
     {
         GameManager.Instance.canInput = false;
+        PlayerInputController.Instance.MoveStop();
         StartCoroutine(Past_ShowNextDayText(1f));
     }
 
@@ -81,6 +82,23 @@ public class LoadingManager : Singleton<LoadingManager>
     private IEnumerator Post_ShowNextDayText(float time)
     {
         GameManager.Instance.canInput = false;
+        GameManager.Instance.mainInfo.CurrentActivity += DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
+        if(GameManager.Instance.mainInfo.CurrentActivity > GameManager.Instance.mainInfo.MaxActivity)
+        { GameManager.Instance.mainInfo.CurrentActivity = GameManager.Instance.mainInfo.MaxActivity; }
+
+        // 마지막날 -> 추리하는 날로
+        if (GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
+        {
+            GameManager.Instance.currentActPart = GameManager.e_currentActPart.ReasoningDay;
+            ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(false);
+        }
+        // 기본 다음 날
+        else
+        {
+            GameManager.Instance.currentActPart = GameManager.e_currentActPart.UseActivity;
+            ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(true);
+            ActivityController.Instance.SetActivityGageUI(0f);
+        }
 
         DOTween.Kill(savingPrograssText);
         PlayerController.Instance.gameObject.transform.position = new Vector3(0f, 0f, 0f);
@@ -89,12 +107,7 @@ public class LoadingManager : Singleton<LoadingManager>
         savingPrograssText.text = "< Saved >";
         savingPrograssText.DOFade(1f, 1f);
 
-        //Debug.Log("사전 조사 데이터 세팅");
-        //PreliminarySurveyManager.ft_setAPSSOs();
-
         dayText.text = GameManager.Instance.mainInfo.Day.ToString();
-
-        //PlaceManager.Instance.InitPlace();
 
         passDayExplanationText.color = Color.white;
 
@@ -113,7 +126,6 @@ public class LoadingManager : Singleton<LoadingManager>
 
     private void EndLoading()
     {
-        //ScheduleManager.ResetDay();
         Sequence loadingSequence = DOTween.Sequence();
         loadingSequence.Append(loading.DOFade(0f, 1f))
         .OnComplete(() =>
@@ -121,11 +133,16 @@ public class LoadingManager : Singleton<LoadingManager>
             loading.gameObject.SetActive(false);
             GameManager.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
+
+            // 첫날 -> 첫 다이얼로그 실행
             if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter))
             {
                 GameSystem.Instance.ObjDescOn(null, "101");
             }
         });
+
+
+        
     }
 
     #endregion

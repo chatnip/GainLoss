@@ -396,6 +396,9 @@ MonoBehaviour:
   persuasiveAnim: {fileID: 7400000, guid: cb58e8000728d0e4b865486dcf383b2a, type: 2}
   mentalStrengthAnim: {fileID: 7400000, guid: 3371ee9298026da49abecb990b635efe, type: 2}
   goOutsideAnim: {fileID: 7400000, guid: 86b5318ec42885c41858b516ac897b55, type: 2}
+  obsTxt: {fileID: 1651499433}
+  socTxt: {fileID: 1528586649}
+  menTxt: {fileID: 1929977756}
   EndDayBtn: {fileID: 1682404489}
   currentQuestionWindowType: 0
 --- !u!1 &46513239
@@ -482,7 +485,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.95
+  m_fontSize: 28
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1160,7 +1163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Anno
+  m_text: Choose One!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8337,6 +8340,7 @@ MonoBehaviour:
   objNameTexts: []
   objSprites: []
   objAnimNames: []
+  isPlayerAnims: 
   spriteModules:
   - nameID: 
     texture: {fileID: 2800000, guid: dbbb1eef401d8034c85469dd14fa74dd, type: 3}
@@ -10594,7 +10598,6 @@ MonoBehaviour:
   currentPlaceTxt: {fileID: 432623449}
   step_SG: {fileID: 606783129}
   HUD_currentPlactTxt: {fileID: 1146806038}
-  activityGageGO: {fileID: 1021821698}
   comebackHomeBtn: {fileID: 332355073}
   placeBtnList:
   - {fileID: 444339185}
@@ -25371,7 +25374,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.15
+  m_fontSize: 44
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -31691,7 +31694,7 @@ MonoBehaviour:
   mainInfo:
     NewGame: 1
     Day: 1
-    CurrentActivity: 3
+    CurrentActivity: 0
     MaxActivity: 4
     ObservationalAbility: 0
     PersuasiveAbility: 0
@@ -37719,10 +37722,9 @@ MonoBehaviour:
   getThingTxt: {fileID: 1716809554}
   getThingIcon: {fileID: 1681420718}
   viewerAmountTxt: {fileID: 1676914563}
-  startSDialogID: 101
-  endSDialogID: 218
-  playSDialogIDs:
-  - 104
+  startSDialogID: 
+  endSDialogID: 
+  playSDialogIDs: []
   currentStartStreamID: 
   skeletonGraphic: {fileID: 372941058}
   chooseLimitTime: 5

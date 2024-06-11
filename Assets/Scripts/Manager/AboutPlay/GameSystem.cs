@@ -33,6 +33,7 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] List<string> objNameTexts = new List<string>();
     [SerializeField] List<Sprite> objSprites = new List<Sprite>();
     [SerializeField] List<string> objAnimNames = new List<string>();
+    [SerializeField] List<bool> isPlayerAnims = new List<bool>();
 
     InteractObject currentIO;
     Tween objTextingTween;
@@ -137,6 +138,7 @@ public class GameSystem : Singleton<GameSystem>
         objNameTexts = new List<string>();
         objSprites = new List<Sprite>();
         objAnimNames = new List<string>();
+        isPlayerAnims = new List<bool>();
         haveChoiceDialogID = null;
 
         string dialog = DataManager.Instance.Get_DialogText(startDialogID);
@@ -145,6 +147,8 @@ public class GameSystem : Singleton<GameSystem>
         objNameTexts.Add(dialogSpeaker);
         string dialogAnim = DataManager.Instance.Get_DialogAnim(startDialogID);
         objAnimNames.Add(dialogAnim);
+        bool isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(startDialogID);
+        isPlayerAnims.Add(isPlayerAnim);
         string dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
         objSprites.Add(GetCharacterSprite(dialogSprite));
 
@@ -164,7 +168,9 @@ public class GameSystem : Singleton<GameSystem>
             dialogSpeaker = DataManager.Instance.Get_DialogSpeaker(nextDialogID);
             objNameTexts.Add(dialogSpeaker);
             dialogAnim = DataManager.Instance.Get_DialogAnim(nextDialogID);
-            objAnimNames.Add(dialogAnim);
+            objAnimNames.Add(dialogAnim); 
+            isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(nextDialogID);
+            isPlayerAnims.Add(isPlayerAnim);
             dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
             objSprites.Add(GetCharacterSprite(dialogSprite));
 
@@ -212,7 +218,7 @@ public class GameSystem : Singleton<GameSystem>
 
                          if (objAnimNames[i] != "" && objAnimNames[i] != null)
                          {
-                             if (objAnimNames[i].Substring(0, 3) == "KAA")
+                             if (isPlayerAnims[i])
                              {
                                  Debug.Log("playerAnim");
                                  PlayerController.Instance._animator.Play(objAnimNames[i]);

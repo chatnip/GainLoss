@@ -26,7 +26,6 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] SkeletonGraphic step_SG;
     [Header("-- Main UI")]
     [SerializeField] TMP_Text HUD_currentPlactTxt;
-    [SerializeField] GameObject activityGageGO;
     [SerializeField] Button comebackHomeBtn;
 
     [Header("=== Place Components")]
@@ -216,9 +215,9 @@ public class PlaceManager : Singleton<PlaceManager>
         // Desc Panel -> Off
         GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
         if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.UseActivity) 
-        { activityGageGO.SetActive(true); }
+        { ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(true); }
         else 
-        { activityGageGO.SetActive(false); }
+        { ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(false); }
 
         // Gen Map
         SetCurrent3DMap(idBtn);

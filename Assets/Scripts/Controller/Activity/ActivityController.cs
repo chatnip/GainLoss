@@ -34,6 +34,11 @@ public class ActivityController : Singleton<ActivityController>
     [SerializeField] AnimationClip mentalStrengthAnim;
     [SerializeField] AnimationClip goOutsideAnim;
 
+    [Header("=== Ability UI")]
+    [SerializeField] TMP_Text obsTxt;
+    [SerializeField] TMP_Text socTxt;
+    [SerializeField] TMP_Text menTxt;
+
     [Header("=== Btn")]
     [SerializeField] Button EndDayBtn;
 
@@ -62,7 +67,6 @@ public class ActivityController : Singleton<ActivityController>
 
     public void Offset()
     {
-        int LNum = LanguageManager.Instance.languageNum;
         // Set Dict
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
         { 
@@ -109,6 +113,10 @@ public class ActivityController : Singleton<ActivityController>
         noBtn.interactable = false;
         yesBtn.interactable = false;
 
+        obsTxt.text = DataManager.Instance.Get_HomeObjectExtra("103");
+        socTxt.text = DataManager.Instance.Get_HomeObjectExtra("105");
+        menTxt.text = DataManager.Instance.Get_HomeObjectExtra("104");
+
         // Set Btn
         noBtn.OnClickAsObservable()
             .Subscribe(_ =>
@@ -143,6 +151,7 @@ public class ActivityController : Singleton<ActivityController>
                 if (!GameManager.Instance.canInput) { return; }
                 EndDayBtn.TryGetComponent(out RectTransform btnRT);
                 btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
+                LoadingManager.Instance.StartLoading();
                 Debug.Log("하루 종료");
             });
     }
@@ -156,7 +165,7 @@ public class ActivityController : Singleton<ActivityController>
 
     #region Gage
 
-    private void SetActivityGageUI(float dotweenTime)
+    public void SetActivityGageUI(float dotweenTime)
     {
         // Dotween
         DOTween.Kill(SAG_UI); 
@@ -321,13 +330,11 @@ public class ActivityController : Singleton<ActivityController>
 
     #region End Day
 
-   
     public void OnEndDayBtn()
     {
         EndDayBtn.TryGetComponent(out RectTransform btnRT);
         btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
     }
-
 
     #endregion
 }

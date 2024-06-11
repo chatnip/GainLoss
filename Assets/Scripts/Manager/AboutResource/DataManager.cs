@@ -317,7 +317,7 @@ public class DataManager : Singleton<DataManager>
         return Get_String(lines, DialogID, "Idx_Dialog", "Name");
     }
 
-    // 다이얼로그 Anim Name
+    // 다이얼로그 Illust
     public string Get_DialogIllust(string DialogID)
     {
         string[] lines = Get_lines(Dialog_CSV);
@@ -329,6 +329,13 @@ public class DataManager : Singleton<DataManager>
     {
         string[] lines = Get_lines(Dialog_CSV);
         return Get_String(lines, DialogID, "Idx_Dialog", "Idx_Animation");
+    }
+
+    // 다이얼로그 Animation 주인공의 애니메이션이가
+    public bool Get_IsPlayerAnimationDialog(string DialogID)
+    {
+        string[] lines = Get_lines(Dialog_CSV);
+        return Get_Bool(lines, DialogID, "Idx_Dialog", "IsPlayerAnimation");
     }
 
     // 다이얼로그가 선택지를 가지고 있는가
@@ -599,7 +606,8 @@ public class DataManager : Singleton<DataManager>
         foreach (string line in lines)
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
-            if (lineData[comparisonIndex] == findID)
+            if (lineData[comparisonIndex] == findID &&
+                lineData[getIdxValueIndex] != "")
             {
                 return Convert.ToBoolean(lineData[getIdxValueIndex]);
             }
