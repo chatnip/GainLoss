@@ -18,6 +18,7 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset SDialog_CSV;
     [SerializeField] TextAsset SChoice_CSV;
     [SerializeField] TextAsset Material_CSV;
+    [SerializeField] TextAsset Illust_CSV;
 
     #endregion
 
@@ -584,6 +585,16 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
+    #region Illust
+
+    public string Get_TypeForIllust(string illustID)
+    {
+        string[] lines = Get_lines(Illust_CSV);
+        return Get_String_NoLanguage(lines, illustID, "Idx_Illust", "IllustType");
+    }
+
+    #endregion
+
     #region Cacul
 
     public string[] Get_lines(TextAsset dataTextAsset)
@@ -650,16 +661,21 @@ public class DataManager : Singleton<DataManager>
         return "";
     }
 
-    #endregion
-
-    #region Other
-
-    public Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
+    private string Get_String_NoLanguage(string[] lines, string findID, string comparisonIdx, string getIdxValue)
     {
-        { "observation", new List<string> { "observation", "°üÂû·Â" } },
-        { "sociability", new List<string> { "sociability", "¼³µæ·Â" } },
-        { "mentality", new List<string> { "mentality", "Á¤½Å·Â" } }
-    };
+        int comparisonIndex = Get_Index(lines[dataReadLine], comparisonIdx);
+        int getIdxValueIndex = Get_Index(lines[dataReadLine], getIdxValue);
+
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+            if (lineData[comparisonIndex] == findID)
+            {
+                return lineData[getIdxValueIndex];
+            }
+        }
+        return "";
+    }
 
     #endregion
 }

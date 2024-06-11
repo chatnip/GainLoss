@@ -8332,7 +8332,9 @@ MonoBehaviour:
   objPanelBtn: {fileID: 968929453}
   objName: {fileID: 375156843}
   objText: {fileID: 1281144486}
-  objImg: {fileID: 1756411825}
+  objImg_char: {fileID: 1756411825}
+  objImg_obj: {fileID: 1953692714}
+  objImg_screen: {fileID: 2097325017}
   anotherAnimator: {fileID: 640177189}
   textingSpeed: 20
   timeAttackFillImg: {fileID: 1318074107}
@@ -8341,7 +8343,7 @@ MonoBehaviour:
   objSprites: []
   objAnimNames: []
   isPlayerAnims: 
-  spriteModules:
+  characterSprites:
   - nameID: 
     texture: {fileID: 2800000, guid: dbbb1eef401d8034c85469dd14fa74dd, type: 3}
     sprites: []
@@ -8352,6 +8354,9 @@ MonoBehaviour:
     texture: {fileID: 2800000, guid: daa3545d12660074ab459c5623ee17c4, type: 3}
     sprites: []
   - nameID: 
+    texture: {fileID: 2800000, guid: 90131bdde4617114d9037477b91529d8, type: 3}
+    sprites: []
+  - nameID: 
     texture: {fileID: 2800000, guid: b6c027325aaad5b46b649cdedbe719ec, type: 3}
     sprites: []
   - nameID: 
@@ -8360,8 +8365,13 @@ MonoBehaviour:
   - nameID: 
     texture: {fileID: 2800000, guid: cb61b30fa6cd4aa47a3d00501ca7a79b, type: 3}
     sprites: []
+  objectSprites:
   - nameID: 
     texture: {fileID: 2800000, guid: a0566fcfdadf4524a9015438e252579a, type: 3}
+    sprites: []
+  screenSprites:
+  - nameID: 
+    texture: {fileID: 2800000, guid: d8c597db08e69e44b950820d4b4eed84, type: 3}
     sprites: []
   objectChioceCG: {fileID: 1559272288}
   objectBtnParentRT: {fileID: 805267314}
@@ -9303,9 +9313,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2097325016}
-  - {fileID: 1756411824}
   - {fileID: 1953692713}
   - {fileID: 968929450}
+  - {fileID: 1756411824}
   - {fileID: 1559272285}
   m_Father: {fileID: 475479896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31698,9 +31708,9 @@ MonoBehaviour:
     Day: 0
     CurrentActivity: 0
     MaxActivity: 0
-    ObservationalAbility: 0
-    PersuasiveAbility: 0
-    MentalStrengthAbility: 0
+    observation: 0
+    sociability: 0
+    mentality: 0
     PositiveAndNegative: 0
     TodayOfTheWeek: Monday
   canInput: 1
@@ -32926,6 +32936,7 @@ MonoBehaviour:
   SDialog_CSV: {fileID: 4900000, guid: 986c654c353e658478b6b475c3840f80, type: 3}
   SChoice_CSV: {fileID: 4900000, guid: ee11ecc6755d2b749ad071952cc0d4b2, type: 3}
   Material_CSV: {fileID: 4900000, guid: f1ad64bf2c8f83c478aecad3fde0ad90, type: 3}
+  Illust_CSV: {fileID: 4900000, guid: e417c71b28f8717459af96821514c222, type: 3}
 --- !u!1 &1881282474
 GameObject:
   m_ObjectHideFlags: 0
@@ -37526,7 +37537,7 @@ GameObject:
   - component: {fileID: 2097325018}
   - component: {fileID: 2097325017}
   m_Layer: 5
-  m_Name: Img_AllScreen
+  m_Name: Img_Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

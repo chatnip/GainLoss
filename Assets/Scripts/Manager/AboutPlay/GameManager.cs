@@ -1,6 +1,7 @@
 //Refactoring v1.0
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -88,9 +89,9 @@ public class MainInfo
     public int MaxActivity = 0;
 
     // Ability
-    public int ObservationalAbility = 0;
-    public int PersuasiveAbility = 0;
-    public int MentalStrengthAbility = 0;
+    public int observation = 0;
+    public int sociability = 0;
+    public int mentality = 0;
 
     // Place & Streaming
     public int PositiveAndNegative = 0;
@@ -100,20 +101,19 @@ public class MainInfo
     {
         Day = day;
         MaxActivity = _maxActivity;
-        ObservationalAbility = d_Obse;
-        PersuasiveAbility = d_Pers;
-        MentalStrengthAbility = d_Ment;
+        observation = d_Obse;
+        sociability = d_Pers;
+        mentality = d_Ment;
     }
     public bool IsEnoughAbility(int d_Obse, int d_Pers, int d_Ment)
     {
-        if (ObservationalAbility >= d_Obse &&
-            PersuasiveAbility >= d_Pers &&
-            MentalStrengthAbility >= d_Ment)
+        if (observation >= d_Obse &&
+            sociability >= d_Pers &&
+            mentality >= d_Ment)
         { return true; }
         else
         { return false; }
     }
-
 
     public void IncAbility(ActivityController.e_HomeInteractType HI_Type, int incAbilityValue, int DecActivityValue)
     {
@@ -121,15 +121,15 @@ public class MainInfo
         switch (HI_Type)
         {
             case ActivityController.e_HomeInteractType.Observational:
-                ObservationalAbility += incAbilityValue;
+                observation += incAbilityValue;
                 break;
 
             case ActivityController.e_HomeInteractType.Persuasive:
-                PersuasiveAbility += incAbilityValue;
+                sociability += incAbilityValue;
                 break;
 
             case ActivityController.e_HomeInteractType.MentalStrength:
-                MentalStrengthAbility += incAbilityValue;
+                mentality += incAbilityValue;
                 break;
 
 
@@ -137,6 +137,15 @@ public class MainInfo
                 break;
         }
     }
+
+
+    public static Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
+    {
+        { "observation", new List<string> { "observation", "°üÂû·Â" } },
+        { "sociability", new List<string> { "sociability", "¼³µæ·Â" } },
+        { "mentality", new List<string> { "mentality", "Á¤½Å·Â" } }
+    };
+
 
     // Deco
     public string TodayOfTheWeek = "Monday";

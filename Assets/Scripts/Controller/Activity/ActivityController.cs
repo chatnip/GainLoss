@@ -101,9 +101,9 @@ public class ActivityController : Singleton<ActivityController>
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
-            { e_HomeInteractType.Observational, GameManager.Instance.mainInfo.ObservationalAbility },
-            { e_HomeInteractType.Persuasive, GameManager.Instance.mainInfo.PersuasiveAbility },
-            { e_HomeInteractType.MentalStrength, GameManager.Instance.mainInfo.MentalStrengthAbility }
+            { e_HomeInteractType.Observational, GameManager.Instance.mainInfo.observation },
+            { e_HomeInteractType.Persuasive, GameManager.Instance.mainInfo.sociability },
+            { e_HomeInteractType.MentalStrength, GameManager.Instance.mainInfo.mentality }
         };
 
         // Set UI

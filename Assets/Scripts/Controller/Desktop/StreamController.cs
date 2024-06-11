@@ -229,10 +229,10 @@ public class StreamController : Singleton<StreamController>
             ReasoningManager.Instance.reasoningMaterialIDs.Add(GetMaterialID);
 
             resultTxt.text = ""; // 결과 마린 이야기
-            resultIcon.sprite = GameSystem.Instance.GetCharacterSprite(""); // 결과 마린 이미지
+            resultIcon.sprite = GameSystem.Instance.Get_SpriteToID("", ""); // 결과 마린 이미지
 
             getThingTxt.text = GetMaterialID; // 추리소재 이름
-            getThingIcon.sprite = GameSystem.Instance.GetCharacterSprite(""); // 추리소재 이미지
+            getThingIcon.sprite = GameSystem.Instance.Get_SpriteToID("", ""); // 추리소재 이미지
         }
         else
         {

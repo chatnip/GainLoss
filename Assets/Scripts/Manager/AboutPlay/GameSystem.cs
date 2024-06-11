@@ -21,7 +21,9 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] public Button objPanelBtn;
     [SerializeField] TMP_Text objName;
     [SerializeField] TMP_Text objText;
-    [SerializeField] Image objImg;
+    [SerializeField] Image objImg_char;
+    [SerializeField] Image objImg_obj;
+    [SerializeField] Image objImg_screen;
     [SerializeField] Animator anotherAnimator;
     [SerializeField] float textingSpeed = 20f;
 
@@ -32,6 +34,7 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] List<string> objWriteTexts = new List<string>();
     [SerializeField] List<string> objNameTexts = new List<string>();
     [SerializeField] List<Sprite> objSprites = new List<Sprite>();
+    [SerializeField] List<string> objSpriteTypes = new List<string>();
     [SerializeField] List<string> objAnimNames = new List<string>();
     [SerializeField] List<bool> isPlayerAnims = new List<bool>();
 
@@ -41,8 +44,12 @@ public class GameSystem : Singleton<GameSystem>
 
     List<IDisposable> iDisposables = new List<IDisposable>();
 
-    [Header("=== Character Sprite")]
-    [SerializeField] public List<SpriteModule> spriteModules;
+    [Header("=== Sprites")]
+    [SerializeField] public List<SpriteModule> characterSprites;
+    [SerializeField] public List<SpriteModule> objectSprites;
+    [SerializeField] public List<SpriteModule> screenSprites;
+    Dictionary<string, List<SpriteModule>> typeBySpriteDict = new Dictionary<string, List<SpriteModule>>();
+    Dictionary<string, Image> typeByImgDict = new Dictionary<string, Image>();
 
     [Header("=== Choice UI")]
     [Header("-- 3D Object")]
@@ -106,11 +113,35 @@ public class GameSystem : Singleton<GameSystem>
 
         // Sprites
         string Path = "SpriteModule/";
-        foreach (SpriteModule SM in spriteModules)
+        foreach (SpriteModule SM in characterSprites)
         {
             SM.nameID = SM.texture.name;
             SM.sprites = Resources.LoadAll<Sprite>(Path + SM.texture.name);
         }
+        foreach (SpriteModule SM in objectSprites)
+        {
+            SM.nameID = SM.texture.name;
+            SM.sprites = Resources.LoadAll<Sprite>(Path + SM.texture.name);
+        }
+        foreach (SpriteModule SM in screenSprites)
+        {
+            SM.nameID = SM.texture.name;
+            SM.sprites = Resources.LoadAll<Sprite>(Path + SM.texture.name);
+        }
+
+        // Dict
+        typeBySpriteDict = new Dictionary<string, List<SpriteModule>>
+        {
+            { "Character", characterSprites },
+            { "Object", objectSprites },
+            { "Screen", screenSprites }
+        };
+        typeByImgDict = new Dictionary<string, Image>
+        {
+            { "Character", objImg_char },
+            { "Object", objImg_obj },
+            { "Screen", objImg_screen }
+        };
     }
 
     protected override void Awake()
@@ -139,6 +170,7 @@ public class GameSystem : Singleton<GameSystem>
         objSprites = new List<Sprite>();
         objAnimNames = new List<string>();
         isPlayerAnims = new List<bool>();
+        objSpriteTypes = new List<string>();
         haveChoiceDialogID = null;
 
         string dialog = DataManager.Instance.Get_DialogText(startDialogID);
@@ -149,8 +181,11 @@ public class GameSystem : Singleton<GameSystem>
         objAnimNames.Add(dialogAnim);
         bool isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(startDialogID);
         isPlayerAnims.Add(isPlayerAnim);
-        string dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
-        objSprites.Add(GetCharacterSprite(dialogSprite));
+        string spriteType = DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(startDialogID));
+        objSpriteTypes.Add(spriteType);
+        string dialogSpriteID = DataManager.Instance.Get_DialogIllust(startDialogID);
+        objSprites.Add(Get_SpriteToID(DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(startDialogID)), dialogSpriteID));
+        
 
         if (DataManager.Instance.Get_DialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
@@ -171,8 +206,10 @@ public class GameSystem : Singleton<GameSystem>
             objAnimNames.Add(dialogAnim); 
             isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(nextDialogID);
             isPlayerAnims.Add(isPlayerAnim);
-            dialogSprite = DataManager.Instance.Get_DialogIllust(startDialogID);
-            objSprites.Add(GetCharacterSprite(dialogSprite));
+            spriteType = DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(nextDialogID));
+            objSpriteTypes.Add(spriteType);
+            dialogSpriteID = DataManager.Instance.Get_DialogIllust(nextDialogID);
+            objSprites.Add(Get_SpriteToID(DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(nextDialogID)), dialogSpriteID));
 
             if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
             { this.haveChoiceDialogID = nextDialogID; }
@@ -191,7 +228,8 @@ public class GameSystem : Singleton<GameSystem>
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
-                         Vector2 panelSizeDelta = new Vector2(0, 0);
+                         Vector2 panelSizeDelta = new Vector2(1400f, 180f);
+
                          if (objNameTexts[i] != "" && objNameTexts[i] != null)
                          {
                              objName.text = objNameTexts[i];
@@ -206,14 +244,33 @@ public class GameSystem : Singleton<GameSystem>
 
                          if (objSprites[i] != null) 
                          { 
-                             objImg.sprite = objSprites[i];
-                             objImg.gameObject.SetActive(true);
-                             panelSizeDelta.x = 1100f;
+                             foreach(KeyValuePair<string, Image> keyValuePair in typeByImgDict)
+                             {
+                                 if (objSpriteTypes[i] == keyValuePair.Key)
+                                 {
+                                     typeByImgDict[keyValuePair.Key].sprite = objSprites[i];
+                                     typeByImgDict[keyValuePair.Key].gameObject.SetActive(true);
+                                 }
+                                 else
+                                 {
+                                     typeByImgDict[keyValuePair.Key].gameObject.SetActive(false);
+                                 }
+                             }
+                             if (objSpriteTypes[i] == "Character")
+                             {
+                                 panelSizeDelta.x = 1100f;
+                             }
+                             else
+                             {
+                                 panelSizeDelta.x = 1400f;
+                             }
                          }
                          else
                          {
-                             objImg.gameObject.SetActive(false);
-                             panelSizeDelta.x = 1400f;
+                             foreach (KeyValuePair<string, Image> keyValuePair in typeByImgDict)
+                             {
+                                typeByImgDict[keyValuePair.Key].gameObject.SetActive(false);
+                             }
                          }
 
                          if (objAnimNames[i] != "" && objAnimNames[i] != null)
@@ -389,7 +446,7 @@ public class GameSystem : Singleton<GameSystem>
                     if (DataManager.Instance.Get_ChoiceNeedAbility(_id) == "") 
                     { return; }
 
-                    string type = DataManager.Instance.abilityTypeLanguage[DataManager.Instance.Get_ChoiceNeedAbility(_id)][Convert.ToInt32(LanguageManager.Instance.languageID)];
+                    string type = MainInfo.abilityTypeLanguage[DataManager.Instance.Get_ChoiceNeedAbility(_id)][Convert.ToInt32(LanguageManager.Instance.languageID)];
                     int amount = DataManager.Instance.Get_ChoiceNeedAbilityAmount(_id);
 
                     needAbilityTxt.transform.parent.gameObject.SetActive(true);
@@ -594,19 +651,19 @@ public class GameSystem : Singleton<GameSystem>
 
     public void SetAbilityUI()
     {
-        abilityTxts[0].text = GameManager.Instance.mainInfo.ObservationalAbility.ToString();
-        abilityTxts[1].text = GameManager.Instance.mainInfo.PersuasiveAbility.ToString();
-        abilityTxts[2].text = GameManager.Instance.mainInfo.MentalStrengthAbility.ToString();
+        abilityTxts[0].text = GameManager.Instance.mainInfo.observation.ToString();
+        abilityTxts[1].text = GameManager.Instance.mainInfo.sociability.ToString();
+        abilityTxts[2].text = GameManager.Instance.mainInfo.mentality.ToString();
     }
 
     #endregion
 
     #region Sprite
 
-    private List<Sprite> GetAllCharacterSprite()
+    private List<Sprite> GetAllCharacterSprite(string type)
     {
         List<Sprite> allSprite = new List<Sprite>();
-        foreach(SpriteModule SM in spriteModules)
+        foreach(SpriteModule SM in typeBySpriteDict[type])
         {
             foreach(Sprite sprite in SM.sprites)
             {
@@ -616,9 +673,11 @@ public class GameSystem : Singleton<GameSystem>
         return allSprite;
     }
     
-    public Sprite GetCharacterSprite(string IllustID)
+    public Sprite Get_SpriteToID(string type, string IllustID)
     {
-        List<Sprite> allIllust = GetAllCharacterSprite();
+        if (type == "" || IllustID == "") { return null; }
+
+        List<Sprite> allIllust = GetAllCharacterSprite(type);
         foreach(Sprite sprite in allIllust)
         {
             if(sprite.name == IllustID)
@@ -628,6 +687,7 @@ public class GameSystem : Singleton<GameSystem>
         }
         return null;
     }
+
 
 
     #endregion
