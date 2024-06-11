@@ -82,9 +82,7 @@ public class LoadingManager : Singleton<LoadingManager>
     private IEnumerator Post_ShowNextDayText(float time)
     {
         GameManager.Instance.canInput = false;
-        GameManager.Instance.mainInfo.CurrentActivity += DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
-        if(GameManager.Instance.mainInfo.CurrentActivity > GameManager.Instance.mainInfo.MaxActivity)
-        { GameManager.Instance.mainInfo.CurrentActivity = GameManager.Instance.mainInfo.MaxActivity; }
+        GameManager.Instance.mainInfo.CurrentActivity = DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
 
         // 마지막날 -> 추리하는 날로
         if (GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
@@ -136,13 +134,8 @@ public class LoadingManager : Singleton<LoadingManager>
 
             // 첫날 -> 첫 다이얼로그 실행
             if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter))
-            {
-                GameSystem.Instance.ObjDescOn(null, "101");
-            }
+            { GameSystem.Instance.ObjDescOn(null, "101"); }
         });
-
-
-        
     }
 
     #endregion

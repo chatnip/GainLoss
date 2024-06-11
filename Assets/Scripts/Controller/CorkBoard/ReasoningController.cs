@@ -134,7 +134,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         { RA.SetDropDownOption(ReasoningManager.Instance.reasoningMaterialIDs); }
 
         // 추리 결정을 할 수 있는가
-        if(GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
+        if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.ReasoningDay)
         { decideBtn.interactable = true; }
         else
         { decideBtn.interactable = false; }
