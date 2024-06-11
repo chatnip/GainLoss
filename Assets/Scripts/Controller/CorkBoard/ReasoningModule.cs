@@ -21,6 +21,7 @@ public class ReasoningModule : MonoBehaviour
     {
         foreach (TMP_Text tmp in thisTmpTexts)
         { LanguageManager.Instance.SetLanguageTxt(tmp); }
+        this.gameObject.SetActive(false);
     }
 
     #endregion

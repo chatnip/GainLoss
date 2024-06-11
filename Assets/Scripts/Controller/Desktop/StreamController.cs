@@ -89,6 +89,7 @@ public class StreamController : Singleton<StreamController>
                 else if (panelResultGetTxt.gameObject.activeSelf)
                 {
                     ActiveOff();
+                    ActivityController.Instance.OnEndDayBtn();
                 }
             });
 
@@ -373,8 +374,9 @@ public class StreamController : Singleton<StreamController>
         iDBtn.inputText = script;
         iDBtn.inputExtraText = name;
         iDBtn.inputIsRight = isRight;
-        if (script.Length * 40 < 500f)
-        { iDBtn.inputSizeDelta = new Vector2(script.Length * 40, 100f); }
+
+        if (script.Length * 27 < 500f)
+        { iDBtn.inputSizeDelta = new Vector2(script.Length * 27, 100f); }
         else
         { iDBtn.inputSizeDelta = new Vector2(500f, 100f); }
 

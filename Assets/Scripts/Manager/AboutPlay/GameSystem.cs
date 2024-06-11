@@ -80,9 +80,6 @@ public class GameSystem : Singleton<GameSystem>
         { CG.alpha = 0f; }
         List<TMP_Text> systemTmpT = new List<TMP_Text> { objName, objText, needAbilityTxt, cutsceneTxt };
 
-
-        
-
         // Btns
         objPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -154,7 +151,7 @@ public class GameSystem : Singleton<GameSystem>
         if (DataManager.Instance.Get_DialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
 
-        currentIO.endDialogID = startDialogID;
+        if (currentIO != null) { currentIO.endDialogID = startDialogID; }
         string nextDialogID = DataManager.Instance.Get_NextDialogID(startDialogID);
         if (nextDialogID == null || nextDialogID == "")
         { return; }
@@ -174,7 +171,7 @@ public class GameSystem : Singleton<GameSystem>
             if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
             { this.haveChoiceDialogID = nextDialogID; }
 
-            currentIO.endDialogID = nextDialogID;
+            if (currentIO != null) { currentIO.endDialogID = nextDialogID; }
             nextDialogID = DataManager.Instance.Get_NextDialogID(nextDialogID);
             i++;
             if(nextDialogID == null || nextDialogID == "" || i > 100)
@@ -244,10 +241,16 @@ public class GameSystem : Singleton<GameSystem>
     public void ObjDescOn(InteractObject IO, string startDialogID)
     {
         // Set Base Data
-        if(IO != null && IO.TryGetComponent(out Animator animator)) 
-        { anotherAnimator = animator; }
+        if(IO != null) 
+        {
+            currentIO = IO;
+            if (IO.TryGetComponent(out Animator animator))
+            {
+                anotherAnimator = animator;
+            }
+        }
 
-        currentIO = IO;
+        
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
         GameManager.Instance.canSkipTalking = true;

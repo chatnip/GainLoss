@@ -55,9 +55,10 @@ public class ReasoningManager : Singleton<ReasoningManager>
             {
                 ActiveOff_ConfirmPopup(0.2f);
             });
-
+/*
         Debug.Log("지워야함 -> 모든 소재 얻은 상태 테스트");
         reasoningMaterialIDs = new List<string> { "201", "202", "203", "204", "205", "206", "207", "208", "209" };
+*/
         // 챕터에서 기본으로 얻는 소재 획득
         List<string> getBaseIDs = DataManager.Instance.Get_MaterialIDsByChapter(GameManager.Instance.currentChapter);
         reasoningMaterialIDs.AddRange(getBaseIDs);

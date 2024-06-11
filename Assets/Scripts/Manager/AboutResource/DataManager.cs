@@ -214,6 +214,15 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+
+    // 오브젝트 ID로 해금 추리 ID 가져오기
+    public string Get_VisibleReasoningID(string objectID)
+    {
+        string[] lines = Get_lines(Object_CSV);
+        return Get_String(lines, objectID, "Idx_Object", "Idx_Reason");
+    }
+    
+
     #endregion
 
     #region About Home Object
@@ -498,7 +507,7 @@ public class DataManager : Singleton<DataManager>
 
     #region Reasoning
 
-    // Chapter로 맞는 모든 소재 ID 가져오기
+    // Chapter에 기본으로 주는 모든 소재 ID 가져오기
     public List<string> Get_MaterialIDsByChapter(string chapterID)
     {
         List<string> result = new List<string>();
@@ -541,15 +550,29 @@ public class DataManager : Singleton<DataManager>
     // 소재로 Name 가져오기
     public string Get_ReasoningName(string MaterialID)
     {
-        string[] lines = Get_lines(SChoice_CSV);
+        string[] lines = Get_lines(Material_CSV);
         return Get_String(lines, MaterialID, "Idx_Material", "Name");
     }
     
     // 소재로 Description 가져오기
     public string Get_ReasoningDesc(string MaterialID)
     {
-        string[] lines = Get_lines(SChoice_CSV);
+        string[] lines = Get_lines(Material_CSV);
         return Get_String(lines, MaterialID, "Idx_Material", "Description");
+    }
+
+    // 소재로 루트타입 가져오기
+    public string Get_RootType(string MaterialID)
+    {
+        string[] lines = Get_lines(Material_CSV);
+        return Get_String(lines, MaterialID, "Idx_Material", "RootType");
+    }
+
+    // 소재로 루트타입 점수 가져오기
+    public int Get_RootTypePoint(string MaterialID)
+    {
+        string[] lines = Get_lines(Material_CSV);
+        return Get_Int(lines, MaterialID, "Idx_Material", "RootPoint");
     }
 
     #endregion

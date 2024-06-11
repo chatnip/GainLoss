@@ -266,7 +266,6 @@ public class PlaceManager : Singleton<PlaceManager>
             comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
             btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
         }
-        
     }
 
     #endregion

@@ -1,13 +1,11 @@
 //Refactoring v1.0
 using DG.Tweening;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using static PhoneHardware;
 
 
 public class ActivityController : Singleton<ActivityController>
@@ -35,6 +33,9 @@ public class ActivityController : Singleton<ActivityController>
     [SerializeField] AnimationClip persuasiveAnim;
     [SerializeField] AnimationClip mentalStrengthAnim;
     [SerializeField] AnimationClip goOutsideAnim;
+
+    [Header("=== Btn")]
+    [SerializeField] Button EndDayBtn;
 
     // Other Value
     [HideInInspector] public e_HomeInteractType currentQuestionWindowType;
@@ -131,6 +132,18 @@ public class ActivityController : Singleton<ActivityController>
                     if (GameManager.Instance.mainInfo.CurrentActivity <= 0) { return; }
                     GetAbility_Start(currentQuestionWindowType); 
                 }
+            });
+
+        // Set EndBtn
+        EndDayBtn.TryGetComponent(out RectTransform btnRT);
+        btnRT.anchoredPosition = new Vector2(-300f, 0f);
+        EndDayBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                if (!GameManager.Instance.canInput) { return; }
+                EndDayBtn.TryGetComponent(out RectTransform btnRT);
+                btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
+                Debug.Log("하루 종료");
             });
     }
 
@@ -264,7 +277,7 @@ public class ActivityController : Singleton<ActivityController>
     {
         QuestionWindow_ActiveOff(0.25f);
         yield return new WaitForSeconds(0.26f);
-        StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(e_phoneStateExtra.visitPlace));
+        StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.visitPlace));
     }
 
     #endregion
@@ -306,6 +319,17 @@ public class ActivityController : Singleton<ActivityController>
 
     #endregion
 
+    #region End Day
+
+   
+    public void OnEndDayBtn()
+    {
+        EndDayBtn.TryGetComponent(out RectTransform btnRT);
+        btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
+    }
+
+
+    #endregion
 }
 
 public class QuestionWindowConfig

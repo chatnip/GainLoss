@@ -76,9 +76,8 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         }
 
         // All setting TMP_text
-        Debug.Log("지워야함 -> 모든 추리 요소 보여주기");
         foreach (ReasoningModule RM in AllRM())
-        { RM.SetThisTmp(); RM.isActive = true; }
+        { RM.SetThisTmp(); }
 
         // Btn
         exitBtn.OnClickAsObservable()
@@ -159,6 +158,19 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     #endregion
 
+    #region Set Visible Reasoning
+
+    public void SetVisibleReasoning(string reasoningID)
+    {
+        foreach(ReasoningModule RM in AllRM())
+        {
+            if(RM.thisID == reasoningID)
+            { RM.isActive = true; }
+        }
+    }
+
+    #endregion
+
     #region Zoom
 
     // 줌 인/아웃
@@ -229,7 +241,46 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     public void Deside()
     {
-        
+        // 선택된 모든 소재 ID 가져오기
+        List<string> choosenAllIDs = new List<string>();
+        foreach (ReasoningAnswer RA in answers)
+        {
+            if (RA.thisSelectedMaterialID != "")
+            {
+                Debug.Log(RA.thisSelectedMaterialID);
+                choosenAllIDs.Add(RA.thisSelectedMaterialID);
+            }
+        }
+
+        // 선택된 소재들의 각각의 루트와 점수를 통해 딕셔너리 값 가져오기
+        Dictionary<string, int> rootAndPointDict = new Dictionary<string, int>();
+        foreach(string choosenID in choosenAllIDs)
+        {
+            string root = DataManager.Instance.Get_RootType(choosenID);
+            int rootPoint = DataManager.Instance.Get_RootTypePoint(choosenID);
+
+            if (rootAndPointDict.ContainsKey(root))
+            {
+                rootAndPointDict[root] += rootPoint;
+            }
+            else 
+            {
+                rootAndPointDict.Add(root, rootPoint);
+            }
+        }
+
+        string getChapter = "";
+        int getChapterCount = 0;
+        foreach(KeyValuePair<string, int> keyValuePair in rootAndPointDict)
+        {
+            if(keyValuePair.Value > getChapterCount)
+            {
+                getChapterCount = keyValuePair.Value;
+                getChapter = keyValuePair.Key;
+            }
+        }
+        Debug.Log("획득 Chapter ID : " + getChapter);
+
     }
 
     #endregion

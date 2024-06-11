@@ -22,7 +22,7 @@ public class GameManager : Singleton<GameManager>
 
     public enum e_currentActPart
     {
-        UseActivity, VisitPlace, StreamingTime, EndDay
+        UseActivity, VisitPlace, StreamingTime, EndDay, chapterDay, EndChapter
     }
 
     #endregion

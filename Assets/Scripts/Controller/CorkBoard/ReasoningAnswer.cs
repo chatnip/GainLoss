@@ -1,25 +1,24 @@
 //Refactoring v1.0
-using DG.Tweening;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class ReasoningAnswer : ReasoningModule
 {
     #region Value
 
     [Header("=== Data")]
-    [SerializeField] string thisSelectedMaterialID = "";
+    [SerializeField] public string thisSelectedMaterialID = "";
     [SerializeField] List<string> thisMaterialIDs = new List<string>();
+    [SerializeField] List<string> thisMaterailNames = new List<string>();
     [SerializeField] ReasoningArrow relationRA;
     [SerializeField] ReasoningPhoto relationPT;
 
     [Header("=== Component")]
     [SerializeField] TMP_Dropdown thisDropdown;
+
+    //OtherValue
+    Dictionary<string, string> IDbyNameDict = new Dictionary<string, string>();
 
 
     #endregion
@@ -41,19 +40,31 @@ public class ReasoningAnswer : ReasoningModule
     {
         // Set Base
         thisDropdown.onValueChanged.RemoveAllListeners();
+        thisDropdown.ClearOptions();
         thisMaterialIDs.Clear();
+        thisMaterailNames.Clear();
+        IDbyNameDict.Clear();
 
         // 적용 가능한 추리 소재 ID 모두 찾기
         foreach (string id in DataManager.Instance.Get_MaterialIDs(thisID))
         {
             if (reasoningMaterialIDs.Contains(id))
-            { thisMaterialIDs.Add(id); }
+            {
+                string _id = id;
+                string _name = DataManager.Instance.Get_ReasoningName(id);
+
+                thisMaterialIDs.Add(_id);
+                thisMaterailNames.Add(_name);
+
+                IDbyNameDict.Add(_name, _id);
+            }
         }
 
         // DropDown 옵션 추가
-        thisDropdown.ClearOptions();
-        thisDropdown.AddOptions(thisMaterialIDs);
-        for(int i = 0; i < thisDropdown.options.Count; i++)
+        thisDropdown.AddOptions(thisMaterailNames);
+
+        // 이미 선택했던 옵션이 있다면, 그 옵션이 기본값
+        for (int i = 0; i < thisDropdown.options.Count; i++)
         {
             if (thisDropdown.options[i].text == thisSelectedMaterialID)
             {
@@ -74,7 +85,8 @@ public class ReasoningAnswer : ReasoningModule
 
     private void setSelectedID()
     {
-        thisSelectedMaterialID = thisDropdown.options[thisDropdown.value].text;
+        // 선택된 ID 값 저장
+        thisSelectedMaterialID = IDbyNameDict[thisDropdown.options[thisDropdown.value].text];
     }
 
 

@@ -1,7 +1,4 @@
 //Refactoring v1.0
-using DG.Tweening;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class ReasoningArrow : ReasoningModule
