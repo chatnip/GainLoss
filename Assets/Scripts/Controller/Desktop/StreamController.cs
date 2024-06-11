@@ -283,7 +283,6 @@ public class StreamController : Singleton<StreamController>
 
     public IEnumerator DialogTexting(ScenarioBase scenarioBase)
     {
-        Debug.Log("Play ¼öÁ¤");
         for (int i = 0; i < scenarioBase.Fragments.Count; i++)
         {
             int temp = i;
