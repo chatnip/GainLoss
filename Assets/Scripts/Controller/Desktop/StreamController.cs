@@ -375,10 +375,10 @@ public class StreamController : Singleton<StreamController>
         iDBtn.inputExtraText = name;
         iDBtn.inputIsRight = isRight;
 
-        if (script.Length * 27 < 500f)
-        { iDBtn.inputSizeDelta = new Vector2(script.Length * 27, 100f); }
+        if ((script.Length * 25) + 50 < 500f)
+        { iDBtn.inputSizeDelta = new Vector2((script.Length * 25) + 50, 110f); }
         else
-        { iDBtn.inputSizeDelta = new Vector2(500f, 100f); }
+        { iDBtn.inputSizeDelta = new Vector2(500f, 130f); }
 
         iDBtn.gameObject.SetActive(true);
         sb_IDBtns.Insert(0, iDBtn);

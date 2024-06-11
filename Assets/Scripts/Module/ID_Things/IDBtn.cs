@@ -122,28 +122,30 @@ public class IDBtn : MonoBehaviour
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(0, 0);
             rect.pivot = new Vector2(0, 0);
-            buttonText.alignment = TextAlignmentOptions.CaplineLeft;
-            extraText.alignment = TextAlignmentOptions.BottomLeft;
 
-            extraText.rectTransform.offsetMin = new Vector2(10f, rect.sizeDelta.y * 0.5f);
+            extraText.alignment = TextAlignmentOptions.BottomLeft;
+            buttonText.alignment = TextAlignmentOptions.BaselineLeft;
+
+            extraText.rectTransform.offsetMin = new Vector2(10f, rect.sizeDelta.y * 0.6f);
             extraText.rectTransform.offsetMax = new Vector2(-25f, 0f);
 
             buttonText.rectTransform.offsetMin = new Vector2(25f, 0f);
-            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.5f);
+            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.4f);
         }
         else
         {
             rect.anchorMin = new Vector2(1, 0);
             rect.anchorMax = new Vector2(1, 0);
             rect.pivot = new Vector2(1, 0);
-            buttonText.alignment = TextAlignmentOptions.BottomRight;
-            extraText.alignment = TextAlignmentOptions.CaplineRight;
 
-            extraText.rectTransform.offsetMin = new Vector2(25f, rect.sizeDelta.y * 0.5f);
+            extraText.alignment = TextAlignmentOptions.BottomRight;
+            buttonText.alignment = TextAlignmentOptions.BaselineRight;
+
+            extraText.rectTransform.offsetMin = new Vector2(25f, rect.sizeDelta.y * 0.6f);
             extraText.rectTransform.offsetMax = new Vector2(-10f, 0f);
 
             buttonText.rectTransform.offsetMin = new Vector2(25f, 0f);
-            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.5f);
+            buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.4f);
         }
 
         rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
@@ -158,7 +160,7 @@ public class IDBtn : MonoBehaviour
         BasicInteractBtn.enabled = false;
 
         buttonText.fontSizeMax = 25f;
-        extraText.fontSizeMax = 35f;
+        extraText.fontSizeMax = 33f;
 
         
     }
