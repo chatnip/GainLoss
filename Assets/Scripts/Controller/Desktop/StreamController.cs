@@ -170,19 +170,19 @@ public class StreamController : Singleton<StreamController>
     public void SetScenarioBase(string SDialogID)
     {
         // Set Scenario
-        List<Fragment> fragments = GetSDialogs(SDialogID);
+        List<StreamingFragment> fragments = GetSDialogs(SDialogID);
         ScenarioBase scenario = new(fragments);
         ScenarioBase.Value = scenario;
     }
 
-    public List<Fragment> GetSDialogs(string startDialogID)
+    public List<StreamingFragment> GetSDialogs(string startDialogID)
     {
-        List<Fragment> fragments = new();
+        List<StreamingFragment> fragments = new();
 
         string name = DataManager.Instance.Get_SDialogName(startDialogID);
         string dialog = DataManager.Instance.Get_SDialogText(startDialogID);
         string dialogAnim = DataManager.Instance.Get_SDialogAnim(startDialogID);
-        fragments.Add(new Fragment(name, dialog, dialogAnim));
+        fragments.Add(new StreamingFragment(name, dialog, dialogAnim));
 
         if (DataManager.Instance.Get_SDialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
@@ -199,7 +199,7 @@ public class StreamController : Singleton<StreamController>
             name = DataManager.Instance.Get_SDialogName(nextSDialogID);
             dialog = DataManager.Instance.Get_SDialogText(nextSDialogID);
             dialogAnim = DataManager.Instance.Get_SDialogAnim(nextSDialogID);
-            fragments.Add(new Fragment(name, dialog, dialogAnim));
+            fragments.Add(new StreamingFragment(name, dialog, dialogAnim));
 
             if (DataManager.Instance.Get_SDialogHasChoice(nextSDialogID))
             { this.haveChoiceDialogID = nextSDialogID; }
@@ -229,10 +229,10 @@ public class StreamController : Singleton<StreamController>
             ReasoningManager.Instance.reasoningMaterialIDs.Add(GetMaterialID);
 
             resultTxt.text = ""; // 결과 마린 이야기
-            resultIcon.sprite = GameSystem.Instance.Get_SpriteToID("", ""); // 결과 마린 이미지
+            resultIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 결과 마린 이미지
 
             getThingTxt.text = GetMaterialID; // 추리소재 이름
-            getThingIcon.sprite = GameSystem.Instance.Get_SpriteToID("", ""); // 추리소재 이미지
+            getThingIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 추리소재 이미지
         }
         else
         {
@@ -295,7 +295,7 @@ public class StreamController : Singleton<StreamController>
                 AnimationSetup((SpineAniState)Enum.Parse(typeof(SpineAniState), scenarioBase.Fragments[temp].animationID)); 
             }
 
-            Fragment newFragment = scenarioBase.Fragments[temp];
+            StreamingFragment newFragment = scenarioBase.Fragments[temp];
 
             // Set Speech Bubble
             IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();

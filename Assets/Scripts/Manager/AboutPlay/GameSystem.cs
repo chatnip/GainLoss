@@ -24,22 +24,17 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] Image objImg_obj;
     [SerializeField] Image objImg_screen;
     [SerializeField] Animator anotherAnimator;
-    [SerializeField] float textingSpeed = 20f;
+    [SerializeField] float textingSpeed = 5f;
 
     [Header("=== Stream UI")]
     [SerializeField] Image timeAttackFillImg;
 
     [Header("=== Dialog")]
-    [SerializeField] List<string> objWriteTexts = new List<string>();
-    [SerializeField] List<string> objNameTexts = new List<string>();
-    [SerializeField] List<Sprite> objSprites = new List<Sprite>();
-    [SerializeField] List<string> objSpriteTypes = new List<string>();
-    [SerializeField] List<string> objAnimNames = new List<string>();
-    [SerializeField] List<bool> isPlayerAnims = new List<bool>();
+    [SerializeField] DialogBase currentDialogBase;
+    int dialogCurrentOrder = 0;
 
     InteractObject currentIO;
     Tween objTextingTween;
-    int objWriteTexts_currentOrder = 0;
 
     List<IDisposable> iDisposables = new List<IDisposable>();
 
@@ -162,29 +157,14 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Obj Panel
 
-    public void GetDialogs(string startDialogID)
+    public DialogBase GetDialogs(string startDialogID, bool isTutorialDialog)
     {
-        objWriteTexts = new List<string>();
-        objNameTexts = new List<string>();
-        objSprites = new List<Sprite>();
-        objAnimNames = new List<string>();
-        isPlayerAnims = new List<bool>();
-        objSpriteTypes = new List<string>();
+        List<DialogFragment> dialogFragment = new List<DialogFragment>();
+
         haveChoiceDialogID = null;
 
-        string dialog = DataManager.Instance.Get_DialogText(startDialogID);
-        objWriteTexts.Add(dialog);
-        string dialogSpeaker = DataManager.Instance.Get_DialogSpeaker(startDialogID);
-        objNameTexts.Add(dialogSpeaker);
-        string dialogAnim = DataManager.Instance.Get_DialogAnim(startDialogID);
-        objAnimNames.Add(dialogAnim);
-        bool isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(startDialogID);
-        isPlayerAnims.Add(isPlayerAnim);
-        string spriteType = DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(startDialogID));
-        objSpriteTypes.Add(spriteType);
-        string dialogSpriteID = DataManager.Instance.Get_DialogIllust(startDialogID);
-        objSprites.Add(Get_SpriteToID(DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(startDialogID)), dialogSpriteID));
-        
+        dialogFragment.Add(new DialogFragment(startDialogID));
+
 
         if (DataManager.Instance.Get_DialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
@@ -192,23 +172,12 @@ public class GameSystem : Singleton<GameSystem>
         if (currentIO != null) { currentIO.endDialogID = startDialogID; }
         string nextDialogID = DataManager.Instance.Get_NextDialogID(startDialogID);
         if (nextDialogID == null || nextDialogID == "")
-        { return; }
+        { return new DialogBase(dialogFragment, isTutorialDialog); }
 
         int i = 0;
         while (true)
         {
-            dialog = DataManager.Instance.Get_DialogText(nextDialogID);
-            objWriteTexts.Add(dialog);
-            dialogSpeaker = DataManager.Instance.Get_DialogSpeaker(nextDialogID);
-            objNameTexts.Add(dialogSpeaker);
-            dialogAnim = DataManager.Instance.Get_DialogAnim(nextDialogID);
-            objAnimNames.Add(dialogAnim); 
-            isPlayerAnim = DataManager.Instance.Get_IsPlayerAnimationDialog(nextDialogID);
-            isPlayerAnims.Add(isPlayerAnim);
-            spriteType = DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(nextDialogID));
-            objSpriteTypes.Add(spriteType);
-            dialogSpriteID = DataManager.Instance.Get_DialogIllust(nextDialogID);
-            objSprites.Add(Get_SpriteToID(DataManager.Instance.Get_TypeForIllust(DataManager.Instance.Get_DialogIllust(nextDialogID)), dialogSpriteID));
+            dialogFragment.Add(new DialogFragment(nextDialogID));
 
             if (DataManager.Instance.Get_DialogHasChoice(nextDialogID))
             { this.haveChoiceDialogID = nextDialogID; }
@@ -219,19 +188,29 @@ public class GameSystem : Singleton<GameSystem>
             if(nextDialogID == null || nextDialogID == "" || i > 100)
             { break; }
         }
+        return new DialogBase(dialogFragment, isTutorialDialog);
     }
     
     private Tween SetWrite(int i)
     {
-        return objText.DOText(objWriteTexts[i], objWriteTexts[i].Length / textingSpeed)
+        string _dialog = currentDialogBase.fragments[i].dialog;
+        string _talkingOwn = currentDialogBase.fragments[i].talkingOwn;
+        Sprite _illust = currentDialogBase.fragments[i].illust;
+        string _illustType = currentDialogBase.fragments[i].illustType;
+        string _animID = currentDialogBase.fragments[i].animID;
+        bool _isPlayerAnim = currentDialogBase.fragments[i].isPlayerAnim;
+
+        if (_dialog == "") { _dialog = " . . . . . . . . . "; }
+
+        return objText.DOText(_dialog, _dialog.Length / textingSpeed)
                      .SetEase(Ease.Linear)
                      .OnStart(() =>
                      {
                          Vector2 panelSizeDelta = new Vector2(1400f, 180f);
 
-                         if (objNameTexts[i] != "" && objNameTexts[i] != null)
+                         if (_talkingOwn != "" && _talkingOwn != null)
                          {
-                             objName.text = objNameTexts[i];
+                             objName.text = _talkingOwn;
                              objName.gameObject.SetActive(true);
                              panelSizeDelta.y = 180f;
                          }
@@ -241,13 +220,13 @@ public class GameSystem : Singleton<GameSystem>
                              panelSizeDelta.y = 250f;
                          }
 
-                         if (objSprites[i] != null) 
+                         if (_illust != null) 
                          { 
                              foreach(KeyValuePair<string, Image> keyValuePair in typeByImgDict)
                              {
-                                 if (objSpriteTypes[i] == keyValuePair.Key)
+                                 if (_illustType == keyValuePair.Key)
                                  {
-                                     typeByImgDict[keyValuePair.Key].sprite = objSprites[i];
+                                     typeByImgDict[keyValuePair.Key].sprite = _illust;
                                      typeByImgDict[keyValuePair.Key].gameObject.SetActive(true);
                                  }
                                  else
@@ -255,14 +234,10 @@ public class GameSystem : Singleton<GameSystem>
                                      typeByImgDict[keyValuePair.Key].gameObject.SetActive(false);
                                  }
                              }
-                             if (objSpriteTypes[i] == "Character")
-                             {
-                                 panelSizeDelta.x = 1100f;
-                             }
+                             if (_illustType == "Character")
+                             { panelSizeDelta.x = 1100f; }
                              else
-                             {
-                                 panelSizeDelta.x = 1400f;
-                             }
+                             { panelSizeDelta.x = 1400f; }
                          }
                          else
                          {
@@ -272,18 +247,18 @@ public class GameSystem : Singleton<GameSystem>
                              }
                          }
 
-                         if (objAnimNames[i] != "" && objAnimNames[i] != null)
+                         if (_animID != "" && _animID != null)
                          {
-                             if (isPlayerAnims[i])
+                             if (_isPlayerAnim)
                              {
                                  Debug.Log("playerAnim");
-                                 PlayerController.Instance._animator.Play(objAnimNames[i]);
+                                 PlayerController.Instance._animator.Play(_animID);
                              }
                              else
                              {
                                  Debug.Log("anotherAnim");
                                  PlayerController.Instance.ResetAnime();
-                                 anotherAnimator.Play(objAnimNames[i]);
+                                 anotherAnimator.Play(_animID);
                              }
                          }
                          else
@@ -296,11 +271,11 @@ public class GameSystem : Singleton<GameSystem>
                      })
                      .OnComplete(() =>
                      {
-                         objWriteTexts_currentOrder++;
+                         dialogCurrentOrder++;
                      });
     }
 
-    public void ObjDescOn(InteractObject IO, string startDialogID)
+    public void ObjDescOn(InteractObject IO, string startDialogID, bool isTutorial)
     {
         // Set Base Data
         if(IO != null) 
@@ -322,12 +297,12 @@ public class GameSystem : Singleton<GameSystem>
         // Set Text Data
         objText.text = "";
         objName.text = "";
-        objWriteTexts_currentOrder = 0;
-        GetDialogs(startDialogID);
+        dialogCurrentOrder = 0;
+        this.currentDialogBase = GetDialogs(startDialogID, isTutorial);
 
         // Set Writting
         objPanelBtn.gameObject.SetActive(true);
-        objTextingTween = SetWrite(objWriteTexts_currentOrder);
+        objTextingTween = SetWrite(dialogCurrentOrder);
     }
 
     public void ObjDescSkip()
@@ -335,30 +310,37 @@ public class GameSystem : Singleton<GameSystem>
         // 글인 라이팅 중이면, 바로 완료
         if (DOTween.IsTweening(objText))
         {
-            Debug.Log("라이팅 중");
-            DOTween.Complete(objText);
+            if(currentDialogBase.isTutorial && currentDialogBase.fragments[dialogCurrentOrder].dialog == "")
+            {
+                Debug.Log("is Tutorial");
+            }
+            else
+            {
+                Debug.Log("Skip");
+                DOTween.Complete(objText);
+            }
         }
         else
         {
             // 마지막 라이팅까지 완료가 안되어있다면, 새로운 라이팅 시작
-            if (objWriteTexts.Count > objWriteTexts_currentOrder)
+            if (currentDialogBase.fragments.Count > dialogCurrentOrder)
             {
-                Debug.Log("넘기기");
+                Debug.Log("Next");
                 objText.text = "";
-                SetWrite(objWriteTexts_currentOrder);
+                SetWrite(dialogCurrentOrder);
             }
             // 마지막 라이팅까지 완료가 되어있다면
             else
             {
-                // 선택지를 주는 라이팅 이었다면
+                // 선택지를 주는 라이팅이었다면
                 if (haveChoiceDialogID != null)
                 {
-                    Debug.Log("선택지");
+                    Debug.Log("ChoiceTime");
                     ShowChioceWindow_Object3D(0.25f);
                 }
                 else // 아니라면(기본 라이팅)
                 {
-                    Debug.Log("종료");
+                    Debug.Log("End");
                     ObjDescOff();
                 }
             }
@@ -384,7 +366,7 @@ public class GameSystem : Singleton<GameSystem>
 
         DOTween.Kill(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
-        objWriteTexts_currentOrder = 0;
+        dialogCurrentOrder = 0;
 
         if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
         { PlaceManager.Instance.CheckCanGoHome(); }
@@ -600,7 +582,7 @@ public class GameSystem : Singleton<GameSystem>
         { StreamController.Instance.playSDialogIDs.Add(quarterID); }
 
         // Obj Description Play
-        ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id));
+        ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id), false);
 
         // Object Pooling
         foreach (IDBtn idBtn in choiceBtnList)
@@ -659,7 +641,7 @@ public class GameSystem : Singleton<GameSystem>
 
     #region Sprite
 
-    private List<Sprite> GetAllCharacterSprite(string type)
+    private List<Sprite> GetAll_Illust(string type)
     {
         List<Sprite> allSprite = new List<Sprite>();
         foreach(SpriteModule SM in typeBySpriteDict[type])
@@ -672,11 +654,11 @@ public class GameSystem : Singleton<GameSystem>
         return allSprite;
     }
     
-    public Sprite Get_SpriteToID(string type, string IllustID)
+    public Sprite Get_IllustToID(string type, string IllustID)
     {
         if (type == "" || IllustID == "") { return null; }
 
-        List<Sprite> allIllust = GetAllCharacterSprite(type);
+        List<Sprite> allIllust = GetAll_Illust(type);
         foreach(Sprite sprite in allIllust)
         {
             if(sprite.name == IllustID)
