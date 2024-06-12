@@ -289,6 +289,14 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    // 집 오브젝트의 애니메이션 ID
+    public string Get_HomeObjectAnimID(string homeObjectID)
+    {
+        string[] lines = Get_lines(HomeObject_CSV);
+        return Get_String_NoLanguage(lines, homeObjectID, "Idx_HomeObject", "Idx_Animation");
+    }
+
+
     #endregion
 
     #region About Streaming

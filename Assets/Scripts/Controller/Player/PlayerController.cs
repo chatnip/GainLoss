@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -36,7 +35,6 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] Transform _mainCamera;
     [SerializeField] Transform _npcInteractCamera;
     [SerializeField] public bool isTalking = false;
-    [SerializeField] public AnimatorController _animatorController;
     [SerializeField] public Animator _animator;
 
     // player

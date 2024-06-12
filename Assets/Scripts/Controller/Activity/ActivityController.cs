@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class ActivityController : Singleton<ActivityController>
 {
+
     #region Value
 
     [Header("=== Gage")]
@@ -71,35 +72,11 @@ public class ActivityController : Singleton<ActivityController>
     {
         // Set Dict
         questionWindowConfigDict = new Dictionary<e_HomeInteractType, QuestionWindowConfig>
-        { 
-            {
-                e_HomeInteractType.GoOutside, new QuestionWindowConfig(
-                DataManager.Instance.Get_HomeObjectReconfirm("101"),
-                DataManager.Instance.Get_HomeObjectExtra("101"),
-                goOutsideAnim,
-                0, 0)
-            },
-            { 
-                e_HomeInteractType.Observational, new QuestionWindowConfig(
-                DataManager.Instance.Get_HomeObjectReconfirm("103"),
-                DataManager.Instance.Get_HomeObjectExtra("103"),
-                observationalAnim, 
-                1, 1) 
-            },
-            {
-                e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
-                DataManager.Instance.Get_HomeObjectReconfirm("104"),
-                DataManager.Instance.Get_HomeObjectExtra("104"),
-                mentalStrengthAnim,
-                1, 1)
-            },
-            { 
-                e_HomeInteractType.Persuasive, new QuestionWindowConfig(
-                DataManager.Instance.Get_HomeObjectReconfirm("105"),
-                DataManager.Instance.Get_HomeObjectExtra("105"),
-                persuasiveAnim, 
-                1, 1) 
-            }
+        {
+            { e_HomeInteractType.GoOutside, new QuestionWindowConfig("101", 0, 0) },
+            { e_HomeInteractType.Observational, new QuestionWindowConfig("103", 1, 1) },
+            { e_HomeInteractType.MentalStrength, new QuestionWindowConfig("104", 1, 1) },
+            { e_HomeInteractType.Persuasive, new QuestionWindowConfig("105", 1, 1) }
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
@@ -297,28 +274,26 @@ public class ActivityController : Singleton<ActivityController>
 
     private void GetAbility_Start(e_HomeInteractType HI_Type)
     {
-        GameManager.Instance.canInput = false;
 
         QuestionWindowConfig QWC = questionWindowConfigDict[HI_Type];
-        StartCoroutine(PlayAnim_AboutActivity(QWC.AnimClip));
+        StartCoroutine(PlayAnim_AboutActivity(QWC.AnimClipID));
     }
 
-    public IEnumerator PlayAnim_AboutActivity(AnimationClip AC)
+    public IEnumerator PlayAnim_AboutActivity(string animID)
     {
-        AnimatorState AS = PlayerController.Instance._animatorController.AddMotion(AC);
+        GameManager.Instance.canInput = false;
 
-        yield return new WaitForFixedUpdate();
+        if(animID != "")
+        {
+            PlayerController.Instance._animator.Play(animID);
 
-        PlayerController.Instance._animator.Play(AS.name);
+            yield return new WaitForFixedUpdate();
 
-        yield return new WaitForFixedUpdate();
+            float animLength = PlayerController.Instance._animator.GetCurrentAnimatorStateInfo(0).length;
 
-        float animLength = PlayerController.Instance._animator.GetCurrentAnimatorStateInfo(0).length;
-
-        yield return new WaitForSeconds(animLength);
-
-        //PlayerController.Instance._animatorController.
-
+            yield return new WaitForSeconds(animLength);
+        }
+        
         GameManager.Instance.canInput = true;
         GetAbility_End(currentQuestionWindowType);
     }
@@ -351,16 +326,16 @@ public class QuestionWindowConfig
 {
     public string QuestionContent;
     public string ActivityKind;
-    public AnimationClip AnimClip;
+    public string AnimClipID;
 
     public int DecActivity = 1;
     public int IncAbility = 1;
 
-    public QuestionWindowConfig(string questionContent, string activityKind, AnimationClip animString, int incAbility, int decActivity)
+    public QuestionWindowConfig(string homeObjectID, int incAbility, int decActivity)
     {
-        QuestionContent = questionContent;
-        ActivityKind = activityKind;
-        AnimClip = animString;
+        QuestionContent = DataManager.Instance.Get_HomeObjectReconfirm(homeObjectID);
+        ActivityKind = DataManager.Instance.Get_HomeObjectExtra(homeObjectID);
+        AnimClipID = DataManager.Instance.Get_HomeObjectAnimID(homeObjectID);
         IncAbility = incAbility;
         DecActivity = decActivity;
     }
