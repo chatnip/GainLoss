@@ -2,8 +2,10 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UniRx;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,28 +76,28 @@ public class ActivityController : Singleton<ActivityController>
                 e_HomeInteractType.GoOutside, new QuestionWindowConfig(
                 DataManager.Instance.Get_HomeObjectReconfirm("101"),
                 DataManager.Instance.Get_HomeObjectExtra("101"),
-                "goOutsideAnim",
+                goOutsideAnim,
                 0, 0)
             },
             { 
                 e_HomeInteractType.Observational, new QuestionWindowConfig(
                 DataManager.Instance.Get_HomeObjectReconfirm("103"),
                 DataManager.Instance.Get_HomeObjectExtra("103"),
-                "observationalAnim", 
+                observationalAnim, 
                 1, 1) 
             },
             {
                 e_HomeInteractType.MentalStrength, new QuestionWindowConfig(
                 DataManager.Instance.Get_HomeObjectReconfirm("104"),
                 DataManager.Instance.Get_HomeObjectExtra("104"),
-                "mentalStrengthAnim",
+                mentalStrengthAnim,
                 1, 1)
             },
             { 
                 e_HomeInteractType.Persuasive, new QuestionWindowConfig(
                 DataManager.Instance.Get_HomeObjectReconfirm("105"),
                 DataManager.Instance.Get_HomeObjectExtra("105"),
-                "persuasiveAnim", 
+                persuasiveAnim, 
                 1, 1) 
             }
         };
@@ -213,7 +215,7 @@ public class ActivityController : Singleton<ActivityController>
     {
         Debug.Log("Reconfirm: " + HI_Type.ToString());
         PlayerInputController.Instance.MoveStop();
-        PlayerController.Instance.resetAnime();
+        PlayerController.Instance.ResetAnime();
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
 
@@ -298,18 +300,24 @@ public class ActivityController : Singleton<ActivityController>
         GameManager.Instance.canInput = false;
 
         QuestionWindowConfig QWC = questionWindowConfigDict[HI_Type];
-        StartCoroutine(PlayAnim(QWC.AnimString));
+        StartCoroutine(PlayAnim_AboutActivity(QWC.AnimClip));
     }
 
-    public IEnumerator PlayAnim(string animName)
+    public IEnumerator PlayAnim_AboutActivity(AnimationClip AC)
     {
-        PlayerController.Instance._animator.Play(animName);
+        AnimatorState AS = PlayerController.Instance._animatorController.AddMotion(AC);
+
+        yield return new WaitForFixedUpdate();
+
+        PlayerController.Instance._animator.Play(AS.name);
 
         yield return new WaitForFixedUpdate();
 
         float animLength = PlayerController.Instance._animator.GetCurrentAnimatorStateInfo(0).length;
 
         yield return new WaitForSeconds(animLength);
+
+        //PlayerController.Instance._animatorController.
 
         GameManager.Instance.canInput = true;
         GetAbility_End(currentQuestionWindowType);
@@ -343,16 +351,16 @@ public class QuestionWindowConfig
 {
     public string QuestionContent;
     public string ActivityKind;
-    public string AnimString;
+    public AnimationClip AnimClip;
 
     public int DecActivity = 1;
     public int IncAbility = 1;
 
-    public QuestionWindowConfig(string questionContent, string activityKind, string animString, int incAbility, int decActivity)
+    public QuestionWindowConfig(string questionContent, string activityKind, AnimationClip animString, int incAbility, int decActivity)
     {
         QuestionContent = questionContent;
         ActivityKind = activityKind;
-        AnimString = animString;
+        AnimClip = animString;
         IncAbility = incAbility;
         DecActivity = decActivity;
     }

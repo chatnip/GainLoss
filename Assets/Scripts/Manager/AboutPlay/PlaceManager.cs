@@ -177,7 +177,7 @@ public class PlaceManager : Singleton<PlaceManager>
     {
         GameManager.Instance.canInput = false;
         PlayerInputController.Instance.MoveStop(); 
-        PlayerController.Instance.resetAnime();
+        PlayerController.Instance.ResetAnime();
         PhoneHardware.Instance.PhoneOff();
         currentIdBtn.button.interactable = false;
 

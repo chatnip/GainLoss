@@ -7,7 +7,6 @@ using UniRx;
 using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
-using System.Linq;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -283,13 +282,13 @@ public class GameSystem : Singleton<GameSystem>
                              else
                              {
                                  Debug.Log("anotherAnim");
-                                 PlayerController.Instance.resetAnime();
+                                 PlayerController.Instance.ResetAnime();
                                  anotherAnimator.Play(objAnimNames[i]);
                              }
                          }
                          else
                          {
-                             PlayerController.Instance.resetAnime();
+                             PlayerController.Instance.ResetAnime();
                          }
 
 
@@ -380,7 +379,7 @@ public class GameSystem : Singleton<GameSystem>
         GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
         PlayerController.Instance._animator.SetTrigger("Return");
-        PlayerController.Instance.resetAnime();
+        PlayerController.Instance.ResetAnime();
         ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
 
         DOTween.Kill(objTextingTween);

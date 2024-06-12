@@ -1,6 +1,5 @@
+using UnityEditor.Animations;
 using UnityEngine;
-using System.Collections;
-using Unity.VisualScripting;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -33,38 +32,12 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
 
-    /*
-    [Header("Cinemachine")]
-    [Tooltip("카메라가 따라갈 시네머신 가상 카메라에 설정된 추적 대상")]
-    public GameObject CinemachineCameraTarget;
-
-    [Tooltip("카메라를 얼마나 위로 올릴 수 있는지")]
-    public float TopClamp = 10.0f;
-
-    [Tooltip("카메라를 얼마나 아래로 내릴 수 있는지")]
-    public float BottomClamp = -10.0f;
-
-    [Tooltip("카메라 위치 미세 조정")]
-    public float CameraAngleOverride = 0.0f;
-
-    [Tooltip("카메라 위치 고정 여부")]
-    public bool LockCameraPosition = false;
-    */
-
     [SerializeField] CharacterController _controller;
     [SerializeField] Transform _mainCamera;
     [SerializeField] Transform _npcInteractCamera;
     [SerializeField] public bool isTalking = false;
+    [SerializeField] public AnimatorController _animatorController;
     [SerializeField] public Animator _animator;
-
-    // [SerializeField] GameObject interactCanvas;
-    // [SerializeField] private InputAction interactInput,cancelInput;
-
-    private const float _threshold = 0.01f;
-
-    // cinemachine
-    private float _cinemachineTargetYaw;
-    private float _cinemachineTargetPitch;
 
     // player
     private float _speed;
@@ -72,27 +45,10 @@ public class PlayerController : Singleton<PlayerController>
     private float _targetRotation = 0.0f;
     private float _rotationVelocity;
     private float _verticalVelocity;
-    // private float _terminalVelocity = 53.0f;
-
-    // timeout deltatime
-    // private float _jumpTimeoutDelta;
-    // private float _fallTimeoutDelta;
 
     // animation IDs
     private int _animIDSpeed;
-    private int _animIDGrounded;
-    private int _animIDJump;
-    private int _animIDFreeFall;
     private int _animIDMotionSpeed;
-
-    // Keyboard Mouse
-    private bool IsCurrentDeviceMouse
-    {
-        get
-        {
-            return PlayerInputController.Instance._input.currentControlScheme == "KeyboardMouse";
-        }
-    }
 
     #endregion
 
@@ -103,27 +59,21 @@ public class PlayerController : Singleton<PlayerController>
         base.Awake();
         AssignAnimationIDs();
         ft_resetPlayerSpot();
-    }
-
-    private void Start()
-    {
-        //AssignAnimationIDs();
-        //ft_resetPlayerSpot();
+        _animator.SetFloat(_animIDMotionSpeed, 1f);
     }
 
     private void FixedUpdate()
     {
-        
         GroundedCheck();
         if (!GameManager.Instance.canInput) { return; }
 
         if(PlayerInputController.Instance.CanMove && _controller.enabled) Move();
-        if(isTalking) setOriginalAnimation();
+        if(isTalking) SetOriginalAnimation();
 
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
             !_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
-            resetAnime();
+            ResetAnime();
         }
     }
 
@@ -143,7 +93,6 @@ public class PlayerController : Singleton<PlayerController>
     private void AssignAnimationIDs()
     {
         _animIDSpeed = Animator.StringToHash("Speed");
-        _animIDFreeFall = Animator.StringToHash("FreeFall");
         _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
     }
 
@@ -229,7 +178,7 @@ public class PlayerController : Singleton<PlayerController>
         _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
 
-    public void resetAnime()
+    public void ResetAnime()
     {
         if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
@@ -243,8 +192,7 @@ public class PlayerController : Singleton<PlayerController>
         
     }
 
-
-    private void setOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
+    private void SetOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
     {
         if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
@@ -255,66 +203,4 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    public void setOnNpcInteractCamera(GameObject targetGO)
-    {
-        _npcInteractCamera.gameObject.SetActive(true);
-        this.transform.LookAt(new Vector3(targetGO.transform.position.x, this.transform.position.y, targetGO.transform.position.z));
-        _npcInteractCamera.LookAt(targetGO.transform.position + new Vector3(0, 1.6f, 0));
-    }
-    public void setOffNpcInteractCamera()
-    {
-        _npcInteractCamera.gameObject.SetActive(false);
-    }
-
-    
-
-    /*
-    private void CameraRotation()
-    {
-        // 상호작용 중이면 카메라를 잠금
-        LockCameraPosition = _input.interactMode.Value;
-
-        // 입력이 있고 카메라 위치가 고정되지 않은 경우
-        if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
-        {
-            float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-            _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-            _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
-        }
-
-        // 회전을 고정하여 값이 360도로 제한되도록 함
-        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-        CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
-    }
-    
-
-    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
-    {
-        if (lfAngle < -360f) lfAngle += 360f;
-        if (lfAngle > 360f) lfAngle -= 360f;
-        return Mathf.Clamp(lfAngle, lfMin, lfMax);
-    }
-    */
-
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        other.TryGetComponent(out IInteract interactContianer);
-        if (interactContianer != null)
-        {
-            PlayerInputController.Instance.SetInteract(interactContianer);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        other.TryGetComponent(out IInteract interactContianer);
-        if (PlayerInputController.Instance.AlreadyHaveInteract(interactContianer))
-        {
-            PlayerInputController.Instance.SetInteract(null);
-        }
-    }
-    */
 }

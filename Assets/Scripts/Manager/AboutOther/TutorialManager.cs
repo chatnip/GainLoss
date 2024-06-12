@@ -108,7 +108,7 @@ public class TutorialManager : Singleton<TutorialManager>
             .OnStart(() =>
             {
                 PlayerInputController.MoveStop(); 
-                PlayerController.Instance.resetAnime();
+                PlayerController.Instance.ResetAnime();
             })
             .OnComplete(() =>
             {

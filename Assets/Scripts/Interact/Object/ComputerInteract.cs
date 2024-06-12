@@ -26,7 +26,7 @@ public class ComputerInteract : InteractObject
         quarterViewCamera.SetActive(false);
         ActivityController.Instance.gameObject.SetActive(false);
         PlayerInputController.Instance.MoveStop();
-        PlayerController.Instance.resetAnime();
+        PlayerController.Instance.ResetAnime();
 
         screenObject.SetActive(true);
         screenViewCamera.SetActive(true);

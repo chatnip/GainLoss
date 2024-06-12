@@ -64,7 +64,7 @@ public class PhoneHardware : Singleton<PhoneHardware>
         GameManager.Instance.canInput = false;
 
         PlayerInputController.Instance.MoveStop();
-        PlayerController.Instance.resetAnime();
+        PlayerController.Instance.ResetAnime();
 
         PlayerInputController.Instance.SetSectionBtns(null, null);
 
