@@ -56,7 +56,7 @@ public class GameManager : Singleton<GameManager>
         GameSystem.Instance.Offset();
         PlaceManager.Instance.Offset();
         ReasoningManager.Instance.Offset();
-        //MainOptionManager.Instance.Offset();
+        PhoneOptionManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
 

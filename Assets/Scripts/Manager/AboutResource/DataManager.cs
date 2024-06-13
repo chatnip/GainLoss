@@ -12,6 +12,7 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset Chapter_CSV;
     [SerializeField] TextAsset Location_CSV;
     [SerializeField] TextAsset HomeObject_CSV;
+    [SerializeField] TextAsset PhoneOption_CSV;
     [SerializeField] TextAsset Object_CSV;
     [SerializeField] TextAsset Dialog_CSV;
     [SerializeField] TextAsset Choice_CSV;
@@ -296,6 +297,24 @@ public class DataManager : Singleton<DataManager>
         return Get_String_NoLanguage(lines, homeObjectID, "Idx_HomeObject", "Idx_Animation");
     }
 
+
+    #endregion
+
+    #region 
+
+    // 폰 ID로 이름 가져오기
+    public string Get_PhoneOptionName(string phoneOptionID)
+    {
+        string[] lines = Get_lines(PhoneOption_CSV);
+        return Get_String(lines, phoneOptionID, "Idx_PhoneOption", "Name");
+    }
+
+    // 폰 Desc 가져오기
+    public string Get_PhoneOptionDesc(string phoneOptionID)
+    {
+        string[] lines = Get_lines(PhoneOption_CSV);
+        return Get_String(lines, phoneOptionID, "Idx_PhoneOption", "Idx_Desc");
+    }
 
     #endregion
 

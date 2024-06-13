@@ -66,10 +66,9 @@ public class PhoneHardware : Singleton<PhoneHardware>
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
 
-        PlayerInputController.Instance.SetSectionBtns(null, null);
+        PhoneSoftware.Instance.ResetMapIcons();
 
         Sequence seq = DOTween.Sequence();
-
 
         PhoneStateExtra = pse;
         circleEffectRT.sizeDelta = Vector2.zero;
@@ -112,6 +111,19 @@ public class PhoneHardware : Singleton<PhoneHardware>
             {
                 PhoneOn();
 
+                // 상황에 맞는 앱 켜지게
+                foreach (KeyValuePair<e_phoneStateExtra, GameObject> keyValuePair in turnOnExtraGODict)
+                {
+                    if (keyValuePair.Value == turnOnExtraGODict[PhoneStateExtra])
+                    {
+                        keyValuePair.Value.gameObject.SetActive(true); 
+                    }
+                    else
+                    { 
+                        keyValuePair.Value.gameObject.SetActive(false); 
+                    }
+                }
+
                 waveRT.gameObject.SetActive(true);
                 waveRT.sizeDelta = Vector2.zero;
 
@@ -125,28 +137,17 @@ public class PhoneHardware : Singleton<PhoneHardware>
             }));
         seq.Join(WImg.DOFade(0, 0.5f)).SetEase(Ease.OutCubic);
 
-
-
-        seq.Append(CEImg.DOFade(0, 0.5f)
+        seq.Append(CEImg.DOFade(0, 0.1f).SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                circleEffectRT.gameObject.SetActive(false);
+                circleEffectRT.gameObject.SetActive(false); 
+                
                 GameManager.Instance.canInput = true;
+
+                if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf)
+                { PhoneSoftware.Instance.OpenMap(); }
             }));
 
-        // 상황에 맞는 프로그램 켜기
-        foreach(KeyValuePair<e_phoneStateExtra, GameObject> keyValuePair in turnOnExtraGODict)
-        {
-            if(keyValuePair.Value == turnOnExtraGODict[PhoneStateExtra])
-            { keyValuePair.Value.gameObject.SetActive(true); }
-            else
-            { keyValuePair.Value.gameObject.SetActive(false); }
-        }
-
-        yield return new WaitForEndOfFrame();
-
-        if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf) 
-        { PhoneSoftware.Instance.OpenMap(); }
     }
     
     #endregion

@@ -17,10 +17,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
     [SerializeField] public GameObject optionScreen;
 
     [Header("=== Main Btn")]
-    [SerializeField] Button resumeBtn;
-    [SerializeField] Button restartBtn;
-    [SerializeField] Button titleBtn;
-    [SerializeField] Button quitBtn;
     [SerializeField] Button phoneExitBtn;
 
     [Header("=== visit Place Btn")]
@@ -109,23 +105,28 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
 
     #region About Map
 
-    public void OpenMap()
+    public void ResetMapIcons()
     {
-        GameManager.Instance.canInput = false;
-        this.OpenMapSeq = DOTween.Sequence();
-
-        //List<List<Button>> btns = new List<List<Button>>() { PlaceBtns };
-        //PlayerInputController.Instance.SetSectionBtns(btns, this);
-
-        OpenMapSeq.AppendInterval(2f);
         for (int i = 0; i < PlaceBtns.Count; i++)
         {
             PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
             PlaceBtns[i].TryGetComponent(out CanvasGroup BtnCG);
 
             BtnRT.sizeDelta = Vector2.zero;
-            DOTween.Kill(BtnRT.localScale);
             BtnCG.alpha = 0.0f;
+        }
+    }
+    public void OpenMap()
+    {
+        GameManager.Instance.canInput = false;
+        this.OpenMapSeq = DOTween.Sequence();
+
+        for (int i = 0; i < PlaceBtns.Count; i++)
+        {
+            PlaceBtns[i].TryGetComponent(out RectTransform BtnRT);
+            PlaceBtns[i].TryGetComponent(out CanvasGroup BtnCG);
+
+            DOTween.Kill(BtnRT.localScale);
 
             OpenMapSeq.Append(BtnRT.DOSizeDelta(Vector2.one * 300, 0.2f)
                 .SetEase(Ease.OutBack));
@@ -206,6 +207,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
                     // Main System
                     ZoomOutPlaceMap(0f);
                     ClosePopup(0f);
+
                     PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
                     GameManager.Instance.currentActPart = GameManager.e_currentActPart.VisitPlace;
 
@@ -219,8 +221,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
 
         else if (PhoneHardware.Instance.PhoneStateExtra == PhoneHardware.e_phoneStateExtra.option)
         {
-            //popupNameTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
-            //popupDescTxt.text = DataManager.Instance.PhoneOptionAppCSVDatas[LanguageManager.Instance.languageTypeAmount + LanguageManager.Instance.languageNum][currentIdBtn.buttonID].ToString();
+            popupNameTxt.text = DataManager.Instance.Get_PhoneOptionName(currentIdBtn.buttonID);
+            popupDescTxt.text = DataManager.Instance.Get_PhoneOptionDesc(currentIdBtn.buttonID);
 
             cancelIDis = popupCancelBtn.OnClickAsObservable()
                 .Subscribe(btn =>
@@ -238,7 +240,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
                     if (!GameManager.Instance.canInput) { return; }
 
                     // Main System
-                    MainOptionManager.Instance.mainOptionAppPlaysDict[currentIdBtn]();
+                    PhoneOptionManager.Instance.DoPhoneOption();
                     ClosePopup(0f);
 
                     foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
@@ -261,6 +263,12 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
         popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
             .OnStart(() => { GameManager.Instance.canInput = false; })
             .OnComplete(() => { GameManager.Instance.canInput = true; });
+
+        #region Visit
+
+        ZoomOutPlaceMap(0);
+
+        #endregion
     }
 
 

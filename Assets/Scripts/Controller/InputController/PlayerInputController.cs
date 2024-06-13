@@ -187,16 +187,20 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if(!GameManager.Instance.canInput) { return; }
 
         // 불가능 상황
-        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf &&
+        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf ||
             StreamController.Instance.gameObject.activeSelf) 
         { Debug.Log("can Input"); return; }
 
+        // 기타
+        ActivityController.Instance.QuestionWindow_ActiveOff(0f);
 
-        // 컴퓨터만 켜져 있을 시 (방송 등 앱이 켜져있으면 불가능)
+
+        // 컴퓨터이 켜져 있을 시
         if (DesktopController.Instance.DesktopCamera.gameObject.activeSelf)
         {
             DesktopController.Instance.TurnOff(); Debug.Log("Desktop Off");
         }
+        // 추리 코르크 보드가 켜져있을 때
         else if (ReasoningController.Instance.gameObject.activeSelf)
         {
             ReasoningController.Instance.ActiveOff(0.5f);

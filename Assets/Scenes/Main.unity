@@ -13579,7 +13579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonID: PA01
+  buttonID: 001
   buttonType: 0
   rect: {fileID: 711289628}
   button: {fileID: 711289629}
@@ -15524,10 +15524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visitPlaceScreen: {fileID: 192906982}
   optionScreen: {fileID: 901709029}
-  resumeBtn: {fileID: 1151261512}
-  restartBtn: {fileID: 711289629}
-  titleBtn: {fileID: 1642824629}
-  quitBtn: {fileID: 1487707110}
   phoneExitBtn: {fileID: 1543515386}
   PlaceBtns:
   - {fileID: 444339178}
@@ -19387,7 +19383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonID: PA00
+  buttonID: 000
   buttonType: 0
   rect: {fileID: 1151261511}
   button: {fileID: 1151261512}
@@ -21270,7 +21266,7 @@ GameObject:
   - component: {fileID: 1271768334}
   - component: {fileID: 1271768335}
   m_Layer: 0
-  m_Name: MainOptionManager
+  m_Name: PhoneOptionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21300,7 +21296,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1271768333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd89f0f38eec684a9601d8defe794c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d0bd0e54a31f94baf9785c8881ecf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainOptionAppIDBtns:
@@ -21308,6 +21304,7 @@ MonoBehaviour:
   - {fileID: 711289633}
   - {fileID: 1642824633}
   - {fileID: 1487707114}
+  currentPhoneOptionID: 
 --- !u!1 &1273218131
 GameObject:
   m_ObjectHideFlags: 0
@@ -26498,7 +26495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonID: PA03
+  buttonID: 003
   buttonType: 0
   rect: {fileID: 1487707109}
   button: {fileID: 1487707110}
@@ -29707,7 +29704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2f68ce98c6e4144b6cdca19c4f5fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonID: PA02
+  buttonID: 002
   buttonType: 0
   rect: {fileID: 1642824628}
   button: {fileID: 1642824629}
@@ -33639,6 +33636,7 @@ MonoBehaviour:
   Chapter_CSV: {fileID: 4900000, guid: a26001f4b2b61214b956fa46087e1385, type: 3}
   Location_CSV: {fileID: 4900000, guid: a198831085688a3428977d7b98637259, type: 3}
   HomeObject_CSV: {fileID: 4900000, guid: dada1824cc6a2d448bde0cbcce63e99e, type: 3}
+  PhoneOption_CSV: {fileID: 4900000, guid: db1573de92391ec4f8fca9bf71e742f0, type: 3}
   Object_CSV: {fileID: 4900000, guid: a92ec4159f014ea4998f7bc46cfa3e29, type: 3}
   Dialog_CSV: {fileID: 4900000, guid: 9cbd370f0f1f1d64ab18c46a3e78464e, type: 3}
   Choice_CSV: {fileID: 4900000, guid: 43f6062b105d44a45993fe040d9e16cd, type: 3}

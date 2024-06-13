@@ -175,7 +175,6 @@ public class PlaceManager : Singleton<PlaceManager>
 
     public void StartGoingSomewhereLoading(float delay)
     {
-        GameManager.Instance.canInput = false;
         PlayerInputController.Instance.MoveStop(); 
         PlayerController.Instance.ResetAnime();
         PhoneHardware.Instance.PhoneOff();
@@ -186,6 +185,9 @@ public class PlaceManager : Singleton<PlaceManager>
 
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
     {
+        yield return new WaitForEndOfFrame();
+        GameManager.Instance.canInput = false;
+
         // Set Loading Canvas
         currentPlaceTxt.text = 
             $"\"{DataManager.Instance.Get_LocationName(idBtn.buttonID)}\"";
