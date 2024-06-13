@@ -102,9 +102,9 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         thisCG.alpha = 0f;
         this.gameObject.SetActive(false);
 
-        Debug.Log("Test");
-        foreach(ReasoningModule RM in AllRM())
-        { RM.isActive = true; }
+        //Debug.Log("Test");
+        //foreach(ReasoningModule RM in AllRM())
+        //{ RM.isActive = true; }
     }
 
     protected override void Awake()

@@ -67,7 +67,7 @@ public class GameManager : Singleton<GameManager>
         DesktopController.Instance.Offset();
         StreamController.Instance.Offset();
 
-        SetInteractionObjects.Instance.Offset();
+        InteractObjectBtnController.Instance.Offset();
         ObjectPooling.Instance.Offset();
 
     }

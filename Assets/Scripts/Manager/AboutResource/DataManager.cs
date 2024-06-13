@@ -300,7 +300,7 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-    #region 
+    #region PhoneOption
 
     // 폰 ID로 이름 가져오기
     public string Get_PhoneOptionName(string phoneOptionID)
@@ -540,7 +540,7 @@ public class DataManager : Singleton<DataManager>
     }
     #endregion
 
-    #region Reasoning
+    #region Reasoning & Material
 
     // Chapter에 기본으로 주는 모든 소재 ID 가져오기
     public List<string> Get_MaterialIDsByChapter(string chapterID)

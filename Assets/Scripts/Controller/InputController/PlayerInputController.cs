@@ -189,7 +189,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         // 불가능 상황
         if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf ||
             StreamController.Instance.gameObject.activeSelf) 
-        { Debug.Log("can Input"); return; }
+        { Debug.Log("can't Input"); return; }
 
         // 기타
         ActivityController.Instance.QuestionWindow_ActiveOff(0f);

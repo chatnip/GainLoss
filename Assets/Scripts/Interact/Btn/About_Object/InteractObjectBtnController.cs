@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SetInteractionObjects : Singleton<SetInteractionObjects>
+public class InteractObjectBtnController : Singleton<InteractObjectBtnController>
 {
     #region Value
 
@@ -38,9 +38,9 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
             activeInteractionGOs.Add(OB.gameObject);
 
-            ObjectInteractionButtonGenerator.Instance.ObPooling(OB.gameObject, activeInteractionGOs);
+            InteractObjectBtnGenerator.Instance.ObPooling(OB.gameObject, activeInteractionGOs);
 
-            if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
+            if (InteractObjectBtnGenerator.Instance.SectionIsThis)
             { 
                 /*PlayerInputController.Instance.SetSectionBtns(
                     ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
@@ -59,9 +59,9 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
 
             activeInteractionGOs.Remove(OB.gameObject);
 
-            ObjectInteractionButtonGenerator.Instance.SetActiveBtns(activeInteractionGOs);
+            InteractObjectBtnGenerator.Instance.SetActiveBtns(activeInteractionGOs);
 
-            if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
+            if (InteractObjectBtnGenerator.Instance.SectionIsThis)
             {
                 /*PlayerInputController.Instance.SetSectionBtns(
                     ObjectInteractionButtonGenerator.Instance.SetSectionBtns(), 
@@ -78,7 +78,7 @@ public class SetInteractionObjects : Singleton<SetInteractionObjects>
     {
         sphereCollider.enabled = false;
         activeInteractionGOs.Clear();
-        ObjectInteractionButtonGenerator.Instance.SetActiveBtns(activeInteractionGOs);
+        InteractObjectBtnGenerator.Instance.SetActiveBtns(activeInteractionGOs);
     }
     public void SetOn_InteractiveOB()
     {

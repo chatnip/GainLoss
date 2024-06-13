@@ -28,6 +28,11 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] TMP_Text HUD_currentPlactTxt;
     [SerializeField] Button comebackHomeBtn;
 
+    [Header("=== Get Content")]
+    [SerializeField] RectTransform getReasoningContentRT;
+    [SerializeField] TMP_Text getReasoningContentNameTxt;
+    [SerializeField] TMP_Text getReasoningContentDescTxt;
+
     [Header("=== Place Components")]
     [SerializeField] List<IDBtn> placeBtnList = new();
     [SerializeField] List<PlaceSet> placeSetList = new();
@@ -38,6 +43,9 @@ public class PlaceManager : Singleton<PlaceManager>
     [SerializeField] public List<InteractObject> needInteractIOs = new List<InteractObject>();
    
     [SerializeField] IDBtn currentIdBtn;
+
+    //Other Value
+    Sequence getReasoningContentSeq;
 
     #endregion
 
@@ -117,6 +125,7 @@ public class PlaceManager : Singleton<PlaceManager>
         { placeIdBtnGODict.Add(placeBtnList[i], placeSetList[i]); }
 
         // Spawn Room
+        getReasoningContentRT.anchoredPosition = new Vector2(getReasoningContentRT.sizeDelta.x, 0);
         SetCurrent3DMap(placeBtnList[0]); 
     }
 
@@ -140,8 +149,6 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeDict.Value.MapGO.transform.position = new Vector3(0f, 0f, 0f);
                 mainCamera.backgroundColor = placeDict.Value.BGColor;
 
-
-                Debug.Log("Spawn Map Object ( No Home )"); 
                 if (placeDict.Key != placeBtnList[0])
                 {
                     // 방송 시작, 끝 다이얼로그 ID 저장
@@ -166,7 +173,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Reset
         PlayerController.Instance.ft_resetPlayerSpot();
-        SetInteractionObjects.Instance.SetOn_InteractiveOB();
+        InteractObjectBtnController.Instance.SetOn_InteractiveOB();
     }
 
     #endregion
@@ -212,7 +219,7 @@ public class PlaceManager : Singleton<PlaceManager>
         yield return new WaitForSeconds(delay);
 
         // Interact Objects -> Off
-        SetInteractionObjects.Instance.SetOff_InteractiveOB();
+        InteractObjectBtnController.Instance.SetOff_InteractiveOB();
 
         // Desc Panel -> Off
         GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
@@ -267,6 +274,30 @@ public class PlaceManager : Singleton<PlaceManager>
             comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
             btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
         }
+    }
+
+    public void GetReasoningContent(string materialID)
+    {
+        if (getReasoningContentSeq == null)
+        { 
+            getReasoningContentSeq = DOTween.Sequence();
+            getReasoningContentSeq.OnComplete(() => { getReasoningContentSeq = null; });
+        }
+
+        string name = DataManager.Instance.Get_ReasoningName(materialID);
+        string desc = DataManager.Instance.Get_ReasoningDesc(materialID);
+
+        Debug.Log(name);
+        Debug.Log(desc);
+
+        getReasoningContentSeq.Append(getReasoningContentRT.DOAnchorPos(new Vector2(0, 0), 1f)
+                .OnStart(() =>
+                {
+                    getReasoningContentNameTxt.text = name;
+                    getReasoningContentDescTxt.text = desc;
+                }));
+        getReasoningContentSeq.AppendInterval(1f); 
+        getReasoningContentSeq.Append(getReasoningContentRT.DOAnchorPos(new Vector2(getReasoningContentRT.sizeDelta.x, 0), 1f));
     }
 
     #endregion

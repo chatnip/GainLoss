@@ -201,8 +201,8 @@ public class ActivityController : Singleton<ActivityController>
         GameManager.Instance.canInteractObject = false;
 
         // Exp
-        if (ObjectInteractionButtonGenerator.Instance.SectionIsThis)
-        { ObjectInteractionButtonGenerator.Instance.SetOnOffInteractObjectBtn(); }
+        if (InteractObjectBtnGenerator.Instance.SectionIsThis)
+        { InteractObjectBtnGenerator.Instance.SetOnOffInteractObjectBtn(); }
         
         // set Txt
         if(currentQuestionWindowType == e_HomeInteractType.GoOutside)

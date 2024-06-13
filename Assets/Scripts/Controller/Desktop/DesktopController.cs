@@ -134,6 +134,8 @@ public class DesktopController : Singleton<DesktopController>
 
         // Black Screen
         BlackScreen.gameObject.SetActive(true);
+        if (DOTween.IsTweening(BlackScreen)) { DOTween.Kill(BlackScreen); }
+
         BlackScreen.color = Color.black;
         BlackScreen.DOFade(0, 1)
             .SetEase(Ease.InSine)

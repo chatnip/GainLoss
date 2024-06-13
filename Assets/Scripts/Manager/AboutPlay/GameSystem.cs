@@ -275,7 +275,7 @@ public class GameSystem : Singleton<GameSystem>
                      });
     }
 
-    public void ObjDescOn(InteractObject IO, string startDialogID, bool isTutorial)
+    public void ObjDescOn(InteractObject IO, string startDialogID, bool isTutorial = false)
     {
         // Set Base Data
         if(IO != null) 
@@ -292,7 +292,7 @@ public class GameSystem : Singleton<GameSystem>
         GameManager.Instance.canInteractObject = false;
         GameManager.Instance.canSkipTalking = true;
         PlayerInputController.Instance.MoveStop(); 
-        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(false);
+        InteractObjectBtnGenerator.Instance.SetOnOffAllBtns(false);
 
         // Set Text Data
         objText.text = "";
@@ -362,7 +362,7 @@ public class GameSystem : Singleton<GameSystem>
         PlayerInputController.Instance.CanMove = true;
         PlayerController.Instance._animator.SetTrigger("Return");
         PlayerController.Instance.ResetAnime();
-        ObjectInteractionButtonGenerator.Instance.SetOnOffAllBtns(true);
+        InteractObjectBtnGenerator.Instance.SetOnOffAllBtns(true);
 
         DOTween.Kill(objTextingTween);
         objPanelBtn.gameObject.SetActive(false);
@@ -572,9 +572,13 @@ public class GameSystem : Singleton<GameSystem>
         foreach (IDisposable iDis in iDisposables) { iDis.Dispose(); }
 
         // Get Reasoning Contents
+
         string contentID = DataManager.Instance.Get_ReasoningMaterial(_id);
         if (contentID != "")
-        { ReasoningManager.Instance.reasoningMaterialIDs.Add(contentID); }
+        { 
+            ReasoningManager.Instance.reasoningMaterialIDs.Add(contentID);
+            PlaceManager.Instance.GetReasoningContent(contentID);
+        }
 
         // Get Stream Quarter
         string quarterID = DataManager.Instance.Get_SDialogByChoice(_id);
@@ -582,7 +586,7 @@ public class GameSystem : Singleton<GameSystem>
         { StreamController.Instance.playSDialogIDs.Add(quarterID); }
 
         // Obj Description Play
-        ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id), false);
+        ObjDescOn(currentIO, DataManager.Instance.Get_NextDialogByChoice(_id));
 
         // Object Pooling
         foreach (IDBtn idBtn in choiceBtnList)

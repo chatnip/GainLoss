@@ -105,7 +105,7 @@ public class PhoneHardware : Singleton<PhoneHardware>
         seq.Append(bellRT.DOLocalRotate(new Vector3(0.0f, 0.0f, 0.0f), 0.1f, RotateMode.FastBeyond360)
             .SetEase(Ease.OutBack));
 
-        seq.AppendInterval(0.5f);
+        seq.AppendInterval(0.2f);
         seq.Append(bellRT.DOSizeDelta(Vector2.zero, 0.1f)
             .OnComplete(() =>
             {
@@ -115,13 +115,9 @@ public class PhoneHardware : Singleton<PhoneHardware>
                 foreach (KeyValuePair<e_phoneStateExtra, GameObject> keyValuePair in turnOnExtraGODict)
                 {
                     if (keyValuePair.Value == turnOnExtraGODict[PhoneStateExtra])
-                    {
-                        keyValuePair.Value.gameObject.SetActive(true); 
-                    }
+                    { keyValuePair.Value.gameObject.SetActive(true); }
                     else
-                    { 
-                        keyValuePair.Value.gameObject.SetActive(false); 
-                    }
+                    { keyValuePair.Value.gameObject.SetActive(false); }
                 }
 
                 waveRT.gameObject.SetActive(true);
@@ -130,12 +126,12 @@ public class PhoneHardware : Singleton<PhoneHardware>
                 bellRT.gameObject.SetActive(false);
             }));
         
-        seq.Append(waveRT.DOSizeDelta(Vector2.one * 200, 0.5f).SetEase(Ease.OutCubic)
+        seq.Append(waveRT.DOSizeDelta(Vector2.one * 200, 0.25f).SetEase(Ease.OutCubic)
             .OnComplete(() =>
             {
                 waveRT.gameObject.SetActive(false);
             }));
-        seq.Join(WImg.DOFade(0, 0.5f)).SetEase(Ease.OutCubic);
+        seq.Join(WImg.DOFade(0, 0.25f)).SetEase(Ease.OutCubic);
 
         seq.Append(CEImg.DOFade(0, 0.1f).SetEase(Ease.Linear)
             .OnComplete(() =>

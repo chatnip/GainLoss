@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Unity.VisualScripting;
 
-public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButtonGenerator>
+public class InteractObjectBtnGenerator : Singleton<InteractObjectBtnGenerator>
 {
     #region Value
 
@@ -29,6 +29,15 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
     List<GameObject> activeInteractionBtns = new List<GameObject>();
 
     [HideInInspector] public bool SectionIsThis = false;
+
+    #endregion
+
+    #region Framework & Base
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     #endregion
 
