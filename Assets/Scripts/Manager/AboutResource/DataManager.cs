@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    #region New CSV Data
+    #region CSV Data
 
     [SerializeField] TextAsset Chapter_CSV;
+    [SerializeField] TextAsset Tutorial_CSV;
     [SerializeField] TextAsset Location_CSV;
     [SerializeField] TextAsset HomeObject_CSV;
     [SerializeField] TextAsset PhoneOption_CSV;
@@ -83,6 +84,25 @@ public class DataManager : Singleton<DataManager>
     {
         string[] lines = Get_lines(Chapter_CSV);
         return Get_Int(lines, chapterID, "Idx_Chapter", "Soc");
+    }
+
+
+
+    #endregion
+
+    #region About Tutorial
+
+    // 튜토리얼 이름 가져오기
+    public string Get_TutorialName(string tutorialID)
+    {
+        string[] lines = Get_lines(Tutorial_CSV);
+        return Get_String(lines, tutorialID, "Idx_Tutorial", "Name");
+    }
+    // 튜토리얼 설명 가져오기
+    public string Get_TutorialDesc(string tutorialID)
+    {
+        string[] lines = Get_lines(Tutorial_CSV);
+        return Get_String(lines, tutorialID, "Idx_Tutorial", "Idx_Desc");
     }
 
 

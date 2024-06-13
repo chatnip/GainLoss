@@ -1,8 +1,6 @@
+//Refactoring v1.0
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,161 +8,85 @@ using UnityEngine.UI;
 public class TutorialManager : Singleton<TutorialManager>
 {
     #region Value
-    [Header("*Property")]
-    [SerializeField] PlayerInputController PlayerInputController;
 
-    [Header("*Data")]
-    [SerializeField] public TutorialInfo currentTutorialInfo;
+    [Header("=== Property")]
+    [SerializeField] List<TutorialController> TutorialControllers;
 
-    [Header("*UI")]
-    [SerializeField] public CanvasGroup tutorial_ScreenCG;
-    [SerializeField] Button closeTutorialBtn;
-    [SerializeField] TMP_Text TutorialNameTxt;
-
-    [SerializeField] public GameObject tutotial_MakeSchedule;
-    [SerializeField] public GameObject tutotial_PS;
-    [SerializeField] public GameObject tutotial_VisitStream;
-    [SerializeField] public GameObject tutorial_WatchStream;
-    [SerializeField] public GameObject turotial_PartTimeJob;
-    [SerializeField] public GameObject turotial_endDay;
-
-    Dictionary<string, GameObject> tutorialsDict;
+    [Header("=== UI")]
+    [SerializeField] CanvasGroup panelTutorialCG;
+    [SerializeField] Button tutorialWindowExitBtn;
 
     #endregion
 
-    #region Main
+    #region Framework & Base
 
+    public void Offset()
+    {
+        // Tutorial Controller (Each)
+        foreach(TutorialController _controller in TutorialControllers)
+        { _controller.Offset(); }
+
+        // UI
+        panelTutorialCG.alpha = 0f;
+        panelTutorialCG.gameObject.SetActive(false);
+
+        //Btn
+        tutorialWindowExitBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                ActiveOff();
+            });
+    }
 
     protected override void Awake()
     {
-        tutorialsDict = new Dictionary<string, GameObject>()
-        { 
-            { "S00", tutotial_MakeSchedule },
-            { "S01", tutotial_PS },
-            { "S02", tutotial_VisitStream },
-            { "S03", tutorial_WatchStream },
-            { "S04", turotial_PartTimeJob },
-            { "S99", turotial_endDay },
-        };
-        //OffAllTutorial();
-
-        closeTutorialBtn.OnClickAsObservable()
-            .Subscribe(_ =>
-            {
-                if (!GameManager.Instance.canInput) { return; }
-
-                OffAllTutorial();
-            });
-
+       base.Awake();
     }
 
     #endregion
 
-    #region Reset
+    #region Active ON/OFF
 
-    private void OffAllTutorial()
+    public void ActiveOn(string tutorialID)
     {
         GameManager.Instance.canInput = false;
-        DOTween.Complete(tutorialsDict.Values);
-        foreach(GameObject tutorial in tutorialsDict.Values) { DOTween.Complete(tutorial); }
 
-        tutorial_ScreenCG.DOFade(0, 1f)
-            .OnComplete(() =>
-            {
-                PlayerInputController.CanMove = true;
-                foreach (GameObject tutorial in tutorialsDict.Values) { tutorial.gameObject.SetActive(false); }
-                tutorial_ScreenCG.gameObject.SetActive(false);
-                closeTutorialBtn.interactable = false;
-                GameManager.Instance.canInput = true;
-            });
-    }
-    #endregion
+        panelTutorialCG.gameObject.SetActive(true);
 
-    #region Open
-
-    public bool OpenTutorialWindow(string scheduleID)
-    {
-        Dictionary<string, bool> Dict = currentTutorialInfo.ID_Bool_Dict();
-        if (Dict[scheduleID]) 
-        { return false; }
-        else 
-        { return true; }
-    }
-
-    public void OpenTutorialWindow_On(string scheduleID)
-    {
-        GameManager.Instance.canInput = false;
-        GameObject tutorialWindow_type = tutorialsDict[scheduleID];
-
-        //PlayerInputController.SetSectionBtns(new List<List<Button>> { new List<Button> { closeTutorialBtn } }, this);
-
-        //TutorialNameTxt.text = "<size=80%>" + DataManager.ScheduleDatas[3][scheduleID].ToString() + "</size> <#323232>TUTORIAL</color>";
-        closeTutorialBtn.interactable = false;
-        tutorialWindow_type.SetActive(true);
-        tutorial_ScreenCG.gameObject.SetActive(true);
-        tutorial_ScreenCG.alpha = 0f;
-
-        tutorial_ScreenCG.DOFade(1f, 2f)
-            .OnStart(() =>
-            {
-                PlayerInputController.MoveStop(); 
-                PlayerController.Instance.ResetAnime();
-            })
-            .OnComplete(() =>
-            {
-                closeTutorialBtn.interactable = true;
-                string ID = tutorialsDict.FirstOrDefault(x => x.Value == tutorialWindow_type).Key;
-                ShowRecordDataInit(ID);
-                GameManager.Instance.canInput = true;
-            });
-    }
-
-    private void ShowRecordDataInit(string ID)
-    {
-        if (ID == "S00") { currentTutorialInfo.HasDone_MakeSchedule = true; }
-        else if (ID == "S01") { currentTutorialInfo.HasDone_PS = true; }
-        else if (ID == "S02") { currentTutorialInfo.HasDone_VisitPlace = true; }
-        else if (ID == "S03") { currentTutorialInfo.HasDone_WatchStream = true; }
-        else if (ID == "S04") { currentTutorialInfo.HasDone_PartTimeJob = true; }
-        else if (ID == "S99") { currentTutorialInfo.HasDone_EndDay = true; }
-    }
-
-    public void Interact()
-    {
-        if(PlayerInputController.SelectBtn == closeTutorialBtn &&
-            closeTutorialBtn.interactable)
+        foreach (TutorialController _controller in TutorialControllers)
         {
-            OffAllTutorial();
+            if(_controller.thisID == tutorialID)
+            { _controller.gameObject.SetActive(true); }
+            else
+            { _controller.gameObject.SetActive(false); }
         }
-    }
 
+        if (DOTween.IsTweening(panelTutorialCG)) { DOTween.Kill(panelTutorialCG); }
+        panelTutorialCG.DOFade(1f, 1f)
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canInput = true;
+            });
+    }
+    public void ActiveOff()
+    {
+        GameManager.Instance.canInput = false;
+
+
+        if (DOTween.IsTweening(panelTutorialCG)) { DOTween.Kill(panelTutorialCG); }
+        panelTutorialCG.DOFade(0f, 1f)
+            .OnComplete(() =>
+            {
+                panelTutorialCG.gameObject.SetActive(false); 
+                
+                foreach (TutorialController _controller in TutorialControllers)
+                { _controller.gameObject.SetActive(false); }
+
+                GameManager.Instance.canInput = true;
+            });
+    }
 
     #endregion
 }
 
 
-[Serializable]
-public class TutorialInfo
-{
-    public bool HasDone_MakeSchedule = false;
-    public bool HasDone_PS = false;
-    public bool HasDone_VisitPlace = false;
-    public bool HasDone_WatchStream = false;
-    public bool HasDone_PartTimeJob = false;
-    public bool HasDone_EndDay = false;
-
-    public Dictionary<string, bool> ID_Bool_Dict()
-    {
-        return new Dictionary<string, bool>()
-        {
-            { "S00", HasDone_MakeSchedule},
-            { "S01", HasDone_PS},
-            { "S02", HasDone_VisitPlace},
-            { "S03", HasDone_WatchStream},
-            { "S04", HasDone_PartTimeJob},
-            { "S99", HasDone_EndDay},
-        };
-
-    }
-
-}

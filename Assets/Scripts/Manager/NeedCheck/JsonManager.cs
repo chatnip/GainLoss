@@ -82,7 +82,7 @@ public class JsonManager : Singleton<JsonManager>
     #region Load Json
     
     // Main
-    public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
+    /*public TutorialInfo JsonLoad_TR(string jsonPath, string jsonName)
     {
         string jsonString;
         TutorialInfo tutorialInfo;
@@ -96,7 +96,7 @@ public class JsonManager : Singleton<JsonManager>
 #endif
 
         return tutorialInfo;
-    }
+    }*/
     public MainInfo JsonLoad_MI(string jsonPath, string jsonName)
     {
         string jsonString;
@@ -208,8 +208,8 @@ public class JsonManager : Singleton<JsonManager>
     public void LoadAllGameDatas()
     {
         // Load -> TutorialInfo Json
-        TutorialManager.currentTutorialInfo =
-            JsonLoad_TR(json_filePath, json_tutorialFileName);
+        //TutorialManager.currentTutorialInfo =
+        //    JsonLoad_TR(json_filePath, json_tutorialFileName);
 
         // Load -> MainInfo Json
         GameManager.Instance.mainInfo =
@@ -249,7 +249,7 @@ public class JsonManager : Singleton<JsonManager>
 
     #region Save Json
 
-    public void JsonSave(string jsonName, TutorialInfo tutorialInfo)
+   /* public void JsonSave(string jsonName, TutorialInfo tutorialInfo)
     {
         string saveJson = JsonUtility.ToJson(tutorialInfo, true);
         string saveFilePath = Application.persistentDataPath + "/" + jsonName + ".json";
@@ -260,7 +260,7 @@ public class JsonManager : Singleton<JsonManager>
         System.IO.File.WriteAllText(saveFilePath, saveJson);
         Debug.Log(jsonName);
     }
-
+*/
     public void JsonSave(string jsonName, MainInfo mainDatas)
     {
         string saveJson = JsonUtility.ToJson(mainDatas, true);
@@ -367,7 +367,7 @@ public class JsonManager : Singleton<JsonManager>
     public void SaveAllMainGameDatas()
     {
         // Save -> Tutorial Json
-        JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
+        //JsonSave(json_tutorialFileName, TutorialManager.currentTutorialInfo);
 
         // Save -> MainInfo Json
         JsonSave(json_mainInfoFileName, GameManager.Instance.mainInfo);
@@ -408,7 +408,7 @@ public class JsonManager : Singleton<JsonManager>
     public void ResetMainJson()
     {
         SetAllJsonPath();
-        JsonSave(json_tutorialFileName, new TutorialInfo());
+        //JsonSave(json_tutorialFileName, new TutorialInfo());
         JsonSave(json_mainInfoFileName, new MainInfo());
         JsonSave(json_wordFileName, new List<string>() { "W001" });
         JsonSave(json_wordActionFileName, new List<string>() { "WA01", "WA02" });

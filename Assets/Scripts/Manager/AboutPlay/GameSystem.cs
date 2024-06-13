@@ -200,7 +200,16 @@ public class GameSystem : Singleton<GameSystem>
         string _animID = currentDialogBase.fragments[i].animID;
         bool _isPlayerAnim = currentDialogBase.fragments[i].isPlayerAnim;
 
-        if (_dialog == "") { _dialog = " . . . . . . . . . "; }
+        switch (_dialog)
+        {
+            case "":
+                _dialog = " . . . . . . . . . ";
+                break;
+            case "Tutorial":
+                ObjDescOff();
+                TutorialManager.Instance.ActiveOn(_talkingOwn);
+                break;
+        }
 
         return objText.DOText(_dialog, _dialog.Length / textingSpeed)
                      .SetEase(Ease.Linear)
