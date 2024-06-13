@@ -157,8 +157,6 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
                 DOTween.To(() => thisScaler.referenceResolution, x => thisScaler.referenceResolution = x, new Vector2(1920, 1080), 0.3f);
                 DOTween.To(() => thisGroup.alpha, x => thisGroup.alpha = x, 1f, 0.3f);
                 
-                if(parentGO.TryGetComponent(out RectTransform rectTransform))
-                { rectTransform.DOSizeDelta(new Vector2(rectTransform.sizeDelta.x, 1020f), 0.3f); }
             }
             // 오브젝트 상호작용에서 벗어나기
             else
@@ -173,8 +171,6 @@ public class ObjectInteractionButtonGenerator : Singleton<ObjectInteractionButto
                         SetOffAllOutline();
                     });
                 
-                if (parentGO.TryGetComponent(out RectTransform rectTransform))
-                { rectTransform.DOSizeDelta(new Vector2(rectTransform.sizeDelta.x, 1595f), 0.3f); }
             }
         }
     }

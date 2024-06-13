@@ -141,6 +141,7 @@ public class MainInfo
 
     public static Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
     {
+        { "Activity", new List<string> { "Activity", "행동력" } },
         { "observation", new List<string> { "observation", "관찰력" } },
         { "sociability", new List<string> { "sociability", "설득력" } },
         { "mentality", new List<string> { "mentality", "정신력" } }

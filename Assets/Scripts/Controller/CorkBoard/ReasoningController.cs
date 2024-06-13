@@ -101,6 +101,10 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         thisRT.localScale = Vector3.one * currentZoom;
         thisCG.alpha = 0f;
         this.gameObject.SetActive(false);
+
+        Debug.Log("Test");
+        foreach(ReasoningModule RM in AllRM())
+        { RM.isActive = true; }
     }
 
     protected override void Awake()

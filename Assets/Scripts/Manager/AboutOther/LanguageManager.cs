@@ -13,7 +13,6 @@ public class LanguageManager : Singleton<LanguageManager>
 
     [Header("=== Need Check")]
     [SerializeField] public int languageTypeAmount;
-    [HideInInspector] public int languageNum;
     [SerializeField] List<SameLanguageTxts> MultipleLanguageTxts;
 
     #endregion

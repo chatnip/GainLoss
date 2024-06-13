@@ -1,11 +1,11 @@
 //Refactoring v1.0
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UniRx;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,13 +20,15 @@ public class ActivityController : Singleton<ActivityController>
     [SerializeField] List<Image> gageActualImgs;
     [SerializeField] List<Image> gageUsePreviewImgs;
     [SerializeField] RectTransform markImg;
+    [SerializeField] List<TMP_Text> activityTxts;
     [SerializeField] TMP_Text amountNumTxt;
 
     [Header("=== Question Window")]
     [SerializeField] RectTransform activityQuestionWindowRT;
     [SerializeField] RectTransform aboutAbilityPanelRT;
     [SerializeField] TMP_Text questionContentTxt;
-    [SerializeField] TMP_Text kindOfGageByActivityTxt;
+    [SerializeField] TMP_Text kindOfGageToAbilityTxt;
+    [SerializeField] TMP_Text descGageToActivityTxt;
     [SerializeField] TMP_Text amountNumInWindowTxt;
     [SerializeField] Button noBtn;
     [SerializeField] Button yesBtn;
@@ -92,6 +94,8 @@ public class ActivityController : Singleton<ActivityController>
         noBtn.interactable = false;
         yesBtn.interactable = false;
 
+        foreach (TMP_Text tmp in activityTxts)
+        { tmp.text = MainInfo.abilityTypeLanguage["Activity"][Convert.ToInt32(LanguageManager.Instance.languageID)]; }
         obsTxt.text = DataManager.Instance.Get_HomeObjectExtra("103");
         socTxt.text = DataManager.Instance.Get_HomeObjectExtra("105");
         menTxt.text = DataManager.Instance.Get_HomeObjectExtra("104");
@@ -201,12 +205,16 @@ public class ActivityController : Singleton<ActivityController>
         { ObjectInteractionButtonGenerator.Instance.SetOnOffInteractObjectBtn(); }
         
         // set Txt
-        if(currentQuestionWindowType == e_HomeInteractType.GoOutside // 외출하지만, 행동력이 남아있을 시
-            && GameManager.Instance.mainInfo.CurrentActivity > 0)
+        if(currentQuestionWindowType == e_HomeInteractType.GoOutside)
         {
             questionContentTxt.text =
-                questionWindowConfigDict[HI_Type].QuestionContent + "\n<size=70%><color=red>" + questionWindowConfigDict[e_HomeInteractType.GoOutside].ActivityKind + "</size></color>";
-            kindOfGageByActivityTxt.text = "";
+                questionWindowConfigDict[HI_Type].QuestionContent; 
+            descGageToActivityTxt.text = "";
+            // 외출하지만, 행동력이 남아있을 시
+            if (GameManager.Instance.mainInfo.CurrentActivity > 0)
+            { kindOfGageToAbilityTxt.text = "<color=red>" + questionWindowConfigDict[e_HomeInteractType.GoOutside].ActivityKind + "</color>"; }
+            else
+            { kindOfGageToAbilityTxt.text = ""; }
         }
         else if (currentQuestionWindowType == e_HomeInteractType.Reasoning) // 추리일 때
         {
@@ -216,8 +224,10 @@ public class ActivityController : Singleton<ActivityController>
         {
             questionContentTxt.text =
                 questionWindowConfigDict[HI_Type].QuestionContent; 
-            kindOfGageByActivityTxt.text =
+            kindOfGageToAbilityTxt.text =
                 questionWindowConfigDict[HI_Type].ActivityKind + "+" + questionWindowConfigDict[HI_Type].IncAbility.ToString();
+            descGageToActivityTxt.text =
+                MainInfo.abilityTypeLanguage["Activity"][Convert.ToInt32(LanguageManager.Instance.languageID)] + "-" + questionWindowConfigDict[HI_Type].DecActivity;
         }
         
         
@@ -226,11 +236,6 @@ public class ActivityController : Singleton<ActivityController>
 
         // Set Fill Gage
         SetActivityGageUI_Use(currentQuestionWindowType, 0.25f);
-
-        if (HI_Type == e_HomeInteractType.Reasoning || HI_Type == e_HomeInteractType.GoOutside)
-        { aboutAbilityPanelRT.gameObject.SetActive(false); }
-        else
-        { aboutAbilityPanelRT.gameObject.SetActive(true); }
 
         activityQuestionWindowRT.DOAnchorPos(new Vector2(720, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>
