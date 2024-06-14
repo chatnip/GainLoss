@@ -11,10 +11,6 @@ public class LanguageManager : Singleton<LanguageManager>
     [SerializeField] public string languageID = "1";
     [SerializeField] List<TMP_FontAsset> fonts;
 
-    [Header("=== Need Check")]
-    [SerializeField] public int languageTypeAmount;
-    [SerializeField] List<SameLanguageTxts> MultipleLanguageTxts;
-
     #endregion
 
     #region Framework & Base Set
