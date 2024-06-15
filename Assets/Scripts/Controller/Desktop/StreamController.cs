@@ -222,16 +222,21 @@ public class StreamController : Singleton<StreamController>
         DOTween.Kill(tween_SubscriberAmountTxt);
 
         // Get ID
-        Debug.Log(goodOrEvilGage);
+        Debug.Log(goodOrEvilGage + " -> 지금은 하드코딩 되어있음"); 
         string GetMaterialID = "";
+        if (goodOrEvilGage >= 0)
+        { GetMaterialID = "114"; }
+        else
+        { GetMaterialID = "113"; }
+        
         if (GetMaterialID != "")
         {
             ReasoningManager.Instance.reasoningMaterialIDs.Add(GetMaterialID);
 
-            resultTxt.text = ""; // 결과 마린 이야기
+            resultTxt.text = "후... 오늘도 열심히 방송했다!!"; // 결과 마린 이야기
             resultIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 결과 마린 이미지
 
-            getThingTxt.text = GetMaterialID; // 추리소재 이름
+            getThingTxt.text = DataManager.Instance.Get_ReasoningName(GetMaterialID); // 추리소재 이름
             getThingIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 추리소재 이미지
         }
         else

@@ -86,7 +86,19 @@ public class DataManager : Singleton<DataManager>
         return Get_Int(lines, chapterID, "Idx_Chapter", "Soc");
     }
 
+    // 챕터 시작 시 튜토 다이얼로그
+    public string Get_StartDialog(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_String(lines, chapterID, "Idx_Chapter", "Idx_StartDialog");
+    }
 
+    // 이전 챕터에서 이 챕터를 획득 시에 나올 쳅터 다이얼로그 ID
+    public string Get_GetChapterDialog(string chapterID)
+    {
+        string[] lines = Get_lines(Chapter_CSV);
+        return Get_String(lines, chapterID, "Idx_Chapter", "Idx_GetChapterDialog");
+    }
 
     #endregion
 
@@ -568,13 +580,14 @@ public class DataManager : Singleton<DataManager>
         List<string> result = new List<string>();
         string[] lines = Get_lines(Material_CSV);
         int comparisonIndex = Get_Index(lines[dataReadLine], "Idx_Chapter");
-
         int getIdxValueIndex = Get_Index(lines[dataReadLine], "Idx_Material");
+
         foreach (string line in lines)
         {
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[comparisonIndex] == chapterID)
             {
+                Debug.Log(lineData[getIdxValueIndex]);
                 result.Add(lineData[getIdxValueIndex]);
             }
         }
@@ -616,11 +629,11 @@ public class DataManager : Singleton<DataManager>
         return Get_String(lines, MaterialID, "Idx_Material", "Description");
     }
 
-    // 소재로 루트타입 가져오기
+    // 소재로 얻을 점수 적용 챕터
     public string Get_RootType(string MaterialID)
     {
         string[] lines = Get_lines(Material_CSV);
-        return Get_String(lines, MaterialID, "Idx_Material", "RootType");
+        return Get_String(lines, MaterialID, "Idx_Material", "Idx_GetChapter");
     }
 
     // 소재로 루트타입 점수 가져오기

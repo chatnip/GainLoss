@@ -7,6 +7,7 @@ using UniRx;
 using System.Collections.Generic;
 using System;
 using UniRx.Triggers;
+using UnityEngine.SceneManagement;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -66,6 +67,13 @@ public class GameSystem : Singleton<GameSystem>
 
     // Other Value
     string haveChoiceDialogID;
+
+    [Header("=====================")]
+    [SerializeField] CanvasGroup epilogueCG;
+    [SerializeField] RectTransform epilogueTxtRT;
+    [SerializeField] TMP_Text epilogueTxt;
+
+
     #endregion
 
     #region Framework & Base Set
@@ -136,6 +144,11 @@ public class GameSystem : Singleton<GameSystem>
             { "Object", objImg_obj },
             { "Screen", objImg_screen }
         };
+
+
+        Debug.Log("TestVer Epilogue");
+        epilogueCG.alpha = 0f;
+        epilogueCG.gameObject.SetActive(false);
     }
 
     protected override void Awake()
@@ -379,6 +392,8 @@ public class GameSystem : Singleton<GameSystem>
 
         if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
         { PlaceManager.Instance.CheckCanGoHome(); }
+        else if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.EndChapter)
+        { ReasoningManager.Instance.SetEndChapterBtn(); }
     }
 
     #endregion
@@ -399,7 +414,8 @@ public class GameSystem : Singleton<GameSystem>
 
         // Set Btn By ID
         List<string> choiceIDs = DataManager.Instance.Get_ChoiceIDs(haveChoiceDialogID);
-
+        Debug.Log(haveChoiceDialogID);
+        
         // Set UI
         for (int i = 0; i < choiceIDs.Count; i++)
         {
@@ -407,6 +423,7 @@ public class GameSystem : Singleton<GameSystem>
             Choice_IDBtn.buttonType = ButtonType.ChoiceType_Object3D;
             Choice_IDBtn.transform.SetParent(objectBtnParentRT);
             Choice_IDBtn.buttonID = choiceIDs[i];
+            Debug.Log(choiceIDs[i]);
             Choice_IDBtn.inputBasicImage = btnSprite;
             Choice_IDBtn.inputSizeDelta = new Vector2(1000f, 100f);
 
@@ -683,6 +700,31 @@ public class GameSystem : Singleton<GameSystem>
     }
 
 
+
+    #endregion
+
+    #region T E S T ver
+
+    public void ShowEpilogue()
+    {
+        GameManager.Instance.canInput = false;
+        PlayerInputController.Instance.MoveStop();
+        PlayerController.Instance.ResetAnime();
+        GameManager.Instance.canInteractObject = false;
+
+        Sequence seq = DOTween.Sequence();
+
+        epilogueCG.gameObject.SetActive(true);
+
+        seq.Append(epilogueCG.DOFade(1f, 3f));
+        seq.Append(epilogueTxtRT.DOAnchorPosY(4120, 20f).SetEase(Ease.InOutSine));
+        seq.Append(epilogueTxt.DOFade(0f, 3f));
+        seq
+            .OnComplete(() =>
+            {
+                SceneManager.LoadScene("Title");
+            });
+    }
 
     #endregion
 

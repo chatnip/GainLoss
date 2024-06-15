@@ -274,7 +274,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         }
 
         string getChapter = "";
-        int getChapterCount = 0;
+        int getChapterCount = -1;
         foreach(KeyValuePair<string, int> keyValuePair in rootAndPointDict)
         {
             if(keyValuePair.Value > getChapterCount)
@@ -282,9 +282,11 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
                 getChapterCount = keyValuePair.Value;
                 getChapter = keyValuePair.Key;
             }
+            Debug.Log(keyValuePair.Key + "ÀÇ Á¡¼ö: " + keyValuePair.Value);
         }
         Debug.Log("È¹µæ Chapter ID : " + getChapter);
 
+        ReasoningManager.Instance.SetResult(getChapter);
     }
 
     #endregion
