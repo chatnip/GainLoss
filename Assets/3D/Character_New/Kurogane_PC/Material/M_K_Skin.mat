@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3705909643882565083
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_K_Cloth
+  m_Name: M_K_Skin
   m_Shader: {fileID: -6465566751694194690, guid: 3bb35f7f86ffc45c2aa6fc4291f787fc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -30,11 +43,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: cc210359e0324ed4eb33aa8b40f54918, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f481624ed1d6c542887d588620ce6b1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 1ecb01712a904a34095852611f8cbdd5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2867202cd3399664da0b0db30c747354, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -42,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: fb4451fa7c9863d41be820724070a597, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f481624ed1d6c542887d588620ce6b1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatcapTex:
@@ -50,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2867202cd3399664da0b0db30c747354, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineWidthTex:
@@ -62,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadeTex:
-        m_Texture: {fileID: 2800000, guid: fb4451fa7c9863d41be820724070a597, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f481624ed1d6c542887d588620ce6b1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadingShiftTex:
@@ -91,11 +104,11 @@ Material:
     - _AlphaMode: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DoubleSided: 1
+    - _DoubleSided: 0
     - _ExtraBandThickness: 0.3
     - _GiEqualization: 0.9
     - _M_AlphaToMask: 1
-    - _M_CullMode: 0
+    - _M_CullMode: 2
     - _M_DebugMode: 0
     - _M_DstBlend: 0
     - _M_EditMode: 1
@@ -128,24 +141,11 @@ Material:
     - _UvAnimScrollYSpeed: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Color: {r: 0.17647052, g: 0.17647052, b: 0.18431365, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MatcapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0.27450976, g: 0.09019602, b: 0.12549013, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadeColor: {r: 0.090352245, g: 0.094982155, b: 0.11680897, a: 1}
+    - _ShadeColor: {r: 0.9686274, g: 0.8117647, b: 0.85882354, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &8167013042199667492
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7

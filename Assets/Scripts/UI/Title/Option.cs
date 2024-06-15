@@ -266,7 +266,7 @@ public class Option : MonoBehaviour
         if (MainUIScale_BtnPanel.TryGetComponent(out SliderInteractBtn mus_SIB))
         { GameSettingManager.GameSetting.GameSetting_Game.MainUIScale = mus_SIB.GetPercentValue_fromSilderValue(mus_SIB.thisSlider.value); }
 
-        JsonManager.Instance.JsonSave(JsonManager.Instance.json_SettingFileName, GameSettingManager.GameSetting);
+        //JsonManager.Instance.JsonSave(JsonManager.Instance.json_SettingFileName, GameSettingManager.GameSetting);
 
         Appear_Window_WhenApply("게임 세팅", "저장 및 적용");
     }
@@ -285,7 +285,7 @@ public class Option : MonoBehaviour
         if (showFPS_BtnPanel.TryGetComponent(out ToggleInteractBtn sf_TIB))
         { GameSettingManager.GameSetting.GameSetting_Video.ShowFPS = sf_TIB.thisToggle.isOn; }
 
-        JsonManager.Instance.JsonSave(JsonManager.Instance.json_SettingFileName, GameSettingManager.GameSetting);
+        //JsonManager.Instance.JsonSave(JsonManager.Instance.json_SettingFileName, GameSettingManager.GameSetting);
 
         Appear_Window_WhenApply("비디오 세팅", "저장 및 적용");
     }

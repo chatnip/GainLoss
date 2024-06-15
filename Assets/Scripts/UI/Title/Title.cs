@@ -13,7 +13,6 @@ public class Title : MonoBehaviour
 
     [Header("*Property")]
     [SerializeField] public TitleInputController TitleInputController;
-    [SerializeField] JsonManager JsonManager;
     [SerializeField] CanvasScaler TitleCanvasScaler;
     [SerializeField] Camera MainCamera;
 
