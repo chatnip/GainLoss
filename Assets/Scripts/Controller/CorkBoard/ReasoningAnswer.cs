@@ -51,7 +51,7 @@ public class ReasoningAnswer : ReasoningModule
             if (reasoningMaterialIDs.Contains(id))
             {
                 string _id = id;
-                string _name = DataManager.Instance.Get_ReasoningName(id);
+                string _name = DataManager.Instance.Get_MaterialName(id);
 
                 thisMaterialIDs.Add(_id);
                 thisMaterailNames.Add(_name);

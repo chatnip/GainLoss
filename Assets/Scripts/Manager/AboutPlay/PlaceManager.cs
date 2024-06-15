@@ -284,8 +284,8 @@ public class PlaceManager : Singleton<PlaceManager>
             getReasoningContentSeq.OnComplete(() => { getReasoningContentSeq = null; });
         }
 
-        string name = DataManager.Instance.Get_ReasoningName(materialID);
-        string desc = DataManager.Instance.Get_ReasoningDesc(materialID);
+        string name = DataManager.Instance.Get_MaterialName(materialID);
+        string desc = DataManager.Instance.Get_MaterialDesc(materialID);
 
         Debug.Log(name);
         Debug.Log(desc);

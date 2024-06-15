@@ -236,7 +236,7 @@ public class StreamController : Singleton<StreamController>
             resultTxt.text = "후... 오늘도 열심히 방송했다!!"; // 결과 마린 이야기
             resultIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 결과 마린 이미지
 
-            getThingTxt.text = DataManager.Instance.Get_ReasoningName(GetMaterialID); // 추리소재 이름
+            getThingTxt.text = DataManager.Instance.Get_MaterialName(GetMaterialID); // 추리소재 이름
             getThingIcon.sprite = GameSystem.Instance.Get_IllustToID("", ""); // 추리소재 이미지
         }
         else

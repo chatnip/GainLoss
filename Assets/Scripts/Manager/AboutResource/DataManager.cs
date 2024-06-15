@@ -15,6 +15,7 @@ public class DataManager : Singleton<DataManager>
     [SerializeField] TextAsset HomeObject_CSV;
     [SerializeField] TextAsset PhoneOption_CSV;
     [SerializeField] TextAsset Object_CSV;
+    [SerializeField] TextAsset ReasoningPhoto_CSV;
     [SerializeField] TextAsset Dialog_CSV;
     [SerializeField] TextAsset Choice_CSV;
     [SerializeField] TextAsset SDialog_CSV;
@@ -332,7 +333,7 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-    #region PhoneOption
+    #region About Phone Option
 
     // 폰 ID로 이름 가져오기
     public string Get_PhoneOptionName(string phoneOptionID)
@@ -484,7 +485,7 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-    #region Streaming Dialog
+    #region About Streaming Dialog
 
     // S다이얼로그 Text
     public string Get_SDialogText(string SDialogID)
@@ -523,7 +524,7 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-    #region Streaming Choice
+    #region About Streaming Choice
 
     // 선택지 다음 SDialog ID
     public string Get_NextSDialogBySChoice(string SChoiceID)
@@ -572,7 +573,7 @@ public class DataManager : Singleton<DataManager>
     }
     #endregion
 
-    #region Reasoning & Material
+    #region About Reasoning & Material
 
     // Chapter에 기본으로 주는 모든 소재 ID 가져오기
     public List<string> Get_MaterialIDsByChapter(string chapterID)
@@ -616,14 +617,14 @@ public class DataManager : Singleton<DataManager>
     }
 
     // 소재로 Name 가져오기
-    public string Get_ReasoningName(string MaterialID)
+    public string Get_MaterialName(string MaterialID)
     {
         string[] lines = Get_lines(Material_CSV);
         return Get_String(lines, MaterialID, "Idx_Material", "Name");
     }
     
     // 소재로 Description 가져오기
-    public string Get_ReasoningDesc(string MaterialID)
+    public string Get_MaterialDesc(string MaterialID)
     {
         string[] lines = Get_lines(Material_CSV);
         return Get_String(lines, MaterialID, "Idx_Material", "Description");
@@ -641,6 +642,13 @@ public class DataManager : Singleton<DataManager>
     {
         string[] lines = Get_lines(Material_CSV);
         return Get_Int(lines, MaterialID, "Idx_Material", "RootPoint");
+    }
+
+    // 추리 사진 -> 이름 가져오기
+    public string Get_ReasoningName(string ReasoningPhotoID)
+    {
+        string[] lines = Get_lines(ReasoningPhoto_CSV);
+        return Get_String(lines, ReasoningPhotoID, "Idx_Reasoning", "Name");
     }
 
     #endregion

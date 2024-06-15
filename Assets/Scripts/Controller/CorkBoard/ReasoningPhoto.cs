@@ -7,7 +7,6 @@ public class ReasoningPhoto : ReasoningModule
     #region Value
 
     [Header("=== Name")]
-    [SerializeField] string nameID;
     [SerializeField] bool isVisibleName = false;
     [SerializeField] TMP_Text nameTxt;
 
@@ -26,7 +25,7 @@ public class ReasoningPhoto : ReasoningModule
         if (!isVisibleName)
         { nameTxt.text = "???"; }
         else
-        { nameTxt.text = "π∫∞° ¿÷¿Ω"; }
+        { nameTxt.text = DataManager.Instance.Get_ReasoningName(thisID); }
     }
 
     #endregion
