@@ -72,7 +72,8 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] CanvasGroup epilogueCG;
     [SerializeField] RectTransform epilogueTxtRT;
     [SerializeField] TMP_Text epilogueTxt;
-
+    [SerializeField] Button skipBtn;
+    Sequence endSeq;
 
     #endregion
 
@@ -104,6 +105,14 @@ public class GameSystem : Singleton<GameSystem>
                 if (!GameManager.Instance.canInput) { return; }
 
                 StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.option));
+            });
+
+        skipBtn.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                if (!GameManager.Instance.canSkipTalking) { return; }
+                DOTween.Kill(endSeq);
+                SceneManager.LoadScene("Title");
             });
 
         // Desc Panel
@@ -712,14 +721,18 @@ public class GameSystem : Singleton<GameSystem>
         PlayerController.Instance.ResetAnime();
         GameManager.Instance.canInteractObject = false;
 
-        Sequence seq = DOTween.Sequence();
+        endSeq = DOTween.Sequence();
 
         epilogueCG.gameObject.SetActive(true);
 
-        seq.Append(epilogueCG.DOFade(1f, 3f));
-        seq.Append(epilogueTxtRT.DOAnchorPosY(4120, 20f).SetEase(Ease.InOutSine));
-        seq.Append(epilogueTxt.DOFade(0f, 3f));
-        seq
+        endSeq.Append(epilogueCG.DOFade(1f, 3f)
+            .OnComplete(() =>
+            {
+                GameManager.Instance.canInput = true;
+            }));
+        endSeq.Append(epilogueTxtRT.DOAnchorPosY(4120, 20f).SetEase(Ease.InOutSine));
+        endSeq.Append(epilogueTxt.DOFade(0f, 3f));
+        endSeq
             .OnComplete(() =>
             {
                 SceneManager.LoadScene("Title");

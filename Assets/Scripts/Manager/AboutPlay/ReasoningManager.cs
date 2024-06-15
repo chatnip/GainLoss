@@ -84,7 +84,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
             });
 
         EndChapterBtn.OnClickAsObservable()
-            .Subscribe(_ => 
+            .Subscribe(_ =>
             {
                 if (!GameManager.Instance.canInput) { return; }
 

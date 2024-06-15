@@ -20,9 +20,7 @@ public class Title : MonoBehaviour
     [Header("*TitleBtn")]
     [SerializeField] Button newGameBtn;
     [SerializeField] Button continueBtn;
-    [SerializeField] GameObject cannotUseContinue;
     [SerializeField] public Button OptionBtn;
-    [SerializeField] GameObject cannotUseOption;
     [SerializeField] Button QuitBtn;
     List<List<Button>> btns;
 
@@ -44,7 +42,7 @@ public class Title : MonoBehaviour
 
     #endregion
 
-    #region Main
+    #region Framework
 
     private void Awake()
     {
@@ -65,8 +63,6 @@ public class Title : MonoBehaviour
         newGameBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                JsonManager.ResetMainJson();
-
                 Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
                 BlackScreenImg.gameObject.SetActive(true);
                 BlackScreenImg.DOFade(1.0f, 0.7f)
@@ -80,21 +76,12 @@ public class Title : MonoBehaviour
         continueBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
-                BlackScreenImg.gameObject.SetActive(true);
-                BlackScreenImg.DOFade(1.0f, 0.7f)
-                    .SetEase(Ease.InOutBack)
-                    .OnComplete(() =>
-                    {
-                        DOTween.KillAll();
-                        SceneManager.LoadScene("Main");
-                    });
+                
             });
         OptionBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                OptionWindow.TryGetComponent(out RectTransform rectTransform);
-                EffectfulWindow.AppearEffectful(rectTransform, 0.2f, 0.0f, Ease.InOutBack);
+                
             });
         QuitBtn.OnClickAsObservable()
             .Subscribe(btn =>
@@ -102,30 +89,8 @@ public class Title : MonoBehaviour
                 Application.Quit();
             });
 
-        ft_StartTitle();
-        setEfectful_TitleLogo();
-
-
-    }
-    private void OnEnable()
-    {
-        MainInfo SavedMainInfo = JsonLoad_MI("Json/", "mainInfoDatabase");
-        Debug.Log(SavedMainInfo.NewGame);
-        if (SavedMainInfo.NewGame)
-        {
-            continueBtn.interactable = false;
-            cannotUseContinue.SetActive(true);
-        }
-        else
-        {
-            continueBtn.interactable = true;
-            cannotUseContinue.SetActive(false);
-        }
-
-
-        Debug.Log("TestVersion_InteractFalse");
-        //OptionBtn.interactable = false;
-        //cannotUseOption.SetActive(true);
+        StartTitle();
+        SetEfectful_TitleLogo();
     }
 
     private void LateUpdate()
@@ -133,51 +98,13 @@ public class Title : MonoBehaviour
         setEffectful_RotateByPointer(getMousePos());
     }
 
-   /* public void Interact()
-    {
-        if(TitleInputController.SelectBtn == newGameBtn && newGameBtn.interactable)
-        {
-            Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
-            BlackScreenImg.gameObject.SetActive(true);
-            BlackScreenImg.DOFade(1.0f, 0.7f)
-                .SetEase(Ease.InOutBack)
-                .OnComplete(() =>
-                {                  
-                    DOTween.KillAll();
-                    SceneManager.LoadScene("Main");                
-                });
-        }
-        if (TitleInputController.SelectBtn == continueBtn && continueBtn.interactable)
-        {
-            Bgm.DOFade(0, 0.5f).SetEase(Ease.InOutSine);
-            BlackScreenImg.gameObject.SetActive(true);
-            BlackScreenImg.DOFade(1.0f, 0.7f)
-                .SetEase(Ease.InOutBack)
-                .OnComplete(() =>
-                {
-                    DOTween.KillAll();
-                    SceneManager.LoadScene("Main");
-                });
-        }
-        if (TitleInputController.SelectBtn == OptionBtn)
-        {
-            EffectfulWindow.AppearEffectful(OptionWindow.GetComponent<RectTransform>(), 0.2f, 0.0f, Ease.InOutBack);
-        }
-        if (TitleInputController.SelectBtn == QuitBtn)
-        {
-            Application.Quit();
-        }
-
-    }*/
 
     #endregion
 
     #region Start
-    private void ft_StartTitle()
+    private void StartTitle()
     {
-
         Sequence seq = DOTween.Sequence();
-
 
         // 경고문
         warningTextCG.alpha = 0.0f;
@@ -218,15 +145,9 @@ public class Title : MonoBehaviour
             .SetEase(Ease.InOutBack)
             .OnComplete(() =>
             {
-                SetButtonThisTitle();
                 BlackScreenImg.gameObject.SetActive(false);
                 Bgm.Play();
             }));
-    }
-
-    public void SetButtonThisTitle()
-    {
-        //TitleInputController.SetSectionBtns(btns, this);
     }
 
     #endregion
@@ -325,7 +246,7 @@ public class Title : MonoBehaviour
     }
 
     // 타이틀 로고 움직임
-    private void setEfectful_TitleLogo()
+    private void SetEfectful_TitleLogo()
     {
         Sequence Seq = DOTween.Sequence();
         Seq.Append(TitleLogoRT.DOScale(Vector3.one * 1.1f, 1f).SetEase(Ease.InOutCubic));
