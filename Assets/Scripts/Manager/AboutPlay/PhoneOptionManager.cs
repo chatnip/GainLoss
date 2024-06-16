@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PhoneOptionManager : Singleton<PhoneOptionManager>
 {
@@ -50,20 +51,39 @@ public class PhoneOptionManager : Singleton<PhoneOptionManager>
         switch(currentIdBtn.buttonID)
         {
             case "000": // 정보 보여주기
+                Information();
                 break;
             case "001": // 챕터 재시작
+                Restart();
                 break;
             case "002": // 타이틀로 가기
+                Title();
                 break;
             case "003": // 종료하기
+                Quit();
                 break;
         }
     }
 
-    private void Information() { Debug.Log("Information"); }
-    private void Restart() { Debug.Log("Restart"); }
-    private void Title() { Debug.Log("Title"); }
-    private void Quit() { Debug.Log("Quit"); }
+    private void Information() 
+    {
+        Debug.Log("Information"); 
+    }
+    private void Restart() 
+    {
+        SceneManager.LoadScene("Main");
+        Debug.Log("Restart"); 
+    }
+    private void Title() 
+    {
+        SceneManager.LoadScene("Title");
+        Debug.Log("Title"); 
+    }
+    private void Quit() 
+    {
+        Application.Quit();
+        Debug.Log("Quit"); 
+    }
 
     #endregion
 }

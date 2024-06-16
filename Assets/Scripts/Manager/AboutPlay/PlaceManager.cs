@@ -156,7 +156,7 @@ public class PlaceManager : Singleton<PlaceManager>
                     StreamController.Instance.endSDialogID = DataManager.Instance.Get_EndSDialog(idBtn.buttonID);
 
                     // 상호작용해야하는 오브젝트들
-                    needInteractIOs = GetAllIO(placeDict.Value.MapGO.transform);
+                    needInteractIOs = GetAllIO(placeDict.Value.MapInteractObjectParentTF);
                 }
             }
             else
@@ -307,6 +307,7 @@ public class PlaceManager : Singleton<PlaceManager>
 public class PlaceSet
 {
     public GameObject MapGO;
+    public Transform MapInteractObjectParentTF;
     public Color BGColor;
     public PlaceSet(GameObject mapGO, Color bgColor)
     {

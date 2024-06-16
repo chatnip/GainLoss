@@ -514,10 +514,10 @@ public class GameSystem : Singleton<GameSystem>
                                 need_obs = need_;
                                 break;
                             case "sociability":
-                                need_obs = need_;
+                                need_soc = need_;
                                 break;
                             case "mentality":
-                                need_obs = need_;
+                                need_men = need_;
                                 break;
                         }
                     }
