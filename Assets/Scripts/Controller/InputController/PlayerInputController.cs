@@ -227,11 +227,6 @@ public class PlayerInputController : Singleton<PlayerInputController>
     {
         if (!GameManager.Instance.canInput) { return; }
 
-        // NEED CHECK
-        if (GameSystem.Instance.cutsceneImg.gameObject.activeSelf)
-        { cutsceneSO.skipOrCompleteSeq(GameSystem.Instance.cutsceneImg, GameSystem.Instance.cutsceneTxt); return; }
-
-
         if (SelectBtn != null)
         {
             SelectBtn.TryGetComponent(out Button btn);

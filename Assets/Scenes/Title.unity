@@ -2319,9 +2319,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1277301792}
-  - {fileID: 2053332140}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &268238290
@@ -8703,62 +8701,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229706647}
   m_CullTransparentMesh: 1
---- !u!1 &1277301791
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1277301792}
-  - component: {fileID: 1277301793}
-  m_Layer: 0
-  m_Name: JsonManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1277301792
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1277301791}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 254898012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1277301793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1277301791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e89faa17df15aab418298d39f4c454e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  json_filePath: Json/
-  json_tutorialFileName: tutorialInfoDatabase
-  json_mainInfoFileName: mainInfoDatabase
-  json_wordFileName: wordDatabase
-  json_wordActionFileName: wordActionDatabase
-  json_sentenceFileName: sentenceDatabase
-  json_ScheduleFileName: scheduleDatabase
-  json_PlaceFileName: placeDatabase
-  json_PSFileName: gotPSDatabase
-  json_SettingFileName: SettingDatabase
-  TutorialManager: {fileID: 0}
-  GameSettingManager: {fileID: 2053332141}
 --- !u!1 &1292353945
 GameObject:
   m_ObjectHideFlags: 0
@@ -13493,65 +13435,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037261972}
   m_CullTransparentMesh: 1
---- !u!1 &2053332139
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2053332140}
-  - component: {fileID: 2053332141}
-  m_Layer: 0
-  m_Name: SettingManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2053332140
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053332139}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 254898012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2053332141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053332139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c393c4a0927e7848861f9b31cc705af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameSetting:
-    GameSetting_Game:
-      ShowGuidePadUI: 1
-      ShowGuideTutorial: 1
-      IsOnBG_of3D: 1
-      MainUIScale: 100
-    GameSetting_Video:
-      FullScreen: 1
-      display_Resolution: 2
-      display_FPSLimit: 5
-      ShowFPS: 0
-  Option: {fileID: 8446360456796682279}
-  FPSText: {fileID: 2014003972}
-  PadUIs: []
-  HUDCanvas: {fileID: 0}
 --- !u!1 &2054551433
 GameObject:
   m_ObjectHideFlags: 0
@@ -15758,7 +15641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Title: {fileID: 1475849331}
-  GameSettingManager: {fileID: 2053332141}
+  GameSettingManager: {fileID: 0}
   GameSetting: {fileID: 1660506246}
   AudioSetting: {fileID: 317018126}
   VideoSetting: {fileID: 2122087506}

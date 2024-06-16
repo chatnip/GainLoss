@@ -47,6 +47,7 @@ public class LoadingManager : Singleton<LoadingManager>
     {
         GameManager.Instance.canInput = false;
         PlayerInputController.Instance.MoveStop();
+        PlayerController.Instance.ResetAnime();
         StartCoroutine(Past_ShowNextDayText(1f));
     }
 

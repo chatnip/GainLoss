@@ -165,15 +165,6 @@ public class GameSystem : Singleton<GameSystem>
         base.Awake();
     }
 
-    private void LateUpdate()
-    {
-        if (Input.GetMouseButtonDown(0) && cutsceneImg.gameObject.activeSelf)
-        {
-            cutsceneSO.skipOrCompleteSeq(cutsceneImg, cutsceneTxt);
-            return;
-        }
-    }
-
 
     #endregion
 
