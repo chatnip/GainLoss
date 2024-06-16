@@ -266,7 +266,7 @@ public class GameSystem : Singleton<GameSystem>
                                  }
                              }
                              if (_illustType == "Character")
-                             { panelSizeDelta.x = 1100f; }
+                             { panelSizeDelta.x = 1000f; }
                              else
                              { panelSizeDelta.x = 1400f; }
                          }
@@ -399,7 +399,10 @@ public class GameSystem : Singleton<GameSystem>
         objPanelBtn.gameObject.SetActive(false);
         dialogCurrentOrder = 0;
 
-        if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
+        foreach (KeyValuePair<string, Image> keyValuePair in typeByImgDict)
+        { typeByImgDict[keyValuePair.Key].gameObject.SetActive(false); }
+
+        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
         { PlaceManager.Instance.CheckCanGoHome(); }
         else if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.EndChapter)
         { ReasoningManager.Instance.SetEndChapterBtn(); }

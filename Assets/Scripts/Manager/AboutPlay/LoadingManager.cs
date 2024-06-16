@@ -133,7 +133,7 @@ public class LoadingManager : Singleton<LoadingManager>
             PlayerInputController.Instance.CanMove = true;
 
             string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
-            if (startDialogID != "")
+            if (startDialogID != "" && DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter).ToString() == GameManager.Instance.currentChapter)
             { GameSystem.Instance.ObjDescOn(null, startDialogID, true); }
         });
     }
