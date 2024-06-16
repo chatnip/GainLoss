@@ -133,8 +133,8 @@ public class LoadingManager : Singleton<LoadingManager>
             PlayerInputController.Instance.CanMove = true;
 
             string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
-            //if (startDialogID != "")
-            //{ GameSystem.Instance.ObjDescOn(null, startDialogID, true); }
+            if (startDialogID != "")
+            { GameSystem.Instance.ObjDescOn(null, startDialogID, true); }
         });
     }
 
