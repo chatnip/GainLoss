@@ -47,6 +47,10 @@ public class ActivityController : Singleton<ActivityController>
     [Header("=== Btn")]
     [SerializeField] Button EndDayBtn;
 
+    [Header("===  Arrow")]
+    [SerializeField] List<SpriteRenderer> abilitySRs;
+    [SerializeField] SpriteRenderer doorSR;
+
     // Other Value
     [HideInInspector] public e_HomeInteractType currentQuestionWindowType;
     public Dictionary<e_HomeInteractType, QuestionWindowConfig> questionWindowConfigDict;
@@ -172,6 +176,9 @@ public class ActivityController : Singleton<ActivityController>
         RT_X /= GameManager.Instance.mainInfo.MaxActivity;
         if (markImg.TryGetComponent(out RectTransform markRT)) 
         { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameManager.Instance.mainInfo.CurrentActivity, 0), dotweenTime)); }
+
+        // Set Arrow
+        SetArrow();
     }
 
     private void SetActivityGageUI_Use(e_HomeInteractType previewHI_Type, float dotweenTime)
@@ -322,6 +329,40 @@ public class ActivityController : Singleton<ActivityController>
     {
         EndDayBtn.TryGetComponent(out RectTransform btnRT);
         btnRT.DOAnchorPos(new Vector2(0f, 0f), 1f).SetEase(Ease.OutCubic);
+    }
+
+    #endregion
+
+    #region Set Arrow
+
+    private void SetArrow()
+    {
+        if(GameManager.Instance.mainInfo.CurrentActivity > 0)
+        {
+            foreach (SpriteRenderer SR in abilitySRs)
+            {
+                Color abilityClr = SR.color;
+                abilityClr.a = 1f;
+                SR.color = abilityClr;   
+            }
+
+            Color doorClr = doorSR.color;
+            doorClr.a = 0f;
+            doorSR.color = doorClr;
+        }
+        else
+        {
+            foreach (SpriteRenderer SR in abilitySRs)
+            {
+                Color abilityClr = SR.color;
+                abilityClr.a = 0f;
+                SR.color = abilityClr;
+            }
+
+            Color doorClr = doorSR.color;
+            doorClr.a = 1f;
+            doorSR.color = doorClr;
+        }
     }
 
     #endregion

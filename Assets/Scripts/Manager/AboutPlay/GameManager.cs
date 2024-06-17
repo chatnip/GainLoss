@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
     public bool canInput = false;
     public bool canSkipTalking = false;
     public bool canInteractObject = true;
-    public e_currentActPart currentActPart = e_currentActPart.UseActivity;
+    public e_currentActPart currentActPart = e_currentActPart.StartDay;
 
     #endregion
 
@@ -23,7 +23,21 @@ public class GameManager : Singleton<GameManager>
 
     public enum e_currentActPart
     {
-        UseActivity, VisitPlace, StreamingTime, EndDay, ReasoningDay, EndChapter
+        StartDay, UseActivity, VisitPlace, StreamingTime, EndDay, ReasoningDay, EndChapter
+    }
+
+    public void SeteCurrentActPart(e_currentActPart eCurrentActPart)
+    {
+        currentActPart = eCurrentActPart;
+
+        // 튜토리얼 조건 충족 시 키기
+        GuideManager.Instance.PlayTutorial_WhenHad();
+
+        // 가이드 화살표 세팅
+        GuideManager.Instance.SetGuideArrow();
+
+        // 각 상태에 오브젝트들 On/Off
+        GuideManager.Instance.SetActiveOnOffGOs();
     }
 
     #endregion
@@ -57,7 +71,7 @@ public class GameManager : Singleton<GameManager>
         PlaceManager.Instance.Offset();
         ReasoningManager.Instance.Offset();
         PhoneOptionManager.Instance.Offset();
-        TutorialManager.Instance.Offset();
+        GuideManager.Instance.Offset();
 
         ActivityController.Instance.Offset();
 

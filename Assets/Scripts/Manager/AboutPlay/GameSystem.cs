@@ -220,7 +220,7 @@ public class GameSystem : Singleton<GameSystem>
                 break;
             case "Tutorial":
                 ObjDescOff();
-                TutorialManager.Instance.ActiveOn(_talkingOwn);
+                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.UseActivity);
                 break;
         }
 
@@ -628,7 +628,7 @@ public class GameSystem : Singleton<GameSystem>
         StreamController.Instance.haveChoiceDialogID = "";
         // Show Reaction
         string PC_Chatting = DataManager.Instance.Get_SChoiceText(_id);
-        string PC_Name = DataManager.Instance.Get_ObjectName("1000");
+        string PC_Name = DataManager.Instance.Get_ObjectName("9999");
         if (PC_Chatting != "")
         { 
             IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();

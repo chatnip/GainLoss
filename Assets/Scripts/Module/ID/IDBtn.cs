@@ -153,7 +153,8 @@ public class IDBtn : MonoBehaviour
 
         buttonText.color = Color.black;
         extraText.color = Color.black;
-        buttonText.text = inputText;
+
+        buttonText.text = "<#222222>" + inputText + "</color>";
         extraText.text = inputExtraText;
 
         button.enabled = false;

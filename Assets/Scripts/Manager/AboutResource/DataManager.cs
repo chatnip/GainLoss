@@ -40,6 +40,34 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
+    #region About Tutorial
+
+    public string GetID_HaveTutorial(string ChapterID, string CurrentDay, string EnumName)
+    {
+        string[] lines = Get_lines(Tutorial_CSV);
+
+        int ChapterIndex = Get_Index(lines[dataReadLine], "Chapter");
+        int DayIndex = Get_Index(lines[dataReadLine], "Idx_Day");
+        int StateIndex = Get_Index(lines[dataReadLine], "State");
+
+        int TutorialIndex = Get_Index(lines[dataReadLine], "Idx_Tutorial");
+        foreach (string line in lines)
+        {
+            string[] lineData = Regex.Split(line, SPLIT_RE);
+
+            if (lineData[ChapterIndex] == ChapterID &&
+                lineData[DayIndex] == CurrentDay &&
+                lineData[StateIndex] == EnumName)
+            {
+                return lineData[TutorialIndex];
+            }
+        }
+        return "";
+    }
+
+
+    #endregion
+
     #region About Chapter
 
     // 챕터 이름 가져오기
@@ -588,7 +616,6 @@ public class DataManager : Singleton<DataManager>
             string[] lineData = Regex.Split(line, SPLIT_RE);
             if (lineData[comparisonIndex] == chapterID)
             {
-                Debug.Log(lineData[getIdxValueIndex]);
                 result.Add(lineData[getIdxValueIndex]);
             }
         }
@@ -653,7 +680,7 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
 
-    #region Illust
+    #region About Illust
 
     public string Get_TypeForIllust(string illustID)
     {

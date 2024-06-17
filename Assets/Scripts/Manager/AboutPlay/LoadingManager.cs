@@ -85,19 +85,9 @@ public class LoadingManager : Singleton<LoadingManager>
         GameManager.Instance.canInput = false;
         GameManager.Instance.mainInfo.CurrentActivity = DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
 
-        // 마지막날 -> 추리하는 날로
-        if (GameManager.Instance.mainInfo.Day == DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter))
-        {
-            GameManager.Instance.currentActPart = GameManager.e_currentActPart.ReasoningDay;
-            ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(false);
-        }
-        // 기본 다음 날
-        else
-        {
-            GameManager.Instance.currentActPart = GameManager.e_currentActPart.UseActivity;
-            ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(true);
-            ActivityController.Instance.SetActivityGageUI(0f);
-        }
+        
+        ActivityController.Instance.SetActivityGageUI(0f);
+        
 
         DOTween.Kill(savingPrograssText);
         PlayerController.Instance.gameObject.transform.position = new Vector3(0f, 0f, 0f);
@@ -133,15 +123,20 @@ public class LoadingManager : Singleton<LoadingManager>
             GameManager.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
 
-            string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
-
-            Debug.Log(DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter).ToString());
-
             if (DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
             {
+                string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
                 if (startDialogID != "")
                 { GameSystem.Instance.ObjDescOn(null, startDialogID, true); }
-            } 
+            }
+            else if (DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
+            {
+                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.ReasoningDay);
+            }
+            else
+            {
+                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.UseActivity);
+            }
         });
     }
 

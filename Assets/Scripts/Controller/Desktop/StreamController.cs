@@ -550,7 +550,7 @@ public class StreamController : Singleton<StreamController>
         foreach (IDBtn idBtn in sb_IDBtns) { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
         sb_IDBtns.Clear();
 
-        GameManager.Instance.currentActPart = GameManager.e_currentActPart.EndDay;
+        GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.EndDay);
     }
     #endregion
 }

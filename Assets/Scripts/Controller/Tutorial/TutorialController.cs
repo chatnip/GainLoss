@@ -24,8 +24,11 @@ public class TutorialController : MonoBehaviour
         nameTxt.text = DataManager.Instance.Get_TutorialName(thisID);
         for (int i = 0; i < categorys.Count; i++)
         {
-            categorys[i].nameTxt.text = DataManager.Instance.Get_TutorialName(categorys[i].thisID);
-            categorys[i].descTxt.text = DataManager.Instance.Get_TutorialDesc(categorys[i].thisID);
+            string _name = DataManager.Instance.Get_TutorialName(categorys[i].thisID);
+            categorys[i].nameTxt.text = _name;
+            string _desc = DataManager.Instance.Get_TutorialDesc(categorys[i].thisID);
+            _desc = _desc.Replace("\\n", "\n");
+            categorys[i].descTxt.text = _desc;
         }
         this.gameObject.SetActive(false);
     }

@@ -113,8 +113,6 @@ public class PlaceManager : Singleton<PlaceManager>
                     StartGoingSomewhereLoading(1.5f);
                     comebackHomeBtn.TryGetComponent(out RectTransform btnRT);
                     btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
-
-                    GameManager.Instance.currentActPart = GameManager.e_currentActPart.StreamingTime;
                 });
 
         }
@@ -246,6 +244,11 @@ public class PlaceManager : Singleton<PlaceManager>
         GameManager.Instance.canInput = true;
         PlayerInputController.Instance.CanMove = true;
         goingSomewhereloadingCG.gameObject.SetActive(false);
+        if (currentIdBtn == placeBtnList[0])
+        { GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.StreamingTime); }
+        else
+        { GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.VisitPlace); }
+       
     }
 
     #endregion

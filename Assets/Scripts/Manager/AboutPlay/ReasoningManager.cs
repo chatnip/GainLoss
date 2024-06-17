@@ -79,7 +79,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
                 ReasoningController.Instance.ActiveOff(0.2f);
                 ActiveOff_ConfirmPopup(0.2f);
 
-                GameManager.Instance.currentActPart = GameManager.e_currentActPart.EndChapter;
+                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.EndChapter);
                 GameSystem.Instance.ObjDescOn(null, DataManager.Instance.Get_GetChapterDialog(gottenChapterIdx));
             });
 

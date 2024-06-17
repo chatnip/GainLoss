@@ -209,8 +209,6 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
                     ClosePopup(0f);
 
                     PlaceManager.Instance.StartGoingSomewhereLoading(1.5f);
-                    GameManager.Instance.currentActPart = GameManager.e_currentActPart.VisitPlace;
-
                     foreach (IDisposable iDis in popupIDisList) { iDis.Dispose(); }
                 });
         }
