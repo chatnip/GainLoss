@@ -148,7 +148,7 @@ public class IDBtn : MonoBehaviour
             buttonText.rectTransform.offsetMax = new Vector2(-25f, -rect.sizeDelta.y * 0.4f);
         }
 
-        rect.anchoredPosition3D = new Vector3(0, StreamController.Instance.sb_IDBtns_Y[0], 0);
+        rect.anchoredPosition3D = new Vector3(0f, -125f, 0f);
         button.image.sprite = inputBasicImage;
 
         buttonText.color = Color.black;

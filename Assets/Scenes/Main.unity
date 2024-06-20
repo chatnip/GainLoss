@@ -46761,13 +46761,7 @@ MonoBehaviour:
     m_Flags: 0
   chattingNextBtn: {fileID: 1395313910}
   speechBubbleSprite: {fileID: 21300000, guid: 2975bdc44589ffa4b9e34d1e3dc0f960, type: 3}
-  sb_IDBtns_Y:
-  - -125
-  - 25
-  - 175
-  - 325
-  - 475
-  - 625
+  sb_IDBtnsFirstY: 25
   sb_IDBtns: []
   turnOver: 0
   resultWindowCG: {fileID: 1361947568}
@@ -46780,9 +46774,10 @@ MonoBehaviour:
   getThingTxt: {fileID: 1716809554}
   getThingIcon: {fileID: 1681420718}
   viewerAmountTxt: {fileID: 1676914563}
-  startSDialogID: 
-  endSDialogID: 
-  playSDialogIDs: []
+  startSDialogID: 101
+  endSDialogID: 218
+  playSDialogIDs:
+  - 104
   currentStartStreamID: 
   skeletonGraphic: {fileID: 372941058}
   chooseLimitTime: 5

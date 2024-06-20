@@ -26,7 +26,7 @@ public class StreamController : Singleton<StreamController>
     [SerializeField] public Button chattingNextBtn;
     [SerializeField] public ReactiveProperty<ScenarioBase> ScenarioBase = new();
     [SerializeField] Sprite speechBubbleSprite;
-    [SerializeField] public List<float> sb_IDBtns_Y = new List<float>();
+    [SerializeField] float sb_IDBtnsFirstY = 25f;
     [SerializeField] List<IDBtn> sb_IDBtns = new List<IDBtn>(); 
     [HideInInspector] public bool turnOver = false;
 
@@ -320,7 +320,7 @@ public class StreamController : Singleton<StreamController>
 
             yield return new WaitUntil(() =>
             {
-                if (iDBtn.rect.anchoredPosition3D == new Vector3(0, sb_IDBtns_Y[1], 0))
+                if (iDBtn.rect.anchoredPosition3D == new Vector3(0, sb_IDBtnsFirstY, 0))
                 {
                     return true;
                 }
@@ -387,24 +387,33 @@ public class StreamController : Singleton<StreamController>
         iDBtn.gameObject.SetActive(true);
         sb_IDBtns.Insert(0, iDBtn);
 
-        int removeIndex = -1;
+        // Remove
+        List<IDBtn> removeIDBtns = new List<IDBtn>();
         if (sb_IDBtns != null && sb_IDBtns.Count > 0)
         {
             foreach (IDBtn idBtn in sb_IDBtns)
             {
                 int index = sb_IDBtns.IndexOf(idBtn);
 
-                if (index >= sb_IDBtns_Y.Count - 1)
-                { removeIndex = index; break; }
-
-                if (removeIndex == -1)
-                { StreamSeq.Join(sb_IDBtns[index].rect.DOAnchorPos3D(new Vector3(0, sb_IDBtns_Y[1 + index], 0), 0.15f)); }
+                if (index > 6)
+                { removeIDBtns.Add(idBtn); break; }
             }
         }
-        if (removeIndex != -1)
+        foreach (IDBtn removeIDBtn in removeIDBtns)
         {
-            ObjectPooling.Instance.GetBackIDBtn(sb_IDBtns[removeIndex]);
-            sb_IDBtns.RemoveAt(removeIndex);
+            sb_IDBtns.Remove(removeIDBtn);
+            ObjectPooling.Instance.GetBackIDBtn(removeIDBtn);
+        }
+
+        // Move
+        float plusY = 0;
+        if (sb_IDBtns != null && sb_IDBtns.Count > 0)
+        {
+            for (int i = 0; i < sb_IDBtns.Count; i++)
+            {
+                StreamSeq.Join(sb_IDBtns[i].rect.DOAnchorPos3D(new Vector3(0, sb_IDBtnsFirstY + (sb_IDBtnsFirstY * i) + plusY, 0), 0.15f));
+                plusY += sb_IDBtns[i].rect.sizeDelta.y;
+            }
         }
 
 
