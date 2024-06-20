@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1706.6667
     height: 877.3334
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 371}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 79
+  controlID: 6910
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,12 +139,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1412.6666
+    width: 1317.3334
     height: 827.3333
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 80
+  controlID: 6911
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,12 +165,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1412.6666
+    width: 1317.3334
     height: 547.3333
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 81
+  controlID: 6819
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -188,7 +188,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 288.66666
+    width: 268
     height: 547.3333
   m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
@@ -207,25 +207,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 288.66666
+    x: 268
     y: 0
-    width: 765.3334
+    width: 712.6667
     height: 547.3333
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 18}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 17}
   - {fileID: 15}
   - {fileID: 18}
   - {fileID: 19}
-  m_Selected: 2
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 2
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -241,9 +241,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1054
+    x: 980.6667
     y: 0
-    width: 358.66663
+    width: 336.6667
     height: 547.3333
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -272,12 +272,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 547.3333
-    width: 1412.6666
+    width: 1317.3334
     height: 280
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 108
+  controlID: 6912
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -295,7 +295,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 479.33334
+    width: 447.33334
     height: 280
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 4000, y: 4000}
@@ -320,17 +320,17 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 479.33334
+    x: 447.33334
     y: 0
-    width: 933.33325
+    width: 870
     height: 280
   m_MinSize: {x: 232, y: 271}
   m_MaxSize: {x: 10002, y: 10021}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
-  - {fileID: 26}
   - {fileID: 25}
+  - {fileID: 26}
   m_Selected: 0
   m_LastSelected: 2
 --- !u!114 &14
@@ -348,9 +348,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1412.6666
+    x: 1317.3334
     y: 0
-    width: 294
+    width: 389.33325
     height: 827.3333
   m_MinSize: {x: 276, y: 71}
   m_MaxSize: {x: 4001, y: 4021}
@@ -380,9 +380,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 288.6667
+    x: 268
     y: 72.66667
-    width: 763.3334
+    width: 710.6667
     height: 526.3333
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -436,10 +436,10 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 763.3334
+      width: 710.6667
       height: 505.3333
-    m_Scale: {x: 0.5963542, y: 0.5963542}
-    m_Translation: {x: 381.6667, y: 252.66666}
+    m_Scale: {x: 0.5552083, y: 0.5552083}
+    m_Translation: {x: 355.3333, y: 252.66666}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -447,12 +447,12 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -640
-      y: -423.68555
+      y: -455.0844
       width: 1280
-      height: 847.3711
+      height: 910.1688
     m_MinimalGUI: 1
-  m_defaultScale: 0.5963542
-  m_LastWindowPixelSize: {x: 1145, y: 789.5}
+  m_defaultScale: 0.5552083
+  m_LastWindowPixelSize: {x: 1066, y: 789.5}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -480,7 +480,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 72.66667
-    width: 287.66666
+    width: 267
     height: 526.3333
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -546,9 +546,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 288.6667
+    x: 268
     y: 72.66667
-    width: 763.3334
+    width: 710.6667
     height: 526.3333
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -895,9 +895,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -12.553018, y: -16.863527, z: 9.434415}
+    m_Target: {x: 899.28326, y: 840.34534, z: -117.37427}
     speed: 2
-    m_Value: {x: -12.553018, y: -16.863527, z: 9.434415}
+    m_Value: {x: 899.28326, y: 840.34534, z: -117.37427}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -943,13 +943,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.35394758, y: -0.4082421, z: 0.1967179, w: 0.8191511}
+    m_Target: {x: 0.030180046, y: -0.037209954, z: 0.01741987, w: 0.99952567}
     speed: 2
-    m_Value: {x: 0.35395092, y: -0.40667817, z: 0.19602542, w: 0.8190883}
+    m_Value: {x: 0.03015517, y: -0.037179284, z: 0.01740551, w: 0.9987018}
   m_Size:
-    m_Target: 16.9282
+    m_Target: 501.40427
     speed: 2
-    m_Value: 16.9282
+    m_Value: 501.40427
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1055,9 +1055,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1054
+    x: 980.6667
     y: 72.66667
-    width: 356.66663
+    width: 334.6667
     height: 526.3333
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1071,10 +1071,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d0750100
+      scrollPos: {x: 0, y: 118.66669}
+      m_SelectedIDs: ae58feff
       m_LastClickedID: 0
-      m_ExpandedIDs: e2faffff847d0000ea7e0000807f0000108000001a800000208100002a83000078830000f8850000008b0000
+      m_ExpandedIDs: e2faffff867d0000ec7e00001c80000044810000fa8200002c8300007a830000c08500003e8700005e87000000880000c28a0000028b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1090,7 +1090,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 10}
+        m_ClientGUIView: {fileID: 9}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -1154,7 +1154,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 620
-    width: 478.33334
+    width: 446.33334
     height: 259
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1171,7 +1171,6 @@ MonoBehaviour:
     - {fileID: 3755337049289844379, guid: cfcb29d49a841784a87f648556ef1920, type: 2}
     - {fileID: 5709553179549430733, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
     - {fileID: 507737693638896393, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
-    - {fileID: 6392035992420089743, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
     - {fileID: 1988058818230163660, guid: 68e37254a990fc34ab4421ac1e1ccadb, type: 2}
     - {fileID: -3783400635411066161, guid: 9f8460193fc1cb442817c3c99379a4ba, type: 2}
     - {fileID: -3783400635411066161, guid: dccec00e903fff545a6050d4b4225ee6, type: 2}
@@ -1194,14 +1193,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.49253732
+    - e00: 0.9683785
       e01: 0
       e02: 0
-      e03: -9.626862
+      e03: -344.1832
       e10: 0
-      e11: 0.49253732
+      e11: 0.9683785
       e12: 0
-      e13: 107.87314
+      e13: 40.397556
       e20: 0
       e21: 0
       e22: 1
@@ -1218,22 +1217,6 @@ MonoBehaviour:
       e11: 0.67291665
       e12: 0
       e13: 84.302086
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    - e00: 0.54292184
-      e01: 0
-      e02: 0
-      e03: -20.353134
-      e10: 0
-      e11: 0.54292184
-      e12: 0
-      e13: 71.35274
       e20: 0
       e21: 0
       e22: 1
@@ -1326,8 +1309,6 @@ MonoBehaviour:
   m_AnimatorController: {fileID: 9100000, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
   m_BreadCrumbs:
   - m_Target: {fileID: 5709553179549430733, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
-    m_ScrollPosition: {x: 0, y: 0}
-  - m_Target: {fileID: 6392035992420089743, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}
@@ -1542,9 +1523,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 479.33334
+    x: 447.33334
     y: 620
-    width: 931.33325
+    width: 868
     height: 259
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1567,7 +1548,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Manager/AboutPlay
+    - Assets/3D/Character_New/KuroganeIzo/Animation
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1575,16 +1556,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/Manager/AboutPlay
+  - Assets/3D/Character_New/KuroganeIzo/Animation
   m_LastFoldersGridSize: 16
   m_LastProjectPath: E:\Unity_TeamProject\GainLoss
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 397}
-    m_SelectedIDs: ba750100
-    m_LastClickedID: 95674
-    m_ExpandedIDs: 0000000024c5000026c5000028c500002ac500002cc500002ec5000030c5000032c5000034c5000036c5000038c500003ac500003cc500003ec5000040c5000042c50000bec5000000ca9a3b
+    scrollPos: {x: 0, y: 193}
+    m_SelectedIDs: ce020200
+    m_LastClickedID: 131790
+    m_ExpandedIDs: 0000000026c5000028c500002ac500002cc500002ec5000030c5000032c5000034c5000036c5000038c500003ac500003cc500003ec5000040c5000042c5000044c5000046c50000b0c50000c6c5000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1612,7 +1593,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000024c5000026c5000028c500002ac500002cc500002ec5000030c5000032c5000034c5000036c5000038c500003ac500003cc500003ec5000040c5000042c50000
+    m_ExpandedIDs: 0000000026c5000028c500002ac500002cc500002ec5000030c5000032c5000034c5000036c5000038c500003ac500003cc500003ec5000040c5000042c5000044c5000046c5000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1640,7 +1621,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000788400008c810000d07a00005280000008740000607500003e7a0000187d00001c7d00004e7d0000a239020016400200f281000060840000e2870000008c0000fe8b00007c550400349400000a1d0100dc910000208c000096990c00dc080400de8e0000b89e00004ea0000020b50000d88f0000f0900000ce920000a8b2020096b20200b0b202004e910000e01601002c170100aa190100a4450000864100008c4700004847000058420000129b0000269500007c90000092900000beb80000deaa000090900000d2900000bc920000a6380100e8920000ca92000012920000ec9200003c9300004e930000de990000f499000084b300008eb30000e09b00001e9d000012b0000042030000e6ba0000a69d00009a9d0000aa9d00000e9e00004e030000009e000084cf0200e2f800004cfb0000b0840000108400006e7f00006c7f0000d48300009a8100008e7a0000a2a100006aa10000aaa10000c4bb0000383b0000409f0000caa00000a8a50000f2a00000203c0000c09e0000d49e0000f09a0000ee9a0000bae101009e9b0000a2a60000a0a600007c410000b43d0000f23b000056bc00002ebd000030b30000243b000000000000fc940000003b0000988e0000fab70000664b00004ebc00000c4b0000704b0000e08d00003ab700003eb10000524400006a440000f4450000201d01006cb201005e9b000022c0000018bc0000b48a0000ee440000bebd0000f8c4000092d400007ecc00000c900300da960000fa3e0500
+    m_ExpandedInstanceIDs: c6230000788400008c810000d07a00005280000008740000607500003e7a0000187d00001c7d00004e7d0000a239020016400200f281000060840000e2870000008c0000fe8b00007c550400349400000a1d0100dc910000208c000096990c00dc080400de8e0000b89e00004ea0000020b50000d88f0000f0900000ce920000a8b2020096b20200b0b202004e910000e01601002c170100aa190100a4450000864100008c4700004847000058420000129b0000269500007c90000092900000beb80000deaa000090900000d2900000bc920000a6380100e8920000ca92000012920000ec9200003c9300004e930000de990000f499000084b300008eb30000e09b00001e9d000012b0000042030000e6ba0000a69d00009a9d0000aa9d00000e9e00004e030000009e000084cf0200e2f800004cfb0000b0840000108400006e7f00006c7f0000d48300009a8100008e7a0000a2a100006aa10000aaa10000c4bb0000383b0000409f0000caa00000a8a50000f2a00000203c0000c09e0000d49e0000f09a0000ee9a0000bae101009e9b0000a2a60000a0a600007c410000b43d0000f23b000056bc00002ebd000030b30000243b000000000000fc940000003b0000988e0000fab70000664b00004ebc00000c4b0000704b0000e08d00003ab700003eb10000524400006a440000f4450000201d01006cb201005e9b000022c0000018bc0000b48a0000ee440000bebd0000f8c4000092d400007ecc00000c900300da960000fa3e05003c8d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1669,253 +1650,6 @@ MonoBehaviour:
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 187
 --- !u!114 &25
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb55afc2c109f42f2af37941a8c9300e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 600, y: 300}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: TitleInputSystem (Input Actions)
-    m_Image: {fileID: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 520
-    y: 695
-    width: 1034
-    height: 304
-  m_SerializedDataModeController:
-    m_DataMode: 0
-    m_PreferredDataMode: 0
-    m_SupportedDataModes: 
-    isAutomatic: 1
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-    m_OverlaysVisible: 1
-  m_ActionMapsTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 30de7cce
-    m_LastClickedID: -830677456
-    m_ExpandedIDs: 00000000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 0
-      m_ClientGUIView: {fileID: 0}
-    m_SearchString: 
-  m_ActionsTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 40b0590d
-    m_LastClickedID: 223981632
-    m_ExpandedIDs: 30de7cce
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 0
-      m_ClientGUIView: {fileID: 0}
-    m_SearchString: 
-  m_ControlPickerViewState:
-    m_AdvancedDropdownState:
-      states:
-      - itemId: 371857150
-        selectedIndex: 2
-        scroll: {x: 0, y: 0}
-      - itemId: 1277967432
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-      - itemId: 1275948795
-        selectedIndex: 3
-        scroll: {x: 0, y: 0}
-      - itemId: 998472819
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-      - itemId: 1919352497
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-      - itemId: 813934635
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-      - itemId: -478254706
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-      - itemId: -1184024587
-        selectedIndex: -1
-        scroll: {x: 0, y: 0}
-    m_ManualPathEditMode: 0
-  m_ActionAssetManager:
-    m_AssetObjectForEditing: {fileID: 0}
-    m_ImportedAssetObject: {fileID: -944628639613478452, guid: 34cfcd448a91212478b6d323c8929710, type: 3}
-    m_AssetGUID: 34cfcd448a91212478b6d323c8929710
-    m_ImportedAssetJson: "{\n    \"name\": \"TitleInputSystem\",\n    \"maps\": [\n       
-      {\n            \"name\": \"Title\",\n            \"id\": \"f89fd759-0a23-4b50-a47c-7896ee7fcbeb\",\n           
-      \"actions\": [\n                {\n                    \"name\": \"SelectUp\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"e3e20480-1f01-4298-ab0a-4e979471abd5\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"SelectDown\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"db49f832-266e-49f8-8b63-cf98064af8e1\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"SelectLeft\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"e6457949-b80a-4914-aafd-2f6124d8834d\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"SelectRight\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"445c9461-95f8-406b-b7a9-8564304ea19a\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"Select\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"fc55e338-ec3b-4770-b0e8-dbbbf357a70d\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"Back\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"6fd791dc-3d2d-4c1b-847d-e63b9ffac8d2\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      },\n                {\n                    \"name\": \"Apply\",\n                   
-      \"type\": \"Button\",\n                    \"id\": \"40252ef0-83b6-4251-a822-d6b3b6707482\",\n                   
-      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
-      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
-      }\n            ],\n            \"bindings\": [\n                {\n                   
-      \"name\": \"\",\n                    \"id\": \"21f1235e-dc89-4feb-adc2-be5d696c9b68\",\n                   
-      \"path\": \"<Gamepad>/dpad/up\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectUp\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"ce8c2885-6359-4dd3-af98-56a1444def8a\",\n                    \"path\":
-      \"<Gamepad>/dpad/down\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectDown\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"bdbf2a58-191d-4bd9-98f6-18694d6549c5\",\n                    \"path\":
-      \"<Gamepad>/buttonSouth\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"Select\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"f3e0198a-1554-4b4d-997b-2e2df00a77f3\",\n                    \"path\":
-      \"<Gamepad>/buttonEast\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"Back\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"397302c1-85ce-46bc-9b4c-519ca24ab013\",\n                    \"path\":
-      \"<Gamepad>/dpad/right\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectRight\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"713af3ef-aecb-40b7-8c05-a506c94a1ce7\",\n                    \"path\":
-      \"<Gamepad>/dpad/left\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectLeft\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      },\n                {\n                    \"name\": \"\",\n                   
-      \"id\": \"307d723d-b37e-4708-a89d-53c18a74bfa1\",\n                    \"path\":
-      \"<Gamepad>/buttonNorth\",\n                    \"interactions\": \"\",\n                   
-      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
-      Controller;Switch Pro Controller\",\n                    \"action\": \"Apply\",\n                   
-      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
-      }\n            ]\n        }\n    ],\n    \"controlSchemes\": [\n        {\n           
-      \"name\": \"KeyboardMouse\",\n            \"bindingGroup\": \"KeyboardMouse\",\n           
-      \"devices\": [\n                {\n                    \"devicePath\": \"<Keyboard>\",\n                   
-      \"isOptional\": false,\n                    \"isOR\": false\n               
-      },\n                {\n                    \"devicePath\": \"<Mouse>\",\n                   
-      \"isOptional\": false,\n                    \"isOR\": false\n               
-      }\n            ]\n        },\n        {\n            \"name\": \"Gamepad\",\n           
-      \"bindingGroup\": \"Gamepad\",\n            \"devices\": [\n               
-      {\n                    \"devicePath\": \"<Gamepad>\",\n                   
-      \"isOptional\": true,\n                    \"isOR\": false\n               
-      },\n                {\n                    \"devicePath\": \"<XInputController>\",\n                   
-      \"isOptional\": true,\n                    \"isOR\": false\n               
-      },\n                {\n                    \"devicePath\": \"<DualShockGamepad>\",\n                   
-      \"isOptional\": true,\n                    \"isOR\": false\n               
-      }\n            ]\n        },\n        {\n            \"name\": \"Xbox Controller\",\n           
-      \"bindingGroup\": \"Xbox Controller\",\n            \"devices\": []\n       
-      },\n        {\n            \"name\": \"PS4 Controller\",\n            \"bindingGroup\":
-      \"PS4 Controller\",\n            \"devices\": []\n        },\n        {\n           
-      \"name\": \"Switch Pro Controller\",\n            \"bindingGroup\": \"Switch
-      Pro Controller\",\n            \"devices\": [\n                {\n                   
-      \"devicePath\": \"<SwitchProControllerHID>\",\n                    \"isOptional\":
-      false,\n                    \"isOR\": false\n                }\n           
-      ]\n        }\n    ]\n}"
-    m_IsDirty: 0
-  m_Toolbar:
-    m_IsDirty: 0
-    m_SelectedControlSchemeIndex: -1
-    m_SelectedDeviceRequirementIndex: -1
-    m_ControlSchemes:
-    - m_Name: KeyboardMouse
-      m_BindingGroup: KeyboardMouse
-      m_DeviceRequirements:
-      - m_ControlPath: <Keyboard>
-        m_Flags: 0
-      - m_ControlPath: <Mouse>
-        m_Flags: 0
-    - m_Name: Gamepad
-      m_BindingGroup: Gamepad
-      m_DeviceRequirements:
-      - m_ControlPath: <Gamepad>
-        m_Flags: 1
-      - m_ControlPath: <XInputController>
-        m_Flags: 1
-      - m_ControlPath: <DualShockGamepad>
-        m_Flags: 1
-    - m_Name: Xbox Controller
-      m_BindingGroup: Xbox Controller
-      m_DeviceRequirements: []
-    - m_Name: PS4 Controller
-      m_BindingGroup: PS4 Controller
-      m_DeviceRequirements: []
-    - m_Name: Switch Pro Controller
-      m_BindingGroup: Switch Pro Controller
-      m_DeviceRequirements:
-      - m_ControlPath: <SwitchProControllerHID>
-        m_Flags: 0
-    m_SearchText: 
-  m_DirtyTitle:
-    m_Text: (*) TitleInputSystem (Input Actions)
-    m_Image: {fileID: 0}
-    m_Tooltip: 
-  m_Title:
-    m_Text: TitleInputSystem (Input Actions)
-    m_Image: {fileID: 0}
-    m_Tooltip: 
---- !u!114 &26
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2269,6 +2003,253 @@ MonoBehaviour:
     m_Text: MainInputSystem (Input Actions)
     m_Image: {fileID: 0}
     m_Tooltip: 
+--- !u!114 &26
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb55afc2c109f42f2af37941a8c9300e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 600, y: 300}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: TitleInputSystem (Input Actions)
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 520
+    y: 695
+    width: 1034
+    height: 304
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+    m_OverlaysVisible: 1
+  m_ActionMapsTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 30de7cce
+    m_LastClickedID: -830677456
+    m_ExpandedIDs: 00000000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 0
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+  m_ActionsTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 40b0590d
+    m_LastClickedID: 223981632
+    m_ExpandedIDs: 30de7cce
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 0
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+  m_ControlPickerViewState:
+    m_AdvancedDropdownState:
+      states:
+      - itemId: 371857150
+        selectedIndex: 2
+        scroll: {x: 0, y: 0}
+      - itemId: 1277967432
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: 1275948795
+        selectedIndex: 3
+        scroll: {x: 0, y: 0}
+      - itemId: 998472819
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: 1919352497
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: 813934635
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: -478254706
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: -1184024587
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+    m_ManualPathEditMode: 0
+  m_ActionAssetManager:
+    m_AssetObjectForEditing: {fileID: 0}
+    m_ImportedAssetObject: {fileID: -944628639613478452, guid: 34cfcd448a91212478b6d323c8929710, type: 3}
+    m_AssetGUID: 34cfcd448a91212478b6d323c8929710
+    m_ImportedAssetJson: "{\n    \"name\": \"TitleInputSystem\",\n    \"maps\": [\n       
+      {\n            \"name\": \"Title\",\n            \"id\": \"f89fd759-0a23-4b50-a47c-7896ee7fcbeb\",\n           
+      \"actions\": [\n                {\n                    \"name\": \"SelectUp\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"e3e20480-1f01-4298-ab0a-4e979471abd5\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"SelectDown\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"db49f832-266e-49f8-8b63-cf98064af8e1\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"SelectLeft\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"e6457949-b80a-4914-aafd-2f6124d8834d\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"SelectRight\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"445c9461-95f8-406b-b7a9-8564304ea19a\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"Select\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"fc55e338-ec3b-4770-b0e8-dbbbf357a70d\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"Back\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"6fd791dc-3d2d-4c1b-847d-e63b9ffac8d2\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      },\n                {\n                    \"name\": \"Apply\",\n                   
+      \"type\": \"Button\",\n                    \"id\": \"40252ef0-83b6-4251-a822-d6b3b6707482\",\n                   
+      \"expectedControlType\": \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      }\n            ],\n            \"bindings\": [\n                {\n                   
+      \"name\": \"\",\n                    \"id\": \"21f1235e-dc89-4feb-adc2-be5d696c9b68\",\n                   
+      \"path\": \"<Gamepad>/dpad/up\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectUp\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"ce8c2885-6359-4dd3-af98-56a1444def8a\",\n                    \"path\":
+      \"<Gamepad>/dpad/down\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectDown\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"bdbf2a58-191d-4bd9-98f6-18694d6549c5\",\n                    \"path\":
+      \"<Gamepad>/buttonSouth\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"Select\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"f3e0198a-1554-4b4d-997b-2e2df00a77f3\",\n                    \"path\":
+      \"<Gamepad>/buttonEast\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"Back\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"397302c1-85ce-46bc-9b4c-519ca24ab013\",\n                    \"path\":
+      \"<Gamepad>/dpad/right\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectRight\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"713af3ef-aecb-40b7-8c05-a506c94a1ce7\",\n                    \"path\":
+      \"<Gamepad>/dpad/left\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"SelectLeft\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      },\n                {\n                    \"name\": \"\",\n                   
+      \"id\": \"307d723d-b37e-4708-a89d-53c18a74bfa1\",\n                    \"path\":
+      \"<Gamepad>/buttonNorth\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"Gamepad;Xbox Controller;PS4
+      Controller;Switch Pro Controller\",\n                    \"action\": \"Apply\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      }\n            ]\n        }\n    ],\n    \"controlSchemes\": [\n        {\n           
+      \"name\": \"KeyboardMouse\",\n            \"bindingGroup\": \"KeyboardMouse\",\n           
+      \"devices\": [\n                {\n                    \"devicePath\": \"<Keyboard>\",\n                   
+      \"isOptional\": false,\n                    \"isOR\": false\n               
+      },\n                {\n                    \"devicePath\": \"<Mouse>\",\n                   
+      \"isOptional\": false,\n                    \"isOR\": false\n               
+      }\n            ]\n        },\n        {\n            \"name\": \"Gamepad\",\n           
+      \"bindingGroup\": \"Gamepad\",\n            \"devices\": [\n               
+      {\n                    \"devicePath\": \"<Gamepad>\",\n                   
+      \"isOptional\": true,\n                    \"isOR\": false\n               
+      },\n                {\n                    \"devicePath\": \"<XInputController>\",\n                   
+      \"isOptional\": true,\n                    \"isOR\": false\n               
+      },\n                {\n                    \"devicePath\": \"<DualShockGamepad>\",\n                   
+      \"isOptional\": true,\n                    \"isOR\": false\n               
+      }\n            ]\n        },\n        {\n            \"name\": \"Xbox Controller\",\n           
+      \"bindingGroup\": \"Xbox Controller\",\n            \"devices\": []\n       
+      },\n        {\n            \"name\": \"PS4 Controller\",\n            \"bindingGroup\":
+      \"PS4 Controller\",\n            \"devices\": []\n        },\n        {\n           
+      \"name\": \"Switch Pro Controller\",\n            \"bindingGroup\": \"Switch
+      Pro Controller\",\n            \"devices\": [\n                {\n                   
+      \"devicePath\": \"<SwitchProControllerHID>\",\n                    \"isOptional\":
+      false,\n                    \"isOR\": false\n                }\n           
+      ]\n        }\n    ]\n}"
+    m_IsDirty: 0
+  m_Toolbar:
+    m_IsDirty: 0
+    m_SelectedControlSchemeIndex: -1
+    m_SelectedDeviceRequirementIndex: -1
+    m_ControlSchemes:
+    - m_Name: KeyboardMouse
+      m_BindingGroup: KeyboardMouse
+      m_DeviceRequirements:
+      - m_ControlPath: <Keyboard>
+        m_Flags: 0
+      - m_ControlPath: <Mouse>
+        m_Flags: 0
+    - m_Name: Gamepad
+      m_BindingGroup: Gamepad
+      m_DeviceRequirements:
+      - m_ControlPath: <Gamepad>
+        m_Flags: 1
+      - m_ControlPath: <XInputController>
+        m_Flags: 1
+      - m_ControlPath: <DualShockGamepad>
+        m_Flags: 1
+    - m_Name: Xbox Controller
+      m_BindingGroup: Xbox Controller
+      m_DeviceRequirements: []
+    - m_Name: PS4 Controller
+      m_BindingGroup: PS4 Controller
+      m_DeviceRequirements: []
+    - m_Name: Switch Pro Controller
+      m_BindingGroup: Switch Pro Controller
+      m_DeviceRequirements:
+      - m_ControlPath: <SwitchProControllerHID>
+        m_Flags: 0
+    m_SearchText: 
+  m_DirtyTitle:
+    m_Text: (*) TitleInputSystem (Input Actions)
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Title:
+    m_Text: TitleInputSystem (Input Actions)
+    m_Image: {fileID: 0}
+    m_Tooltip: 
 --- !u!114 &27
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2289,9 +2270,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1412.6667
+    x: 1317.3334
     y: 72.66667
-    width: 293
+    width: 388.33325
     height: 806.3333
   m_SerializedDataModeController:
     m_DataMode: 0

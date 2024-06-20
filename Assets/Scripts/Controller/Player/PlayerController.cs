@@ -1,3 +1,5 @@
+using Spine;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -50,14 +52,25 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    #region Main
+    #region Framework
+
+    private void Offset()
+    {
+        // Assign Animation IDs
+        _animIDSpeed = Animator.StringToHash("Speed");
+        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+
+        // Reset Pos
+        ft_resetPlayerSpot();
+
+
+        _animator.SetFloat(_animIDMotionSpeed, 1f);
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        AssignAnimationIDs();
-        ft_resetPlayerSpot();
-        _animator.SetFloat(_animIDMotionSpeed, 1f);
+        Offset();
     }
 
     private void FixedUpdate()
@@ -77,6 +90,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
+    #region Pos
 
     public void ft_setPlayerSpot(Vector3 pos)
     {
@@ -88,11 +102,10 @@ public class PlayerController : Singleton<PlayerController>
     {
         ft_setPlayerSpot(Vector3.zero);
     }
-    private void AssignAnimationIDs()
-    {
-        _animIDSpeed = Animator.StringToHash("Speed");
-        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-    }
+
+    #endregion
+
+    #region Gounded
 
     private void GroundedCheck()
     {
@@ -111,14 +124,10 @@ public class PlayerController : Singleton<PlayerController>
         }
         */
     }
-    void OnDrawGizmosSelected()
-    {
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
-            transform.position.z);
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
-        Gizmos.DrawSphere(spherePosition, GroundedRadius);
-    }
+
+    #endregion
+
+    #region Move
 
     public virtual void Move()
     {
@@ -176,6 +185,10 @@ public class PlayerController : Singleton<PlayerController>
         _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
 
+    #endregion
+
+    #region Animation 
+
     public void ResetAnime()
     {
         if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
@@ -201,4 +214,30 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    public void PlayInteractAnim(AnimationClip AC)
+    {
+        AnimatorOverrideController aoc = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+        var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        foreach (var a in aoc.animationClips)
+            anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, AC));
+        aoc.ApplyOverrides(anims);
+        _animator.runtimeAnimatorController = aoc;
+        _animator.Play("Interact");
+    }
+
+
+    #endregion
+
+    #region Gizmos
+
+    void OnDrawGizmosSelected()
+    {
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + GroundedOffset,
+            transform.position.z);
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
+        Gizmos.DrawSphere(spherePosition, GroundedRadius);
+    }
+
+    #endregion
 }
