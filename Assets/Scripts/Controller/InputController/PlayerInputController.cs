@@ -187,7 +187,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
         if(!GameManager.Instance.canInput) { return; }
 
         // 불가능 상황
-        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf ||
+        if (DialogManager.Instance.objPanelBtn.gameObject.activeSelf ||
             StreamController.Instance.gameObject.activeSelf) 
         { Debug.Log("can't Input"); return; }
 

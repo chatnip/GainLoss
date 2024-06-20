@@ -1,5 +1,4 @@
 //Refactoring v1.0
-
 using UnityEngine;
 
 public class BasicInteractObject : InteractObject
@@ -10,13 +9,13 @@ public class BasicInteractObject : InteractObject
     {
         if (!Outline.enabled) { return; }
 
-        if (GameSystem.Instance.objPanelBtn.gameObject.activeSelf) { GameSystem.Instance.objPanelBtn.gameObject.SetActive(false); }
+        if (DialogManager.Instance.objPanelBtn.gameObject.activeSelf) { DialogManager.Instance.objPanelBtn.gameObject.SetActive(false); }
 
         if (!this.IsInteracted)
         {
             base.Interact();
             string startDialogID = DataManager.Instance.Get_DialogID(this.ID);
-            GameSystem.Instance.ObjDescOn(this, startDialogID);
+            DialogManager.Instance.ObjDescOn(this, startDialogID);
 
             string getReasoningID = DataManager.Instance.Get_VisibleReasoningID(ID);
             if(getReasoningID != "")
@@ -27,7 +26,7 @@ public class BasicInteractObject : InteractObject
         }
         else
         {
-            GameSystem.Instance.ObjDescOn(this, endDialogID);
+            DialogManager.Instance.ObjDescOn(this, endDialogID);
         }
         
     }

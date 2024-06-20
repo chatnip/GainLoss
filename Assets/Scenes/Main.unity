@@ -7266,6 +7266,7 @@ Transform:
   - {fileID: 1799882740}
   - {fileID: 445175856}
   - {fileID: 1472056744}
+  - {fileID: 612384789}
   - {fileID: 1271768334}
   - {fileID: 581735052}
   - {fileID: 507832889}
@@ -10419,15 +10420,6 @@ MonoBehaviour:
   - {fileID: 1328456239}
   - {fileID: 1196359664}
   - {fileID: 1860181119}
-  objPanelBtn: {fileID: 968929453}
-  objName: {fileID: 375156843}
-  objText: {fileID: 1281144486}
-  objImg_char: {fileID: 1756411825}
-  objImg_obj: {fileID: 1953692714}
-  objImg_screen: {fileID: 2097325017}
-  anotherAnimator: {fileID: 0}
-  textingSpeed: 20
-  timeAttackFillImg: {fileID: 1318074107}
   characterSprites:
   - nameID: 
     texture: {fileID: 2800000, guid: dbbb1eef401d8034c85469dd14fa74dd, type: 3}
@@ -10467,13 +10459,6 @@ MonoBehaviour:
   - nameID: 
     texture: {fileID: 2800000, guid: 00a07b46c964d6e41b63c1a401505bcf, type: 3}
     sprites: []
-  objectChioceCG: {fileID: 1559272288}
-  objectBtnParentRT: {fileID: 805267314}
-  needAbilityTxt: {fileID: 1417040686}
-  streamChioceCG: {fileID: 2059917428}
-  streamBtnParentRT: {fileID: 223023428}
-  choiceBtnList: []
-  btnSprite: {fileID: 1338759114, guid: 02957a1969ab8d446a687b3d34bb5084, type: 3}
   cutsceneImg: {fileID: 361593217}
   cutsceneTxt: {fileID: 909619032}
   playerPos: {fileID: 1370800790}
@@ -13941,6 +13926,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606783127}
   m_CullTransparentMesh: 0
+--- !u!1 &612384788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 612384789}
+  - component: {fileID: 612384790}
+  m_Layer: 0
+  m_Name: DialogManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &612384789
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612384788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 343703185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612384790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612384788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0accf15f6bd7b441993604cce45ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objPanelBtn: {fileID: 968929453}
+  objName: {fileID: 375156843}
+  objText: {fileID: 1281144486}
+  objImg_char: {fileID: 1756411825}
+  objImg_obj: {fileID: 1953692714}
+  objImg_screen: {fileID: 2097325017}
+  anotherAnimator: {fileID: 0}
+  textingSpeed: 20
+  timeAttackFillImg: {fileID: 1318074107}
+  objectChioceCG: {fileID: 1559272288}
+  objectBtnParentRT: {fileID: 805267314}
+  needAbilityTxt: {fileID: 1417040686}
+  streamChioceCG: {fileID: 2059917428}
+  streamBtnParentRT: {fileID: 223023428}
+  choiceBtnList: []
+  btnSprite: {fileID: 1338759114, guid: 02957a1969ab8d446a687b3d34bb5084, type: 3}
 --- !u!1 &617702001
 GameObject:
   m_ObjectHideFlags: 0

@@ -220,7 +220,7 @@ public class PlaceManager : Singleton<PlaceManager>
         InteractObjectBtnController.Instance.SetOff_InteractiveOB();
 
         // Desc Panel -> Off
-        GameSystem.Instance.objPanelBtn.gameObject.SetActive(false);
+        DialogManager.Instance.objPanelBtn.gameObject.SetActive(false);
         if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.UseActivity) 
         { ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(true); }
         else 

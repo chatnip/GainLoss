@@ -367,7 +367,7 @@ public class StreamController : Singleton<StreamController>
         }
         else
         {
-            GameSystem.Instance.ShowChioceWindow_Stream2D(haveChoiceDialogID, 0.25f);
+            DialogManager.Instance.ShowChioceWindow_Stream2D(haveChoiceDialogID, 0.25f);
         }
         
     }
@@ -539,8 +539,8 @@ public class StreamController : Singleton<StreamController>
         this.gameObject.SetActive(true);
         resultWindowCG.gameObject.SetActive(false);
         resultWindowCG.alpha = 0f;
-        GameSystem.Instance.streamChioceCG.gameObject.SetActive(false);
-        GameSystem.Instance.streamChioceCG.alpha = 0f;
+        DialogManager.Instance.streamChioceCG.gameObject.SetActive(false);
+        DialogManager.Instance.streamChioceCG.alpha = 0f;
 
         // Loading Screen
         loadingScreenCG.gameObject.SetActive(true);

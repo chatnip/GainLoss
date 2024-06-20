@@ -80,7 +80,7 @@ public class ReasoningManager : Singleton<ReasoningManager>
                 ActiveOff_ConfirmPopup(0.2f);
 
                 GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.EndChapter);
-                GameSystem.Instance.ObjDescOn(null, DataManager.Instance.Get_GetChapterDialog(gottenChapterIdx));
+                DialogManager.Instance.ObjDescOn(null, DataManager.Instance.Get_GetChapterDialog(gottenChapterIdx));
             });
 
         EndChapterBtn.OnClickAsObservable()

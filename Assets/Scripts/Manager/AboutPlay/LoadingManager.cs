@@ -127,7 +127,7 @@ public class LoadingManager : Singleton<LoadingManager>
             {
                 string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
                 if (startDialogID != "")
-                { GameSystem.Instance.ObjDescOn(null, startDialogID, true); }
+                { DialogManager.Instance.ObjDescOn(null, startDialogID, true); }
             }
             else if (DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
             {

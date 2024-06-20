@@ -60,7 +60,7 @@ public class ComputerInteract : InteractObject
         if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.StreamingTime)
         { DesktopController.Instance.TurnOn(); }
         else
-        { GameSystem.Instance.ObjDescOn(this, "199"); }
+        { DialogManager.Instance.ObjDescOn(this, "199"); }
         
 
     }

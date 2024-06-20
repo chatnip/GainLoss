@@ -20,7 +20,7 @@ public class HomeInteractObject : InteractObject
         if (GameManager.Instance.currentActPart != GameManager.e_currentActPart.UseActivity &&
             thisAbilityType != ActivityController.e_HomeInteractType.Reasoning)
         {
-            GameSystem.Instance.ObjDescOn(this, "-1");
+            DialogManager.Instance.ObjDescOn(this, "-1");
         }
         else
         {
