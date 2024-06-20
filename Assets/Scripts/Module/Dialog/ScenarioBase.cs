@@ -23,12 +23,14 @@ public class StreamingFragment
     public string name;
     public string script;
     public string animationID;
+    public bool isRight;
 
-    public StreamingFragment(string _name, string _script, string _animationID)
+    public StreamingFragment(string _name, string _script, string _animationID, bool _isRight)
     {
         name = _name;
         this.script = _script;
         this.animationID = _animationID;
+        this.isRight = _isRight;
     }
 }
 

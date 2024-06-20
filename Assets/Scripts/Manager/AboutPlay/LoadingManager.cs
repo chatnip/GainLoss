@@ -123,7 +123,7 @@ public class LoadingManager : Singleton<LoadingManager>
             GameManager.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
 
-            /*if (DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
+            if (DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
             {
                 string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
                 if (startDialogID != "")
@@ -136,7 +136,7 @@ public class LoadingManager : Singleton<LoadingManager>
             else
             {
                 GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.UseActivity);
-            }*/
+            }
         });
     }
 

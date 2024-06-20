@@ -626,18 +626,22 @@ public class GameSystem : Singleton<GameSystem>
     {
         streamChioceCG.DOFade(0f, 0.2f).OnComplete(() => { streamChioceCG.gameObject.SetActive(false); });
         StreamController.Instance.haveChoiceDialogID = "";
+
+        
+
         // Show Reaction
         string PC_Chatting = DataManager.Instance.Get_SChoiceText(_id);
         string PC_Name = DataManager.Instance.Get_ObjectName("9999");
         if (PC_Chatting != "")
-        { 
-            IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
-            StreamController.Instance.GenSpeechBubble(idBtn, PC_Chatting, PC_Name, true);
+        {
+            StreamingFragment sf = new StreamingFragment(PC_Name, PC_Chatting, "", true);
+            StreamController.Instance.SetScenarioBaseWithChoice(DataManager.Instance.Get_NextSDialogBySChoice(_id), sf);
         }
-
-        //GenSpeechBubble
+        else
+        {
+            StreamController.Instance.SetScenarioBase(DataManager.Instance.Get_NextSDialogBySChoice(_id));
+        }
         streamChioceCG.gameObject.SetActive(false);
-        StreamController.Instance.SetScenarioBase(DataManager.Instance.Get_NextSDialogBySChoice(_id));
 
         // Get Gage
         int incGage = Convert.ToInt32(DataManager.Instance.Get_GEPoint(_id));

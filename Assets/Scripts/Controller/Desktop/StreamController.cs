@@ -175,6 +175,15 @@ public class StreamController : Singleton<StreamController>
         ScenarioBase.Value = scenario;
     }
 
+    public void SetScenarioBaseWithChoice(string SDialogID, StreamingFragment sf)
+    {
+        // Set Scenario
+        List<StreamingFragment> fragments = GetSDialogs(SDialogID);
+        fragments.Insert(0, sf);
+        ScenarioBase scenario = new(fragments);
+        ScenarioBase.Value = scenario;
+    }
+
     public List<StreamingFragment> GetSDialogs(string startDialogID)
     {
         List<StreamingFragment> fragments = new();
@@ -182,7 +191,7 @@ public class StreamController : Singleton<StreamController>
         string name = DataManager.Instance.Get_SDialogName(startDialogID);
         string dialog = DataManager.Instance.Get_SDialogText(startDialogID);
         string dialogAnim = DataManager.Instance.Get_SDialogAnim(startDialogID);
-        fragments.Add(new StreamingFragment(name, dialog, dialogAnim));
+        fragments.Add(new StreamingFragment(name, dialog, dialogAnim, false));
 
         if (DataManager.Instance.Get_SDialogHasChoice(startDialogID))
         { this.haveChoiceDialogID = startDialogID; }
@@ -199,7 +208,7 @@ public class StreamController : Singleton<StreamController>
             name = DataManager.Instance.Get_SDialogName(nextSDialogID);
             dialog = DataManager.Instance.Get_SDialogText(nextSDialogID);
             dialogAnim = DataManager.Instance.Get_SDialogAnim(nextSDialogID);
-            fragments.Add(new StreamingFragment(name, dialog, dialogAnim));
+            fragments.Add(new StreamingFragment(name, dialog, dialogAnim, false));
 
             if (DataManager.Instance.Get_SDialogHasChoice(nextSDialogID))
             { this.haveChoiceDialogID = nextSDialogID; }
@@ -304,7 +313,7 @@ public class StreamController : Singleton<StreamController>
 
             // Set Speech Bubble
             IDBtn idBtn = ObjectPooling.Instance.GetIDBtn();
-            GenSpeechBubble(idBtn, newFragment.script, newFragment.name, false);
+            GenSpeechBubble(idBtn, newFragment.script, newFragment.name, newFragment.isRight);
 
             StreamSeq
                    .SetEase(Ease.Linear)
