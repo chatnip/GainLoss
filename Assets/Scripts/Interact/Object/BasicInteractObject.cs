@@ -1,8 +1,19 @@
 //Refactoring v1.0
+using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class BasicInteractObject : InteractObject
 {
+    #region Value
+
+    [Header("=== NPC Things")]
+    [Tooltip("필요없으면 삽입 X")][SerializeField] public AnimatorController _AC;
+    [Tooltip("필요없으면 삽입 X")]
+    [SerializeField] List<AnimationClip> _Acs_ByIntetact;
+
+    #endregion
+
     #region Interact
 
     public override void Interact()
@@ -29,6 +40,22 @@ public class BasicInteractObject : InteractObject
             DialogManager.Instance.ObjDescOn(this, endDialogID);
         }
         
+    }
+
+    #endregion
+
+    #region Animation
+
+    public AnimationClip GetAnimtionClip(string animationClipName)
+    {
+        foreach (AnimationClip Ac in _Acs_ByIntetact)
+        {
+            if (Ac.name == animationClipName)
+            {
+                return Ac;
+            }
+        }
+        return null;
     }
 
     #endregion

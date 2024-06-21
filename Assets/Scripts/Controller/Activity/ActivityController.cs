@@ -1,5 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
+using Spine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,8 +58,8 @@ public class ActivityController : Singleton<ActivityController>
     public Dictionary<e_HomeInteractType, int> questionWindowAbilitiyDict;
 
     // Dotween
-    Sequence SAG_UI;
-    Sequence SAG_UI_Use;
+    DG.Tweening.Sequence SAG_UI;
+    DG.Tweening.Sequence SAG_UI_Use;
 
     #endregion
 
@@ -293,22 +294,20 @@ public class ActivityController : Singleton<ActivityController>
 
     public IEnumerator PlayAnim_AboutActivity(AnimationClip AC)
     {
-        yield return null;
-
         GameManager.Instance.canInput = false;
 
         if(AC != null)
         {
-            PlayerController.Instance.PlayInteractAnim(AC);
+            GameSystem.Instance.PlayAnimationOnce(PlayerController.Instance._At, AC);
 
             yield return new WaitForFixedUpdate();
 
-            float animLength = PlayerController.Instance._animator.GetCurrentAnimatorStateInfo(0).length;
+            float animLength = PlayerController.Instance._At.GetCurrentAnimatorStateInfo(0).length;
 
             yield return new WaitForSeconds(animLength);
         }
 
-        
+        GameSystem.Instance.EndAnimationOnce(PlayerController.Instance._At, PlayerController.Instance._AC);
         GameManager.Instance.canInput = true;
         GetAbility_End(currentQuestionWindowType);
     }

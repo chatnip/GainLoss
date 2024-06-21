@@ -1,5 +1,5 @@
-using Spine;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -37,7 +37,9 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] Transform _mainCamera;
     [SerializeField] Transform _npcInteractCamera;
     [SerializeField] public bool isTalking = false;
-    [SerializeField] public Animator _animator;
+    [SerializeField] public AnimatorController _AC;
+    [SerializeField] public Animator _At;
+    [SerializeField] List<AnimationClip> _Acs_ByIntetact;
 
     // player
     private float _speed;
@@ -64,7 +66,7 @@ public class PlayerController : Singleton<PlayerController>
         ft_resetPlayerSpot();
 
 
-        _animator.SetFloat(_animIDMotionSpeed, 1f);
+        _At.SetFloat(_animIDMotionSpeed, 1f);
     }
 
     protected override void Awake()
@@ -81,8 +83,8 @@ public class PlayerController : Singleton<PlayerController>
         if(PlayerInputController.Instance.CanMove && _controller.enabled) Move();
         if(isTalking) SetOriginalAnimation();
 
-        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
-            !_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+        if (_At.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
+            !_At.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
             ResetAnime();
         }
@@ -181,8 +183,8 @@ public class PlayerController : Singleton<PlayerController>
         
 
         // 애니메이터 업데이트
-        _animator.SetFloat(_animIDSpeed, _animationBlend);
-        _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+        _At.SetFloat(_animIDSpeed, _animationBlend);
+        _At.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
 
     #endregion
@@ -191,13 +193,13 @@ public class PlayerController : Singleton<PlayerController>
 
     public void ResetAnime()
     {
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+        if (!_At.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
-            _animator.SetTrigger("Return");
+            _At.SetTrigger("Return");
         }
         if(_animationBlend != 0)
         {
-            _animator.SetFloat(_animIDSpeed, 0);
+            _At.SetFloat(_animIDSpeed, 0);
             _animationBlend = 0;
         }
         
@@ -205,26 +207,26 @@ public class PlayerController : Singleton<PlayerController>
 
     private void SetOriginalAnimation() // NPC와 상호작용 중일 때, 애니메이션 한번 실행 후 컷
     {
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
+        if (!_At.GetCurrentAnimatorStateInfo(0).IsName("Idle Walk Run Blend"))
         {
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            if (_At.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
             {
-                _animator.SetTrigger("Return");
+                _At.SetTrigger("Return");
             }
         }
     }
 
-    public void PlayInteractAnim(AnimationClip AC)
+    public AnimationClip GetAnimtionClip(string animationClipName)
     {
-        AnimatorOverrideController aoc = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-        var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        foreach (var a in aoc.animationClips)
-            anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, AC));
-        aoc.ApplyOverrides(anims);
-        _animator.runtimeAnimatorController = aoc;
-        _animator.Play("Interact");
+        foreach (AnimationClip Ac in _Acs_ByIntetact)
+        { 
+            if(Ac.name == animationClipName)
+            {
+                return Ac;
+            }
+        }
+        return null;
     }
-
 
     #endregion
 

@@ -13976,8 +13976,9 @@ MonoBehaviour:
   objImg_char: {fileID: 1756411825}
   objImg_obj: {fileID: 1953692714}
   objImg_screen: {fileID: 2097325017}
-  anotherAnimator: {fileID: 0}
   textingSpeed: 20
+  another_At: {fileID: 0}
+  another_AC: {fileID: 0}
   timeAttackFillImg: {fileID: 1318074107}
   objectChioceCG: {fileID: 1559272288}
   objectBtnParentRT: {fileID: 805267314}
@@ -29241,7 +29242,9 @@ MonoBehaviour:
   _mainCamera: {fileID: 61803317}
   _npcInteractCamera: {fileID: 583059809}
   isTalking: 0
-  _animator: {fileID: 1370800794}
+  _AC: {fileID: 9100000, guid: 9b173efcb2b795f4499d9acee6370d5d, type: 2}
+  _At: {fileID: 1370800794}
+  _Acs_ByIntetact: []
 --- !u!143 &1370800793
 CharacterController:
   m_ObjectHideFlags: 0
@@ -39681,7 +39684,7 @@ MonoBehaviour:
   canInput: 1
   canSkipTalking: 0
   canInteractObject: 1
-  currentActPart: 0
+  currentActPart: 1
 --- !u!1 &1803830884
 GameObject:
   m_ObjectHideFlags: 0

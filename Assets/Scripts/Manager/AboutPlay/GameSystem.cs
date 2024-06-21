@@ -6,6 +6,7 @@ using TMPro;
 using UniRx;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEditor.Animations;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -149,6 +150,26 @@ public class GameSystem : Singleton<GameSystem>
     }
 
 
+
+    #endregion
+
+    #region Animator
+
+    public void PlayAnimationOnce(Animator At, AnimationClip AC)
+    {
+        RuntimeAnimatorController myController = At.runtimeAnimatorController;
+        AnimatorOverrideController myOverrideController = new AnimatorOverrideController();
+        myOverrideController.runtimeAnimatorController = myController;
+        myOverrideController["NullAnimation"] = AC;
+        At.runtimeAnimatorController = myOverrideController;
+        At.SetTrigger("Interact");
+    }
+
+    public void EndAnimationOnce(Animator At, AnimatorController AC)
+    {
+        At.runtimeAnimatorController = AC;
+        At.SetTrigger("Return");
+    }
 
     #endregion
 

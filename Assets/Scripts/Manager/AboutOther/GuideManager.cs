@@ -69,6 +69,9 @@ public class GuideManager : Singleton<GuideManager>
     {
         GameManager.Instance.canInput = false;
 
+        PlayerInputController.Instance.MoveStop();
+        PlayerController.Instance.ResetAnime();
+
         panelTutorialCG.gameObject.SetActive(true);
 
         foreach (TutorialController _controller in TutorialControllers)
@@ -101,6 +104,7 @@ public class GuideManager : Singleton<GuideManager>
                 { _controller.gameObject.SetActive(false); }
 
                 GameManager.Instance.canInput = true;
+                PlayerInputController.Instance.CanMove = true;
             });
     }
 

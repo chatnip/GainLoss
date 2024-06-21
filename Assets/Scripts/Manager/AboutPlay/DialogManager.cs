@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor.Animations;
 
 public class DialogManager : Singleton<DialogManager>
 {
@@ -19,8 +20,11 @@ public class DialogManager : Singleton<DialogManager>
     [SerializeField] Image objImg_char;
     [SerializeField] Image objImg_obj;
     [SerializeField] Image objImg_screen;
-    [SerializeField] Animator anotherAnimator;
     [SerializeField] float textingSpeed = 5f;
+
+    [Header("=== Another")]
+    [SerializeField] Animator another_At;
+    [SerializeField] AnimatorController another_AC;
 
     [Header("=== Stream UI")]
     [SerializeField] Image timeAttackFillImg;
@@ -161,18 +165,41 @@ public class DialogManager : Singleton<DialogManager>
                              }
                          }
 
+
                          if (_animID != "" && _animID != null)
                          {
                              if (_isPlayerAnim)
                              {
                                  Debug.Log("playerAnim");
-                                 PlayerController.Instance._animator.Play(_animID);
+
+                                 // End
+                                 GameSystem.Instance.EndAnimationOnce(PlayerController.Instance._At, PlayerController.Instance._AC);
+
+                                 // Play
+                                 AnimationClip Ac = PlayerController.Instance.GetAnimtionClip(_animID);
+                                 if (Ac != null)
+                                 { GameSystem.Instance.PlayAnimationOnce(PlayerController.Instance._At, Ac); }
                              }
                              else
                              {
                                  Debug.Log("anotherAnim");
-                                 PlayerController.Instance.ResetAnime();
-                                 anotherAnimator.Play(_animID);
+
+                                 // End
+                                 if (another_At != null)
+                                 { GameSystem.Instance.EndAnimationOnce(another_At, another_AC); }
+
+                                 // Play
+                                 BasicInteractObject BIO;
+                                 if (currentIO is BasicInteractObject) 
+                                 {
+                                     BIO = (BasicInteractObject)currentIO;
+
+                                     AnimationClip Ac = BIO.GetAnimtionClip(_animID);
+                                     if (Ac != null || another_At != null)
+                                     { GameSystem.Instance.PlayAnimationOnce(another_At, Ac); }
+                                 }
+
+                                
                              }
                          }
                          else
@@ -232,12 +259,15 @@ public class DialogManager : Singleton<DialogManager>
         {
             currentIO = IO;
             if (IO.TryGetComponent(out Animator animator))
-            {
-                anotherAnimator = animator;
+            { another_At = animator; }
+            if (IO is BasicInteractObject)
+            { 
+                BasicInteractObject BIO = (BasicInteractObject)IO;
+                another_AC = BIO._AC;
             }
         }
 
-
+        // Base Set
         GameManager.Instance.canInput = false;
         GameManager.Instance.canInteractObject = false;
         GameManager.Instance.canSkipTalking = true;
@@ -299,6 +329,17 @@ public class DialogManager : Singleton<DialogManager>
 
     public void ObjDescOff()
     {
+        // Reset Anim
+        GameSystem.Instance.EndAnimationOnce(PlayerController.Instance._At, PlayerController.Instance._AC);
+        PlayerController.Instance.ResetAnime();
+
+        if (another_At != null)
+        { GameSystem.Instance.EndAnimationOnce(another_At, another_AC); }
+
+        another_At = null;
+        another_AC = null;
+
+        // Empty Current Interact Object 
         if (currentIO != null)
         {
             if (PlaceManager.Instance.needInteractIOs.Contains(currentIO))
@@ -310,8 +351,6 @@ public class DialogManager : Singleton<DialogManager>
         GameManager.Instance.canInput = true;
         GameManager.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
-        PlayerController.Instance._animator.SetTrigger("Return");
-        PlayerController.Instance.ResetAnime();
         InteractObjectBtnGenerator.Instance.SetOnOffAllBtns(true);
 
         DOTween.Kill(objTextingTween);
