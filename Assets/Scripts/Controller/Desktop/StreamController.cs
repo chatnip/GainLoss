@@ -106,6 +106,7 @@ public class StreamController : Singleton<StreamController>
     private void OnEnable()
     {
         ActiveOn();
+        click.Enable();
     }
 
     private void OnDisable()
@@ -536,7 +537,6 @@ public class StreamController : Singleton<StreamController>
         if (GameSystem.Instance == null) { return; }
         else if (GameSystem.Instance.currentActPart != GameSystem.e_currentActPart.StreamingTime) { return; }
 
-        click.Enable();
         this.gameObject.SetActive(true);
         resultWindowCG.gameObject.SetActive(false);
         resultWindowCG.alpha = 0f;

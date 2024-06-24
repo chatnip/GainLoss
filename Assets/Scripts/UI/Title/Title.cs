@@ -21,7 +21,6 @@ public class Title : MonoBehaviour
     [SerializeField] Button continueBtn;
     [SerializeField] public Button OptionBtn;
     [SerializeField] Button QuitBtn;
-    List<List<Button>> btns;
 
     [Header("*Window")]
     [SerializeField] Image BlackScreenImg;
@@ -45,12 +44,6 @@ public class Title : MonoBehaviour
 
     private void Awake()
     {
-        btns = new List<List<Button>>()
-        {
-            new List<Button> { newGameBtn, OptionBtn },
-            new List<Button> { continueBtn, QuitBtn }
-        };
-
         OffsetRotationList = new List<Vector3>();
         for (int i = 0; i < MoveEffectRTList.Count; i++)
         {
@@ -69,7 +62,7 @@ public class Title : MonoBehaviour
                     .OnComplete(() =>
                     {
                         DOTween.KillAll();
-                        SceneManager.LoadScene("Main");
+                        LoadingSceneManager.LoadScene("Main");
                     });
             });
         continueBtn.OnClickAsObservable()
