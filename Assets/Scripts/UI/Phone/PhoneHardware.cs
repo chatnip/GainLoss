@@ -60,8 +60,8 @@ public class PhoneHardware : Singleton<PhoneHardware>
 
     public IEnumerator Start_PhoneOn(e_phoneStateExtra pse)
     {
-        if(!GameManager.Instance.canInput) { yield return null; }
-        GameManager.Instance.canInput = false;
+        if(!GameSystem.Instance.canInput) { yield return null; }
+        GameSystem.Instance.canInput = false;
 
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
@@ -136,9 +136,9 @@ public class PhoneHardware : Singleton<PhoneHardware>
         seq.Append(CEImg.DOFade(0, 0.1f).SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                circleEffectRT.gameObject.SetActive(false); 
-                
-                GameManager.Instance.canInput = true;
+                circleEffectRT.gameObject.SetActive(false);
+
+                GameSystem.Instance.canInput = true;
 
                 if (PhoneSoftware.Instance.visitPlaceScreen.gameObject.activeSelf)
                 { PhoneSoftware.Instance.OpenMap(); }

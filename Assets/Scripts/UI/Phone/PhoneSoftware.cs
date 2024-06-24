@@ -54,7 +54,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
             .OnClickAsObservable()
             .Subscribe(btn =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 ClosePopup(0f);
                 PhoneHardware.Instance.PhoneOff();
@@ -93,8 +93,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
 
         //PlayerInputController.Instance.interact = this;
 
-        DayText.text = "DAY " + GameManager.Instance.mainInfo.Day;
-        DayOfWeekText.text = GameManager.Instance.mainInfo.TodayOfTheWeek;
+        DayText.text = "DAY " + GameSystem.Instance.mainInfo.Day;
+        DayOfWeekText.text = GameSystem.Instance.mainInfo.TodayOfTheWeek;
 
         if (phoneExitBtn.TryGetComponent(out RectTransform RT)) { RT.localScale = Vector3.one; }
 
@@ -118,7 +118,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
     }
     public void OpenMap()
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
         this.OpenMapSeq = DOTween.Sequence();
 
         for (int i = 0; i < PlaceBtns.Count; i++)
@@ -134,8 +134,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
         }
 
         this.OpenMapSeq
-            .OnUpdate(() => { if (GameManager.Instance.canInput) { GameManager.Instance.canInput = false; } })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
+            .OnUpdate(() => { if (GameSystem.Instance.canInput) { GameSystem.Instance.canInput = false; } })
+            .OnComplete(() => { GameSystem.Instance.canInput = true; });
 
         
     }
@@ -174,8 +174,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
                 popupBG.gameObject.SetActive(true);
             });
         popupRT.DOAnchorPos(Vector2.zero, time)
-            .OnStart(() => { GameManager.Instance.canInput = false; })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
+            .OnStart(() => { GameSystem.Instance.canInput = false; })
+            .OnComplete(() => { GameSystem.Instance.canInput = true; });
 
 
         IDisposable cancelIDis = null;
@@ -191,7 +191,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
             cancelIDis = popupCancelBtn.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     // Main System
                     ZoomOutPlaceMap(0.5f);
@@ -202,7 +202,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
             applyIDis = popupApplyBtn.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     // Main System
                     ZoomOutPlaceMap(0f);
@@ -225,7 +225,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
             cancelIDis = popupCancelBtn.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     // Main System
                     ClosePopup(0.5f);
@@ -235,7 +235,7 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
             applyIDis = popupApplyBtn.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     // Main System
                     PhoneOptionManager.Instance.DoPhoneOption();
@@ -259,8 +259,8 @@ public class PhoneSoftware : Singleton<PhoneSoftware>
                 popupBG.gameObject.SetActive(false);
             });
         popupRT.DOAnchorPos(new Vector2(0, -popupRT.rect.height), time)
-            .OnStart(() => { GameManager.Instance.canInput = false; })
-            .OnComplete(() => { GameManager.Instance.canInput = true; });
+            .OnStart(() => { GameSystem.Instance.canInput = false; })
+            .OnComplete(() => { GameSystem.Instance.canInput = true; });
 
         #region Visit
 

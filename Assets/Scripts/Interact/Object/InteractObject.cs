@@ -24,8 +24,8 @@ public class InteractObject : InteractCore
     {
         base.OnPointerDown(eventData);
 
-        if (GameManager.Instance.canInput &&
-            GameManager.Instance.canInteractObject)
+        if (GameSystem.Instance.canInput &&
+            GameSystem.Instance.canInteractObject)
         { Interact(); }
         
     }

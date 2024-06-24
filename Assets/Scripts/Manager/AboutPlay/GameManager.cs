@@ -3,169 +3,38 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
     #region Value
 
+    public static GameManager Instance;
+
     [Header("=== Other")]
     [SerializeField] public string currentChapter = "1";
-    [SerializeField] public MainInfo mainInfo = new MainInfo(0, 0, 0, 0, 0);
-
-    // Other Value
-    public bool canInput = false;
-    public bool canSkipTalking = false;
-    public bool canInteractObject = true;
-    public e_currentActPart currentActPart = e_currentActPart.StartDay;
 
     #endregion
 
-    #region Enum
-
-    public enum e_currentActPart
-    {
-        StartDay, UseActivity, VisitPlace, StreamingTime, EndDay, ReasoningDay, EndChapter
-    }
-
-    public void SeteCurrentActPart(e_currentActPart eCurrentActPart)
-    {
-        currentActPart = eCurrentActPart;
-
-        // 튜토리얼 조건 충족 시 키기
-        GuideManager.Instance.PlayTutorial_WhenHad();
-
-        // 가이드 화살표 세팅
-        GuideManager.Instance.SetGuideArrow();
-
-        // 각 상태에 오브젝트들 On/Off
-        GuideManager.Instance.SetActiveOnOffGOs();
-    }
-
-    #endregion
 
     #region Framework & Base Set
 
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
-    }
-    private void OnEnable()
-    {
-        currentChapter = "1";
-        mainInfo = new MainInfo(
-            DataManager.Instance.Get_ChapterStartDay(currentChapter),
-            DataManager.Instance.Get_GiveActivity(currentChapter),
-            DataManager.Instance.Get_Obs(currentChapter), 
-            DataManager.Instance.Get_Soc(currentChapter),
-            DataManager.Instance.Get_Men(currentChapter));
-
-        Alloffset();
-    }
-
-    private void Alloffset()
-    {
-        LanguageManager.Instance.Offset();
-        LoadingManager.Instance.Offset();
-        GameSystem.Instance.Offset();
-        PlaceManager.Instance.Offset();
-        DialogManager.Instance.Offset();
-        ReasoningManager.Instance.Offset();
-        PhoneOptionManager.Instance.Offset();
-        GuideManager.Instance.Offset();
-
-        ActivityController.Instance.Offset();
-
-        PhoneSoftware.Instance.Offset();
-        PhoneHardware.Instance.Offset();
-
-        PlayerInputController.Instance.Offset();
-        DesktopController.Instance.Offset();
-        StreamController.Instance.Offset();
-
-        InteractObjectBtnController.Instance.Offset();
-        ObjectPooling.Instance.Offset();
-
-    }
-
-    #endregion
-
-
-}
-
-[Serializable]
-public class MainInfo
-{
-    // Flow
-    public bool NewGame = true;
-    public int Day = 1;
-
-    // Activity
-    public int CurrentActivity = 0;
-    public int MaxActivity = 0;
-
-    // Ability
-    public int observation = 0;
-    public int sociability = 0;
-    public int mentality = 0;
-
-    // Place & Streaming
-    public int PositiveAndNegative = 0;
-
-    public MainInfo() { }
-    public MainInfo(int day, int _maxActivity, int d_Obse, int d_Pers, int d_Ment)
-    {
-        Day = day;
-        MaxActivity = _maxActivity;
-        observation = d_Obse;
-        sociability = d_Pers;
-        mentality = d_Ment;
-    }
-    public bool IsEnoughAbility(int d_Obse, int d_Pers, int d_Ment)
-    {
-        if (observation >= d_Obse &&
-            sociability >= d_Pers &&
-            mentality >= d_Ment)
-        { return true; }
-        else
-        { return false; }
-    }
-
-    public void IncAbility(ActivityController.e_HomeInteractType HI_Type, int incAbilityValue, int DecActivityValue)
-    {
-        CurrentActivity -= DecActivityValue;
-        switch (HI_Type)
+        if (null == Instance)
         {
-            case ActivityController.e_HomeInteractType.Observational:
-                observation += incAbilityValue;
-                break;
-
-            case ActivityController.e_HomeInteractType.Persuasive:
-                sociability += incAbilityValue;
-                break;
-
-            case ActivityController.e_HomeInteractType.MentalStrength:
-                mentality += incAbilityValue;
-                break;
-
-
-            default:
-                break;
+            Debug.Log("인스턴스화");
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("존재하니 삭제");
+            Destroy(this.gameObject);
         }
     }
+    
+    #endregion
 
-
-    public static Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
-    {
-        { "Activity", new List<string> { "Activity", "행동력" } },
-        { "observation", new List<string> { "observation", "관찰력" } },
-        { "sociability", new List<string> { "sociability", "설득력" } },
-        { "mentality", new List<string> { "mentality", "정신력" } }
-    };
-
-
-    // Deco
-    public string TodayOfTheWeek = "Monday";
 
 }
 

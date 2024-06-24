@@ -45,7 +45,7 @@ public class LoadingManager : Singleton<LoadingManager>
 
     public void StartLoading()
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
         StartCoroutine(Past_ShowNextDayText(1f));
@@ -57,7 +57,7 @@ public class LoadingManager : Singleton<LoadingManager>
         savingPrograssText.DOFade(0f, 0.4f).SetLoops(-1, LoopType.Yoyo);
 
         passDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.Instance.mainInfo.Day + "]";
+        string TextTemp = "DAY [" + GameSystem.Instance.mainInfo.Day + "]";
 
         loading.gameObject.SetActive(true);
         loading.DOFade(1f, 1f);
@@ -69,21 +69,21 @@ public class LoadingManager : Singleton<LoadingManager>
 
         passDayExplanationText.DOFade(0, time);
 
-        GameManager.Instance.mainInfo.Day++;
+        GameSystem.Instance.mainInfo.Day++;
 
-        string strName = GameManager.Instance.mainInfo.TodayOfTheWeek;
+        string strName = GameSystem.Instance.mainInfo.TodayOfTheWeek;
         int DayOrdinal1 = (int)Enum.Parse(typeof(WeekDays), strName) + 1;
         if (DayOrdinal1 >= 7)
-        { GameManager.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
-        else { GameManager.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
+        { GameSystem.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), 0); }
+        else { GameSystem.Instance.mainInfo.TodayOfTheWeek = Enum.GetName(typeof(WeekDays), DayOrdinal1); }
 
         StartCoroutine(Post_ShowNextDayText(1f));
     }
 
     private IEnumerator Post_ShowNextDayText(float time)
     {
-        GameManager.Instance.canInput = false;
-        GameManager.Instance.mainInfo.CurrentActivity = DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
+        GameSystem.Instance.canInput = false;
+        GameSystem.Instance.mainInfo.CurrentActivity = DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter);
 
         
         ActivityController.Instance.SetActivityGageUI(0f);
@@ -96,7 +96,7 @@ public class LoadingManager : Singleton<LoadingManager>
         savingPrograssText.text = "< Saved >";
         savingPrograssText.DOFade(1f, 1f);
 
-        dayText.text = GameManager.Instance.mainInfo.Day.ToString();
+        dayText.text = GameSystem.Instance.mainInfo.Day.ToString();
 
         passDayExplanationText.color = Color.white;
 
@@ -104,7 +104,7 @@ public class LoadingManager : Singleton<LoadingManager>
 
         passDayExplanationText.text = "";
         passDayExplanationText.color = Color.white;
-        string TextTemp = "DAY [" + GameManager.Instance.mainInfo.Day + "]";
+        string TextTemp = "DAY [" + GameSystem.Instance.mainInfo.Day + "]";
         passDayExplanationText.DOText(TextTemp, time);
         yield return new WaitForSeconds(time * 2);
         passDayExplanationText.DOFade(0, time);
@@ -120,23 +120,23 @@ public class LoadingManager : Singleton<LoadingManager>
         .OnComplete(() =>
         {
             loading.gameObject.SetActive(false);
-            GameManager.Instance.canInput = true;
+            GameSystem.Instance.canInput = true;
             PlayerInputController.Instance.CanMove = true;
 
-            /*if (DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
+            if (DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter) == GameSystem.Instance.mainInfo.Day)
             {
                 string startDialogID = DataManager.Instance.Get_StartDialog(GameManager.Instance.currentChapter);
                 if (startDialogID != "")
                 { DialogManager.Instance.ObjDescOn(null, startDialogID, true); }
             }
-            else if (DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter) == GameManager.Instance.mainInfo.Day)
+            else if (DataManager.Instance.Get_ChapterEndDay(GameManager.Instance.currentChapter) == GameSystem.Instance.mainInfo.Day)
             {
-                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.ReasoningDay);
+                GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.ReasoningDay);
             }
             else
             {
-                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.UseActivity);
-            }*/
+                GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.UseActivity);
+            }
         });
     }
 

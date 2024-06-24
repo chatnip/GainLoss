@@ -19,8 +19,8 @@ public class TaskBar : MonoBehaviour
 
     public void Offset()
     {
-        CurrentDayText.text = "DAY " + GameManager.Instance.mainInfo.Day;
-        CurrentDayOfWeekText.text = GameManager.Instance.mainInfo.TodayOfTheWeek;
+        CurrentDayText.text = "DAY " + GameSystem.Instance.mainInfo.Day;
+        CurrentDayOfWeekText.text = GameSystem.Instance.mainInfo.TodayOfTheWeek;
     }
 
     private void Awake()

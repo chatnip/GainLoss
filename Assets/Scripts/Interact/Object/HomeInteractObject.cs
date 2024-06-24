@@ -17,7 +17,7 @@ public class HomeInteractObject : InteractObject
         if (!Outline.enabled) { return; }
 
         base.Interact();
-        if (GameManager.Instance.currentActPart != GameManager.e_currentActPart.UseActivity &&
+        if (GameSystem.Instance.currentActPart != GameSystem.e_currentActPart.UseActivity &&
             thisAbilityType != ActivityController.e_HomeInteractType.Reasoning)
         {
             DialogManager.Instance.ObjDescOn(this, "-1");

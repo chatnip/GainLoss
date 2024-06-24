@@ -69,7 +69,7 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeBtn.button.OnClickAsObservable()
                     .Subscribe(btn =>
                     {
-                        if (!GameManager.Instance.canInput) { return; }
+                        if (!GameSystem.Instance.canInput) { return; }
 
                         PhoneHardware.Instance.PhoneOff();
                         PlayerInputController.Instance.CanMove = true;
@@ -80,7 +80,7 @@ public class PlaceManager : Singleton<PlaceManager>
                 placeBtn.button.OnClickAsObservable()
                     .Subscribe(placeBV =>
                     {
-                        if (!GameManager.Instance.canInput) { return; }
+                        if (!GameSystem.Instance.canInput) { return; }
 
                         currentIdBtn = placeBtn;
                         PhoneSoftware.Instance.ZoomInPlaceMap(currentIdBtn, 1.2f, 0.5f);
@@ -107,7 +107,7 @@ public class PlaceManager : Singleton<PlaceManager>
             comebackHomeBtn.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     currentIdBtn = placeBtnList[0];
                     StartGoingSomewhereLoading(1.5f);
@@ -191,7 +191,7 @@ public class PlaceManager : Singleton<PlaceManager>
     private IEnumerator GoingSomewhereLoading(IDBtn idBtn, float delay)
     {
         yield return new WaitForEndOfFrame();
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         // Set Loading Canvas
         currentPlaceTxt.text = 
@@ -221,7 +221,7 @@ public class PlaceManager : Singleton<PlaceManager>
 
         // Desc Panel -> Off
         DialogManager.Instance.objPanelBtn.gameObject.SetActive(false);
-        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.UseActivity) 
+        if (GameSystem.Instance.currentActPart == GameSystem.e_currentActPart.UseActivity) 
         { ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(true); }
         else 
         { ActivityController.Instance.activityGageWindowRT.gameObject.SetActive(false); }
@@ -241,13 +241,13 @@ public class PlaceManager : Singleton<PlaceManager>
 
     private void EndGoingSomewhereLoading()
     {
-        GameManager.Instance.canInput = true;
+        GameSystem.Instance.canInput = true;
         PlayerInputController.Instance.CanMove = true;
         goingSomewhereloadingCG.gameObject.SetActive(false);
         if (currentIdBtn == placeBtnList[0])
-        { GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.StreamingTime); }
+        { GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.StreamingTime); }
         else
-        { GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.VisitPlace); }
+        { GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.VisitPlace); }
        
     }
 

@@ -80,7 +80,7 @@ public class TitleInputController : Singleton<TitleInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(true); return; }
@@ -114,7 +114,7 @@ public class TitleInputController : Singleton<TitleInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SelectBtn != null && SelectBtn.TryGetComponent(out ArrowLRInteractBtn AIB))
         { AIB.SetEnumValue(false); return; }
@@ -146,7 +146,7 @@ public class TitleInputController : Singleton<TitleInputController>
     }
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
@@ -189,7 +189,7 @@ public class TitleInputController : Singleton<TitleInputController>
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
@@ -220,7 +220,7 @@ public class TitleInputController : Singleton<TitleInputController>
     // Y Button
     private void ApplyButton(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (Option.CheckIsOnOptionDetail() != null)
         {
@@ -231,7 +231,7 @@ public class TitleInputController : Singleton<TitleInputController>
     // A Button
     private void select(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SelectBtn != null)
         {
@@ -246,7 +246,7 @@ public class TitleInputController : Singleton<TitleInputController>
     // X Button
     private void back(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (!Option.Cancel_OptionDetail())
         { return; }

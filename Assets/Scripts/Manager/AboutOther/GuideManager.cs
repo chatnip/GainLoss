@@ -53,8 +53,8 @@ public class GuideManager : Singleton<GuideManager>
     {
         string tutorialID = DataManager.Instance.GetID_HaveTutorial(
             GameManager.Instance.currentChapter,
-            GameManager.Instance.mainInfo.Day.ToString(),
-            Enum.GetName(typeof(GameManager.e_currentActPart), GameManager.Instance.currentActPart));
+            GameSystem.Instance.mainInfo.Day.ToString(),
+            Enum.GetName(typeof(GameSystem.e_currentActPart), GameSystem.Instance.currentActPart));
 
         // 챕터, 날짜, 상태의 조건이 충족 시
         if(tutorialID != "")
@@ -67,7 +67,7 @@ public class GuideManager : Singleton<GuideManager>
 
     public void ActiveOn(string tutorialID)
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
@@ -86,12 +86,12 @@ public class GuideManager : Singleton<GuideManager>
         panelTutorialCG.DOFade(1f, 1f)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
             });
     }
     public void ActiveOff()
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
 
         if (DOTween.IsTweening(panelTutorialCG)) { DOTween.Kill(panelTutorialCG); }
@@ -103,7 +103,7 @@ public class GuideManager : Singleton<GuideManager>
                 foreach (TutorialController _controller in TutorialControllers)
                 { _controller.gameObject.SetActive(false); }
 
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
                 PlayerInputController.Instance.CanMove = true;
             });
     }
@@ -116,7 +116,7 @@ public class GuideManager : Singleton<GuideManager>
     {
         foreach (GuideSet GS in guideSets)
         {
-            if(GS.thisActPart == GameManager.Instance.currentActPart)
+            if(GS.thisActPart == GameSystem.Instance.currentActPart)
             {
                 foreach(Transform tf in GS.guideTFs)
                 {
@@ -148,7 +148,7 @@ public class GuideManager : Singleton<GuideManager>
     {
         foreach (GuideSet GS in guideSets)
         {
-            if (GS.thisActPart == GameManager.Instance.currentActPart)
+            if (GS.thisActPart == GameSystem.Instance.currentActPart)
             {
                 foreach (GameObject go in GS.activeOnGO_WhenThisTime) { go.gameObject.SetActive(true); }
                 foreach (GameObject go in GS.activeOffGO_WhenThisTime) { go.gameObject.SetActive(false); }
@@ -163,7 +163,7 @@ public class GuideManager : Singleton<GuideManager>
 [System.Serializable]
 public class GuideSet
 {
-    public GameManager.e_currentActPart thisActPart;
+    public GameSystem.e_currentActPart thisActPart;
     public List<Transform> guideTFs;
 
     public List<GameObject> activeOnGO_WhenThisTime;

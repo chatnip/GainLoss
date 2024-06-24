@@ -66,7 +66,7 @@ public class DesktopController : Singleton<DesktopController>
             idBtn.button.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     currentAppBtn = idBtn;
                     OpenConfirmPopup(currentAppBtn);
@@ -78,7 +78,7 @@ public class DesktopController : Singleton<DesktopController>
             popupExitBtn.OnClickAsObservable()
                 .Subscribe(btn =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     EffectfulWindow.DisappearEffectful(confirmPopupRT, DisappearTime, DisappearLastSize, Ease.Linear);
                 });
@@ -145,7 +145,7 @@ public class DesktopController : Singleton<DesktopController>
             });
 
         // Set Special Btn
-        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.StreamingTime) { appBtn[0].button.interactable = true; }
+        if (GameSystem.Instance.currentActPart == GameSystem.e_currentActPart.StreamingTime) { appBtn[0].button.interactable = true; }
         else { appBtn[0].button.interactable = false; }
     }
 

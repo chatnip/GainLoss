@@ -7,6 +7,7 @@ using UniRx;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEditor.Animations;
+using System;
 
 public class GameSystem : Singleton<GameSystem>
 {
@@ -36,6 +37,37 @@ public class GameSystem : Singleton<GameSystem>
     [SerializeField] Button skipBtn;
     Sequence endSeq;
 
+    [SerializeField] public MainInfo mainInfo = new MainInfo(0, 0, 0, 0, 0);
+
+    // Other Value
+    public bool canInput = false;
+    public bool canSkipTalking = false;
+    public bool canInteractObject = true;
+    public e_currentActPart currentActPart = e_currentActPart.StartDay;
+
+    #endregion
+
+    #region Enum
+
+    public enum e_currentActPart
+    {
+        StartDay, UseActivity, VisitPlace, StreamingTime, EndDay, ReasoningDay, EndChapter
+    }
+
+    public void SeteCurrentActPart(e_currentActPart eCurrentActPart)
+    {
+        currentActPart = eCurrentActPart;
+
+        // 튜토리얼 조건 충족 시 키기
+        GuideManager.Instance.PlayTutorial_WhenHad();
+
+        // 가이드 화살표 세팅
+        GuideManager.Instance.SetGuideArrow();
+
+        // 각 상태에 오브젝트들 On/Off
+        GuideManager.Instance.SetActiveOnOffGOs();
+    }
+
     #endregion
 
     #region Framework & Base Set
@@ -53,7 +85,7 @@ public class GameSystem : Singleton<GameSystem>
         pauseBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 StartCoroutine(PhoneHardware.Instance.Start_PhoneOn(PhoneHardware.e_phoneStateExtra.option));
             });
@@ -61,7 +93,7 @@ public class GameSystem : Singleton<GameSystem>
         skipBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canSkipTalking) { return; }
+                if (!GameSystem.Instance.canSkipTalking) { return; }
                 DOTween.Kill(endSeq);
                 SceneManager.LoadScene("Title");
             });
@@ -105,6 +137,44 @@ public class GameSystem : Singleton<GameSystem>
         base.Awake();
     }
 
+    public void OnEnable()
+    {
+        mainInfo = new MainInfo(
+        DataManager.Instance.Get_ChapterStartDay(GameManager.Instance.currentChapter),
+        DataManager.Instance.Get_GiveActivity(GameManager.Instance.currentChapter),
+        DataManager.Instance.Get_Obs(GameManager.Instance.currentChapter),
+        DataManager.Instance.Get_Soc(GameManager.Instance.currentChapter),
+        DataManager.Instance.Get_Men(GameManager.Instance.currentChapter));
+
+        Alloffset();
+    }
+
+    private void Alloffset()
+    {
+        Offset();
+        LanguageManager.Instance.Offset();
+        LoadingManager.Instance.Offset();
+        PlaceManager.Instance.Offset();
+        DialogManager.Instance.Offset();
+        ReasoningManager.Instance.Offset();
+        PhoneOptionManager.Instance.Offset();
+        GuideManager.Instance.Offset();
+
+        ActivityController.Instance.Offset();
+
+        PhoneSoftware.Instance.Offset();
+        PhoneHardware.Instance.Offset();
+
+        PlayerInputController.Instance.Offset();
+        DesktopController.Instance.Offset();
+        StreamController.Instance.Offset();
+
+        InteractObjectBtnController.Instance.Offset();
+        ObjectPooling.Instance.Offset();
+
+    }
+
+
 
     #endregion
 
@@ -112,9 +182,9 @@ public class GameSystem : Singleton<GameSystem>
 
     public void SetAbilityUI()
     {
-        abilityTxts[0].text = GameManager.Instance.mainInfo.observation.ToString();
-        abilityTxts[1].text = GameManager.Instance.mainInfo.sociability.ToString();
-        abilityTxts[2].text = GameManager.Instance.mainInfo.mentality.ToString();
+        abilityTxts[0].text = mainInfo.observation.ToString();
+        abilityTxts[1].text = mainInfo.sociability.ToString();
+        abilityTxts[2].text = mainInfo.mentality.ToString();
     }
 
     #endregion
@@ -177,10 +247,10 @@ public class GameSystem : Singleton<GameSystem>
 
     public void ShowEpilogue()
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
-        GameManager.Instance.canInteractObject = false;
+        GameSystem.Instance.canInteractObject = false;
 
         endSeq = DOTween.Sequence();
 
@@ -189,7 +259,7 @@ public class GameSystem : Singleton<GameSystem>
         endSeq.Append(epilogueCG.DOFade(1f, 3f)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
             }));
         endSeq.Append(epilogueTxtRT.DOAnchorPosY(4120, 20f).SetEase(Ease.InOutSine));
         endSeq.Append(epilogueTxt.DOFade(0f, 3f));
@@ -210,4 +280,80 @@ public class SpriteModule
     public string nameID;
     public Texture2D texture;
     public Sprite[] sprites;
+}
+
+
+[Serializable]
+public class MainInfo
+{
+    // Flow
+    public int Day = 1;
+
+    // Activity
+    public int CurrentActivity = 0;
+    public int MaxActivity = 0;
+
+    // Ability
+    public int observation = 0;
+    public int sociability = 0;
+    public int mentality = 0;
+
+    // Place & Streaming
+    public int PositiveAndNegative = 0;
+
+    public MainInfo() { }
+    public MainInfo(int day, int _maxActivity, int d_Obse, int d_Pers, int d_Ment)
+    {
+        Day = day;
+        MaxActivity = _maxActivity;
+        observation = d_Obse;
+        sociability = d_Pers;
+        mentality = d_Ment;
+    }
+    public bool IsEnoughAbility(int d_Obse, int d_Pers, int d_Ment)
+    {
+        if (observation >= d_Obse &&
+            sociability >= d_Pers &&
+            mentality >= d_Ment)
+        { return true; }
+        else
+        { return false; }
+    }
+
+    public void IncAbility(ActivityController.e_HomeInteractType HI_Type, int incAbilityValue, int DecActivityValue)
+    {
+        CurrentActivity -= DecActivityValue;
+        switch (HI_Type)
+        {
+            case ActivityController.e_HomeInteractType.Observational:
+                observation += incAbilityValue;
+                break;
+
+            case ActivityController.e_HomeInteractType.Persuasive:
+                sociability += incAbilityValue;
+                break;
+
+            case ActivityController.e_HomeInteractType.MentalStrength:
+                mentality += incAbilityValue;
+                break;
+
+
+            default:
+                break;
+        }
+    }
+
+
+    public static Dictionary<string, List<string>> abilityTypeLanguage = new Dictionary<string, List<string>>
+    {
+        { "Activity", new List<string> { "Activity", "행동력" } },
+        { "observation", new List<string> { "observation", "관찰력" } },
+        { "sociability", new List<string> { "sociability", "설득력" } },
+        { "mentality", new List<string> { "mentality", "정신력" } }
+    };
+
+
+    // Deco
+    public string TodayOfTheWeek = "Monday";
+
 }

@@ -80,7 +80,7 @@ public class StreamController : Singleton<StreamController>
         EndBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 if (panelResultDescTxt.gameObject.activeSelf)
                 {
@@ -270,11 +270,11 @@ public class StreamController : Singleton<StreamController>
         seq
             .OnStart(() =>
             {
-                GameManager.Instance.canInput = false;
+                GameSystem.Instance.canInput = false;
             })
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
             });
     }
 
@@ -533,7 +533,8 @@ public class StreamController : Singleton<StreamController>
 
     public void ActiveOn()
     {
-        if (GameManager.Instance == null || GameManager.Instance.currentActPart != GameManager.e_currentActPart.StreamingTime) { return; }
+        if (GameSystem.Instance == null) { return; }
+        else if (GameSystem.Instance.currentActPart != GameSystem.e_currentActPart.StreamingTime) { return; }
 
         click.Enable();
         this.gameObject.SetActive(true);
@@ -568,7 +569,7 @@ public class StreamController : Singleton<StreamController>
         foreach (IDBtn idBtn in sb_IDBtns) { ObjectPooling.Instance.GetBackIDBtn(idBtn); }
         sb_IDBtns.Clear();
 
-        GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.EndDay);
+        GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.EndDay);
     }
     #endregion
 }

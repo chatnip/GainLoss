@@ -83,14 +83,14 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         exitBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 ActiveOff(0.5f);
             });
         decideBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 ReasoningManager.Instance.ActiveOn_ConfirmPopup(0.2f);
             });
@@ -116,7 +116,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     public void ActiveOn(float time)
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         PlayerInputController.Instance.CanMove = false;
         this.gameObject.SetActive(true);
@@ -124,7 +124,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         thisCG.DOFade(1f, time)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
             });
 
         // 각각의 class 세팅
@@ -135,7 +135,7 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
         { RA.SetDropDownOption(ReasoningManager.Instance.reasoningMaterialIDs); }
 
         // 추리 결정을 할 수 있는가
-        if(GameManager.Instance.currentActPart == GameManager.e_currentActPart.ReasoningDay)
+        if(GameSystem.Instance.currentActPart == GameSystem.e_currentActPart.ReasoningDay)
         { decideBtn.interactable = true; }
         else
         { decideBtn.interactable = false; }
@@ -143,17 +143,17 @@ public class ReasoningController : Singleton<ReasoningController>, IBeginDragHan
 
     public void ActiveOff(float time)
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         thisCG.DOFade(0f, time)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
 
                 PlayerInputController.Instance.CanMove = true;
                 this.gameObject.SetActive(false);
 
-                GameManager.Instance.canInteractObject = true;
+                GameSystem.Instance.canInteractObject = true;
             });
     }
 

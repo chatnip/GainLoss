@@ -136,7 +136,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     public void MoveInput(Vector2 newMoveDirection)
     {
-        if (GameManager.Instance.canInput && CanMove)
+        if (GameSystem.Instance.canInput && CanMove)
         { move = newMoveDirection; }
     }
 
@@ -149,7 +149,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // Run
     private void SetRunModeChange(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput || !CanMove) { return; }
+        if (!GameSystem.Instance.canInput || !CanMove) { return; }
 
         if (isRunMode)
         {
@@ -184,7 +184,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     private void BackBtn(InputAction.CallbackContext obj)
     {
-        if(!GameManager.Instance.canInput) { return; }
+        if(!GameSystem.Instance.canInput) { return; }
 
         // 불가능 상황
         if (DialogManager.Instance.objPanelBtn.gameObject.activeSelf ||
@@ -225,7 +225,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     // A Btn
     public void ApplySeleteBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SelectBtn != null)
         {
@@ -245,7 +245,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
 
     private void RightSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -273,7 +273,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void LeftSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count >= 1)
         {
@@ -300,7 +300,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void DownSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {
@@ -344,7 +344,7 @@ public class PlayerInputController : Singleton<PlayerInputController>
     }
     private void UpSelectedBtn(InputAction.CallbackContext obj)
     {
-        if (!GameManager.Instance.canInput) { return; }
+        if (!GameSystem.Instance.canInput) { return; }
 
         if (SectionBtns != null && SectionBtns.Count > 1)
         {

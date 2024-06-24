@@ -65,7 +65,7 @@ public class DialogManager : Singleton<DialogManager>
         objPanelBtn.OnClickAsObservable()
             .Subscribe(btn =>
             {
-                if (!GameManager.Instance.canSkipTalking) { return; }
+                if (!GameSystem.Instance.canSkipTalking) { return; }
 
                 ObjDescSkip();
             });
@@ -116,7 +116,7 @@ public class DialogManager : Singleton<DialogManager>
                 break;
             case "Tutorial":
                 ObjDescOff();
-                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.UseActivity);
+                GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.UseActivity);
                 break;
         }
 
@@ -268,9 +268,9 @@ public class DialogManager : Singleton<DialogManager>
         }
 
         // Base Set
-        GameManager.Instance.canInput = false;
-        GameManager.Instance.canInteractObject = false;
-        GameManager.Instance.canSkipTalking = true;
+        GameSystem.Instance.canInput = false;
+        GameSystem.Instance.canInteractObject = false;
+        GameSystem.Instance.canSkipTalking = true;
         PlayerInputController.Instance.MoveStop();
         InteractObjectBtnGenerator.Instance.SetOnOffAllBtns(false);
 
@@ -348,8 +348,8 @@ public class DialogManager : Singleton<DialogManager>
             currentIO = null;
         }
 
-        GameManager.Instance.canInput = true;
-        GameManager.Instance.canInteractObject = true;
+        GameSystem.Instance.canInput = true;
+        GameSystem.Instance.canInteractObject = true;
         PlayerInputController.Instance.CanMove = true;
         InteractObjectBtnGenerator.Instance.SetOnOffAllBtns(true);
 
@@ -360,9 +360,9 @@ public class DialogManager : Singleton<DialogManager>
         foreach (KeyValuePair<string, Image> keyValuePair in typeByImgDict)
         { typeByImgDict[keyValuePair.Key].gameObject.SetActive(false); }
 
-        if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.VisitPlace)
+        if (GameSystem.Instance.currentActPart == GameSystem.e_currentActPart.VisitPlace)
         { PlaceManager.Instance.CheckCanGoHome(); }
-        else if (GameManager.Instance.currentActPart == GameManager.e_currentActPart.EndChapter)
+        else if (GameSystem.Instance.currentActPart == GameSystem.e_currentActPart.EndChapter)
         { ReasoningManager.Instance.SetEndChapterBtn(); }
     }
 
@@ -378,8 +378,8 @@ public class DialogManager : Singleton<DialogManager>
         // Set On
         objectChioceCG.gameObject.SetActive(true);
         objectChioceCG.DOFade(1f, time)
-            .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
-            .OnComplete(() => { GameManager.Instance.canSkipTalking = true; })
+            .OnStart(() => { GameSystem.Instance.canSkipTalking = false; })
+            .OnComplete(() => { GameSystem.Instance.canSkipTalking = true; })
             .SetUpdate(true);
 
         // Set Btn By ID
@@ -480,7 +480,7 @@ public class DialogManager : Singleton<DialogManager>
                         }
                     }
 
-                    if (GameManager.Instance.mainInfo.IsEnoughAbility(need_obs, need_soc, need_men))
+                    if (GameSystem.Instance.mainInfo.IsEnoughAbility(need_obs, need_soc, need_men))
                     {
                         currentIO.IsInteracted = true;
                         ChoiceTab_Object3D(_id);
@@ -502,8 +502,8 @@ public class DialogManager : Singleton<DialogManager>
         // Set On
         streamChioceCG.gameObject.SetActive(true);
         streamChioceCG.DOFade(1f, time)
-            .OnStart(() => { GameManager.Instance.canSkipTalking = false; })
-            .OnComplete(() => { GameManager.Instance.canSkipTalking = true; })
+            .OnStart(() => { GameSystem.Instance.canSkipTalking = false; })
+            .OnComplete(() => { GameSystem.Instance.canSkipTalking = true; })
             .SetUpdate(true);
 
         // Set Btn By ID
@@ -553,12 +553,12 @@ public class DialogManager : Singleton<DialogManager>
         objectChioceCG.DOFade(0f, 0.2f)
             .OnStart(() =>
             {
-                GameManager.Instance.canSkipTalking = false;
+                GameSystem.Instance.canSkipTalking = false;
                 Time.timeScale = 1f;
             })
             .OnComplete(() =>
             {
-                GameManager.Instance.canSkipTalking = true;
+                GameSystem.Instance.canSkipTalking = true;
                 objectChioceCG.gameObject.SetActive(false);
             })
             .SetUpdate(true);

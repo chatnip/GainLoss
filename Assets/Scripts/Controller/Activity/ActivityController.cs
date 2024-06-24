@@ -87,9 +87,9 @@ public class ActivityController : Singleton<ActivityController>
         };
         questionWindowAbilitiyDict = new Dictionary<e_HomeInteractType, int>
         { 
-            { e_HomeInteractType.Observational, GameManager.Instance.mainInfo.observation },
-            { e_HomeInteractType.Persuasive, GameManager.Instance.mainInfo.sociability },
-            { e_HomeInteractType.MentalStrength, GameManager.Instance.mainInfo.mentality }
+            { e_HomeInteractType.Observational, GameSystem.Instance.mainInfo.observation },
+            { e_HomeInteractType.Persuasive, GameSystem.Instance.mainInfo.sociability },
+            { e_HomeInteractType.MentalStrength, GameSystem.Instance.mainInfo.mentality }
         };
 
         // Set UI
@@ -109,7 +109,7 @@ public class ActivityController : Singleton<ActivityController>
         noBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 SetActivityGageUI(0.25f);
                 QuestionWindow_ActiveOff(0.25f);
@@ -117,7 +117,7 @@ public class ActivityController : Singleton<ActivityController>
         yesBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 if (currentQuestionWindowType == e_HomeInteractType.GoOutside)
                 { 
@@ -125,7 +125,7 @@ public class ActivityController : Singleton<ActivityController>
                 }
                 else
                 {
-                    if (GameManager.Instance.mainInfo.CurrentActivity <= 0) { return; }
+                    if (GameSystem.Instance.mainInfo.CurrentActivity <= 0) { return; }
                     GetAbility_Start(currentQuestionWindowType); 
                 }
             });
@@ -136,7 +136,7 @@ public class ActivityController : Singleton<ActivityController>
         EndDayBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
                 EndDayBtn.TryGetComponent(out RectTransform btnRT);
                 btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
                 LoadingManager.Instance.StartLoading();
@@ -162,7 +162,7 @@ public class ActivityController : Singleton<ActivityController>
         SAG_UI_Use = DOTween.Sequence();
 
         // Set Fill Gage
-        float value = (float)GameManager.Instance.mainInfo.CurrentActivity / GameManager.Instance.mainInfo.MaxActivity;
+        float value = (float)GameSystem.Instance.mainInfo.CurrentActivity / GameSystem.Instance.mainInfo.MaxActivity;
         foreach(Image img in gageActualImgs)
         { SAG_UI.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
         foreach (Image img in gageUsePreviewImgs)
@@ -170,13 +170,13 @@ public class ActivityController : Singleton<ActivityController>
 
 
         // Set Num
-        amountNumTxt.text = GameManager.Instance.mainInfo.CurrentActivity.ToString();
+        amountNumTxt.text = GameSystem.Instance.mainInfo.CurrentActivity.ToString();
 
         // Set Triangle Pos
         float RT_X = activityGageWindowRT.rect.width;
-        RT_X /= GameManager.Instance.mainInfo.MaxActivity;
+        RT_X /= GameSystem.Instance.mainInfo.MaxActivity;
         if (markImg.TryGetComponent(out RectTransform markRT)) 
-        { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameManager.Instance.mainInfo.CurrentActivity, 0), dotweenTime)); }
+        { SAG_UI.Join(markRT.DOAnchorPos(new Vector2(RT_X * GameSystem.Instance.mainInfo.CurrentActivity, 0), dotweenTime)); }
 
         // Set Arrow
         SetArrow();
@@ -190,8 +190,8 @@ public class ActivityController : Singleton<ActivityController>
 
         // Set Gage
         SetActivityGageUI(dotweenTime);
-        int previewActivity = GameManager.Instance.mainInfo.CurrentActivity - questionWindowConfigDict[previewHI_Type].DecActivity;
-        float value = 1 - ((float)previewActivity / GameManager.Instance.mainInfo.MaxActivity);
+        int previewActivity = GameSystem.Instance.mainInfo.CurrentActivity - questionWindowConfigDict[previewHI_Type].DecActivity;
+        float value = 1 - ((float)previewActivity / GameSystem.Instance.mainInfo.MaxActivity);
         foreach (Image img in gageUsePreviewImgs)
         { SAG_UI_Use.Join(DOTween.To(() => img.fillAmount, x => img.fillAmount = x, value, dotweenTime)); }
     }
@@ -205,8 +205,8 @@ public class ActivityController : Singleton<ActivityController>
         Debug.Log("Reconfirm: " + HI_Type.ToString());
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
-        GameManager.Instance.canInput = false;
-        GameManager.Instance.canInteractObject = false;
+        GameSystem.Instance.canInput = false;
+        GameSystem.Instance.canInteractObject = false;
 
         // Exp
         if (InteractObjectBtnGenerator.Instance.SectionIsThis)
@@ -219,7 +219,7 @@ public class ActivityController : Singleton<ActivityController>
                 questionWindowConfigDict[HI_Type].QuestionContent; 
             descGageToActivityTxt.text = "";
             // 외출하지만, 행동력이 남아있을 시
-            if (GameManager.Instance.mainInfo.CurrentActivity > 0)
+            if (GameSystem.Instance.mainInfo.CurrentActivity > 0)
             { kindOfGageToAbilityTxt.text = "<color=red>" + questionWindowConfigDict[e_HomeInteractType.GoOutside].ActivityKind + "</color>"; }
             else
             { kindOfGageToAbilityTxt.text = ""; }
@@ -239,8 +239,8 @@ public class ActivityController : Singleton<ActivityController>
         }
         
         
-        amountNumInWindowTxt.text = 
-            GameManager.Instance.mainInfo.CurrentActivity.ToString() + "/" + GameManager.Instance.mainInfo.MaxActivity.ToString();
+        amountNumInWindowTxt.text =
+            GameSystem.Instance.mainInfo.CurrentActivity.ToString() + "/" + GameSystem.Instance.mainInfo.MaxActivity.ToString();
 
         // Set Fill Gage
         SetActivityGageUI_Use(currentQuestionWindowType, 0.25f);
@@ -248,7 +248,7 @@ public class ActivityController : Singleton<ActivityController>
         activityQuestionWindowRT.DOAnchorPos(new Vector2(720, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
+                GameSystem.Instance.canInput = true;
                 yesBtn.interactable = true;
                 noBtn.interactable = true; 
             });
@@ -256,7 +256,7 @@ public class ActivityController : Singleton<ActivityController>
     public void QuestionWindow_ActiveOff(float time)
     {
         PlayerInputController.Instance.CanMove = false;
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         yesBtn.interactable = false;
         noBtn.interactable = false;
@@ -264,8 +264,8 @@ public class ActivityController : Singleton<ActivityController>
         activityQuestionWindowRT.DOAnchorPos(new Vector2(1200, activityQuestionWindowRT.anchoredPosition.y), time)
             .OnComplete(() =>
             {
-                GameManager.Instance.canInput = true;
-                GameManager.Instance.canInteractObject = true;
+                GameSystem.Instance.canInput = true;
+                GameSystem.Instance.canInteractObject = true;
                 PlayerInputController.Instance.CanMove = true;           
             });
     }
@@ -294,7 +294,7 @@ public class ActivityController : Singleton<ActivityController>
 
     public IEnumerator PlayAnim_AboutActivity(AnimationClip AC)
     {
-        GameManager.Instance.canInput = false;
+        GameSystem.Instance.canInput = false;
 
         if(AC != null)
         {
@@ -308,13 +308,13 @@ public class ActivityController : Singleton<ActivityController>
         }
 
         GameSystem.Instance.EndAnimationOnce(PlayerController.Instance._At, PlayerController.Instance._AC);
-        GameManager.Instance.canInput = true;
+        GameSystem.Instance.canInput = true;
         GetAbility_End(currentQuestionWindowType);
     }
 
     private void GetAbility_End(e_HomeInteractType HI_Type)
     {
-        GameManager.Instance.mainInfo.IncAbility(
+        GameSystem.Instance.mainInfo.IncAbility(
             HI_Type, questionWindowConfigDict[HI_Type].IncAbility,
             questionWindowConfigDict[HI_Type].DecActivity);
 
@@ -339,7 +339,7 @@ public class ActivityController : Singleton<ActivityController>
 
     private void SetArrow()
     {
-        if(GameManager.Instance.mainInfo.CurrentActivity > 0)
+        if(GameSystem.Instance.mainInfo.CurrentActivity > 0)
         {
             foreach (SpriteRenderer SR in abilitySRs)
             {

@@ -28,7 +28,7 @@ public class PhoneOptionManager : Singleton<PhoneOptionManager>
             mainOptionBtn.button.OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    if (!GameManager.Instance.canInput) { return; }
+                    if (!GameSystem.Instance.canInput) { return; }
 
                     currentIdBtn = mainOptionBtn;
                     PhoneSoftware.Instance.OpenPopup(currentIdBtn, 0.5f);

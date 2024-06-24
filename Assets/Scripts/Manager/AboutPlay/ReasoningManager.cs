@@ -79,14 +79,14 @@ public class ReasoningManager : Singleton<ReasoningManager>
                 ReasoningController.Instance.ActiveOff(0.2f);
                 ActiveOff_ConfirmPopup(0.2f);
 
-                GameManager.Instance.SeteCurrentActPart(GameManager.e_currentActPart.EndChapter);
+                GameSystem.Instance.SeteCurrentActPart(GameSystem.e_currentActPart.EndChapter);
                 DialogManager.Instance.ObjDescOn(null, DataManager.Instance.Get_GetChapterDialog(gottenChapterIdx));
             });
 
         EndChapterBtn.OnClickAsObservable()
             .Subscribe(_ =>
             {
-                if (!GameManager.Instance.canInput) { return; }
+                if (!GameSystem.Instance.canInput) { return; }
 
                 EndChapterBtn.TryGetComponent(out RectTransform btnRT);
                 btnRT.DOAnchorPos(new Vector2(-300f, 0f), 1f).SetEase(Ease.OutCubic);
