@@ -13,6 +13,12 @@ public class GameSystem : Singleton<GameSystem>
 {
     #region Value
 
+    [Header("=== Main Info")]
+    public bool canInput = false;
+    public bool canSkipTalking = false;
+    public bool canInteractObject = true;
+    public e_currentActPart currentActPart = e_currentActPart.StartDay;
+
     [Header("=== Main UI")]
     [SerializeField] Button pauseBtn;
     [SerializeField] List<TMP_Text> abilityTxts;
@@ -38,12 +44,6 @@ public class GameSystem : Singleton<GameSystem>
     Sequence endSeq;
 
     [SerializeField] public MainInfo mainInfo = new MainInfo(0, 0, 0, 0, 0);
-
-    // Other Value
-    public bool canInput = false;
-    public bool canSkipTalking = false;
-    public bool canInteractObject = true;
-    public e_currentActPart currentActPart = e_currentActPart.StartDay;
 
     #endregion
 
@@ -80,7 +80,6 @@ public class GameSystem : Singleton<GameSystem>
 
         // Text
         SetAbilityUI();
-
         
         pauseBtn.OnClickAsObservable()
             .Subscribe(_ =>
@@ -152,6 +151,8 @@ public class GameSystem : Singleton<GameSystem>
     private void Alloffset()
     {
         Offset();
+        
+        // Manager
         LanguageManager.Instance.Offset();
         LoadingManager.Instance.Offset();
         PlaceManager.Instance.Offset();
@@ -160,15 +161,21 @@ public class GameSystem : Singleton<GameSystem>
         PhoneOptionManager.Instance.Offset();
         GuideManager.Instance.Offset();
 
+        // 3D Controller
         ActivityController.Instance.Offset();
 
+        // Phone
         PhoneSoftware.Instance.Offset();
         PhoneHardware.Instance.Offset();
 
+        // Input
         PlayerInputController.Instance.Offset();
+
+        // 2D Controller
         DesktopController.Instance.Offset();
         StreamController.Instance.Offset();
 
+        // Other
         InteractObjectBtnController.Instance.Offset();
         ObjectPooling.Instance.Offset();
 
@@ -247,10 +254,10 @@ public class GameSystem : Singleton<GameSystem>
 
     public void ShowEpilogue()
     {
-        GameSystem.Instance.canInput = false;
+        canInput = false;
         PlayerInputController.Instance.MoveStop();
         PlayerController.Instance.ResetAnime();
-        GameSystem.Instance.canInteractObject = false;
+        canInteractObject = false;
 
         endSeq = DOTween.Sequence();
 
