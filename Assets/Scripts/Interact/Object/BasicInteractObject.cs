@@ -1,6 +1,5 @@
 //Refactoring v1.0
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class BasicInteractObject : InteractObject
@@ -8,7 +7,7 @@ public class BasicInteractObject : InteractObject
     #region Value
 
     [Header("=== NPC Things")]
-    [Tooltip("필요없으면 삽입 X")][SerializeField] public AnimatorController _AC;
+    [Tooltip("필요없으면 삽입 X")][SerializeField] public RuntimeAnimatorController _AC;
     [Tooltip("필요없으면 삽입 X")]
     [SerializeField] List<AnimationClip> _Acs_ByIntetact;
 

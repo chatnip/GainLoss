@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -37,7 +36,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] Transform _mainCamera;
     [SerializeField] Transform _npcInteractCamera;
     [SerializeField] public bool isTalking = false;
-    [SerializeField] public AnimatorController _AC;
+    [SerializeField] public RuntimeAnimatorController _AC;
     [SerializeField] public Animator _At;
     [SerializeField] List<AnimationClip> _Acs_ByIntetact;
 

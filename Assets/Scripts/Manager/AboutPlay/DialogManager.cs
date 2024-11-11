@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
-using UnityEditor.Animations;
 
 public class DialogManager : Singleton<DialogManager>
 {
@@ -24,7 +23,7 @@ public class DialogManager : Singleton<DialogManager>
 
     [Header("=== Another")]
     [SerializeField] Animator another_At;
-    [SerializeField] AnimatorController another_AC;
+    [SerializeField] RuntimeAnimatorController another_AC;
 
     [Header("=== Stream UI")]
     [SerializeField] Image timeAttackFillImg;

@@ -6,7 +6,6 @@ using TMPro;
 using UniRx;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using UnityEditor.Animations;
 using System;
 
 public class GameSystem : Singleton<GameSystem>
@@ -242,7 +241,7 @@ public class GameSystem : Singleton<GameSystem>
         At.SetTrigger("Interact");
     }
 
-    public void EndAnimationOnce(Animator At, AnimatorController AC)
+    public void EndAnimationOnce(Animator At, RuntimeAnimatorController AC)
     {
         At.runtimeAnimatorController = AC;
         At.SetTrigger("Return");

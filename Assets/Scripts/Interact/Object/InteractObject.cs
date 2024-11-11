@@ -1,7 +1,6 @@
 //Refactoring v1.0
 using DG.Tweening;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
